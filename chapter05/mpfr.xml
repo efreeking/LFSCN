@@ -43,10 +43,6 @@
   <sect2 role="installation">
     <title>安装 MPFR</title>
 
-    <para>应用补丁修复在 MPFR 中的一些错误:</para>
-
-<screen><userinput remap="pre">patch -Np1 -i ../&mpfr-fixes-patch;</userinput></screen>
-
     <para>准备 MPFR 编译:</para>
 
 <screen><userinput remap="configure">./configure --prefix=/tools --enable-thread-safe</userinput></screen>

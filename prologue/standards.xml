@@ -8,12 +8,12 @@
 <sect1 id="pre-standards">
   <?dbhtml filename="standards.html"?>
 
-  <title>LFS ???</title>
+  <title>LFS 和标准</title>
 
   <!--<sect2>
     <title/> -->
 
-     <para>LFS ????????? Linux ??????????:</para>
+     <para>LFS 的结构尽可能的遵循 Linux 标准。主要的标准有:</para>
 
     <itemizedlist>
       <listitem>
@@ -21,31 +21,30 @@
         POSIX.1-2008</ulink>.</para>
       </listitem>
       <listitem>
-        <para><ulink url="http://www.pathname.com/fhs/pub/fhs-2.3.html">???????? (FHS)</ulink></para>
+        <para><ulink url="http://www.pathname.com/fhs/pub/fhs-2.3.html">Filesystem 
+        Hierarchy Standard (FHS 文件系统层次标准)</ulink></para>
 
       </listitem>
       <listitem>
-        <para><ulink url="http://refspecs.freestandards.org/LSB_4.0.0/">Linux ??? (LSB) ???? 4.0</ulink></para>
+        <para><ulink url="http://refspecs.freestandards.org/LSB_4.0.0/">Linux 
+        Standard Base (LSB) Core Specification 4.0(Linux 标准基础核心规范 4.0)</ulink></para>
 
-        <para>LSB ? 5 ??????: ???C++?????????????
-		????????,??????????LFS ???????????????</para>
+        <para>LSB 有 5 个独立的标准: Core (核心)、C++、Desktop (桌面)、Runtime Languages (运行时语言)和 Printing (打印)。除了一般的要求外，还有架构方面专用要求。LFS 尝试按照在上一节中讨论的架构。</para>
 
-        <note><para>??????? LSB ????????????????????????????????????
-        ?? LFS ???????,?????????????,???????????? LSB ???????</para></note>
+        <note><para>很多人不同意 LSB 的要求。做出定义的主要目的是为了确保专属软件可以在一个兼容的系统上正确的安装和运行。由于 LFS 是基于源代码的，所以用户完全可以控制需要那个包，而且很多人选择不安装某些在 LSB 中指定的包。</para></note>
 
       </listitem>
     </itemizedlist>
 
-    <para>???????? LSB ???????? LFS ???????,?????????? LFS ?????
-    ????????????? BLFS ??????? </para> 
+    <para>创建一个能够完全通过 LSB 认证测试的功能的完整 LFS 系统是可行的，但是却不得不使用许多超出 LFS 范围的额外的包。大部分这些额外的包会在 BLFS 中有安装说明。</para> 
 
     <variablelist>
-      <bridgehead renderas="sect3">?? LSB ?????? LFS ????</bridgehead>
+      <bridgehead renderas="sect3">LFS 提供，满足 LSB 要求所需的包</bridgehead>
       <?dbfo list-presentation="list"?>
       <?dbhtml list-presentation="table"?>
 
       <varlistentry>
-        <term><emphasis>LSB ??:</emphasis></term>
+        <term><emphasis>LSB 核心:</emphasis></term>
         <listitem>
           <para>Bash, Binutils, Coreutils, Diffutils, File, Findutils, Gawk,
                 Grep, Gzip, M4, Man-DB, Ncurses, Procps, Psmisc, Sed,
@@ -61,57 +60,57 @@
       </varlistentry>
 
       <varlistentry>
-        <term><emphasis>LSB ??:</emphasis></term>
+        <term><emphasis>LSB 桌面:</emphasis></term>
         <listitem>
-          <para>?</para>
+          <para>无</para>
         </listitem>
       </varlistentry>
 
       <varlistentry>
-        <term><emphasis>LSB ?????:</emphasis></term>
+        <term><emphasis>LSB 运行时语言:</emphasis></term>
         <listitem>
           <para>Perl</para>
         </listitem>
       </varlistentry>
 
       <varlistentry>
-        <term><emphasis>LSB ??:</emphasis></term>
+        <term><emphasis>LSB 打印:</emphasis></term>
         <listitem>
-          <para>?</para>
+          <para>无</para>
         </listitem>
       </varlistentry>
 
       <varlistentry>
-        <term><emphasis>LSB ???:</emphasis></term>
+        <term><emphasis>LSB 多媒体:</emphasis></term>
         <listitem>
-          <para>?</para>
+          <para>无</para>
         </listitem>
       </varlistentry>
 
     </variablelist>
 
     <variablelist> 
-      <bridgehead renderas="sect3">?? LSB ?????? BLFS ????</bridgehead>
+      <bridgehead renderas="sect3">BLFS 提供，满足 LSB 需求所需的包</bridgehead>
       <?dbfo list-presentation="list"?>
       <?dbhtml list-presentation="table"?> 
 
       <varlistentry>
-        <term><emphasis>LSB ??:</emphasis></term>
+        <term><emphasis>LSB 核心:</emphasis></term>
         <listitem>
           <para>Bc, Cpio, Ed, Fcrontab, Initd-tools, PAM, 
-          Sendmail (? Postfix?Exim) </para>
+          Sendmail (或 Postfix 或 Exim) </para>
         </listitem>
       </varlistentry>
 
       <varlistentry>
         <term><emphasis>LSB C++:</emphasis></term>
         <listitem>
-          <para>?</para>
+          <para>无</para>
         </listitem>
       </varlistentry>
 
       <varlistentry>
-        <term><emphasis>LSB ??:</emphasis></term>
+        <term><emphasis>LSB 桌面:</emphasis></term>
         <listitem>
           <para>ATK, Cairo, Desktop-file-utils, Freetype, Fontconfig,
                 Glib2, GTK+2, Icon-naming-utils, Libjpeg, Libpng, Libxml2,
@@ -120,21 +119,21 @@
       </varlistentry>
 
       <varlistentry>
-        <term><emphasis>LSB ?????:</emphasis></term>
+        <term><emphasis>LSB 运行时语言:</emphasis></term>
         <listitem>
           <para>Python</para>
         </listitem>
       </varlistentry>
 
       <varlistentry>
-        <term><emphasis>LSB ??:</emphasis></term>
+        <term><emphasis>LSB 打印:</emphasis></term>
         <listitem>
           <para>CUPS</para>
         </listitem>
       </varlistentry>
 
       <varlistentry>
-        <term><emphasis>LSB ???:</emphasis></term>
+        <term><emphasis>LSB 多媒体:</emphasis></term>
         <listitem>
           <para>Alsa Libraries, NSPR, NSS, OpenSSL, Java</para>
         </listitem>
@@ -143,12 +142,12 @@
     </variablelist>
 
     <variablelist> 
-      <bridgehead renderas="sect3">?? LSB ????,? LFS ? BLFS ?????</bridgehead>
+      <bridgehead renderas="sect3">LFS 或 BLFS 不提供，但是满足 LSB 要求所需的包</bridgehead>
       <?dbfo list-presentation="list"?>
       <?dbhtml list-presentation="table"?> 
 
       <varlistentry>
-        <term><emphasis>LSB ??:</emphasis></term>
+        <term><emphasis>LSB 核心:</emphasis></term>
         <listitem>
           <para>At, Batch, Lsb_release
           </para>
@@ -158,33 +157,33 @@
       <varlistentry>
         <term><emphasis>LSB C++:</emphasis></term>
         <listitem>
-          <para>?</para>
+          <para>无</para>
         </listitem>
       </varlistentry>
 
       <varlistentry>
-        <term><emphasis>LSB ??:</emphasis></term>
+        <term><emphasis>LSB 桌面:</emphasis></term>
         <listitem>
-          <para>?</para>
+          <para>无</para>
         </listitem>
       </varlistentry>
 
       <varlistentry>
-        <term><emphasis>LSB ?????:</emphasis></term>
+        <term><emphasis>LSB 运行时语言:</emphasis></term>
         <listitem>
-          <para>?</para>
+          <para>无</para>
         </listitem>
       </varlistentry>
 
       <varlistentry>
-        <term><emphasis>LSB ??:</emphasis></term>
+        <term><emphasis>LSB 打印:</emphasis></term>
         <listitem>
-          <para>?</para>
+          <para>无</para>
         </listitem>
       </varlistentry>
 
       <varlistentry>
-        <term><emphasis>LSB ???:</emphasis></term>
+        <term><emphasis>LSB 多媒体:</emphasis></term>
         <listitem>
           <para>Xdg-utils</para>
         </listitem>

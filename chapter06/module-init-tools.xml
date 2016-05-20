@@ -40,21 +40,23 @@
   <sect2 role="installation">
     <title>Module-Init-Tools 的安装</title>
 
-    <para>为了避免在不需要的时候重新生成手册页，首先重写指向另一个手册页的文件:</para>
+    <para>应用一个从发行的源代码包压缩包中生成缺少的手册页的补丁:</para>
 
-<screen><userinput remap="pre">echo '.so man5/modprobe.conf.5' > modprobe.d.5</userinput></screen>
+<screen><userinput remap="pre">patch -Np1 -i ../&module-init-tools-man-patch;</userinput></screen>
 
     <para>本包的测试套装是朝其维护人员的需要的方向发展的。命令 <command>make check</command> 会构建一个特殊封装的 modprobe 版本，其对正常操作毫无用处。要运行这个命令(约 0.2 SBU)，执行下列命令(注意在重新编译用于正常使用前，需要
     <command>make clean</command> 命令来清理源代码树):</para>
 
-<screen><userinput remap="test">./configure
+<screen><userinput remap="test">DOCBOOKTOMAN=/bin/true ./configure
 make check
+sed -i -e 's@../../configure@DOCBOOKTOMAN=/bin/true &amp;@' tests/runtests
 ./tests/runtests
 make clean</userinput></screen>
 
     <para>准备 Module-Init-Tools 编译:</para>
 
-<screen><userinput remap="configure">./configure --prefix=/ --enable-zlib-dynamic --mandir=/usr/share/man</userinput></screen>
+<screen><userinput remap="configure">DOCBOOKTOMAN=/bin/true ./configure --prefix=/ \
+    --enable-zlib-dynamic --mandir=/usr/share/man</userinput></screen>
 
     <para>编译包:</para>
 

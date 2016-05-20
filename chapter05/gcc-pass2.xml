@@ -133,7 +133,9 @@ cd ../gcc-build</userinput></screen>
     --enable-__cxa_atexit --enable-languages=c,c++ \
     --disable-libstdcxx-pch --disable-multilib \
     --disable-bootstrap --disable-libgomp \
-    --without-ppl --without-cloog</userinput></screen>
+    --without-ppl --without-cloog \
+    --with-mpfr-include=$(pwd)/../gcc-&gcc-version;/mpfr/src \
+    --with-mpfr-lib=$(pwd)/mpfr/src/.libs</userinput></screen>
 
     <variablelist>
       <title>新配置选项的含义:</title>

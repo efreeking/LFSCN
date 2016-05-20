@@ -21,9 +21,9 @@ strip --strip-unneeded /tools/{,s}bin/*</userinput></screen>
   <para>小心<emphasis>不要</emphasis>在库文件上使用
   <parameter>--strip-unneeded</parameter>。静态库可能会被破坏，而工具链包可能需要从头开始重新全部编译一次。</para>
 
-  <para>删除文档还可多节省接近 25 MB 空间:</para>
+  <para>要节省更多空间，删除文档:</para>
 
-<screen><userinput>rm -rf /tools/{,share}/{info,man}</userinput></screen>
+<screen><userinput>rm -rf /tools/{,share}/{info,man,doc}</userinput></screen>
 
   <para>此时，在
   <envar>$LFS</envar> 上，您应该至少有 850 MB 的可用空间，可以用于在下一阶段构建和安装 Glibc。如果您可以构建和安装 Glibc 的话，您也可以构建和安装其余的东西了。</para>

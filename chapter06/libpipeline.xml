@@ -42,13 +42,28 @@
 
     <para>准备 Libpipeline 编译:</para>
 
-<screen><userinput remap="configure">./configure --prefix=/usr</userinput></screen>
+<screen><userinput remap="configure">./configure CHECK_CFLAGS=-I/tools/include \
+    CHECK_LIBS="-L/tools/lib -lcheck" --prefix=/usr</userinput></screen>
+
+    <variablelist>
+      <title>配置选项的含义:</title>
+
+      <varlistentry>
+        <term><parameter>CHECK_CFLAGS=, CHECK_LIBS=</parameter></term>
+        <listitem>
+          <para>这些环境变量指定在<xref linkend="ch-tools-check"/>中构建的测试库的位置。</para>
+        </listitem>
+      </varlistentry>
+
+    </variablelist>
 
     <para>编译包:</para>
 
 <screen><userinput remap="make">make</userinput></screen>
 
-    <para>这个包不附带测试套装。</para>
+    <para>要测试结果，执行:</para>
+
+<screen><userinput remap="test">make check</userinput></screen>
 
     <para>安装包:</para>
 

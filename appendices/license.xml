@@ -9,10 +9,10 @@
   <?dbhtml dir="appendices"?>
   <?dbhtml filename="licenses.html"?>
 
-  <title>LFS Licenses</title>
+  <title>LFS 授权</title>
 
-  <para>This book is licensed under the Creative Commons
-  Attribution-NonCommercial-ShareAlike 2.0 License.</para>
+  <para>本书以 Creative Commons
+  Attribution-NonCommercial-ShareAlike 2.0 许可方式进行授权。</para>
 
   <para>Computer instructions may be extracted from the book under the MIT
   License.</para>

@@ -38,8 +38,10 @@ EOF</userinput></screen>
   class="partition">hda5</filename> 和 <systemitem
   class="filesystem">ext3</systemitem>。关于本文件中六个字段的详细信息，请查看 <command>man 5 fstab</command>。</para>
 
+<!--
   <para>包含了用于 <systemitem class="filesystem">tmpfs</systemitem> 的 <filename class="directory">/dev/shm</filename> 挂载点是为了可以启用 POSIX 共享内存。内核必须把所需的支持构建到其中才能运作(关于这方面的更多信息在下一节)。请注意，当前非常少软件使用 POSIX 共享内存。因此把 <filename
   class="directory">/dev/shm</filename> 挂载点是作为可选的。要获取更多信息，查看内核源代码树中的 <filename>Documentation/filesystems/tmpfs.txt</filename>。</para>
+-->
 
   <para>带有 MS-DOS 或 Windows 血统的文件系统(即: vfat, ntfs, smbfs, cifs,
   iso9660, udf) 需要 <quote>iocharset</quote> 挂载点以便文件名中的非 ASCII 字符可以被正确解释。这个选项的值应该和您的语言环境的字符集一样，以这种方式调整，使内核能够理解。如果相应的字符集定义(在 File systems -&gt;

@@ -24,7 +24,7 @@
   <sect2 role="package">
     <title/>
 
-    <para>Linux API 头文件揭露被 Glibc 使用的内核的 API。</para>
+    <para>Linux API 头文件(在 linux-&linux-version;.tar.gz 中)揭露被 Glibc 使用的内核的 API。</para>
 
     <segmentedlist>
       <segtitle>&buildtime;</segtitle>

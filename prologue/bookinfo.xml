@@ -7,17 +7,17 @@
 
 <bookinfo>
   <title>Linux From Scratch</title>
-  <subtitle>?? &version;</subtitle>
+  <subtitle>版本 &version;</subtitle>
 
 
   <authorgroup>
     <author>
-      <firstname>??? Gerard</firstname>
+      <firstname>开创人 Gerard</firstname>
       <surname>Beekmans</surname>
     </author>
     <author>
-      <firstname>??? Matthew Burgess</firstname>
-      <surname>? Bruce Dubbs</surname>
+      <firstname>编辑 Matthew Burgess</firstname>
+      <surname>and Bruce Dubbs</surname>
     </author>
   </authorgroup>
 
@@ -28,14 +28,14 @@
   </copyright>
 
   <legalnotice>
-    <para>?? &copy; &copyrightdate;, Gerard Beekmans</para>
+    <para>版权 &copy; &copyrightdate;, Gerard Beekmans</para>
 
-    <para>???????</para>
+    <para>保留所有权利。</para>
 
-    <para>??? <xref linkend="CC"/> ?????</para>
-    <para>??? <xref linkend="MIT"/> ??????????????</para>
+    <para>本书以 <xref linkend="CC"/> 方式授权。</para>
+    <para>计算机指令可以以<xref linkend="MIT"/>授权从书中提取。</para>
 
-    <para><trademark class='registered'>Linux</trademark> ? Linus Torvalds ????????</para>
+    <para><trademark class='registered'>Linux</trademark> 是 Linus Torvalds 注册的一个商标。</para>
 
   </legalnotice>
 

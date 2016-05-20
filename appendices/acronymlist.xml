@@ -9,7 +9,7 @@
   <?dbhtml dir="appendices"?>
   <?dbhtml filename="acronymlist.html"?>
 
-  <title>Acronyms and Terms</title>
+  <title>缩写和术语</title>
 
   <variablelist>
     <?dbfo list-presentation="list"?>
@@ -18,63 +18,63 @@
     <varlistentry>
       <term><emphasis role="bold">ABI</emphasis></term>
       <listitem>
-        <para>Application Binary Interface</para>
+        <para>Application Binary Interface 应用程序二进制接口</para>
       </listitem>
     </varlistentry>
 
     <varlistentry>
       <term><emphasis role="bold">ALFS</emphasis></term>
       <listitem>
-        <para>Automated Linux From Scratch</para>
+        <para>Automated Linux From Scratch 自动从头 Linux</para>
       </listitem>
     </varlistentry>
 
     <varlistentry>
       <term><emphasis role="bold">ALSA</emphasis></term>
       <listitem>
-        <para>Advanced Linux Sound Architecture</para>
+        <para>Advanced Linux Sound Architecture 高级 Linux 声音架构</para>
       </listitem>
     </varlistentry>
 
     <varlistentry>
       <term><emphasis role="bold">API</emphasis></term>
       <listitem>
-        <para>Application Programming Interface</para>
+        <para>Application Programming Interface 应用程序编程接口</para>
       </listitem>
     </varlistentry>
 
     <varlistentry>
       <term><emphasis role="bold">ASCII</emphasis></term>
       <listitem>
-        <para>American Standard Code for Information Interchange</para>
+        <para>American Standard Code for Information Interchange 信息交换美国标准代码</para>
       </listitem>
     </varlistentry>
 
     <varlistentry>
       <term><emphasis role="bold">BIOS</emphasis></term>
       <listitem>
-        <para>Basic Input/Output System</para>
+        <para>Basic Input/Output System 基本输入输出系统</para>
       </listitem>
     </varlistentry>
 
     <varlistentry>
       <term><emphasis role="bold">BLFS</emphasis></term>
       <listitem>
-        <para>Beyond Linux From Scratch</para>
+        <para>Beyond Linux From Scratch 超越 LFS</para>
       </listitem>
     </varlistentry>
 
     <varlistentry>
       <term><emphasis role="bold">BSD</emphasis></term>
       <listitem>
-        <para>Berkeley Software Distribution</para>
+        <para>Berkeley Software Distribution 伯克利软件发行包</para>
       </listitem>
     </varlistentry>
 
     <varlistentry>
       <term><emphasis role="bold">chroot</emphasis></term>
       <listitem>
-        <para>change root</para>
+        <para>change root 更改根</para>
       </listitem>
     </varlistentry>
 
@@ -88,14 +88,14 @@
     <varlistentry>
       <term><emphasis role="bold">COS</emphasis></term>
       <listitem>
-        <para>Class Of Service</para>
+        <para>Class Of Service 服务分类</para>
       </listitem>
     </varlistentry>
 
     <varlistentry>
       <term><emphasis role="bold">CPU</emphasis></term>
       <listitem>
-        <para>Central Processing Unit</para>
+        <para>Central Processing Unit 中央处理器</para>
       </listitem>
     </varlistentry>
 

@@ -35,6 +35,4 @@
 
   <para>大量的文件将会报告有它们不能识别的文件格式。这些警告可以安全的忽略。这些警告说明那些文件是脚本而不是二进制文件。</para>
 
-  <para>如果磁盘空间非常紧张，<parameter>--strip-all</parameter> 选项可以在 <filename class="directory">/{,usr/}{bin,sbin}</filename> 中的二进制文件上再次使用来获得更多的空间。不要在库文件上使用这些选项&mdash;它们将会被破坏。</para>
-
 </sect1>

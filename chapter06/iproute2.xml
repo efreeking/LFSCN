@@ -45,7 +45,7 @@
     Berkeley DB 的说明可以在
     <ulink url="&blfs-root;view/svn/server/databases.html#db"/> 中的 BLFS 书中找到。</para>
 
-<screen><userinput>sed -i '/^TARGETS/s@arpd@@g' misc/Makefile</userinput></screen>
+<screen><userinput remap="pre">sed -i '/^TARGETS/s@arpd@@g' misc/Makefile</userinput></screen>
 
     <para>编译包:</para>
 

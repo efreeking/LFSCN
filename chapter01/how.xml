@@ -14,15 +14,17 @@
   这个已存在的 Linux 系统(宿主)将会作为起点，提供构建新系统所需的程序，包括编译器、链接器和 Shell。
   在安装发行版时选择 <quote>development</quote> (开发)选项，以便可以访问这些工具。</para>
 
-  <para>作为安装独立的发行版到机器之外的另一个选择，您可能希望使用 Linux From Scratch 的
-  LiveCD 或来自商用发行版的 LiveCD。LFS LiveCD 是像宿主系统一样工作的很好，提供您按照本书中
+  <para>作为安装独立的发行版到机器之外的另一个选择，您可能希望使用<!-- Linux From Scratch 的
+  LiveCD 或-->来自商用发行版的 LiveCD。<!--LFS LiveCD 是像宿主系统一样工作的很好，提供您按照本书中
   的说明完成工作所需的所有工具。LiveCD 版本是在当前书本之后的，但是仍能够作为构建本书的一个宿主。
   LiveCD 的 <quote>-nosrc</quote> 或 <quote>-min</quote> 版本是最适用于构建当前的 LFS 系统。
-  要获得更多关于 LiveCD 的信息或者下载一个拷贝，访问 <ulink url="&livecd-root;"/>。</para>
+  要获得更多关于 LiveCD 的信息或者下载一个拷贝，访问 <ulink url="&livecd-root;"/>。--></para>
 
+  <!--
   <note>
     <para>LFS LiveCD 可能不能很好的在新的硬件配置上工作，可能无法引导或者无法检测某些如 SATA 硬盘之类的设备。</para>
   </note>
+  -->
 
   <para>本书的<xref linkend="chapter-partitioning"/>描述了如何创建一个新的 Linux 原生分区和文件系统，这是新的 LFS 系统将会进行编译和安装的地方。
   <xref linkend="chapter-getting-materials"/>解释需要下载哪些包和补丁来构建 LFS 系统，以及如何在新的文件系统上存放它们。

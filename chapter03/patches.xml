@@ -96,6 +96,14 @@
         <para>MD5 和: <literal>&glibc-cpuid-patch-md5;</literal></para>
       </listitem>
     </varlistentry>
+	
+	<varlistentry>
+      <term>GCC Locale 补丁 - <token>&gcc-locale-patch-size;</token>:</term>
+      <listitem>
+        <para>下载: <ulink url="&patches-root;&gcc-locale-patch;"/></para>
+        <para>MD5 和: <literal>&gcc-locale-patch-md5;</literal></para>
+      </listitem>
+    </varlistentry>
 
 <!--
     <varlistentry>
@@ -123,10 +131,10 @@
     </varlistentry>
 
     <varlistentry>
-      <term>MPFR Fixes 补丁 - <token>&kbd-backspace-patch-size;</token>:</term>
+      <term>Module Init Tools - <token>&module-init-tools-man-patch-size;</token>:</term>
       <listitem>
-        <para>下载: <ulink url="&patches-root;&mpfr-fixes-patch;"/></para>
-        <para>MD5 和: <literal>&mpfr-fixes-patch-md5;</literal></para>
+        <para>下载: <ulink url="&patches-root;&module-init-tools-man-patch;"/></para>
+        <para>MD5 和: <literal>&module-init-tools-man-patch-md5;</literal></para>
       </listitem>
     </varlistentry>
 

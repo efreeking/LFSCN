@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sect1 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+  "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+  <!ENTITY % general-entities SYSTEM "../general.ent">
+  %general-entities;
+]>
+
+<sect1 id="ch-tools-check" role="wrap">
+  <?dbhtml filename="check.html"?>
+
+  <sect1info condition="script">
+    <productname>check</productname>
+    <productnumber>&check-version;</productnumber>
+    <address>&check-url;</address>
+  </sect1info>
+
+  <title>Check-&check-version;</title>
+
+  <indexterm zone="ch-tools-check">
+    <primary sortas="a-Check">Check</primary>
+  </indexterm>
+
+  <sect2 role="package">
+    <title/>
+
+    <para>Check 是用于 C 的一个单元测试框架。</para>
+
+    <segmentedlist>
+      <segtitle>&buildtime;</segtitle>
+      <segtitle>&diskspace;</segtitle>
+
+      <seglistitem>
+        <seg>&check-ch5-sbu;</seg>
+        <seg>&check-ch5-du;</seg>
+      </seglistitem>
+    </segmentedlist>
+
+  </sect2>
+
+  <sect2 role="installation">
+    <title>Check 的安装</title>
+
+    <para>准备 Check 编译:</para>
+
+<screen><userinput remap="configure">./configure --prefix=/tools</userinput></screen>
+
+    <para>构建包:</para>
+
+<screen><userinput remap="make">make</userinput></screen>
+
+    <para>编译现在完成了。如先前的讨论一样，运行测试对于本章这里的临时工具来说不是强制的。无论如何都要运行 Check 测试套装的话，执行下列命令:</para>
+
+<screen><userinput remap="test">make check</userinput></screen>
+
+    <para>注意 Check 测试套装可能花费相当长(多达 4 SBU)的时间。</para>
+
+    <para>安装包:</para>
+
+<screen><userinput remap="install">make install</userinput></screen>
+
+  </sect2>
+
+  <sect2 id="contents-check" role="content">
+    <title>Check 的内容</title>
+
+    <segmentedlist>
+      <segtitle>安装的库</segtitle>
+
+      <seglistitem>
+        <seg>libcheck.{a,so}</seg>
+      </seglistitem>
+    </segmentedlist>
+
+    <variablelist>
+      <bridgehead renderas="sect3">简述</bridgehead>
+      <?dbfo list-presentation="list"?>
+      <?dbhtml list-presentation="table"?>
+
+      <varlistentry id="libcheck">
+        <term><filename class="libraryfile">libcheck.{a,so}</filename></term>
+        <listitem>
+          <para>包含让 Check 从一个测试程序调用的函数</para>
+          <indexterm zone="ch-tools-check libcheck">
+            <primary sortas="c-libcheck">libcheck</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+    </variablelist>
+
+  </sect2>
+
+</sect1>

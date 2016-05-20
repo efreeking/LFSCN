@@ -164,6 +164,9 @@ grep Error glibc-check-log</userinput></screen>
         修改 make check 命令，设置一个报告的 TIMEOUTFACTOR 来协助消除这些错误(如 <command>TIMEOUTFACTOR=16
         make -k check</command>).</para>
       </listitem>
+      <listitem>
+        <para>其它已知在某些架构会失败的测试有 posix/bug-regex32、misc/tst-writev、elf/check-textrel、nptl/tst-getpid2 和 stdio-common/bug22。</para>
+      </listitem>
     </itemizedlist>
 
     <para>Glibc 的安装过程中会抱怨缺少 <filename>/etc/ld.so.conf</filename>，这是无害的。可以使用以下命令防止这个警告:</para>

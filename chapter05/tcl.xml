@@ -40,8 +40,8 @@
   <sect2 role="installation">
     <title>Tcl 的安装</title>
 
-    <para>安装这个包和跟着的两个(Expect 和 DejaGNU)是为了支持 GCC 和 Binutils 的测试套装的运行。安装三个包为了测试目的可能有点过分，为了确定最重要的工具能够正常的工作，虽然不是必须，但是非常值得鼓励。即使测试套装不是在本章中运行
-    (它们不是强制的)，三个包是运行<xref linkend="chapter-building-system"/>中的测试套装所需的。</para>
+    <para>安装这个包和跟着的三个(Expect、DejaGNU 和 Check)是为了支持 GCC 和 Binutils 以及其它包的测试套装的运行。安装四个包为了测试目的可能有点过分，为了确定最重要的工具能够正常的工作，虽然不是必须，但是非常值得鼓励。即使测试套装不是在本章中运行
+    (它们不是强制的)，这些包是运行<xref linkend="chapter-building-system"/>中的测试套装所需的。</para>
 
     <para>准备 Tcl 编译:</para>
 

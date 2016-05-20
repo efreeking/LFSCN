@@ -69,6 +69,15 @@
     </varlistentry>
 
     <varlistentry>
+      <term>Check (&check-version;) - <token>&check-size;</token>:</term>
+      <listitem>
+        <para>主页: <ulink url="&check-home;"/></para>
+        <para>下载: <ulink url="&check-url;"/></para>
+        <para>MD5 和: <literal>&check-md5;</literal></para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
       <term>Coreutils (&coreutils-version;) - <token>&coreutils-size;</token>:</term>
       <listitem>
         <para>主页: <ulink url="&coreutils-home;"/></para>

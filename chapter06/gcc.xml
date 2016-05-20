@@ -62,6 +62,10 @@ esac</userinput></screen>
 
 <screen><userinput remap="pre">sed -i 's@\./fixinc\.sh@-c true@' gcc/Makefile.in</userinput></screen>
 
+    <para>最后，应用一个补丁纠正在 glibc-2.14 和之后的版本中做出的语言环境更改的测试代码。</para>
+
+<screen><userinput remap="pre">patch -Np1 -i ../gcc-4.6.1-locale-1.patch</userinput></screen>
+
     <para>GCC 文档推荐在源代码目录外的一个专用构建目录中构建 GCC:</para>
 
 <screen><userinput remap="pre">mkdir -v ../gcc-build
