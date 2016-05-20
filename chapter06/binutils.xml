@@ -59,6 +59,14 @@ Ask your system administrator to create more.</computeroutput></screen>
 <screen><userinput remap="pre">rm -fv etc/standards.info
 sed -i.bak '/^INFO/s/standards.info //' etc/Makefile.in</userinput></screen>
 
+    <para>添加一个上游补丁以按默认使用 gcc 的链接时间优化 (LTO):</para>
+
+<screen><userinput remap="pre">patch -Np1 -i ../&binutils-lto-patch;</userinput></screen>
+
+    <para>修复在测试套件中的某些 LTO 测试:</para>
+
+<screen><userinput remap="pre">patch -Np1 -i ../&binutils-lto-testsuite-patch;</userinput></screen>
+
     <para>Binutils 文档推荐在源代码目录外的一个专用目录中构建 Binutils:</para>
 
 <screen><userinput remap="pre">mkdir -v ../binutils-build
@@ -66,7 +74,9 @@ cd ../binutils-build</userinput></screen>
 
     <para>准备 Binutils 编译:</para>
 
-<screen><userinput remap="configure">../binutils-&binutils-version;/configure --prefix=/usr --enable-shared</userinput></screen>
+<screen><userinput remap="configure">../binutils-&binutils-version;/configure --prefix=/usr   \
+                           --enable-shared \
+                           --disable-werror</userinput></screen>
 
     <para>编译包:</para>
 
@@ -95,18 +105,12 @@ cd ../binutils-build</userinput></screen>
 
     <para>测试结果:</para>
 
-<screen><userinput remap="test">make check</userinput></screen>
+<screen><userinput remap="test">make -k check</userinput></screen>
 
     <para>安装包:</para>
 
 <screen><userinput remap="install">make tooldir=/usr install</userinput></screen>
-<!--
-    <para>安装某些包所需要的 <filename class="headerfile">libiberty</filename> 头文件:</para>
-
-<screen><userinput remap="install">cp -v ../binutils-&binutils-version;/include/libiberty.h /usr/include</userinput></screen>
--->
   </sect2>
-
 
   <sect2 id="contents-binutils" role="content">
     <title>Binutils 的内容</title>

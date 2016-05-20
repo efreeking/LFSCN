@@ -17,6 +17,78 @@
   
   <para>依赖关系的最后的列表是可选的包，不包括在 LFS 中，但是可能对用户有用。这些包可能有它们自己的额外强制性或可选的依赖关系。对于这些依赖关系，推荐的经验就是在 LFS 书完成后安装它们，然后返回到一个重新构建的 LFS 包。在很多情况下，重新安装会在 BLFS 中处理。</para>
 
+<!-- Begin Acl dependency info -->
+  <bridgehead renderas="sect2" id="acl-dep">acl</bridgehead>
+
+      <segmentedlist>
+        <segtitle>&dependencies;</segtitle>
+
+        <seglistitem>
+          <seg>Attr, Bash, Binutils, Coreutils, GCC, Gettext, Grep, M4, Make,
+          Perl, Sed 和 Texinfo</seg>
+        </seglistitem>
+      </segmentedlist>
+
+      <segmentedlist>
+        <segtitle>&testsuites;</segtitle>
+
+        <seglistitem>
+          <seg>Automake, Diffutils, Findutils 和 Libtool</seg>
+        </seglistitem>
+      </segmentedlist>
+
+      <segmentedlist>
+        <segtitle>&before;</segtitle>
+
+        <seglistitem>
+          <seg>Coreutils, Sed, Tar, Vim</seg>
+        </seglistitem>
+      </segmentedlist>
+
+      <segmentedlist>
+        <segtitle>&external;</segtitle>
+
+        <seglistitem>
+          <seg>无</seg>
+        </seglistitem>
+      </segmentedlist>
+
+<!-- Begin Attr dependency info -->
+  <bridgehead renderas="sect2" id="attr-dep">attr</bridgehead>
+
+      <segmentedlist>
+        <segtitle>&dependencies;</segtitle>
+
+        <seglistitem>
+          <seg>Bash, Binutils, Coreutils, GCC, Gettext, Grep, M4, Make,
+          Perl, Sed 和 Texinfo</seg>
+        </seglistitem>
+      </segmentedlist>
+
+      <segmentedlist>
+        <segtitle>&testsuites;</segtitle>
+
+        <seglistitem>
+          <seg>Automake, Diffutils, Findutils 和 Libtool</seg>
+        </seglistitem>
+      </segmentedlist>
+
+      <segmentedlist>
+        <segtitle>&before;</segtitle>
+
+        <seglistitem>
+          <seg>Acl, Libcap</seg>
+        </seglistitem>
+      </segmentedlist>
+
+      <segmentedlist>
+        <segtitle>&external;</segtitle>
+
+        <seglistitem>
+          <seg>无</seg>
+        </seglistitem>
+      </segmentedlist>
+
 <!-- Begin Autoconf dependency info -->
   <bridgehead renderas="sect2" id="autoconf-dep">Autoconf</bridgehead>
 
@@ -205,7 +277,7 @@
 
         <seglistitem>
          <seg>Bash, Binutils, Coreutils, GCC, Gettext, Glibc,
-         Grep, M4, Make 和 Sed</seg>
+         Grep, M4, Make, Perl 和 Sed</seg>
         </seglistitem>
       </segmentedlist>
 
@@ -284,7 +356,7 @@
         <segtitle>&testsuites;</segtitle>
 
         <seglistitem>
-          <seg>None</seg>
+          <seg>无</seg>
         </seglistitem>
       </segmentedlist>
 
@@ -292,7 +364,7 @@
         <segtitle>&before;</segtitle>
 
         <seglistitem>
-          <seg>None</seg>
+          <seg>无</seg>
         </seglistitem>
       </segmentedlist>
 
@@ -300,11 +372,11 @@
         <segtitle>&external;</segtitle>
 
         <seglistitem>
-          <seg>None</seg>
+          <seg>无</seg>
         </seglistitem>
       </segmentedlist>
 
- <!-- Begin Coreutils dependency info -->
+<!-- Begin Coreutils dependency info -->
   <bridgehead renderas="sect2" id="coreutils-dep">Coreutils</bridgehead>
 
       <segmentedlist>
@@ -336,10 +408,47 @@
         <segtitle>&external;</segtitle>
 
         <seglistitem>
-          <seg>Perl Expect 和 IO:Tty modules (for 测试套件)</seg>
+          <seg>Perl Expect 和 IO:Tty 模块 (用于测试套件)</seg>
         </seglistitem>
       </segmentedlist>
 
+<!-- Begin D-Bus dependency info -->
+<!--
+  <bridgehead renderas="sect2" id="dbus-dep">D-Bus</bridgehead>
+
+      <segmentedlist>
+        <segtitle>&dependencies;</segtitle>
+
+        <seglistitem>
+         <seg>Bash, Binutils, Coreutils, Diffutils, Gawk, GCC, Glibc, Grep,
+         Make, Sed 和 Util-linux</seg>
+        </seglistitem>
+      </segmentedlist>
+
+      <segmentedlist>
+        <segtitle>&testsuites;</segtitle>
+
+        <seglistitem>
+          <seg>无</seg>
+        </seglistitem>
+      </segmentedlist>
+
+      <segmentedlist>
+        <segtitle>&before;</segtitle>
+
+        <seglistitem>
+          <seg>无</seg>
+        </seglistitem>
+      </segmentedlist>
+
+      <segmentedlist>
+        <segtitle>&external;</segtitle>
+
+        <seglistitem>
+          <seg>Xorg Libs</seg>
+        </seglistitem>
+      </segmentedlist>
+-->
 <!-- Begin DejaGNU dependency info -->
   <bridgehead renderas="sect2" id="dejagnu-dep">DejaGNU</bridgehead>
 
@@ -355,7 +464,7 @@
         <segtitle>&testsuites;</segtitle>
 
         <seglistitem>
-          <seg></seg>
+          <seg>无</seg>
         </seglistitem>
       </segmentedlist>
 
@@ -400,6 +509,78 @@
 
         <seglistitem>
           <seg>无</seg>
+        </seglistitem>
+      </segmentedlist>
+
+      <segmentedlist>
+        <segtitle>&external;</segtitle>
+
+        <seglistitem>
+          <seg>无</seg>
+        </seglistitem>
+      </segmentedlist>
+
+<!-- Begin Eudev dependency info -->
+  <bridgehead renderas="sect2" id="eudev-dep">Eudev</bridgehead>
+
+      <segmentedlist>
+        <segtitle>&dependencies;</segtitle>
+
+        <seglistitem>
+         <seg>Bash, Binutils, Coreutils, Gawk, GCC, Glibc, Grep,
+         Make 和 Sed</seg>
+        </seglistitem>
+      </segmentedlist>
+
+      <segmentedlist>
+        <segtitle>&testsuites;</segtitle>
+
+        <seglistitem>
+          <seg>无</seg>
+        </seglistitem>
+      </segmentedlist>
+
+      <segmentedlist>
+        <segtitle>&before;</segtitle>
+
+        <seglistitem>
+          <seg>无</seg>
+        </seglistitem>
+      </segmentedlist>
+
+      <segmentedlist>
+        <segtitle>&external;</segtitle>
+
+        <seglistitem>
+          <seg>无</seg>
+        </seglistitem>
+      </segmentedlist>
+
+<!-- Begin Expat dependency info -->
+  <bridgehead renderas="sect2" id="expat-dep">Expat</bridgehead>
+
+      <segmentedlist>
+        <segtitle>&dependencies;</segtitle>
+
+        <seglistitem>
+         <seg>Bash, Binutils, Coreutils, Gawk, GCC, Glibc, Grep,
+         Make 和 Sed</seg>
+        </seglistitem>
+      </segmentedlist>
+
+      <segmentedlist>
+        <segtitle>&testsuites;</segtitle>
+
+        <seglistitem>
+          <seg>无</seg>
+        </seglistitem>
+      </segmentedlist>
+
+      <segmentedlist>
+        <segtitle>&before;</segtitle>
+
+        <seglistitem>
+          <seg>XML::Parser</seg>
         </seglistitem>
       </segmentedlist>
 
@@ -571,7 +752,7 @@
         <segtitle>&testsuites;</segtitle>
 
         <seglistitem>
-          <seg>Bison (抑制) 和 Gawk</seg>
+          <seg>Bison (suppressed) 和 Gawk</seg>
         </seglistitem>
       </segmentedlist>
 
@@ -599,7 +780,7 @@
 
         <seglistitem>
          <seg>Bash, Binutils, Coreutils, GCC, Gettext, Glibc, Grep, Make,
-         Patch, Sed and, Texinfo</seg>
+         Patch, Sed 和 Texinfo</seg>
         </seglistitem>
       </segmentedlist>
 
@@ -661,7 +842,7 @@
 
         <seglistitem>
           <seg><ulink url="http://gcc.gnu.org/wiki/Graphite">CLooG-PPL</ulink>,
-               <ulink url="http://gcc.gnu.org/wiki/GNAT">GNAT</ulink> and
+               <ulink url="http://gcc.gnu.org/wiki/GNAT">GNAT</ulink> 和
                <ulink url="http://gcc.gnu.org/wiki/Graphite">PPL</ulink></seg>
         </seglistitem>
       </segmentedlist>
@@ -809,6 +990,41 @@
         </seglistitem>
       </segmentedlist>
 
+<!-- Begin Gperf dependency info -->
+  <bridgehead renderas="sect2" id="gperf-dep">Gperf</bridgehead>
+
+      <segmentedlist>
+        <segtitle>&dependencies;</segtitle>
+
+        <seglistitem>
+         <seg>Bash, Binutils, Coreutils, GCC, Glibc, Make</seg>
+        </seglistitem>
+      </segmentedlist>
+
+      <segmentedlist>
+        <segtitle>&testsuites;</segtitle>
+
+        <seglistitem>
+          <seg>Diffutils, Expect</seg>
+        </seglistitem>
+      </segmentedlist>
+
+      <segmentedlist>
+        <segtitle>&before;</segtitle>
+
+        <seglistitem>
+          <seg>无</seg>
+        </seglistitem>
+      </segmentedlist>
+
+      <segmentedlist>
+        <segtitle>&external;</segtitle>
+
+        <seglistitem>
+          <seg>无</seg>
+        </seglistitem>
+      </segmentedlist>
+
 <!-- Begin Grep dependency info -->
   <bridgehead renderas="sect2" id="grep-dep">Grep</bridgehead>
 
@@ -861,7 +1077,7 @@
         <segtitle>&testsuites;</segtitle>
 
         <seglistitem>
-          <seg>无测试套件可用</seg>
+          <seg>无可用测试套件</seg>
         </seglistitem>
       </segmentedlist>
 
@@ -888,7 +1104,7 @@
         <segtitle>&dependencies;</segtitle>
 
         <seglistitem>
-         <seg>Bash, Binutils, Bison, Coreutils, Diffutils, GCC, Gettext, Glibc, 
+         <seg>Bash, Binutils, Bison, Coreutils, Diffutils, GCC, Gettext, Glibc,
          Grep, Make, Ncurses, Sed, Texinfo 和 Xz</seg>
         </seglistitem>
       </segmentedlist>
@@ -968,7 +1184,7 @@
         <segtitle>&testsuites;</segtitle>
 
         <seglistitem>
-          <seg>无测试套件可用</seg>
+          <seg>无可用测试套件</seg>
         </seglistitem>
       </segmentedlist>
 
@@ -995,8 +1211,8 @@
         <segtitle>&dependencies;</segtitle>
 
         <seglistitem>
-         <seg>Bash, Binutils, Bison, Check, Coreutils, Flex, GCC, Gettext,
-         Glibc, Gzip, Make, Patch 和 Zlib</seg>
+         <seg>Bash, Binutils, Coreutils, GCC, Glibc, Grep, Make, Ncurses,
+         Patch, Sed, Texinfo 和 Zlib</seg>
         </seglistitem>
       </segmentedlist>
 
@@ -1004,7 +1220,7 @@
         <segtitle>&testsuites;</segtitle>
 
         <seglistitem>
-          <seg>无测试套件可用</seg>
+          <seg>无可用测试套件</seg>
         </seglistitem>
       </segmentedlist>
 
@@ -1013,6 +1229,41 @@
 
         <seglistitem>
           <seg>Tar</seg>
+        </seglistitem>
+      </segmentedlist>
+
+      <segmentedlist>
+        <segtitle>&external;</segtitle>
+
+        <seglistitem>
+          <seg>无</seg>
+        </seglistitem>
+      </segmentedlist>
+
+<!-- Begin Intltool dependency info -->
+  <bridgehead renderas="sect2" id="intltool-dep">Intltool</bridgehead>
+
+      <segmentedlist>
+        <segtitle>&dependencies;</segtitle>
+
+        <seglistitem>
+         <seg>Bash, Gawk, Glibc, Make, Perl, Sed 和 XML::Parser</seg>
+        </seglistitem>
+      </segmentedlist>
+
+      <segmentedlist>
+        <segtitle>&testsuites;</segtitle>
+
+        <seglistitem>
+          <seg>Perl</seg>
+        </seglistitem>
+      </segmentedlist>
+
+      <segmentedlist>
+        <segtitle>&before;</segtitle>
+
+        <seglistitem>
+          <seg>无</seg>
         </seglistitem>
       </segmentedlist>
 
@@ -1040,7 +1291,7 @@
         <segtitle>&testsuites;</segtitle>
 
         <seglistitem>
-          <seg>无测试套件可用</seg>
+          <seg>无可用测试套件</seg>
         </seglistitem>
       </segmentedlist>
 
@@ -1067,8 +1318,8 @@
         <segtitle>&dependencies;</segtitle>
 
         <seglistitem>
-         <seg>Bash, Binutils, Bison, Coreutils, Flex, GCC, Gettext, Glibc,
-         Gzip, Make, Patch 和 Sed</seg>
+         <seg>Bash, Binutils, Bison, Check, Coreutils, Flex, GCC, Gettext,
+         Glibc, Gzip, Make, Patch 和 Sed</seg>
         </seglistitem>
       </segmentedlist>
 
@@ -1076,7 +1327,7 @@
         <segtitle>&testsuites;</segtitle>
 
         <seglistitem>
-          <seg>无测试套件可用</seg>
+          <seg>无可用测试套件</seg>
         </seglistitem>
       </segmentedlist>
 
@@ -1112,7 +1363,7 @@
         <segtitle>&testsuites;</segtitle>
 
         <seglistitem>
-          <seg>无测试套件可用</seg>
+          <seg>无可用测试套件</seg>
         </seglistitem>
       </segmentedlist>
 
@@ -1148,7 +1399,7 @@
         <segtitle>&testsuites;</segtitle>
 
         <seglistitem>
-          <seg>Check</seg>
+          <seg>无可用测试套件</seg>
         </seglistitem>
       </segmentedlist>
 
@@ -1168,6 +1419,41 @@
         </seglistitem>
       </segmentedlist>
 
+<!-- Begin Libcap dependency info -->
+  <bridgehead renderas="sect2" id="libcap-dep">Libcap</bridgehead>
+
+      <segmentedlist>
+        <segtitle>&dependencies;</segtitle>
+
+        <seglistitem>
+         <seg>Attr, Bash, Binutils, Coreutils, GCC, Glibc, Perl, Make 和 Sed</seg>
+        </seglistitem>
+      </segmentedlist>
+
+      <segmentedlist>
+        <segtitle>&testsuites;</segtitle>
+
+        <seglistitem>
+          <seg>无可用测试套件</seg>
+        </seglistitem>
+      </segmentedlist>
+
+      <segmentedlist>
+        <segtitle>&before;</segtitle>
+
+        <seglistitem>
+          <seg>无</seg>
+        </seglistitem>
+      </segmentedlist>
+
+      <segmentedlist>
+        <segtitle>&external;</segtitle>
+
+        <seglistitem>
+          <seg>Linux-PAM</seg>
+        </seglistitem>
+      </segmentedlist>
+
 <!-- Begin Libpipeline dependency info -->
   <bridgehead renderas="sect2" id="libpipeline-dep">Libpipeline</bridgehead>
 
@@ -1184,7 +1470,7 @@
         <segtitle>&testsuites;</segtitle>
 
         <seglistitem>
-          <seg>无测试套件可用</seg>
+          <seg>Check</seg>
         </seglistitem>
       </segmentedlist>
 
@@ -1256,7 +1542,7 @@
         <segtitle>&testsuites;</segtitle>
 
         <seglistitem>
-          <seg>无测试套件可用</seg>
+          <seg>无可用测试套件</seg>
         </seglistitem>
       </segmentedlist>
 
@@ -1399,7 +1685,7 @@
         <segtitle>&testsuites;</segtitle>
 
         <seglistitem>
-          <seg>无测试套件可用</seg>
+          <seg>无可用测试套件</seg>
         </seglistitem>
       </segmentedlist>
 
@@ -1507,7 +1793,7 @@
         <segtitle>&testsuites;</segtitle>
 
         <seglistitem>
-          <seg>Diffutils</seg>
+          <seg>无可用测试套件</seg>
         </seglistitem>
       </segmentedlist>
 
@@ -1543,7 +1829,7 @@
         <segtitle>&testsuites;</segtitle>
 
         <seglistitem>
-          <seg>无测试套件可用</seg>
+          <seg>Diffutils</seg>
         </seglistitem>
       </segmentedlist>
 
@@ -1721,7 +2007,7 @@
         <segtitle>&testsuites;</segtitle>
 
         <seglistitem>
-          <seg>无测试套件可用</seg>
+          <seg>无可用测试套件</seg>
         </seglistitem>
       </segmentedlist>
 
@@ -1757,7 +2043,7 @@
         <segtitle>&testsuites;</segtitle>
 
         <seglistitem>
-          <seg>无测试套件可用</seg>
+          <seg>无可用测试套件</seg>
         </seglistitem>
       </segmentedlist>
 
@@ -1829,7 +2115,7 @@
         <segtitle>&testsuites;</segtitle>
 
         <seglistitem>
-          <seg>无测试套件可用</seg>
+          <seg>无可用测试套件</seg>
         </seglistitem>
       </segmentedlist>
 
@@ -1864,7 +2150,7 @@
         <segtitle>&testsuites;</segtitle>
 
         <seglistitem>
-          <seg>无测试套件可用</seg>
+          <seg>无可用测试套件</seg>
         </seglistitem>
       </segmentedlist>
 
@@ -1884,6 +2170,44 @@
         </seglistitem>
       </segmentedlist>
 
+<!-- Begin systemd dependency info -->
+<!--
+  <bridgehead renderas="sect2" id="systemd-dep">Systemd</bridgehead>
+
+      <segmentedlist>
+        <segtitle>&dependencies;</segtitle>
+
+        <seglistitem>
+         <seg>Acl, Attr, Bash, Binutils, Coreutils, Diffutils, Expat, Gawk,
+         GCC, Glibc, Gperf, Grep, Intltool, Libcap,
+         Make, Sed 和 Util-linux</seg>
+        </seglistitem>
+      </segmentedlist>
+
+      <segmentedlist>
+        <segtitle>&testsuites;</segtitle>
+
+        <seglistitem>
+          <seg>无</seg>
+        </seglistitem>
+      </segmentedlist>
+
+      <segmentedlist>
+        <segtitle>&before;</segtitle>
+
+        <seglistitem>
+          <seg>无</seg>
+        </seglistitem>
+      </segmentedlist>
+
+      <segmentedlist>
+        <segtitle>&external;</segtitle>
+
+        <seglistitem>
+          <seg>无</seg>
+        </seglistitem>
+      </segmentedlist>
+-->
 <!-- Begin Sysvinit dependency info -->
   <bridgehead renderas="sect2" id="sysvinit-dep">Sysvinit</bridgehead>
 
@@ -1899,7 +2223,7 @@
         <segtitle>&testsuites;</segtitle>
 
         <seglistitem>
-          <seg>无测试套件可用</seg>
+          <seg>无可用测试套件</seg>
         </seglistitem>
       </segmentedlist>
 
@@ -1926,7 +2250,7 @@
         <segtitle>&dependencies;</segtitle>
 
         <seglistitem>
-         <seg>Bash, Binutils, Bison, Coreutils, GCC, Gettext, Glibc,
+         <seg>Acl, Attr, Bash, Binutils, Bison, Coreutils, GCC, Gettext, Glibc,
          Grep, Inetutils, Make, Sed 和 Texinfo</seg>
         </seglistitem>
       </segmentedlist>
@@ -2028,6 +2352,7 @@
       </segmentedlist>
 
 <!-- Begin Udev dependency info -->
+<!--
   <bridgehead renderas="sect2" id="udev-dep">Udev</bridgehead>
 
       <segmentedlist>
@@ -2043,7 +2368,7 @@
         <segtitle>&testsuites;</segtitle>
 
         <seglistitem>
-          <seg>无测试套件可用</seg>
+          <seg>无可用测试套件</seg>
         </seglistitem>
       </segmentedlist>
 
@@ -2062,7 +2387,7 @@
           <seg>Glib, Pci-Utils, Python, Systemd, USB-Utils</seg>
         </seglistitem>
       </segmentedlist>
-
+-->
 <!-- Begin Util-linux dependency info -->
   <bridgehead renderas="sect2" id="util-linux-dep">Util-linux</bridgehead>
 
@@ -2106,8 +2431,8 @@
         <segtitle>&dependencies;</segtitle>
 
         <seglistitem>
-         <seg>Bash, Binutils, Coreutils, Diffutils, GCC, Glibc, Grep, Make,
-         Ncurses 和 Sed</seg>
+         <seg>Acl, Attr, Bash, Binutils, Coreutils, Diffutils, GCC, Glibc,
+         Grep, Make, Ncurses 和 Sed</seg>
         </seglistitem>
       </segmentedlist>
 
@@ -2132,6 +2457,41 @@
 
         <seglistitem>
           <seg>Xorg, GTK+2, LessTif, Python, Tcl, Ruby 和 GPM</seg>
+        </seglistitem>
+      </segmentedlist>
+
+<!-- Begin XML::Parser dependency info -->
+  <bridgehead renderas="sect2" id="xml-parser-dep">XML::Parser</bridgehead>
+
+      <segmentedlist>
+        <segtitle>&dependencies;</segtitle>
+
+        <seglistitem>
+         <seg>Bash, Binutils, Coreutils, Expat, GCC, Glibc, Make 和 Perl</seg>
+        </seglistitem>
+      </segmentedlist>
+
+      <segmentedlist>
+        <segtitle>&testsuites;</segtitle>
+
+        <seglistitem>
+          <seg>Perl</seg>
+        </seglistitem>
+      </segmentedlist>
+
+      <segmentedlist>
+        <segtitle>&before;</segtitle>
+
+        <seglistitem>
+          <seg>Intltool</seg>
+        </seglistitem>
+      </segmentedlist>
+
+      <segmentedlist>
+        <segtitle>&external;</segtitle>
+
+        <seglistitem>
+          <seg>无</seg>
         </seglistitem>
       </segmentedlist>
 

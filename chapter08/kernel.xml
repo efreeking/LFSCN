@@ -52,15 +52,42 @@
 
     <para>通过一个菜单驱动的界面来配置内核。对于内核配置的全面的信息，查看 <ulink
     url="&hints-root;kernel-configuration.txt"/>、BLFS 有某些 LFS 以外的包的特定内核配置需求相关的信息可以在 <ulink
-    url="&blfs-root;view/svn/longindex.html#kernel-config-index"/>。关于配置和构建内核的额外信息，可以在 <ulink url="http://www.kroah.com/lkn/"/> 找到</para>
+    url="&blfs-root;view/&short-version;/longindex.html#kernel-config-index"/>。关于配置和构建内核的额外信息，可以在 <ulink url="http://www.kroah.com/lkn/"/> 找到</para>
 
     <note><para>设置内核配置的一个好地方就是运行 <command>make defconfig</command>。这将会设置基础配置为一个顾及您的当前系统结构的好状态。</para>
 
-    <para>由于在 <application>udev</application> 中最近的更改，确保选择:</para>
+    <para>确保如所示一样配置下列功能:</para>
 
-    <screen role="nodump">Device Drivers  ---&gt;
+        <screen role="nodump">
+Device Drivers  ---&gt;
   Generic Driver Options  ---&gt;
-     Maintain a devtmpfs filesystem to mount at /dev</screen></note>
+    [ ] Support for uevent helper [CONFIG_UEVENT_HELPER]
+    [*] Maintain a devtmpfs filesystem to mount at /dev [CONFIG_DEVTMPFS]</screen></note>
+ 
+    <para>有几个其它的选项可能会根据系统的需要而需要。对于 BLFS 包所需的列表，参阅 <ulink 
+    url="&lfs-root;blfs/view/&short-version;/longindex.html#kernel-config-index">BLFS Index of Kernel Settings</ulink> 
+    (&lfs-root;blfs/view/&short-version;/longindex.html#kernel-config-index)。</para>
+
+    <variablelist>
+      <title>上面的配置选项的基本原理:</title>
+
+      <varlistentry>
+        <term><parameter>Support for uevent helper</parameter></term>
+        <listitem>
+          <para>设置这个选项可以在使用 Udev/Eudev 时和设备管理交互。</para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term><parameter>Maintain a devtmpfs</parameter></term>
+        <listitem>
+          <para>这个将会创建一个由内核填充的自动化的设备节点，即使没有
+          Udev 运行。Udev 之后在这个上面运行，管理权限和添加符号链接。
+          这个配置项目是 Udev/Eudev 的所有用户所需的。</para>
+        </listitem>
+      </varlistentry>
+
+    </variablelist>
 
 <screen role="nodump"><userinput>make LANG=<replaceable>&lt;host_LANG_value&gt;</replaceable> LC_ALL= menuconfig</userinput></screen>
 
@@ -93,7 +120,7 @@
     class="directory">/etc/modprobe.d</filename> 中的模块配置。
     模块和内核配置的相关信息位于 <xref linkend="ch-scripts-udev"/> 和 <filename
     class="directory">linux-&linux-version;/Documentation</filename> 目录中的内核文档中.
-    还有，您可能会对 <filename>modprobe.conf(5)</filename> 感兴趣。</para>
+    还有，您可能会对 <filename>modprobe.d(5)</filename> 感兴趣。</para>
 
     <para>如果内核配置使用模块，则安装模块:</para>
 

@@ -76,7 +76,7 @@ EOF</userinput></screen>
   failures)。为此，添加
   <option>barrier=1</option> 挂载选项到
   <filename>/etc/fstab</filename> 中适当的条目。要检查磁盘驱动器是否支持这个选项，在应用的磁盘驱动器上运行
-  <ulink url="http://www.linuxfromscratch.org/blfs/view/cvs/general/hdparm.html">hdparm</ulink>。例如，如果:</para>
+  <ulink url="&blfs-root;view/&short-version;/general/hdparm.html">hdparm</ulink>。例如，如果:</para>
 
 <screen role="nodump"><userinput>hdparm -I /dev/sda | grep NCQ</userinput></screen>
 

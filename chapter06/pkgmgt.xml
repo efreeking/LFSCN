@@ -33,8 +33,9 @@
 
     <itemizedlist>
       <listitem>
-        <para>如果工具链包(Glibc, GCC 或 Binutils) 只有需要升级到较新的小版本，重新构建 LFS 较为安全。尽管您<emphasis>可能</emphasis>可以通过重新构建它们的依赖关系顺序中的包来实现，但是我们不推荐。例如，如果 glibc-2.2.x 需要升级到 glibc-2.3.x，重新构建就较为安全。
-        对于微版本升级，简单的重新安装常常就可以解决，但是也不鼓励。例如，从 glibc-2.3.4 升级到 glibc-2.3.5 通常将导致某些问题。</para>
+        <para>如果 Glibc 需要升级到一个较新的版本(譬如从
+        glibc-2.19 升为 glibc-2.20)，重新构建 LFS 较为安全。
+        尽管您<emphasis>可能</emphasis>可以按照它们的依赖关系顺序来重新构建所有的包，但是我们不建议这样做。</para>
       </listitem>
 
       <listitem>

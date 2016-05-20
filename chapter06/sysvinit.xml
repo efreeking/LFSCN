@@ -112,23 +112,23 @@
         </listitem>
       </varlistentry>
 
-      <varlistentry id="halt">
+      <varlistentry id="halt-sysv">
         <term><command>halt</command></term>
         <listitem>
           <para>一般调用 <command>shutdown</command> 使用
           <parameter>-h</parameter> 选项，除了已经运行在运行级 0 的时候，然后它告诉内核停止系统；同时，它在
           文件 <filename>/var/log/wtmp</filename> 记下系统已经被关闭</para>
-          <indexterm zone="ch-system-sysvinit halt">
+          <indexterm zone="ch-system-sysvinit halt-sysv">
             <primary sortas="b-halt">halt</primary>
           </indexterm>
         </listitem>
       </varlistentry>
 
-      <varlistentry id="init">
+      <varlistentry id="init-sysv">
         <term><command>init</command></term>
         <listitem>
           <para>当内核初始化硬件时启动的第一个进程，它接管引导进程并启动所有指定它要启动的进程</para>
-          <indexterm zone="ch-system-sysvinit init">
+          <indexterm zone="ch-system-sysvinit init-sysv">
             <primary sortas="b-init">init</primary>
           </indexterm>
         </listitem>
@@ -144,53 +144,53 @@
         </listitem>
       </varlistentry>
 
-      <varlistentry id="poweroff">
+      <varlistentry id="poweroff-sysv">
         <term><command>poweroff</command></term>
         <listitem>
           <para>告诉内核停止系统并关闭计算机
           (参阅 <command>halt</command>)</para>
-          <indexterm zone="ch-system-sysvinit poweroff">
+          <indexterm zone="ch-system-sysvinit poweroff-sysv">
             <primary sortas="b-poweroff">poweroff</primary>
           </indexterm>
         </listitem>
       </varlistentry>
 
-      <varlistentry id="reboot">
+      <varlistentry id="reboot-sysv">
         <term><command>reboot</command></term>
         <listitem>
           <para>告诉内核重启系统(参阅
           <command>halt</command>)</para>
-          <indexterm zone="ch-system-sysvinit reboot">
+          <indexterm zone="ch-system-sysvinit reboot-sysv">
             <primary sortas="b-reboot">reboot</primary>
           </indexterm>
         </listitem>
       </varlistentry>
 
-      <varlistentry id="runlevel">
+      <varlistentry id="runlevel-sysv">
         <term><command>runlevel</command></term>
         <listitem>
           <para>报告先前和当前的运行级，同时在 <filename>/var/run/utmp</filename> 中的最后的运行级记录中记下</para>
-          <indexterm zone="ch-system-sysvinit runlevel">
+          <indexterm zone="ch-system-sysvinit runlevel-sysv">
             <primary sortas="b-runlevel">runlevel</primary>
           </indexterm>
         </listitem>
       </varlistentry>
 
-      <varlistentry id="shutdown">
+      <varlistentry id="shutdown-sysv">
         <term><command>shutdown</command></term>
         <listitem>
           <para>以安全的方式停机，向所有进程发送信号并通知所有已经登录的用户</para>
-          <indexterm zone="ch-system-sysvinit shutdown">
+          <indexterm zone="ch-system-sysvinit shutdown-sysv">
             <primary sortas="b-shutdown">shutdown</primary>
           </indexterm>
         </listitem>
       </varlistentry>
 
-      <varlistentry id="telinit">
+      <varlistentry id="telinit-sysv">
         <term><command>telinit</command></term>
         <listitem>
           <para>告诉 <command>init</command> 要更改为哪一个运行级</para>
-          <indexterm zone="ch-system-sysvinit telinit">
+          <indexterm zone="ch-system-sysvinit telinit-sysv">
             <primary sortas="b-telinit">telinit</primary>
           </indexterm>
         </listitem>

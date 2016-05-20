@@ -8,16 +8,19 @@
 <sect1 id="ch-scripts-usage">
   <?dbhtml filename="usage.html"?>
 
-  <title>启动脚本如何运作?</title>
+  <title>System V 引导脚本如何运作?</title>
 
   <indexterm zone="ch-scripts-usage">
     <primary sortas="a-Bootscripts">启动脚本</primary>
     <secondary>用法</secondary>
   </indexterm>
 
-  <para>Linux 使用一种基于<emphasis>运行级</emphasis>概念的，名为 SysVinit 的特殊的引导措施。在不同的系统上，它可以明显的不同，所以它不能假设某些事情能够在一个特定的 Linux 发行版上运行，就应该也能够在 LFS 上运行。LFS 有自己的一套做事的方式，但是它遵守通常公认的标准。</para>
+  <sect2>
+    <title>How Do the System V Bootscripts Work?</title>
 
-  <para>SysVinit (从现在开始我们称之为 <quote>init</quote>)使用一种运行级的模式来运作。有 7 个(编号 0 到 6)运行级(实际上有更多的运行级，但是它们是用于特殊情况而平常不会使用的。 查看 <filename>init(8)</filename> 了解更多详细信息)，而它们每个都对应于计算机在启动时要执行的操作。默认的运行级是 3。这里是不同的运行级和它们实现的不同功能的描述:</para>
+    <para>Linux 使用一种基于<emphasis>运行级</emphasis>概念的，名为 SysVinit 的特殊的引导措施。在不同的系统上，它可以明显的不同，所以它不能假设某些事情能够在一个特定的 Linux 发行版上运行，就应该也能够在 LFS 上运行。LFS 有自己的一套做事的方式，但是它遵守通常公认的标准。</para>
+
+    <para>SysVinit (从现在开始我们称之为 <quote>init</quote>)使用一种运行级的模式来运作。有 7 个(编号 0 到 6)运行级(实际上有更多的运行级，但是它们是用于特殊情况而平常不会使用的。 查看 <filename>init(8)</filename> 了解更多详细信息)，而它们每个都对应于计算机在启动时要执行的操作。默认的运行级是 3。这里是不同的运行级和它们实现的不同功能的描述:</para>
 
 <literallayout>0: 停止计算机
 1: 单用户模式
@@ -26,6 +29,7 @@
 4: 保留用于定制，否则和 3 所作一样
 5: 和 4 一样，它常用于 GUI 登录(像 X 的 <command>xdm</command> 或 KDE 的 <command>kdm</command>)
 6: 重启计算机</literallayout>
+  </sect2>
 
   <sect2 id="conf-sysvinit" role="configuration">
   <title>配置 Sysvinit</title>
@@ -84,9 +88,7 @@ EOF</userinput></screen>
   class="directory">/run</filename> 目录是一个 tmpfs，这个文件在每次引导间不会保留，尽管如此，在引导过程结束时，它会被附加到更固定的文件
   <filename>/var/log/boot.log</filename>。</para>
 
-  </sect2>
-
-  <sect2 id="init-levels" >
+  <sect3 id="init-levels" >
   <title>更改运行级</title>
 
   <para>更改运行级可以通过 <command>init
@@ -149,6 +151,336 @@ EOF</userinput></screen>
 
   <para>随意修改引导进程工作的方式(毕竟这是您自己的 LFS 系统)。这里给出的文件只是它可以如何工作的一个例子。</para>
 
+  </sect3>
   </sect2>
 
+  <sect2>
+    <title>Udev 引导脚本</title>
+
+      <para><filename>/etc/rc.d/init.d/udev</filename> 初始脚本启动 <command>udevd</command>，触发任何已经由内核创建的 "coldplug" 设备，并等待任何规则来完成。脚本还从 <filename>/sbin/hotplug </filename> 的默认中取消设置(unset)了 uevent 句柄。这样做是因为内核不再需要调用一个外部二进制。相反，<command>udevd</command> 将会在一个 netlink 套接字上监听内核引起的 uevents。</para>
+
+      <para><command>/etc/rc.d/init.d/udev_retry</command> 初始脚本照顾那些其规则可能依赖于在 <command>mountfs</command> 脚本运行前还未装载的文件系统的子系统的重新触发事件(特别是, <filename class="directory">/usr</filename> 和 <filename class="directory">/var</filename> 可能会导致这个)。
+      这个脚本在 <command>mountfs</command> 脚本之后运行，以便那些规则(如果被重新触发)应该可以在第二次成功。
+      它是从 <filename>/etc/sysconfig/udev_retry</filename> 文件配置的;在这个文件中的任何词组，除了注释外都会被视为在重试时要触发的子系统的名称。
+      要查找一个设备的子系统名称，使用 <command>udevadm info --attribute-walk &lt;device&gt;</command> 其中
+      &lt;device&gt; 是在 /dev 或 /sys 中的一个绝对路径，譬如 /dev/sr0 或 /sys/class/rtc。</para>
+
+    <sect3>
+      <title>模块加载</title>
+
+      <para>编译为模块的设备驱动程序可能把别名编译进去。别名可以在 <command>modinfo</command> 程序的输出中看到，并且通常和模块所支持的设备的总线专用识别符相关。 例如，<emphasis>snd-fm801</emphasis> 驱动程序支持厂商 ID 0x1319 和设备 ID 为 0x0801 的 PCI 设备，而且有一个 <quote>pci:v00001319d00000801sv*sd*bc04sc01i*</quote> 的别名。对于大多数设备，总线驱动程序导出会通过 <systemitem class="filesystem">sysfs</systemitem> 处理设备的驱动程序的别名。譬如，<filename>/sys/bus/pci/devices/0000:00:0d.0/modalias</filename> 文件可以包含字符串 <quote>pci:v00001319d00000801sv00001319sd00001319bc04sc01i00</quote>。Udev 提供的默认规则将会导致 <command>udevd</command> 调用 <command>/sbin/modprobe</command> 并带上 <envar>MODALIAS</envar> uevent 环境变量的内容(这应该和 sysfs 中的 <filename>modalias</filename> 文件的内容一样)，从而加载所有其别名匹配通配符扩展后的这个字符串的模块。</para>
+
+      <para>在本例子中，这个意味着除了 <emphasis>snd-fm801</emphasis> 外，已过时(和不想要)的
+      <emphasis>forte</emphasis> 驱动程序如果可用的话也会被加载。查看下面在其中找到可以阻止不想要的驱动程序加载的方法。</para>
+
+      <para>内核本身也可以按需加载用于网络协议、文件系统和 NLS 支持的模块。</para>
+
+    </sect3>
+    
+    <sect3>
+      <title>处理热插拔/动态设备</title>
+
+      <para>当您插入一个设备，譬如一个通用串行总线 (USB) MP3 播放器时，内核识别到设备现在已经连接并且生成一个 uevent。这个 uevent 之后由 <command>udevd</command> 如上述方式处理。</para>
+
+    </sect3>
+  </sect2>
+
+  <sect2 id="ch-scripts-clock">
+    <title>配置系统时钟</title>
+
+    <indexterm zone="ch-scripts-clock">
+      <primary sortas="d-scripts-setclock">setclock</primary>
+    <secondary>configuring</secondary></indexterm>
+
+    <para><command>setclock</command> 脚本从硬件时钟读取时间，也就是所谓的 BIOS 或者补充金属氧化半导体 (CMOS) 时钟。如果硬件时钟被设置为 UTC，这个脚本将会使用 <filename>/etc/localtime</filename> 文件(它告诉 <command>hwclock</command> 程序用户所处的时区)转换硬件时钟的时间为本地时间。没有办法判断硬件时钟是否被设置为 UTC，所以这个需要手动配置。</para>
+
+    <para><command>setclock</command> 是通过 <application>udev</application> 在引导时内核检测硬件功能时运行的。它还可以使用 stop 参数手动运行来存储系统时钟到 CMOS 时钟。</para>
+
+    <para>如果你不记得是否把硬件时钟设置为 UTC，那么可以运行 <userinput>hwclock --localtime --show</userinput> 命令来找出。这个将会显示当前时间是根据什么对应硬件时钟的。如果这个时间匹配你手表所示，那么硬件时钟是被设为本地时间。如果来自 <command>hwclock</command> 的输出不是本地时间，有机会是设置为 UTC 时间。通过在 <command>hwclock</command> 显示的时间上添加或减少适当（相对于时区）的小时数来验证这个。例如，如果你当前在 MST 时区，也就是所谓的 GMT -0700，那么加 7 小时到本地时间。</para>
+
+    <para>如果硬件时钟<emphasis>不</emphasis>是设置为 UTC 时间的话，更改下面 <envar>UTC</envar> 变量的值为 <parameter>0</parameter> (零)。</para>
+
+    <para>通过运行下列内容创建一个新文件 <filename>/etc/sysconfig/clock</filename>:</para>
+
+<screen><userinput>cat &gt; /etc/sysconfig/clock &lt;&lt; "EOF"
+<literal># Begin /etc/sysconfig/clock
+
+UTC=1
+
+# Set this to any options you might need to give to hwclock,
+# such as machine hardware clock type for Alphas.
+CLOCKPARAMS=
+
+# End /etc/sysconfig/clock</literal>
+EOF</userinput></screen>
+
+    <para>一个说明如何处理 LFS 上的时间的好提示可以在 <ulink url="&hints-root;time.txt"/> 找到。它说明了譬如时区、UTC 以及 <envar>TZ</envar> 环境变量的问题。</para>
+
+    <note><para>CLOCKPARAMS 和 UTC 参数可以换一种方式，在 <filename>/etc/sysconfig/rc.site</filename> 文件中设置。</para></note>
+
+  </sect2>
+
+  <sect2 id="ch-scripts-console">
+  <?dbhtml filename="console.html"?>
+
+  <title>配置 Linux 控制台</title>
+
+  <indexterm zone="ch-scripts-console">
+    <primary sortas="d-console">console</primary>
+    <secondary>configuring</secondary>
+  </indexterm>
+
+  <para>这个部分讨论如何配置 <command>console</command>
+引导脚本来设置键盘映射、控制台字体和控制台内核记录级别。如果非 ASCII 字符(如版权符号、英镑符号和欧元符号)将不会被使用，而且键盘是 U.S. 的话，本节中大部分可以略过。没有配置文件，(或者 <filename>rc.site</filename> 中的等同设置)，则 <command>console</command> 引导脚本将不会进行任何操作。</para>
+
+  <para><command>console</command> 脚本读取
+  <filename>/etc/sysconfig/console</filename> 文件用于配置信息。
+  决定将会使用何种键映射和屏幕字体。各种语言专用指引可有助于此，
+  参阅 <ulink url="http://www.tldp.org/HOWTO/HOWTO-INDEX/other-lang.html"/>。
+  如果仍有怀疑，在 <filename class="directory">/usr/share/keymaps</filename>
+  和 <filename class="directory">/usr/share/consolefonts</filename> 目录中查找有效的键映射和屏幕字体。
+  阅读 <filename>loadkeys(1)</filename> 和
+  <filename>setfont(8)</filename> 手册页确定这些程序的正确参数。</para>
+
+  <para><filename>/etc/sysconfig/console</filename> 文件应该包含这样形式的行: VARIABLE="value"。下列变量可以被识别:</para>
+
+  <variablelist>
+
+    <varlistentry>
+      <term>LOGLEVEL</term>
+      <listitem>
+        <para>这个变量指定内核消息发送给控制台作为 <command>dmesg</command> 的设置。有效的级别从“1”(无消息)到“8”。默认级别是“7”。</para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term>KEYMAP</term>
+      <listitem>
+        <para>这个变量指定用于 <command>loadkeys</command> 程序的参数，一般的是要加载的键映射的名称，如 <quote>it</quote>。如果这个变量不设置，引导脚本将不会运行 <command>loadkeys</command> 程序，并将使用默认的内核键映射。
+        注意，一些键映射拥有同名的多个版本(cz 及其变种在 qwerty/ 和 qwertz/ 中，在 olpc/ 和 qwerty/ 中的 es,以及在 fgGIod/ 和 qwerty/ 中的 trf)。在这些情况下，还应该指定父目录(如 qwerty/es)以确保加载正确的键映射。
+</para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term>KEYMAP_CORRECTIONS</term>
+      <listitem>
+        <para>这个(很少用到)变量指定用于 <command>loadkeys</command> 程序第二次调用的参数。这个是在如果提供的键映射不能完全令人满意并且需要做出小调整。如要包含欧元符号到一个通常不会包含的键映射中，设置这个变量为 <quote>euro2</quote>。</para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term>FONT</term>
+      <listitem>
+        <para>这个变量指定 <command>setfont</command> 程序的参数。通常，这个包含字体的名称、<quote>-m</quote> 和要加载的应用程序字符映射的名称。如为了加载 <quote>lat1-16</quote> 字体连同 <quote>8859-1</quote> 应用程序字符映射一起(因为这在美国是适用的)，
+        <!-- because of the copyright sign -->
+        设置这个变量为 <quote>lat1-16 -m 8859-1</quote>。
+        在 UTF-8 模式中，内核使用应用程序字符映射来转换键映射中的 8 位键代码为 UTF-8，并由此应该设置“-m”参数的实参为键映射中组合键代码的编码。</para>
+
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term>UNICODE</term>
+      <listitem>
+        <para>设置这个变量为 <quote>1</quote>、<quote>yes</quote> 或
+        <quote>true</quote> 以把控制台设为 UTF-8 模式。这在基于 UTF-8 的语言环境很有用，其它情况也是无害。</para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term>LEGACY_CHARSET</term>
+      <listitem>
+        <para>对于许多键盘布局，在 Kbd 应用程序中没有 Unicode 键盘的现货提供。如果这个变量被设置为可用的非 UTF-8 键映射的编码的话，<command>console</command> 引导脚本将匆忙中转换一个可用的键映射为 UTF-8。</para>
+      </listitem>
+    </varlistentry>
+
+  </variablelist>
+
+  <para>某些例子:</para>
+
+  <itemizedlist>
+
+    <listitem>
+      <para>对于一个非 Unicode 设置，一般只需要 KEYMAP 和 FONT 变量。例如对于波兰语设置，应当使用:</para>
+
+<screen role="nodump"><userinput>cat &gt; /etc/sysconfig/console &lt;&lt; "EOF"
+<literal># Begin /etc/sysconfig/console
+
+KEYMAP="pl2"
+FONT="lat2a-16 -m 8859-2"
+
+# End /etc/sysconfig/console</literal>
+EOF</userinput></screen>
+    </listitem>
+
+    <listitem>
+      <para>如上所述，有些时候需要对现有的键映射略为调整。下面的例子添加了 Euro 符号到德语的键映射:</para>
+
+<screen role="nodump"><userinput>cat &gt; /etc/sysconfig/console &lt;&lt; "EOF"
+<literal># Begin /etc/sysconfig/console
+
+KEYMAP="de-latin1"
+KEYMAP_CORRECTIONS="euro2"
+FONT="lat0-16 -m 8859-15"
+
+# End /etc/sysconfig/console</literal>
+EOF</userinput></screen>
+    </listitem>
+
+    <listitem>
+      <para>下面是用于保加利亚语的一个启用了 Unicode 的例子，其中存在现有 UTF-8 键映射:</para>
+
+<screen role="nodump"><userinput>cat &gt; /etc/sysconfig/console &lt;&lt; "EOF"
+<literal># Begin /etc/sysconfig/console
+
+UNICODE="1"
+KEYMAP="bg_bds-utf8"
+FONT="LatArCyrHeb-16"
+
+# End /etc/sysconfig/console</literal>
+EOF</userinput></screen>
+    </listitem>
+
+    <listitem>
+      <para>由于在是先前的示例中使用了 512-glyph 的 LatArCyrHeb-16 的字体，在 Linux 控制台上亮色不再可用，除非使用了帧缓冲(framebuffer)。如果有人想拥有亮色而不要帧缓冲,并且不使用不属于他的语言的字符，则仍可使用一个语言专用的 256-glyph 字体，说明如下:</para>
+
+<screen role="nodump"><userinput>cat &gt; /etc/sysconfig/console &lt;&lt; "EOF"
+<literal># Begin /etc/sysconfig/console
+
+UNICODE="1"
+KEYMAP="bg_bds-utf8"
+FONT="cyr-sun16"
+
+# End /etc/sysconfig/console</literal>
+EOF</userinput></screen>
+    </listitem>
+
+    <listitem>
+      <para>下面的例子说明从
+      ISO-8859-15 到 UTF-8 的键映射的自动转换并启用 Unicode 模式中的无效键:</para>
+
+<screen role="nodump"><userinput>cat &gt; /etc/sysconfig/console &lt;&lt; "EOF"
+<literal># Begin /etc/sysconfig/console
+
+UNICODE="1"
+KEYMAP="de-latin1"
+KEYMAP_CORRECTIONS="euro2"
+LEGACY_CHARSET="iso-8859-15"
+FONT="LatArCyrHeb-16 -m 8859-15"
+
+# End /etc/sysconfig/console</literal>
+EOF</userinput></screen>
+    </listitem>
+
+    <listitem>
+      <para>某些键映射有无效键(也即本身不会产生一个字符，而是在由下一个键产生的字符上放置一个重音符)或定义合成规则(譬如: 在默认的键映射中，<quote>按
+      Ctrl+. A E 得到 &AElig;</quote>)。
+      Linux-&linux-version; 仅在组合成一起的源字符不是多字节的时候才能正确的解释键映射中的无效键和合成规则。这样的缺陷不会影响用于欧洲语言的键映射，因为有冲音符会添加到不是重音的 ASCII 字符，或者两个 ASCII 字符组合在一起。尽管如此，在 UTF-8 模式中，这仍是一个问题，例如，对于希腊语，其中的字符有些时候需要在字母 <quote>alpha</quote> 上添加重音号。解决方案就是要么避免使用 UTF-8，要么安装在输入处理中没有这个限制的 X window 系统。</para>
+    </listitem>
+
+    <listitem>
+      <para>对于中文、日文、韩文和某些其它语言，Linux 控制台无法配置为显示需要的字符。需要这些字体的用户应该安装 X Window 系统、涵盖所需字符范围的字体和正确的输入法(如 SCIM，它支持更广泛的语言)。</para>
+    </listitem>
+
+  </itemizedlist>
+
+  <!-- Added because folks keep posting their console file with X questions
+  to blfs-support list -->
+  <note>
+    <para><filename>/etc/sysconfig/console</filename> 文件仅控制 Linux 文本控制台的本地化，
+    对于在带有 ssh 会话或带有串行控制台的 X Window 系统中设置正确的键盘布局和终端字体则无能为力。
+    在这样的情况下，上面最后连个列表项提及的限制将不适用。</para>
+  </note>
+
+  </sect2>
+
+  <sect2 id="ch-scripts-createfiles">
+    <title>在引导时创建文件</title>
+  
+    <indexterm zone="ch-scripts-createfiles">
+      <primary sortas="d-createfiles">在引导时文件创建</primary>
+      <secondary>configuring</secondary>
+    </indexterm>
+  
+    <para>有时候，需要在引导时创建文件。例如可能需要 <filename class="directory">/tmp/.ICE-unix</filename> 目录。
+    这个可以通过在 <filename>/etc/sysconfig/createfiles</filename> 配置脚本中创建一个条目来完成。这个文件的格式嵌入在默认的配置文件的注释中。</para>
+  </sect2>
+
+  <sect2 id="ch-scripts-sysklogd">
+    <title>配置 sysklogd 脚本</title>
+  
+    <indexterm zone="ch-scripts-sysklogd">
+      <primary sortas="d-sysklogd">sysklogd</primary>
+      <secondary>configuring</secondary>
+    </indexterm>
+  
+    <para><filename>sysklogd</filename> 脚本调用 <command>syslogd</command> 程序作为 System V 初始化的一部分。
+    <parameter>-m 0</parameter> 选项关闭周期性的时间印戳标志，那是 <command>syslogd</command> 按默认每 20 分钟写入日志文件的。
+    如果你想开启这个周期时间印戳标志，编辑 <filename>/etc/sysconfig/rc.site</filename> 并定义变量 SYSKLOGD_PARMS 为需要的值。
+    譬如，要清除所有参数，设置变量为一个空值:</para>
+
+<screen role="nodump">SYSKLOGD_PARMS=</screen>
+
+    <para>参阅 <userinput>man syslogd</userinput> 获得更多选项。</para>
+
+  </sect2>
+
+  <sect2 id="ch-scripts-site">
+    <title>rc.site 文件</title>
+  
+    <indexterm zone="ch-scripts-site">
+      <primary sortas="a-rc.site">rc.site</primary>
+    </indexterm>
+  
+    <para>可选的 <filename>/etc/sysconfig/rc.site</filename> 文件包含自动设置到每个 SystemV 引导脚本的设置。
+    它可以换一种方式设置在 <filename class='directory'>/etc/sysconfig/</filename> 目录中的 <filename>hostname</filename>、<filename>console</filename> 及 <filename>clock</filename> 等文件中指定的值。
+    如果相关的变量既存在于这些单独的文件中，也存在于 <filename>rc.site</filename> 中，那么在脚本专用文件中的值优先。</para>
+  
+    <para><filename>rc.site</filename> 还包含可以定制引导过程其它方面的参数。
+    设置 IPROMPT 变量将可以启用引导脚本的选择性运行。其它选项在文件注释中描述。
+    文件的默认版本如下:</para>
+  
+    <!-- 使用 role 修复 pdf 生成问题 -->
+    <screen role="auto">&site;</screen>
+  
+    <sect3>
+      <title>定制引导和关机脚本</title>
+  
+      <para>LFS 引导脚本以相当有效的方式引导和关闭一个系统，但是你可以在 rc.site 文件中做出一些调整来进一步改进速度并根据你的首选项调整消息。
+      要实现这个目标，调整上面的 <filename>/etc/sysconfig/rc.site</filename> 文件中的设置。</para>
+  
+      <itemizedlist>
+  
+      <listitem><para>在引导脚本 <filename>udev</filename> 执行过程中，有一个对 <command>udev settle</command> 的调用需要一些时间来完成。
+      这个时间根据系统中存在的设备，可能是必需的也可能是不需要的。
+      如果你只有简单的分区和单一一个以太网卡，那么引导过程将不需要等待这个命令。要跳过它，设置变量 OMIT_UDEV_SETTLE=y。</para></listitem>
+  
+      <listitem><para>引导脚本 <filename>udev_retry</filename> 按默认也会运行 <command>udev settle</command>。
+      这个命令按默认仅当 <filename class='directory'>/var</filename> 目录单独加载时需要。这是因为时钟需要文件 <filename>/var/lib/hwclock/adjtime</filename>。
+      其它的定制可能需要等待 udev 完成，但是在大多数安装版本中，这是不需要的。
+      通过设置变量 OMIT_UDEV_RETRY_SETTLE=y 跳过命令。
+      </para></listitem>
+  
+      <listitem><para>按默认，文件系统检查是静默进行的。这在引导过程中可能出现延时。要开启 <command>fsck</command> 输出，设置变量 VERBOSE_FSCK=y。</para></listitem>
+  
+      <listitem><para>当重启时，你可能想完完全全的跳过文件系统检查 <command>fsck</command>。
+      要实现这个，可以创建文件 <filename>/fastboot</filename> 或使用命令 <command>/sbin/shutdown -f -r now</command> 重启系统。
+      相反，你可以通过创建 <filename>/forcefsck</filename> 或运行使用 <parameter>-F</parameter> 代替 <parameter>-f</parameter> 参数的 <command>shutdown</command> 命令来强制所有文件系统进行检查。</para>
+  
+      <para>设置变量 FASTBOOT=y 将禁用引导过程中的 <command>fsck</command>，直至它被删除。
+      长远来看，不建议这样做。</para></listitem>
+  
+      <listitem><para>正常情况下，在 <filename class='directory'>/tmp</filename> 目录中的所有文件将会在引导时删除。
+      根据文件或目录存在的数量，这个可能导致引导过程的明显延迟。要跳过删除这些文件，设置变量 SKIPTMPCLEAN=y。</para></listitem>
+  
+      <listitem><para>在关机过程中，<command>init</command> 程序发送一个 TERM 信号到它启动的每个程序(如 agetty)，等候一个设定的时间(默认为 3 秒)，而且给每个进程发送一个 KILL 信号并再次等待。
+      这个过程在 <command>sendsignals</command> 脚本中再次重复以用于任何不能被它们自己的脚本关闭的进程。
+      <command>init</command> 的延时可以通过传递一个参数来设置。例如要消除 <command>init</command> 中的延时，在关机或重启时传递 -t0 参数(如  <command>/sbin/shutdown -t0 -r now</command>)。
+      <command>sendsignals</command> 脚本的延时可以通过设置参数 KILLDELAY=0 来跳过。</para></listitem>
+  
+      </itemizedlist>
+  
+    </sect3>
+  </sect2>  
 </sect1>

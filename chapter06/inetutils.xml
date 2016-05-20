@@ -40,18 +40,17 @@
   <sect2 role="installation">
     <title>Inetutils 的安装</title>
 
-    <para>创建一个定义以允许 <command>ifconfig</command> 程序正确构建。</para>
+    <para>创建一个定义以允许 <command>ifconfig</command> 程序正确构建:</para>
 
 <screen><userinput remap="pre">echo '#define PATH_PROCNET_DEV "/proc/net/dev"' &gt;&gt; ifconfig/system/linux.h </userinput></screen>
 
     <para>准备 Inetutils 进行编译:</para>
 
 <screen><userinput remap="configure">./configure --prefix=/usr  \
-    --localstatedir=/var   \
-    --disable-logger       \
-    --disable-syslogd      \
-    --disable-whois        \
-    --disable-servers</userinput></screen>
+            --localstatedir=/var   \
+            --disable-logger       \
+            --disable-whois        \
+            --disable-servers</userinput></screen>
 
     <variablelist>
       <title>配置选项的含义:</title>
@@ -60,16 +59,8 @@
         <term><parameter>--disable-logger</parameter></term>
         <listitem>
           <para>这个选项禁止 Inetutils 安装
-          <command>logger</command> 程序，它用于给脚本来传递消息到 System Log 后台程序。不安装它是因为早前
-          Util-linux 已经安装了一个版本。</para>
-        </listitem>
-      </varlistentry>
-
-      <varlistentry>
-        <term><parameter>--disable-syslogd</parameter></term>
-        <listitem>
-          <para>这个选项禁止 Inetutils 安装 System Log
-          后台程序，它会随 Sysklogd 包安装。</para>
+          <command>logger</command> 程序，它用于给脚本来传递消息到 System Log 后台程序。不安装它是因为
+          Util-linux 已经安装了一个更新的版本。</para>
         </listitem>
       </varlistentry>
 

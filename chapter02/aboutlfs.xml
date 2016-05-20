@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sect1 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+  "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+  <!ENTITY % general-entities SYSTEM "../general.ent">
+  %general-entities;
+]>
+
+<sect1 id="ch-partitioning-aboutlfs">
+  <?dbhtml filename="aboutlfs.html"?>
+
+  <title>设置 $LFS 变量</title>
+
+  <para>贯穿全书，环境变量 <envar>LFS</envar> 将会被多次使用。您应该确保在贯穿整个 LFS 构建过程中，整个变量总是被定义。
+  它应该被设置为您就要构建您的 LFS 系统所在的目录的名称 - 我们将会使用
+  <filename class="directory">/mnt/lfs</filename> 作为范例，而目录选择最终由您决定。
+  如果您在一个独立的分区上构建 LFS 的话，这个目录将会作为分区的挂载点。选择一个目录位置并使用下列命令设置变量:</para>
+
+<screen role="nodump"><userinput>export LFS=<replaceable>/mnt/lfs</replaceable></userinput></screen>
+
+  <para>在命令中设置这样一个变量是有好处的，譬如
+  <command>mkdir -v $LFS/tools</command> 就可以有字面意义的输入。
+  当 Shell 处理命令行时，就会自动替换 <quote>$LFS</quote> 为
+  <quote>/mnt/lfs</quote> (或者任何变量被设置为的位置)。</para>
+
+  <para>无论是在您离开还是重新进入当前工作环境时都不要忘记检查 <envar>LFS</envar> 是否设置
+  (譬如在执行一个 <command>su</command> 为 <systemitem class="username">root</systemitem> 或者其它用户时)。
+  使用下列命令检查 <envar>LFS</envar> 变量是否正确设置:</para>
+
+<screen role="nodump"><userinput>echo $LFS</userinput></screen>
+
+  <para>确保输出显示为您的 LFS 系统的构建位置的路径，按上例的话它就是 <filename class="directory">/mnt/lfs</filename>。
+  如果输出不正确，使用本页先前给出的命令设置 <envar>$LFS</envar> 为正确的目录名。</para>
+
+  <note><para>确保 <envar>LFS</envar> 变量总是被设置的一种办法的就是编辑您的个人主目录中的 <filename>.bash_profile</filename> 文件和
+  <filename>/root/.bash_profile</filename> 中的内容，并输入上面的 export 命令。</para></note>
+
+</sect1>

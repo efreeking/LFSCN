@@ -31,12 +31,12 @@
 
 case "${1}" in
    start)
-      # Make sure /run/var is available before logging any messages
+      # Make sure /run is available before logging any messages
       if ! mountpoint /run >/dev/null; then
          mount /run || failed=1
       fi
 
-      mkdir -p /run/var /run/lock /run/shm
+      mkdir -p /run/lock /run/shm
       chmod 1777 /run/shm
 
       log_info_msg "Mounting virtual file systems: ${INFO}/run" 
@@ -55,9 +55,6 @@ case "${1}" in
          log_info_msg2 " ${INFO}/dev" 
          mount -o mode=0755,nosuid /dev  || failed=1
       fi
-
-      # Copy devices that Udev >= 155 doesn't handle to /dev
-      cp -a /lib/udev/devices/* /dev
 
       ln -sfn /run/shm /dev/shm
       

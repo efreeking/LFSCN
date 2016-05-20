@@ -15,6 +15,24 @@
   <variablelist role="materials">
 
     <varlistentry>
+      <term>Acl (&acl-version;) - <token>&acl-size;</token>:</term>
+      <listitem>
+        <para>主页: <ulink url="&acl-home;"/></para>
+        <para>下载: <ulink url="&acl-url;"/></para>
+        <para>MD5 和: <literal>&acl-md5;</literal></para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term>Attr (&attr-version;) - <token>&attr-size;</token>:</term>
+      <listitem>
+        <para>主页: <ulink url="&attr-home;"/></para>
+        <para>下载: <ulink url="&attr-url;"/></para>
+        <para>MD5 和: <literal>&attr-md5;</literal></para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
       <term>Autoconf (&autoconf-version;) - <token>&autoconf-size;</token>:</term>
       <listitem>
         <para>主页: <ulink url="&autoconf-home;"/></para>
@@ -94,7 +112,16 @@
         <para>MD5 和: <literal>&coreutils-md5;</literal></para>
       </listitem>
     </varlistentry>
-
+<!--
+    <varlistentry>
+      <term>D-Bus (&dbus-version;) - <token>&dbus-size;</token>:</term>
+      <listitem>
+        <para>主页: <ulink url="&dbus-home;"/></para>
+        <para>下载: <ulink url="&dbus-url;"/></para>
+        <para>MD5 和: <literal>&dbus-md5;</literal></para>
+      </listitem>
+    </varlistentry>
+-->
     <varlistentry>
       <term>DejaGNU (&dejagnu-version;) - <token>&dejagnu-size;</token>:</term>
       <listitem>
@@ -114,11 +141,36 @@
     </varlistentry>
 
     <varlistentry>
+      <term>Eudev (&eudev-version;) - <token>&eudev-size;</token>:</term>
+      <listitem>
+        <para>下载: <ulink url="&eudev-url;"/></para>
+        <para>MD5 和: <literal>&eudev-md5;</literal></para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term>Eudev-manpages (&eudev-version;) - <token>&eudev-manpages-size;</token>:</term>
+      <listitem>
+        <para>下载: <ulink url="&eudev-manpages-url;"/></para>
+        <para>MD5 和: <literal>&eudev-manpages-md5;</literal></para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
       <term>E2fsprogs (&e2fsprogs-version;) - <token>&e2fsprogs-size;</token>:</term>
       <listitem>
         <para>主页: <ulink url="&e2fsprogs-home;"/></para>
         <para>下载: <ulink url="&e2fsprogs-url;"/></para>
         <para>MD5 和: <literal>&e2fsprogs-md5;</literal></para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term>Expat (&expat-version;) - <token>&expat-size;</token>:</term>
+      <listitem>
+        <para>主页: <ulink url="&expat-home;"/></para>
+        <para>下载: <ulink url="&expat-url;"/></para>
+        <para>MD5 和: <literal>&expat-md5;</literal></para>
       </listitem>
     </varlistentry>
 
@@ -220,6 +272,15 @@
     </varlistentry>
 
     <varlistentry>
+      <term>Gperf (&gperf-version;) - <token>&gperf-size;</token>:</term>
+      <listitem>
+        <para>主页: <ulink url="&gperf-home;"/></para>
+        <para>下载: <ulink url="&gperf-url;"/></para>
+        <para>MD5 和: <literal>&gperf-md5;</literal></para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
       <term>Grep (&grep-version;) - <token>&grep-size;</token>:</term>
       <listitem>
         <para>主页: <ulink url="&grep-home;"/></para>
@@ -274,6 +335,15 @@
     </varlistentry>
 
     <varlistentry>
+      <term>Intltool (&intltool-version;) - <token>&intltool-size;</token>:</term>
+      <listitem>
+        <para>主页: <ulink url="&intltool-home;"/></para>
+        <para>下载: <ulink url="&intltool-url;"/></para>
+        <para>MD5 和:  <literal>&intltool-md5;</literal></para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
       <term>IPRoute2 (&iproute2-version;) - <token>&iproute2-size;</token>:</term>
       <listitem>
         <para>主页: <ulink url="&iproute2-home;"/></para>
@@ -315,6 +385,15 @@
         <para>主页: <ulink url="&lfs-bootscripts-home;"/></para>
         <para>下载: <ulink url="&lfs-bootscripts-url;"/></para>
         <para>MD5 和: <literal>&lfs-bootscripts-md5;</literal></para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term>Libcap (&libcap-version;) - <token>&libcap-size;</token>:</term>
+      <listitem>
+        <para>主页: <ulink url="&libcap-home;"/></para>
+        <para>下载: <ulink url="&libcap-url;"/></para>
+        <para>MD5 和: <literal>&libcap-md5;</literal></para>
       </listitem>
     </varlistentry>
 
@@ -536,7 +615,16 @@
         <para>MD5 和: <literal>&sysklogd-md5;</literal></para>
       </listitem>
     </varlistentry>
-
+<!--
+    <varlistentry>
+      <term>Systemd (&systemd-version;) - <token>&systemd-size;</token>:</term>
+      <listitem>
+        <para>主页: <ulink url="&systemd-home;"/></para>
+        <para>下载: <ulink url="&systemd-url;"/></para>
+        <para>MD5 和: <literal>&systemd-md5;</literal></para>
+      </listitem>
+    </varlistentry>
+-->
     <varlistentry>
       <term>Sysvinit (&sysvinit-version;) - <token>&sysvinit-size;</token>:</term>
       <listitem>
@@ -565,16 +653,8 @@
     </varlistentry>
 
     <varlistentry>
-      <term>Time Zone Data (&tzdata-version;) - <token>&tzdata-size;</token>:</term>
-      <listitem>
-        <para>主页: <ulink url="&tzdata-home;"/></para>
-        <para>下载: <ulink url="&tzdata-url;"/></para>
-        <para>MD5 和: <literal>&tzdata-md5;</literal></para>
-      </listitem>
-    </varlistentry>
-
-    <varlistentry>
       <term>Texinfo (&texinfo-version;) - <token>&texinfo-size;</token>:</term>
+       <listitem>
       <listitem>
         <para>主页: <ulink url="&texinfo-home;"/></para>
         <para>下载: <ulink url="&texinfo-url;"/></para>
@@ -583,16 +663,17 @@
     </varlistentry>
 
     <varlistentry>
-      <term>Systemd (&systemd-version;) - <token>&systemd-size;</token>:</term>
+      <term>Time Zone Data (&tzdata-version;) - <token>&tzdata-size;</token>:</term>
+       <listitem>
       <listitem>
-        <para>主页: <ulink url="&systemd-home;"/></para>
-        <para>下载: <ulink url="&systemd-url;"/></para>
-        <para>MD5 和: <literal>&systemd-md5;</literal></para>
+        <para>主页: <ulink url="&tzdata-home;"/></para>
+        <para>下载: <ulink url="&tzdata-url;"/></para>
+        <para>MD5 和: <literal>&tzdata-md5;</literal></para>
       </listitem>
     </varlistentry>
 
     <varlistentry>
-      <term>Udev-lfs Tarball (&systemd-version;) - <token>&udev-lfs-size;</token>:</term>
+      <term>Udev-lfs Tarball (&udev-lfs-version;) - <token>&udev-lfs-size;</token>:</term>
       <listitem>
         <para>下载: <ulink url="&udev-lfs-url;"/></para>
         <para>MD5 和: <literal>&udev-lfs-md5;</literal></para>
@@ -614,6 +695,15 @@
         <para>主页: <ulink url="&vim-home;"/></para>
         <para>下载: <ulink url="&vim-url;"/></para>
         <para>MD5 和: <literal>&vim-md5;</literal></para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term>XML::Parser (&xml-parser-version;) - <token>&xml-parser-size;</token>:</term>
+      <listitem>
+        <para>主页: <ulink url="&xml-parser-home;"/></para>
+        <para>下载: <ulink url="&xml-parser-url;"/></para>
+        <para>MD5 和:  <literal>&xml-parser-md5;</literal></para>
       </listitem>
     </varlistentry>
 

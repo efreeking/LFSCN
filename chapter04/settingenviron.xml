@@ -46,9 +46,7 @@ EOF</userinput></screen>
   <para><envar>LFS</envar> 变量应该设置为选择的挂载点。</para>
 
   <para><envar>LC_ALL</envar> 变量控制某些程序的本地化，使得它们的消息按照指定国家的习惯。
-  如果宿主系统使用一个 2.2.4 之前版本的 Glibc，让
-  <envar>LC_ALL</envar> 设置为 <quote>POSIX</quote> 或
-  <quote>C</quote> (在本章节期间) 以外的值可能会在您退出 chroot 环境并希望之后返回时出问题。设置 <envar>LC_ALL</envar> 为
+  设置 <envar>LC_ALL</envar> 为
   <quote>POSIX</quote> 或 <quote>C</quote> (两者等价)确保所有东西在 chroot 环境中都可以如预期那样工作。</para>
 
   <para><envar>LFS_TGT</envar> 变量设置一个非默认而是兼容的机器描述，

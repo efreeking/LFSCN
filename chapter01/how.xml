@@ -10,7 +10,7 @@
 
   <title>如何构建 LFS 系统</title>
 
-  <para>LFS 系统将会使用已安装的 Linux 发行版(譬如 Debian、Mandriva、Red Hat 或 SUSE)来构建。
+  <para>LFS 系统将会使用已安装的 Linux 发行版(譬如 Debian、OpenMandriva, Fedora 或 openSUSE)来构建。
   这个已存在的 Linux 系统(宿主)将会作为起点，提供构建新系统所需的程序，包括编译器、链接器和 Shell。
   在安装发行版时选择 <quote>development</quote> (开发)选项，以便可以访问这些工具。</para>
 
@@ -45,7 +45,7 @@
 
   <para>在<xref linkend="chapter-building-system"/>中，完整的 LFS 系统被构建。
   <command>chroot</command> (更改 root)程序将会使用来进入一个虚拟的环境并启动一个新的 Shell，其根目录将会被设置为 LFS 分区。
-  这非常类似于重新引导并指示内核装载 LFS 分区作为根分区。系统实际上并没有重新启动，而是 <command>chroot</command>，因为
+  这非常类似于重新引导并指示内核装载 LFS 分区作为根分区。系统实际上并没有重新引导，而是使用 <command>chroot</command>，因为
   创建一个可引导的系统需要额外的工作，但现在还不需要。主要的好处是，<quote>chrooting</quote> 让您在 LFS 已经构建时仍可继续使用宿主系统。
   在等待包的编译完成的同时，您可以继续正常的使用您的计算机。</para>
 

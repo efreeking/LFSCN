@@ -46,21 +46,15 @@
 
     <para>准备 Bash 编译:</para>
 
-<screen><userinput remap="configure">./configure --prefix=/usr                     \
-            --bindir=/bin                     \
-            --htmldir=/usr/share/doc/bash-&bash-version; \
-            --without-bash-malloc             \
+<screen><userinput remap="configure">./configure --prefix=/usr                    \
+            --bindir=/bin                    \
+            --docdir=/usr/share/doc/bash-&bash-version; \
+            --without-bash-malloc           \
             --with-installed-readline</userinput></screen>
 
     <variablelist>
-      <title>配置选项的含义:</title>
+      <title>新的配置选项的含义:</title>
 
-      <varlistentry>
-        <term><parameter>--htmldir</parameter></term>
-        <listitem>
-          <para>这个选项指明格式化的 HTML 文档将会安装到的目录。</para>
-        </listitem>
-      </varlistentry>
       <varlistentry>
         <term><parameter>--with-installed-readline</parameter></term>
         <listitem>

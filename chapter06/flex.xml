@@ -40,7 +40,7 @@
   <sect2 role="installation">
     <title>Flex 的安装</title>
 
-    <para>首先，跳过需要 bison 的三个回归测试:</para>
+    <para>首先，跳过需要 Bison 的三个回归测试:</para>
 
 <screen><userinput remap="pre">sed -i -e '/test-bison/d' tests/Makefile.in</userinput></screen>
 
@@ -66,17 +66,9 @@
 
 <screen><userinput remap="install">ln -sv libfl.a /usr/lib/libl.a</userinput></screen>
 -->
-    <para>一些程序还不知道 <command>flex</command> ，而且尝试运行它的前任，<command>lex</command>。要支持那些程序，创建一个名为 <filename>lex</filename> 的封装器脚本，它会以 <command>lex</command> 模拟模式调用 <filename>flex</filename>:</para>
+    <para>一些程序还不知道 <command>flex</command> ，而且尝试运行它的前任，<command>lex</command>。要支持那些程序，创建一个名为 <filename>lex</filename> 的符号链接，它会以 <command>lex</command> 模拟模式运行 <filename>flex</filename>:</para>
 
-<screen><userinput remap="install">cat &gt; /usr/bin/lex &lt;&lt; "EOF"
-<literal>#!/bin/sh
-# Begin /usr/bin/lex
-
-exec /usr/bin/flex -l "$@"
-
-# End /usr/bin/lex</literal>
-EOF
-chmod -v 755 /usr/bin/lex</userinput></screen>
+<screen><userinput remap="install">ln -sv flex /usr/bin/lex</userinput></screen>
 
   </sect2>
 
@@ -89,7 +81,7 @@ chmod -v 755 /usr/bin/lex</userinput></screen>
       <segtitle>安装的目录</segtitle>
 
       <seglistitem>
-        <seg>flex, flex++ (到 flex 的链接) 以及 lex</seg>
+        <seg>flex, flex++ (到 flex 的链接) 以及 lex (链接到 flex)</seg>
         <seg>libfl.{a,so} 和 libfl_pic.{a,so}</seg>
         <seg>/usr/share/doc/flex-&flex-version;</seg>
       </seglistitem>

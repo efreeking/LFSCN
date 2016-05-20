@@ -50,11 +50,11 @@
     linkend='buildinstr'/>)。首先从源代码目录提取 gcc tarball，
     然后切换到创建的目录中。之后只需按照下面的指令继续。</para></note>
 
-<screen><userinput remap="pre">tar -Jxf ../mpfr-&mpfr-version;.tar.xz
+<screen><userinput remap="pre">tar -xf ../mpfr-&mpfr-version;.tar.xz
 mv -v mpfr-&mpfr-version; mpfr
-tar -Jxf ../gmp-&gmp-version;.tar.xz
-mv -v gmp-&gmp-version; gmp
-tar -zxf ../mpc-&mpc-version;.tar.gz
+tar -xf ../gmp-&gmp-version;.tar.xz
+mv -v gmp-&gmp-extracted-version; gmp
+tar -xf ../mpc-&mpc-version;.tar.gz
 mv -v mpc-&mpc-version; mpc</userinput></screen>
 
     <para>下列命令将会更改 GCC 的默认动态链接器的位置为使用安装在 <filename
@@ -94,6 +94,10 @@ done</userinput></screen>
 
 <screen><userinput remap="pre">sed -i '/k prot/agcc_cv_libc_provides_ssp=yes' gcc/configure</userinput></screen>
 
+    <para>还修复了一个上游标识的问题:</para>
+
+<screen><userinput remap="pre">sed -i 's/if \((code.*))\)/if (\1 \&amp;\&amp; \!DEBUG_INSN_P (insn))/' gcc/sched-deps.c</userinput></screen>
+
     <para>GCC 文档建议在源目录外的一个专用构建目录中构建 GCC:</para>
 
 <screen><userinput remap="pre">mkdir -v ../gcc-build
@@ -117,15 +121,13 @@ cd ../gcc-build</userinput></screen>
     --disable-libatomic                              \
     --disable-libgomp                                \
     --disable-libitm                                 \
-    --disable-libmudflap                             \
     --disable-libquadmath                            \
     --disable-libsanitizer                           \
     --disable-libssp                                 \
+    --disable-libvtv                                 \
+    --disable-libcilkrts                             \
     --disable-libstdc++-v3                           \
-    --enable-languages=c,c++                         \
-    --with-mpfr-include=$(pwd)/../gcc-&gcc-version;/mpfr/src \
-    --with-mpfr-lib=$(pwd)/mpfr/src/.libs</userinput></screen>
-
+    --enable-languages=c,c++</userinput></screen>
     <variablelist>
       <title>配置选项的含义:</title>
 
@@ -175,11 +177,13 @@ cd ../gcc-build</userinput></screen>
       <varlistentry>
         <term><parameter>--disable-decimal-float, --disable-threads,
         --disable-libatomic, --disable-libgomp, --disable-libitm,
-        --disable-libmudflap, --disable-libquadmath, --disable-libsanitizer,
-        --disable-libssp, --disable-libstdc++-v3</parameter></term>
+        --disable-libquadmath, --disable-libsanitizer,
+        --disable-libssp, --disable-libvtv, --disable-libcilkrts,
+        --disable-libstdc++-v3</parameter></term>
         <listitem>
-          <para>这些开关参数相应的禁用了十进制浮点扩展, 线程, libatomic, libgomp, libitm, libmudflap,
-          libquadmath, libsanitizer, libssp 以及 C++ 标准库的支持。这些功能在构建交叉编译器时将无法编译，并且也不是交叉编译临时 libc 任务所需要的。</para>
+          <para>这些开关参数相应的禁用了十进制浮点扩展, 线程, libatomic, libgomp, libitm,
+          libquadmath, libsanitizer, libssp, libvtv, libcilkrts
+          以及 C++ 标准库的支持。这些功能在构建交叉编译器时将无法编译，并且也不是交叉编译临时 libc 任务所需要的。</para>
         </listitem>
       </varlistentry>
 
@@ -197,13 +201,6 @@ cd ../gcc-build</userinput></screen>
         </listitem>
       </varlistentry>
 
-      <varlistentry>
-        <term><parameter>--with-mpfr-*</parameter></term>
-        <listitem>
-          <para>这些选项让构建系统正确的使用 MPFR 源代码的树中拷贝。</para>
-        </listitem>
-      </varlistentry>
-
     </variablelist>
 
     <para>通过运行以下命令编译 GCC:</para>
@@ -215,14 +212,14 @@ cd ../gcc-build</userinput></screen>
     <para>安装包:</para>
 
 <screen><userinput remap="install">make install</userinput></screen>
-
+<!--
     <para>使用 <parameter>--disable-shared</parameter> 表示
     <filename>libgcc_eh.a</filename> 文件不会被创建和安装。依赖于这个库的 Glibc 包因此在它的构建系统中使用
     <parameter>-lgcc_eh</parameter>。这个依赖关系可以通过构建到 <filename>libgcc.a</filename> 的符号链接得到满足。
     因为文件将会最终包含正常包含在 <filename>libgcc_eh.a</filename> 的对象:</para>
 
 <screen><userinput remap="install">ln -sv libgcc.a `$LFS_TGT-gcc -print-libgcc-file-name | sed 's/libgcc/&amp;_eh/'`</userinput></screen>
-
+-->
   </sect2>
 
   <sect2 role="content">

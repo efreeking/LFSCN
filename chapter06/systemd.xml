@@ -5,27 +5,25 @@
   %general-entities;
 ]>
 
-<sect1 id="ch-system-udev" role="wrap">
-  <?dbhtml filename="udev.html"?>
+<sect1 id="ch-system-systemd" role="wrap">
+  <?dbhtml filename="systemd.html"?>
 
   <sect1info condition="script">
-    <productname>udev</productname>
+    <productname>systemd</productname>
     <productnumber>&systemd-version;</productnumber>
     <address>&systemd-url;</address>
   </sect1info>
 
-  <title>Udev-&systemd-version; (从 systemd-&systemd-version; 提取)</title>
+  <title>Systemd-&systemd-version;</title>
 
-  <indexterm zone="ch-system-udev">
-    <primary sortas="a-Udev">Udev</primary>
+  <indexterm zone="ch-system-systemd">
+    <primary sortas="a-systemd">Systemd</primary>
   </indexterm>
 
   <sect2 role="package">
     <title/>
 
-    <para>Udev 包包含用于设备节点的动态创建的程序。
-    udev 的开发已经和 systemd 合并，但是大多数 systemd 和 LFS 不兼容。
-    在这里我们仅构建和安装所需的 udev 文件。</para>
+    <para>Systemd 包包含用于控制系统的启动、运行和关闭的程序。</para>
 
     <segmentedlist>
       <segtitle>&buildtime;</segtitle>
@@ -39,58 +37,148 @@
   </sect2>
 
   <sect2 role="installation">
-    <title>Udev 的安装</title>
+    <title>Systemd 的安装</title>
 
-    <note><para>这个包和其它包有小小的不同。
-    最初的包是从 <filename>systemd-&systemd-version;.tar.xz</filename> 提取的，
-    尽管我们正在安装的应用程序是 udev。在切换到 systemd 目录后，按照以下说明。</para></note>
+    <note><para>如果完全不想要 systemd，它可以被跳过。
+    尽管如此，必须安装一个 udev 替代。参阅 <ulink
+    url="http://www.linuxfromscratch.org/hints/downloads/files/eudev-alt-hint.txt"/>
+    中的提示查找安装
+    <application>eudev</application> 的过程。</para></note>
 
-    <para>udev-lfs tarball 包含 LFS-specific 文件，用于构建 Udev。
-    解压它到 systemd 源目录:</para>
+    <para>首先，创建一个文件以便让 Systemd 能够在第 5 章时使用 Util-Linux 构建时构建:</para>
 
-<screen><userinput remap="pre">tar -xvf ../&udev-lfs;.tar.bz2</userinput></screen>
+<screen><userinput remap="pre">cat &gt; config.cache &lt;&lt; "EOF"
+<literal>KILL=/bin/kill
+HAVE_BLKID=1
+BLKID_LIBS="-lblkid"
+BLKID_CFLAGS="-I/tools/include/blkid"
+cc_cv_CFLAGS__flto=no</literal>
+EOF</userinput></screen>
 
-    <para>创建两个到头文件的符号链接并设置一个环境变量以正确的使用
-    <xref linkend="ch-tools-util-linux"/>。</para>
+    <para>另外，修复一个在第 5 章中使用 Until-Linux 构建时的构建错误:</para>
 
-<screen><userinput remap="pre">ln -svf /tools/include/blkid /usr/include
-ln -svf /tools/include/uuid  /usr/include
-export LD_LIBRARY_PATH=/tools/lib</userinput></screen>
+<screen><userinput remap="pre">sed -i "s:blkid/::" $(grep -rl "blkid/blkid.h")</userinput></screen>
 
-    <para>构建包:</para>
+    <para>应用一个补丁以便 compat 的 <command>pkg-config</command> 文件能够无需安装在 LFS 没有什么用途的 compat 库
+    而进行安装:</para>
 
-<screen><userinput remap="make">make -f &udev-lfs;/Makefile.lfs</userinput></screen>
+<screen><userinput remap="pre">patch -Np1 -i ../&systemd-compat-patch;</userinput></screen>
+ 
+    <para>准备 Systemd 进行编译:</para>
+
+<screen><userinput remap="configure">./configure --prefix=/usr                                           \
+            --sysconfdir=/etc                                       \
+            --localstatedir=/var                                    \
+            --config-cache                                          \
+            --with-rootprefix=                                      \
+            --with-rootlibdir=/lib                                  \
+            --enable-split-usr                                      \
+            --disable-gudev                                         \
+            --without-python                                        \
+            --docdir=/usr/share/doc/systemd-&systemd-version;                     \
+            --with-dbuspolicydir=/etc/dbus-1/system.d               \
+            --with-dbusinterfacedir=/usr/share/dbus-1/interfaces    \
+            --with-dbussessionservicedir=/usr/share/dbus-1/services \
+            --with-dbussystemservicedir=/usr/share/dbus-1/system-services</userinput></screen>
+
+    <variablelist>
+      <title>配置选项的含义:</title>
+
+      <varlistentry>
+        <term><parameter>--config-cache</parameter></term>
+        <listitem>
+          <para>这个开关告诉构建系统使用先前创建的 <filename>config.cache</filename> 文件。</para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term><parameter>--with-root*</parameter></term>
+        <listitem>
+          <para>这些开关确保核心程序和共享库在 root 分区的子目录中安装。</para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term><parameter>--enable-split-usr</parameter></term>
+        <listitem>
+          <para>这个开关确保 Systemd 将可以在其中的 /bin, /lib and /sbin 目录不是指向它们的 /usr 等同部分的符号链接的系统上运作。</para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term><parameter>--disable-gudev --without-python</parameter></term>
+        <listitem>
+          <para>这些开关禁用了可选功能，因为 LFS 部提供它们的依赖关系。</para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term><parameter>--with-dbus*</parameter></term>
+        <listitem>
+          <para>这些开关确保 D-Bus configuratil 文件能够在正确的位置中安装。</para>
+        </listitem>
+      </varlistentry>
+
+    </variablelist>
+
+    <para>编译包:</para>
+
+<screen><userinput remap="make">make LIBRARY_PATH=/tools/lib</userinput></screen>
+
+    <para>首先避免某些中断的测试套件运行:</para>
+
+<screen><userinput remap="test">sed -e "s:test/udev-test.pl::g"            \
+    -e "s:test-bus-cleanup\$(EXEEXT) ::g"  \
+    -e "s:test-bus-gvariant\$(EXEEXT) ::g" \
+    -i Makefile</userinput></screen>
+
+    <para>要测试结果，执行:</para>
+
+<screen><userinput remap="test">make -k check</userinput></screen>
+
+    <para>注意某些测试可能由于测试是运行在一个 chroot 环境中而失败。
+    对于完整的测试覆盖，测试套件应该从使用 Systemd 引导的系统中运行。</para>
 
     <para>安装包:</para>
 
-<screen><userinput remap="install">make -f &udev-lfs;/Makefile.lfs install</userinput></screen>
+<screen><userinput remap="install">make LD_LIBRARY_PATH=/tools/lib install</userinput></screen>
 
-    <caution><para>在
-    <application>systemd</application> 源代码中有几个位置有明显的目录路径嵌入。
-    例如，在运行时使用硬件数据库二进制版本的路径和文件名，
-    <filename>/etc/udev/hwdb.bin</filename>，在没有对源代码明确更改时不能更改。</para></caution>
+    <para>移动 NSS myhostname 库到 <filename class="directory">/lib</filename>:</para>
 
-    <para>现在初始化硬件数据库:</para>
+<screen><userinput remap="install">mv -v /usr/lib/libnss_myhostname.so.2 /lib</userinput></screen>
 
-<screen><userinput remap="install">build/udevadm hwdb --update</userinput></screen>
+    <para>删除不需要的库:</para>
 
-    <para>最后设置永久的网络 udev 规则。这个任务将会在
-    <xref linkend='stable-net-names'/> 中详述。注意，
-    <filename class='directory'>/sys</filename> 和 <filename
-    class='directory'>/proc</filename> 文件系统必须在 chroot 环境中装载，
-    如本章中开始处所解释的一样，以使下列脚本运作。</para>
+<screen><userinput remap="install">rm -rfv /usr/lib/rpm</userinput></screen>
 
-<screen><userinput remap="install">bash &udev-lfs;/init-net-rules.sh</userinput></screen>
+    <para>创建 Sysvinit 兼容性符号链接，并移动某些手册页以及跟 <xref linkend="ch-system-sysvinit"/> 冲突的库，
+    以便两种系统可以同时安装:</para>
 
-    <para>进行某些清理:</para>
+<screen><userinput remap="install">for tool in runlevel reboot shutdown poweroff halt telinit; do
+  ln -sfv ../bin/systemctl /sbin/${tool}-systemd
+  mv -v /usr/share/man/man8/${tool}.8 /usr/share/man/man8/${tool}-systemd.8
+done
 
-<screen><userinput remap="install">rm -fv /usr/include/{uuid,blkid}
-unset LD_LIBRARY_PATH</userinput></screen>
++ln -sfv ../lib/systemd/systemd /sbin/init-systemd
++mv -v /etc/init.d /etc/init.d-systemd</userinput></screen>
+ 
+    <para>删除对不存在组的引用:</para>
+
+<screen><userinput remap="install">sed -i "s:0775 root lock:0755 root root:g" /usr/lib/tmpfiles.d/legacy.conf</userinput></screen>
+
+    <para>创建日志所需的 <filename>/etc/machine-id</filename> 文件:</para>
+
+<screen><userinput remap="install">systemd-machine-id-setup</userinput></screen>
+
+    <para>最后案中某些 LFS 专用 udev 规则:</para>
+
+<screen><userinput remap="install">tar -xf ../&udev-lfs-version;.tar.bz2
+make -f &udev-lfs-version;/Makefile.lfs install</userinput></screen>
 
   </sect2>
 
-  <sect2 id="contents-udev" role="content">
-    <title>Udev 的内容</title>
+  <sect2 id="contents-systemd" role="content">
+    <title>Systemd 的内容</title>
 
     <segmentedlist>
       <segtitle>安装的程序</segtitle>
@@ -98,12 +186,22 @@ unset LD_LIBRARY_PATH</userinput></screen>
       <segtitle>安装的目录</segtitle>
 
       <seglistitem>
-        <seg>accelerometer, ata_id, cdrom_id, collect, mtd_probe,
-         scsi_id, v4l_id, udevadm 和 udevd</seg>
+        <seg>bootctl, busctl, halt, hostnamectl, init, journalctl, kernel-install,
+        localectl, loginctl, machinectl, poweroff, reboot, runlevel, shutdown,
+        systemctl, systemd-analyze, systemd-ask-password, systemd-cat, systemd-cgls,
+        systemd-cgtop, systemd-coredumpctl, systemd-delta, systemd-detect-virt,
+        systemd-inhibit, systemd-machine-id-setup, systemd-notify, systemd-nspawn,
+        systemd-run, systemd-stdio-bridge, systemd-tmpfiles, systemd-tty-ask-password-agent,
+        telinit, timedatectl 和 udevadm</seg>
 
-        <seg>libudev.so</seg>
-
-        <seg>/etc/udev, /lib/udev, /lib/firmware, /usr/share/doc/udev</seg>
+        <seg>libnss_myhostname.so.2, libsystemd.so, libudev.so</seg>
+        <seg>/etc/binfmt.d, /etc/init.d, /etc/kernel, /etc/modules-load.d,
+        /etc/sysctl.d, /etc/systemd, /etc/tmpfiles.d, /etc/udev,
+        /etc/xdg/systemd, /lib/systemd, /lib/udev, /usr/include/systemd,
+        /usr/lib/binfmt.d, /usr/lib/kernel, /usr/lib/modules-load.d,
+        /usr/lib/sysctl.d, /usr/lib/systemd, /usr/lib/tmpfiles.d,
+        /usr/share/doc/systemd-&systemd-version;, /usr/share/systemd,
+        /var/lib/systemd, /var/log/journal</seg>
       </seglistitem>
     </segmentedlist>
 
@@ -112,45 +210,342 @@ unset LD_LIBRARY_PATH</userinput></screen>
       <?dbfo list-presentation="list"?>
       <?dbhtml list-presentation="table"?>
 
-      <varlistentry id="ata_id">
-        <term><command>ata_id</command></term>
+      <varlistentry id="bootctl">
+        <term><command>bootctl</command></term>
         <listitem>
-          <para>为 Udev 提供一个唯一的字符串和用于 ATA 驱动器的额外信息
-          (uuid, label)</para>
-          <indexterm zone="ch-system-udev ata_id">
-            <primary sortas="b-ata_id">ata_id</primary>
+          <para>用于查询固件和引导管理器设置。</para>
+          <indexterm zone="ch-system-systemd bootctl">
+            <primary sortas="b-bootctl">bootctl</primary>
           </indexterm>
         </listitem>
       </varlistentry>
 
-      <varlistentry id="cdrom_id">
-        <term><command>cdrom_id</command></term>
+      <varlistentry id="busctl">
+        <term><command>busctl</command></term>
         <listitem>
-          <para>为 Udev 提供一个 CD-ROM 或 DVD-ROM 驱动器的功能</para>
-          <indexterm zone="ch-system-udev cdrom_id">
-            <primary sortas="b-cdrom_id">cdrom_id</primary>
+          <para>用于内观和监控 D-Bus 总线。</para>
+          <indexterm zone="ch-system-systemd busctl">
+            <primary sortas="b-busctl">busctl</primary>
           </indexterm>
         </listitem>
       </varlistentry>
 
-      <varlistentry id="collect">
-        <term><command>collect</command></term>
+      <varlistentry id="halt">
+        <term><command>halt</command></term>
         <listitem>
-          <para>赋予当前的 uevent 一个 ID 和一个 IDs 的列表(用于所有的目标 uevents)，
-          注册当前 ID 并指出所有目标 IDs 是否已经注册</para>
-          <indexterm zone="ch-system-udev collect">
-            <primary sortas="b-collect">collect</primary>
+          <para>通常，调用 <command>shutdown</command> 时使用
+          <parameter>-h</parameter> 选项，除了已经在 run-level 0 中外，
+          则它会告诉内核挂起系统；它记录在引导系统关闭的文件 <filename>/var/log/wtmp</filename>。</para>
+          <indexterm zone="ch-system-systemd halt">
+            <primary sortas="b-halt">halt</primary>
           </indexterm>
         </listitem>
       </varlistentry>
 
-      <varlistentry id="scsi_id">
-        <term><command>scsi_id</command></term>
+      <varlistentry id="hostnamectl">
+        <term><command>hostnamectl</command></term>
         <listitem>
-          <para>基于从发送一个 SCSI INQUIRY 命令到指定的设备而返回的数据，
-          为 Udev 提供一个唯一的 SCSI 识别符</para>
-          <indexterm zone="ch-system-udev scsi_id">
-            <primary sortas="b-scsi_id">scsi_id</primary>
+          <para>用于查询和更改系统主机名以及相关的设置。</para>
+          <indexterm zone="ch-system-systemd hostnamectl">
+            <primary sortas="b-hostnamectl">hostnamectl</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="init">
+        <term><command>init</command></term>
+        <listitem>
+          <para>当内核已经初始化硬件时启动的第一个进程，它接管引导进程并启动所有指定它要启动的进程。</para>
+          <indexterm zone="ch-system-systemd init">
+            <primary sortas="b-init">init</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="journalctl">
+        <term><command>journalctl</command></term>
+        <listitem>
+          <para>用于查询 Systemd Journal 的内容。</para>
+          <indexterm zone="ch-system-systemd journalctl">
+            <primary sortas="b-journalctl">journalctl</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="kernel-install">
+        <term><command>kernel-install</command></term>
+        <listitem>
+          <para>用于在 /boot 中添加和删除内核以及 initramfs 镜像。</para>
+          <indexterm zone="ch-system-systemd kernel-install">
+            <primary sortas="b-kernel-install">kernel-install</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="localectl">
+        <term><command>localectl</command></term>
+        <listitem>
+          <para>用于查询和更改系统语言环境和键盘布局设置。</para>
+          <indexterm zone="ch-system-systemd localectl">
+            <primary sortas="b-localectl">localectl</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="loginctl">
+        <term><command>loginctl</command></term>
+        <listitem>
+          <para>用于内视和控制 Systemd 登录管理器状态。</para>
+          <indexterm zone="ch-system-systemd loginctl">
+            <primary sortas="b-loginctl">loginctl</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="machinectl">
+        <term><command>machinectl</command></term>
+        <listitem>
+          <para>用于内视并控制 Systemd 虚拟机和容器注册管理器的状态</para>
+          <indexterm zone="ch-system-systemd machinectl">
+            <primary sortas="b-machinectl">machinectl</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="poweroff">
+        <term><command>poweroff</command></term>
+        <listitem>
+          <para>告诉内核挂起系统并关闭计算机开关
+          (参阅 <command>halt</command>)。</para>
+          <indexterm zone="ch-system-systemd poweroff">
+            <primary sortas="b-poweroff">poweroff</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="reboot">
+        <term><command>reboot</command></term>
+        <listitem>
+          <para>告诉内核重启系统
+          (参阅 <command>halt</command>)。</para>
+          <indexterm zone="ch-system-systemd reboot">
+            <primary sortas="b-reboot">reboot</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="runlevel">
+        <term><command>runlevel</command></term>
+        <listitem>
+          <para>报告先前和当前的运行级别，正如 <filename>/var/run/utmp</filename> 中的最后的运行级别记录所记。</para>
+          <indexterm zone="ch-system-systemd runlevel">
+            <primary sortas="b-runlevel">runlevel</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="shutdown">
+        <term><command>shutdown</command></term>
+        <listitem>
+          <para>以安全的方式引导系统关闭，向所有的进程发送信号并通知所有已登录的用户。</para>
+          <indexterm zone="ch-system-systemd shutdown">
+            <primary sortas="b-shutdown">shutdown</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="systemctl">
+        <term><command>systemctl</command></term>
+        <listitem>
+          <para>用于内视和控制 Systemd 系统和服务管理器的状态。</para>
+          <indexterm zone="ch-system-systemd systemctl">
+            <primary sortas="b-systemctl">systemctl</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="systemd-analyze">
+        <term><command>systemd-analyze</command></term>
+        <listitem>
+          <para>用于判断当前引导的系统引导性能。
+          </para>
+          <indexterm zone="ch-system-systemd systemd-analyze">
+            <primary sortas="b-systemd-analyze">systemd-analyze</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="systemd-ask-password">
+        <term><command>systemd-ask-password</command></term>
+        <listitem>
+          <para>用于使用在命令行中指定的问题消息，向用户询问系统密码或口令。</para>
+          <indexterm zone="ch-system-systemd systemd-ask-password">
+            <primary sortas="b-systemd-ask-password">systemd-ask-password</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="systemd-cat">
+        <term><command>systemd-cat</command></term>
+        <listitem>
+          <para>用于连接一个带有日志功能的进程的 STDOUT 和 STDERR。
+          </para>
+          <indexterm zone="ch-system-systemd systemd-cat">
+            <primary sortas="b-systemd-cat">systemd-cat</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="systemd-cgls">
+        <term><command>systemd-cgls</command></term>
+        <listitem>
+          <para>在一个树状视图中递归的显示选择的 Linux 控制组分层的内容。</para>
+          <indexterm zone="ch-system-systemd systemd-cgls">
+            <primary sortas="b-systemd-cgls">systemd-cgls</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="systemd-cgtop">
+        <term><command>systemd-cgtop</command></term>
+        <listitem>
+          <para>显示本地 Linux 控制组分层的顶级控制组，按它们的 CPU、内存和磁盘 I/O 负载排序。</para>
+          <indexterm zone="ch-system-systemd systemd-cgtop">
+            <primary sortas="b-systemd-cgtop">systemd-cgtop</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="systemd-coredumpctl">
+        <term><command>systemd-coredumpctl</command></term>
+        <listitem>
+          <para>用于从系统日志中检索核心转储</para>
+          <indexterm zone="ch-system-systemd systemd-coredumpctl">
+            <primary sortas="b-systemd-coredumpctl">systemd-coredumpctl</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="systemd-delta">
+        <term><command>systemd-delta</command></term>
+        <listitem>
+          <para>用于识别和比较在
+          <filename class="directory">/etc</filename> 中覆盖了
+          <filename class="directory">/usr</filename> 中默认部分的配置文件。</para>
+          <indexterm zone="ch-system-systemd systemd-delta">
+            <primary sortas="b-systemd-delta">systemd-delta</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="systemd-detect-virt">
+        <term><command>systemd-detect-virt</command></term>
+        <listitem>
+          <para>探测在一个虚拟环境中的执行。</para>
+          <indexterm zone="ch-system-systemd systemd-detect-virt">
+            <primary sortas="b-systemd-detect-virt">systemd-detect-virt</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="systemd-inhibit">
+        <term><command>systemd-inhibit</command></term>
+        <listitem>
+          <para>用于执行一个采取了关机、休眠或空闲抑制锁定的程序。</para>
+          <indexterm zone="ch-system-systemd systemd-inhibit">
+            <primary sortas="b-systemd-inhibit">systemd-inhibit</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="systemd-machine-id-setup">
+        <term><command>systemd-machine-id-setup</command></term>
+        <listitem>
+          <para>被系统安装程序工具用于在安装的时候，使用一个随机生成的 ID 来初始化存储在
+          <filename>/etc/machine-id</filename> 中的机器 ID。</para>
+          <indexterm zone="ch-system-systemd systemd-machine-id-setup">
+            <primary sortas="b-systemd-machine-id-setup">systemd-machine-id-setup</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="systemd-notify">
+        <term><command>systemd-notify</command></term>
+        <listitem>
+          <para>被值守后台脚本用于通知关于状态变化的 init 系统。</para>
+          <indexterm zone="ch-system-systemd systemd-notify">
+            <primary sortas="b-systemd-notify">systemd-notify</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="systemd-nspawn">
+        <term><command>systemd-nspawn</command></term>
+        <listitem>
+          <para>用于在一个轻量级的命名空间容器中运行一个命令或者操作系统。</para>
+          <indexterm zone="ch-system-systemd systemd-nspawn">
+            <primary sortas="b-systemd-nspawn">systemd-nspawn</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="systemd-run">
+        <term><command>systemd-run</command></term>
+        <listitem>
+          <para>用于创建和启动一个短暂的 .service 或 a .scope 单元并在其中运行指定的命令。</para>
+          <indexterm zone="ch-system-systemd systemd-run">
+            <primary sortas="b-systemd-run">systemd-run</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+<!--      <varlistentry id="systemd-stdio-bridge">
+        <term><command>systemd-stdio-bridge</command></term>
+        <listitem>
+          <para>To be completed</para>
+          <indexterm zone="ch-system-systemd systemd-stdio-bridge">
+            <primary sortas="b-systemd-stdio-bridge">systemd-stdio-bridge</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry> -->
+
+      <varlistentry id="systemd-tmpfiles">
+        <term><command>systemd-tmpfiles</command></term>
+        <listitem>
+          <para>基于在 <filename class="directory">tmpfiles.d</filename> 目录中指定的配置文件格式和位置，
+          创建、删除和清理孤立和临时文件和目录。</para>
+          <indexterm zone="ch-system-systemd systemd-tmpfiles">
+            <primary sortas="b-systemd-tmpfiles">systemd-tmpfiles</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="systemd-tty-ask-password-agent">
+        <term><command>systemd-tty-ask-password-agent</command></term>
+        <listitem>
+          <para>用于列出或处理未完成的 Systemd 密码请求</para>
+          <indexterm zone="ch-system-systemd systemd-tty-ask-password-agent">
+            <primary sortas="b-systemd-tty-ask-password-agent">systemd-tty-ask-password-agent</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="telinit">
+        <term><command>telinit</command></term>
+        <listitem>
+          <para>告知 <command>init</command> 要更改到运行级别。</para>
+          <indexterm zone="ch-system-systemd telinit">
+            <primary sortas="b-telinit">telinit</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="timedatectl">
+        <term><command>timedatectl</command></term>
+        <listitem>
+          <para>用于查询和更改系统始终及其设置。</para>
+          <indexterm zone="ch-system-systemd timedatectl">
+            <primary sortas="b-timedatectl">timedatectl</primary>
           </indexterm>
         </listitem>
       </varlistentry>
@@ -158,19 +553,19 @@ unset LD_LIBRARY_PATH</userinput></screen>
       <varlistentry id="udevadm">
         <term><command>udevadm</command></term>
         <listitem>
-          <para>一般 udev 管理工具: 控制 udevd 后台程序，提供来自 Udev 数据库的信息，监控 uevents，等待 uevents 完成，测试 Udev 配置并触发给定设备的 uevents</para>
-          <indexterm zone="ch-system-udev udevadm">
+          <para>一般 Udev 管理工具: 控制 udevd 后台程序，提供来自 Udev 数据库的信息，监控 uevents，等待 uevents 完成，测试 Udev 配置并触发给定设备的 uevents。</para>
+          <indexterm zone="ch-system-udev systemd">
             <primary sortas="b-udevadm">udevadm</primary>
           </indexterm>
         </listitem>
       </varlistentry>
 
-      <varlistentry id="udevd">
-        <term><command>udevd</command></term>
+      <varlistentry id="libsystemd">
+        <term><filename class="libraryfile">libsystemd</filename></term>
         <listitem>
-          <para>一个监控 netlink 套接字上的 uevents 的后台程序，创建设备并运行配置的外部程序来响应这些 uevents</para>
-          <indexterm zone="ch-system-udev udevd">
-            <primary sortas="b-udevd">udevd</primary>
+          <para>Systemd 工具库。</para>
+          <indexterm zone="ch-system-systemd libsystemd">
+            <primary sortas="c-libsystemd">libsystemd</primary>
           </indexterm>
         </listitem>
       </varlistentry>
@@ -178,19 +573,9 @@ unset LD_LIBRARY_PATH</userinput></screen>
       <varlistentry id="libudev">
         <term><filename class="libraryfile">libudev</filename></term>
         <listitem>
-          <para>一个为 udev 设备信息的提供接口的库</para>
-          <indexterm zone="ch-system-udev libudev">
+          <para>一个访问 Udev 设备信息的库。</para>
+          <indexterm zone="ch-system-systemd libudev">
             <primary sortas="c-libudev">libudev</primary>
-          </indexterm>
-        </listitem>
-      </varlistentry>
-
-      <varlistentry id="etc-udev">
-        <term><filename class="directory">/etc/udev</filename></term>
-        <listitem>
-          <para>包含 Udev 配置文件、设备权限和设备命名的规则</para>
-          <indexterm zone="ch-system-udev etc-udev">
-            <primary sortas="e-/etc/udev">/etc/udev</primary>
           </indexterm>
         </listitem>
       </varlistentry>

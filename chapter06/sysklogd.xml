@@ -40,6 +40,10 @@
   <sect2 role="installation">
     <title>Sysklogd 的安装</title>
 
+    <para>首先，修复一个在 klogd 中的在某些条件下导致一个段错误的问题:</para>
+
+<screen><userinput remap="pre">sed -i '/Error loading kernel symbols/{n;n;d}' ksym_mod.c</userinput></screen>
+
     <para>编译包:</para>
 
 <screen><userinput remap="make">make</userinput></screen>

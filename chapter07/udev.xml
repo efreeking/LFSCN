@@ -8,14 +8,14 @@
 <sect1 id="ch-scripts-udev">
   <?dbhtml filename="udev.html"?>
 
-  <title>LFS 系统上的设备和模块处理</title>
+  <title>设备和模块处理的概述</title>
 
   <indexterm zone="ch-scripts-udev">
     <primary sortas="a-Udev">Udev</primary>
     <secondary>用法</secondary>
   </indexterm>
 
-  <para>在<xref linkend="chapter-building-system"/>中，我们安装了 Udev 包。在我们深入探讨它如何工作之前，先按顺序回顾一下处理设备的原先办法的简单历史。</para>
+  <para>在<xref linkend="chapter-building-system"/>中，我们将会在构建 eudev 时安装 Udev 包。在我们深入探讨它如何工作之前，先按顺序回顾一下处理设备的原先办法的简单历史。</para>
 
   <para>Linux 系统一般而言，按传统使用一个静态的设备创建方式，凭借着 <filename
   class="directory">/dev</filename> 下创建的大量的设备节点(有些时候是成千上万个节点)，而无论相应的硬件设备实际上是否存在。这通常是通过一个 <command>MAKEDEV</command> 脚本来完成的，它包含大量对 <command>mknod</command> 程序的调用，并带上可能存在于世界上的每个可能的设备的有关主要和次要设备号。</para>
@@ -34,7 +34,7 @@
     class="filesystem">devfs</systemitem> 文件系统还受到“竞争条件”(race conditions)的问题，这是其设计中固有的缺陷，不对内核进行大规模的修正是无法修复的。由于时间太长，它被标记为“deprecated”(不赞成)&ndash;由于缺乏维护&ndash; 并最终在 2006年6月从内核中删除。</para>
 
     <para>随着不稳定的 2.5 内核树的开发，之后发布为 2.6 系列的稳定内核，一个称为 <systemitem class="filesystem">sysfs</systemitem> 的新虚拟文件系统诞生了。
-    <systemitem class="filesystem">sysfs</systemitem> 的工作是导出一个系统硬件配置的视图到用户空间的进程。使用这种用户空间可见的表现形式，查看 <systemitem class="filesystem">devfs</systemitem> 的用户空间的替代的可能性越来越可行了。</para>
+    <systemitem class="filesystem">sysfs</systemitem> 的工作是导出一个系统硬件配置的视图到用户空间的进程。使用这种用户空间可见的表现形式，开发一个用于 <systemitem class="filesystem">devfs</systemitem> 的用户空间替代的可能性越来越可行了。</para>
 
   </sect2>
 
@@ -69,42 +69,6 @@
       <para>在这三个目录中的规则将会以和 LFS-Bootscripts 包中类似的方式编号，并会合并到一起。
       如果 <command>udevd</command> 不能找到设备创建的规则，它将会保留权限和属主关系为
       <systemitem class="filesystem">devtmpfs</systemitem> 最初使用的情况。</para> </sect3>
-
-    <sect3>
-      <title>Udev 引导脚本</title>
-
-      <para>第一个 LFS 引导脚本，<filename>/etc/init.d/mountvirtfs</filename> 将会复制位于
-      <filename class="directory">/lib/udev/devices</filename> 的任意设备到
-      <filename class="directory">/dev</filename>。这是必需的，因为在引导系统的早期阶段，在动态设备处理进程可用之前，需要某些设备、目录和符号链接，或者是 <command>udevd</command> 自身需要。
-      在 <filename class="directory">/lib/udev/devices</filename> 中创建静态设备节点也为不被动态设备处理结构所支持的设备提供了一种简单的变通方案。</para>
-
-      <para><filename>/etc/rc.d/init.d/udev</filename> 初始脚本启动
-      <command>udevd</command>，触发任何已经由内核创建的 "coldplug" 设备，并等待任何规则来完成。
-      脚本还从 <filename>/sbin/hotplug </filename> 的默认中取消设置(unset)了 uevent 句柄。
-      这样做是因为内核不再需要调用一个外部二进制。
-      相反，<command>udevd</command> 将会在一个 netlink 套接字上监听内核引起的 uevents。</para>
-
-      <para><command>/etc/rc.d/init.d/udev_retry</command> 初始脚本照顾那些其规则可能依赖于在 <command>mountfs</command>
-      脚本运行前还未装载的文件系统的子系统的重新触发事件(特别是, <filename class="directory">/usr</filename>
-      和 <filename class="directory">/var</filename> 可能会导致这个)。
-      这个脚本在 <command>mountfs</command> 脚本之后运行，以便那些规则(如果被重新触发)应该可以在第二次成功。
-      它是从 <filename>/etc/sysconfig/udev_retry</filename> 文件配置的;在这个文件中的任何词组，除了注释外都会被视为在重试时要触发的子系统的名称。
-      要查找一个设备的子系统名称，使用
-      <command>udevadm info --attribute-walk &lt;device&gt;</command> 其中
-      &lt;device&gt; 是在 /dev 或 /sys 中的一个绝对路径，譬如 /dev/sr0 或 /sys/class/rtc。</para>
-
-    </sect3>
-
-    <sect3>
-      <title>设备节点创建</title>
-
-      <para>要获取一个设备的正确的主和次设备号，Udev 依靠由 <filename class="directory">/sys</filename> 中的 <systemitem class="filesystem">sysfs</systemitem>
-      提供的信息。例如，<filename>/sys/class/tty/vcs/dev</filename> 包含字符串 <quote>7:0</quote>。这个字符串是 <command>udevd</command> 用来创建一个主设备号为 <emphasis>7</emphasis> 次设备号为 <emphasis>0</emphasis> 的设备节点。在 <filename class="directory">/dev</filename> 目录下创建的节点的名称和权限由 <filename
-      class="directory">/etc/udev/rules.d/</filename> 目录中的文件中指定的规则决定。这些是以类似 LFS-Bootscripts 包的风格进行编号。如果
-      <command>udevd</command> 找不到用于它正在创建的设备的规则，它将默认设置权限为 <emphasis>660</emphasis> 和所有者关系为 <emphasis>root:root</emphasis>。 Udev 规则配置文件的语法的文档可以在 <filename>/usr/share/doc/udev-&udev-version;/writing_udev_rules/index.html</filename> 找到。
-      </para>
-
-    </sect3>
 
     <sect3>
       <title>模块加载</title>
@@ -195,16 +159,6 @@
       <para>这可能是上一个问题的另一个表现形式。如果不是，而且您的规则使用 <systemitem class="filesystem">sysfs</systemitem> 属性，它可能是内核计时问题，要在以后的内核中修复。而现在，您可以通过创建一个等待使用
       <systemitem class="filesystem">sysfs</systemitem> 属性的规则并附加它到 <filename>/etc/udev/rules.d/10-wait_for_sysfs.rules</filename>
       文件(如果不存在则创建这个文件)。如果您这样做或者是有帮助的话，请通知 LFS 开发列表。</para>
-
-    </sect3>
-
-    <sect3>
-      <title>Udev 不创建设备</title>
-
-      <para>后面的文本假设驱动器是静态构建到内核中，或者已加载为一个模块，而且您已经检查了 Udev 没有创建错误命名的设备。</para>
-
-      <para>如果一个内核驱动程序没有导出它的数据到 <systemitem
-      class="filesystem">sysfs</systemitem>，那么 Udev 就没有所需的信息创建设备节点。这个最常见的是来自内核树意外的第三方驱动程序。在 <filename>/lib/udev/devices</filename> 中使用恰当的主/次设备号创建静态设备节点(查看内核文档中的 <filename>devices.txt</filename> 或由第三方驱动程序供应商提供的文档)。静态设备节点将会由 <command>udev</command> 引导脚本复制到 <filename class="directory">/dev</filename>。</para>
 
     </sect3>
 

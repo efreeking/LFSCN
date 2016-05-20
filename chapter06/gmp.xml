@@ -49,7 +49,9 @@
 
     <para>准备 GMP 编译:</para>
 
-<screen><userinput remap="configure">./configure --prefix=/usr --enable-cxx</userinput></screen>
+<screen><userinput remap="configure">./configure --prefix=/usr \
+            --enable-cxx  \
+            --docdir=/usr/share/doc/gmp-&gmp-version;</userinput></screen>
 
     <variablelist>
       <title>新配置选项的含义:</title>
@@ -61,11 +63,20 @@
         </listitem>
       </varlistentry>
 
+      <varlistentry>
+        <term><parameter>--docdir=/usr/share/doc-gmp&gmp-version;</parameter></term>
+        <listitem>
+          <para>这个变量指定了文档的正确位置。
+          </para>
+        </listitem>
+      </varlistentry>
+
     </variablelist>
 
-    <para>编译包:</para>
+    <para>编译包并生成 HTML 文档:</para>
 
-<screen><userinput remap="make">make</userinput></screen>
+<screen><userinput remap="make">make
+make html</userinput></screen>
 
     <important>
       <para>在本节中的 GMP 测试套装被视为是紧要的。
@@ -76,20 +87,15 @@
 
 <screen><userinput remap="test">make check 2>&amp;1 | tee gmp-check-log</userinput></screen>
 
-    <para>确保在测试套装中的所有 185 个测试全部通过。
+    <para>确保在测试套装中的所有 188 个测试全部通过。
     通过执行下列命令检查结果:</para>
 
 <screen><userinput remap="test">awk '/tests passed/{total+=$2} ; END{print total}' gmp-check-log</userinput></screen>
 
-    <para>安装包:</para>
+    <para>安装包及其文档:</para>
 
-<screen><userinput remap="install">make install</userinput></screen>
-
-    <para>如果需要的话，安装文档:</para>
-
-<screen><userinput remap="install">mkdir -v /usr/share/doc/gmp-&gmp-version;
-cp    -v doc/{isa_abi_headache,configuration} doc/*.html \
-         /usr/share/doc/gmp-&gmp-version;</userinput></screen>
+<screen><userinput remap="install">make install
+make install-html</userinput></screen>
 
   </sect2>
 

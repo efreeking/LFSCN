@@ -20,66 +20,18 @@
   class="directory">/etc/rc.d/rc*.d</filename>)中删除 <filename class="symlink">network</filename>
 符号链接。</para>
 
-  <sect2 id='stable-net-names'>
-    <title>为网络接口创建固定的名称</title>
-
-    <para>如果在系统中只有一个网络接口需要配置，那么本节是可选阅读的，当然这样做永不出错。
-    在许多情况下，(如带有无线接口和有线接口的笔记本)，完成本节中的配置就很必要了。</para>  
-
-    <para>利用 Udev 和模块化网络驱动程序，网络接口编号按默认在每次重启后是不连续的，因为驱动程序是并行加载的，也就是说由此而以随机顺序加载。例如，在一台有 2 个由 Intel 和 Realtek 制作的网卡，由 Intel 制作的网卡会变成 <filename class="devicefile">eth0</filename> 而 Realtek 卡会变成 <filename class="devicefile">eth1</filename>。在某些情况下，在重启后，网卡会以其它的方式重新编号。为了避免这样的问题，Udev 附带了一个脚本和某些规则来基于网卡的 MAC 地址给它们指派固定的名称。</para>
-
-    <para>在最后的章节中，在构建指令中为
-    <application>udev (systemd)</application> 预生成了规则。
-    观察 <filename>/etc/udev/rules.d/70-persistent-net.rules</filename> 文件，
-    找出哪个名称被分配给哪个网络设备:</para>
-
-<screen role="nodump"><userinput>cat /etc/udev/rules.d/70-persistent-net.rules</userinput></screen>
-
-    <note><para>在某些情况下，譬如当 MAC 地址被手动分配给一个网卡，
-    或者在一个如 Xen 之类的虚拟环境中时，
-    网络规则文件可能因为地址没有统一的分配而未生成。
-    在这样的情况下，秩序继续下一部分。</para></note>
-
-    <para>文件以一个注释块开始，紧接着时每个网卡的两行。每个网卡的第一行是显示它的硬件 ID (例如，如果是 PCI 卡的话，则它的 PCI 制造商和设备 ID)的注释式描述，伴随着是在圆括号中的它的驱动程序(如果找到驱动程序的话)。不管硬件 ID 还是驱动程序都不会用于判断赋予接口的名称；这个信息仅用于参考。第二行是匹配这个网卡的 Udev 规则和实际分配给它的名称。</para>
-
-    <para>所有 Udev 规则都由几个键组成，用逗号或可选择用空格隔开。这个规则的键和每个键的说明如下:</para>
-
-    <itemizedlist>
-      <listitem>
-        <para><literal>SUBSYSTEM=="net"</literal> - 这个告诉 Udev 忽略不是网卡的设备。</para>
-      </listitem>
-      <listitem>
-        <para><literal>ACTION=="add"</literal> - 这个告诉 Udev 忽略不是“add”(添加)的 uevent 的规则(“remove”(删除)和“change”(更改) uevents 也会发生，但是不想要重命名网络接口)。</para>
-      </listitem>
-      <listitem>
-        <para><literal>DRIVERS=="?*"</literal> - 这个存在以便 Udev 将会忽略 VLAN 或 bridge (桥)子接口
-        (因为这些子接口没有驱程)。这些子接口被跳过是因为分配的名称和它们的父设备有冲突。</para>
-      </listitem>
-      <listitem>
-        <para><literal>ATTR{address}</literal> - 该键的值是网卡的 MAC 地址。</para>
-      </listitem>
-      <listitem>
-        <para><literal>ATTR{type}=="1"</literal> - 这个确保规则仅匹配在特定无线驱动程序的情况(会创建多个虚拟接口)中的主接口。次接口会基于和 VLAN 和 桥 子接口同样的原因而被跳过: 否则会有命名冲突。</para>
-      </listitem>
-      <listitem>
-        <para><literal>KERNEL=="eth*"</literal> - 这个键会被添加到
-        Udev 规则生成器，以处理有多个具有同一 MAC 地址的网络接口的机器(PS3 就是这样的机器)。如果独立的接口有不同的基本名称，这个键将会让 Udev 告诉它们分开。这通常对于大多数 LFS 用户来说都不是必需的，但是也没有伤害。</para>
-      </listitem>
-      <listitem>
-        <para><literal>NAME</literal> - 这个键的值就是 Udev 将会分配给这个接口的名称。</para>
-      </listitem>
-    </itemizedlist>
-
-    <para><literal>NAME</literal> 的值是重要的部分。在继续前，确保您知道分配给您的每个网卡的名称，并确保在下面创建您的配置文件的时候，使用这个 <literal>NAME</literal> 值。</para>
-
-  </sect2>
-
   <sect2>
     <title>创建网络接口配置文件</title>
 
-    <para>由 network 脚本根据 <filename class="directory">/etc/sysconfig/</filename> 中的文件判断开启哪个接口，关闭哪个接口。这个目录应该包含要配置的每个接口的一个文件，譬如
-    <filename>ifconfig.xyz</filename>，其中 <quote>xyz</quote> 是对管理员有意义的，譬如设备名(如 eth0)。
-    在这个文件中是这个接口的属性，譬如它的 IP 地址、子网掩码等。这是被 <emphasis>ifconfig</emphasis> 的文件名的主干。</para>
+    <para>开启哪个接口，关闭哪个接口通常由 network 脚本根据 <filename class="directory">/etc/sysconfig/</filename> 中的文件判断。这个目录应该包含要配置的每个接口的一个文件，譬如
+    <filename>ifconfig.xyz</filename>，其中 <quote>xyz</quote> 必须是一个网卡接口名称(如 eth0)。
+    在这个文件内是这个接口的属性，譬如它的 IP 地址、子网掩码诸如此类。
+    文件名的主干必须是 <emphasis>ifconfig</emphasis>。</para>
+ 
+    <note><para>如果在先前部分中的过程没有使用，Udev 将会给予系统物理特征指派网卡接口名称，譬如 enp2s1。
+    如果您不确定您的接口名称，您总可以在您引导您的系统后运行 <command>ip link</command>。
+    再次说明，在正确的网卡接口名称后命名为 ifconfig.xyz (如 ifconfig.enp2s1 或 ifconfig.eth0)
+    是很重要的，否则您的网络接口在引导的过程中将不能初始化。</para></note>
 
     <para>下列命令创建用于带有固定 IP 地址的 <emphasis>eth0</emphasis> 设备的一个示例文件:</para>
 
@@ -88,15 +40,15 @@ cat &gt; ifconfig.eth0 &lt;&lt; "EOF"
 <literal>ONBOOT=yes
 IFACE=eth0
 SERVICE=ipv4-static
-IP=192.168.1.1
-GATEWAY=192.168.1.2
+IP=192.168.1.2
+GATEWAY=192.168.1.1
 PREFIX=24
 BROADCAST=192.168.1.255</literal>
 EOF</userinput></screen>
 
     <para>在每个文件中的这些变量的值必须做出修改以匹配正确的设置。</para>
 
-    <para>如果 <envar>ONBOOT</envar> 变量被设置为 <quote>yes</quote>，网络脚本将会在系统引导时开启网卡(NIC)。如果设置为 <quote>yes</quote> 以外的其它值，网卡将会被网络脚本忽略而不会自动开启。接口也可以通过使用
+    <para>如果 <envar>ONBOOT</envar> 变量被设置为 <quote>yes</quote>，System V 网络脚本将会在系统引导时开启网卡(NIC)。如果设置为 <quote>yes</quote> 以外的其它值，网卡将会被网络脚本忽略而不会自动开启。接口也可以通过使用
     <command>ifup</command> 和 <command>ifdown</command> 命令手动开启和关闭。</para>
 
     <para><envar>IFACE</envar> 变量定义接口名称。例如 eth0。这是所有网络设备配置文件所需的。</para>
@@ -111,7 +63,54 @@ EOF</userinput></screen>
     <para>要获取更多信息，参阅 <command>ifup</command> 手册页。</para>
 
   </sect2>
+<!--
+  <sect2 id="systemd-net-enable">
+    <title>在引导 (systemd) 时配置网络接口卡</title>
 
+    <para>在 systemd 中启用网络接口卡配置是针对每个接口完成的。要在引导时启用网络接口卡配置，运行:</para>
+
+<screen><userinput>systemctl enable ifupdown@eth0</userinput></screen>
+
+    <para>要在引导时禁用先前启用的网络接口卡配置，运行:</para>
+
+<screen role="nodump"><userinput>systemctl disable ifupdown@eth0</userinput></screen>
+
+    <para>要手动启动网络接口卡配置，运行:</para>
+
+<screen role="nodump"><userinput>systemctl start ifupdown@eth0</userinput></screen>
+
+    <para>替换 eth0 为如本页开始所述的正确的网络接口卡名称。</para>
+
+    <note><para>这些过程需要在上一节中所指定的配置文件。</para></note>
+
+    <note><para>网卡也可以使用传统的 <command>ifup &lt;设备&gt;</command> 或
+    <command>ifdown &lt;设备&gt;</command> 命令启动和停止。</para></note>
+
+  </sect2>
+
+  <sect2 id="systemd2-net-enable">
+    <title>配置 systemd-networkd 的网络接口卡</title>
+
+    <para>当使用 systemd 引导时，配置 NIC 的一个备选的方式就是创建一个能够被 systemd-networkd 后台值守程序识别的配置文件。
+    要配置设备，创建一个类似这样的文件:</para>
+
+<screen role="nodump"><userinput>cat &gt; /etc/systemd/network/10-static-eth0.network &lt;&lt; "EOF"
+[Match]
+Name=eth0
+
+[Network]
+Address=192.168.0.2/24
+Gateway=192.168.0.1
+EOF</userinput></screen>
+
+    <para>如果需要的话，你可以使用多个 .network 文件。你也可以指定
+    DHCP=yes 来代替 Address（地址）和 Gateway （网关）设置。查看
+    systemd.network 的手册页了解更多细节。</para>
+
+    <note><para>如果使用这个方法，确保禁用如上一节中所述的 ifupdown@eth0 (如果它是启用状态的话)。</para></note>
+
+  </sect2>
+-->
   <sect2 id="resolv.conf">
     <title>创建 /etc/resolv.conf 文件</title>
 
@@ -138,5 +137,88 @@ EOF</userinput></screen>
     <note><para>Google 公共 IPv4 DNS 地址是 8.8.8.8 和 8.8.4.4。</para></note>
 
   </sect2>
+
+  <sect2 id="ch-scripts-hostname">
+    <title>配置系统主机名</title>
+
+    <indexterm zone="ch-scripts-hostname">
+      <primary sortas="d-hostname">hostname</primary>
+      <secondary>configuring</secondary>
+    </indexterm>
+
+     <para>在引导过程中，文件 <filename>/etc/hostname</filename> 来用于建立系统的主机名的。</para>
+
+     <para>通过运行下面命令创建 <filename>/etc/hostname</filename> 文件并输入一个主机名:</para>
+
+<screen><userinput>echo "<replaceable>&lt;lfs&gt;</replaceable>" &gt; /etc/hostname</userinput></screen>
+
+     <para><replaceable>&lt;lfs&gt;</replaceable> 需要被替换为赋予计算机的名称。不要在这里输入“完全合格的域名”
+     Fully Qualified Domain Name (FQDN)。信息会被放在 <filename>/etc/hosts</filename> 文件中。</para>
+
+  </sect2>
+
+  <sect2 id="ch-scripts-hosts">
+     <title>定制 /etc/hosts 文件</title>
+
+     <indexterm zone="ch-scripts-hosts">
+       <primary sortas="e-/etc/hosts">/etc/hosts</primary>
+     </indexterm>
+   
+     <indexterm zone="ch-scripts-hosts">
+       <primary sortas="d-localnet">localnet</primary>
+       <secondary>/etc/hosts</secondary>
+     </indexterm>
+   
+     <indexterm zone="ch-scripts-hosts">
+       <primary sortas="d-network">network</primary>
+       <secondary>/etc/hosts</secondary>
+     </indexterm>
+   
+     <para>根据 IP 地址，可以在 <filename>/etc/hosts</filename> 文件中使用完全合格的域名(FQDN)，并可以是别名。
+     语法是:</para>
+   
+<screen><literal>IP_address myhost.example.org aliases</literal></screen>
+
+     <para>除非计算机可以在互联网上可见(也就是说，有一个注册的域名，并且一个有效的分配的 IP 地址块&mdash;大多数用户没有这个)，
+     确保 IP 地址是在个人网络 IP 地址范围内。有效范围:</para>
+
+<screen><literal>个人网络地址范围      网络前缀
+10.0.0.1 - 10.255.255.254           8
+172.x.0.1 - 172.x.255.254           16
+192.168.y.1 - 192.168.y.254         24</literal></screen>
+
+     <para>x 可以是在 16-31 范围内的任何数字。y 可以是 0-255 范围内的任何数字。</para>
+   
+     <para>一个有效的个人 IP 地址可以是 192.168.1.1。这个 IP 的有效 FQDN 可以是 lfs.example.org。</para>
+   
+     <para>即使没有使用网卡，仍需要一个有效的 FQDN。这是特定程序正确操作所需的。</para>
+   
+     <para>通过运行命令创建 <filename>/etc/hosts</filename> 文件:</para>
+
+<screen><userinput>cat &gt; /etc/hosts &lt;&lt; "EOF"
+<literal># Begin /etc/hosts (network card version)
+
+127.0.0.1 localhost
+<replaceable>&lt;192.168.1.1&gt;</replaceable> <replaceable>&lt;HOSTNAME.example.org&gt;</replaceable> <replaceable>[alias1] [alias2 ...]</replaceable>
+
+# End /etc/hosts (network card version)</literal>
+EOF</userinput></screen>
+
+     <para><replaceable>&lt;192.168.1.1&gt;</replaceable> 和
+     <replaceable>&lt;HOSTNAME.example.org&gt;</replaceable> 值需要为特定的用户或要求而更改
+     (如果由网络/系统管理员指派了一个 IP 地址，那么机器将可以连接到已有的网络)。
+     可选的别名可以缺省。</para>
+   
+     <para>如果一个网卡不准备配置，那么通过运行以下命令创建 <filename>/etc/hosts</filename> 文件:</para>
+
+<screen role="nodump"><userinput>cat &gt; /etc/hosts &lt;&lt; "EOF"
+<literal># Begin /etc/hosts (no network card version)
+
+127.0.0.1 <replaceable>&lt;HOSTNAME.example.org&gt;</replaceable> <replaceable>&lt;HOSTNAME&gt;</replaceable> localhost
+
+# End /etc/hosts (no network card version)</literal>
+EOF</userinput></screen>
+
+   </sect2>
 
 </sect1>

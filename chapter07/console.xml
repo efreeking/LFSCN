@@ -16,11 +16,14 @@
   </indexterm>
 
   <para>本节讨论如何配置 <command>console</command>
-  引导脚本设置键盘映射，控制台字体和控制台内核日志级别。
+  引导脚本设置键映射，控制台字体和控制台内核日志级别。
   如果非 ASCII 字符(如版权符号、英国磅的符号和欧元符号)
   将不会被使用而且键盘是美式的话，本节的大部分可以跳过。
   没有配置文件的话，(或者在 <filename>rc.site</filename> 中的等价设置的话)，
   <command>console</command> 引导脚本将不会做任何操作。</para>
+
+  <sect2 id="ch-scripts-sysv-console">
+    <title>System V</title>
 
   <para><command>console</command> 脚本读取
   <filename>/etc/sysconfig/console</filename> 文件用于配置信息。
@@ -45,14 +48,14 @@
     <varlistentry>
       <term>KEYMAP</term>
       <listitem>
-        <para>这个变量指定用于 <command>loadkeys</command> 程序的参数，一般的是要加载的键盘映射的名称，如 <quote>es</quote>。如果这个变量不设置，引导脚本将不会运行 <command>loadkeys</command> 程序，并将使用默认的内核键盘映射。</para>
+        <para>这个变量指定用于 <command>loadkeys</command> 程序的参数，一般的是要加载的键映射的名称，如 <quote>es</quote>。如果这个变量不设置，引导脚本将不会运行 <command>loadkeys</command> 程序，并将使用默认的内核键映射。</para>
       </listitem>
     </varlistentry>
 
     <varlistentry>
       <term>KEYMAP_CORRECTIONS</term>
       <listitem>
-        <para>这个(很少用到)变量指定用于 <command>loadkeys</command> 程序第二次调用的参数。这个是在如果提供的键盘映射不能完全令人满意并且需要做出小调整。如要包含欧元符号到一个通常不会包含的键盘映射中，设置这个变量为 <quote>euro2</quote>。</para>
+        <para>这个(很少用到)变量指定用于 <command>loadkeys</command> 程序第二次调用的参数。这个是在如果提供的键映射不能完全令人满意并且需要做出小调整。如要包含欧元符号到一个通常不会包含的键映射中，设置这个变量为 <quote>euro2</quote>。</para>
       </listitem>
     </varlistentry>
 
@@ -62,7 +65,7 @@
         <para>这个变量指定 <command>setfont</command> 程序的参数。通常，这个包含字体的名称、<quote>-m</quote> 和要加载的应用程序字符映射的名称。如为了加载 <quote>lat1-16</quote> 字体连同 <quote>8859-1</quote> 应用程序字符映射一起(因为这在美国是适用的)，
         <!-- because of the copyright sign -->
         设置这个变量为 <quote>lat1-16 -m 8859-1</quote>。
-        在 UTF-8 模式中，内核使用应用程序字符映射来转换键盘映射中的 8 位键代码为 UTF-8，并由此应该设置“-m”参数的实参为键盘映射中组合键代码的编码。</para>
+        在 UTF-8 模式中，内核使用应用程序字符映射来转换键映射中的 8 位键代码为 UTF-8，并由此应该设置“-m”参数的实参为键映射中组合键代码的编码。</para>
 
       </listitem>
     </varlistentry>
@@ -78,7 +81,7 @@
     <varlistentry>
       <term>LEGACY_CHARSET</term>
       <listitem>
-        <para>对于许多键盘布局，在 Kbd 应用程序中没有 Unicode 键盘的现货提供。如果这个变量被设置为可用的非 UTF-8 键盘映射的编码的话，<command>console</command> 引导脚本将匆忙中转换一个可用的键盘映射为 UTF-8。</para>
+        <para>对于许多键盘布局，在 Kbd 应用程序中没有 Unicode 键盘的现货提供。如果这个变量被设置为可用的非 UTF-8 键映射的编码的话，<command>console</command> 引导脚本将匆忙中转换一个可用的键映射为 UTF-8。</para>
       </listitem>
     </varlistentry>
 
@@ -102,7 +105,7 @@ EOF</userinput></screen>
     </listitem>
 
     <listitem>
-      <para>如上所述，有些时候需要对现有的键盘映射略为调整。下面的例子添加了 Euro 符号到德语的键盘映射:</para>
+      <para>如上所述，有些时候需要对现有的键映射略为调整。下面的例子添加了 Euro 符号到德语的键映射:</para>
 
 <screen role="nodump"><userinput>cat &gt; /etc/sysconfig/console &lt;&lt; "EOF"
 <literal># Begin /etc/sysconfig/console
@@ -116,7 +119,7 @@ EOF</userinput></screen>
     </listitem>
 
     <listitem>
-      <para>下面是用于保加利亚语的一个启用了 Unicode 的例子，其中存在现有 UTF-8 键盘映射:</para>
+      <para>下面是用于保加利亚语的一个启用了 Unicode 的例子，其中存在现有 UTF-8 键映射:</para>
 
 <screen role="nodump"><userinput>cat &gt; /etc/sysconfig/console &lt;&lt; "EOF"
 <literal># Begin /etc/sysconfig/console
@@ -145,7 +148,7 @@ EOF</userinput></screen>
 
     <listitem>
       <para>下面的例子说明从
-      ISO-8859-15 到 UTF-8 的键盘映射的自动转换并启用 Unicode 模式中的无效键:</para>
+      ISO-8859-15 到 UTF-8 的键映射的自动转换并启用 Unicode 模式中的无效键:</para>
 
 <screen role="nodump"><userinput>cat &gt; /etc/sysconfig/console &lt;&lt; "EOF"
 <literal># Begin /etc/sysconfig/console
@@ -161,9 +164,9 @@ EOF</userinput></screen>
     </listitem>
 
     <listitem>
-      <para>某些键盘映射有无效键(也即本身不会产生一个字符，而是在由下一个键产生的字符上放置一个重音符)或定义合成规则(譬如: 在默认的键盘映射中，<quote>按
+      <para>某些键映射有无效键(也即本身不会产生一个字符，而是在由下一个键产生的字符上放置一个重音符)或定义合成规则(譬如: 在默认的键映射中，<quote>按
       Ctrl+. A E 得到 &AElig;</quote>)。
-      Linux-&linux-version; 仅在组合成一起的源字符不是多字节的时候才能正确的解释键盘映射中的无效键和合成规则。这样的缺陷不会影响用于欧洲语言的键盘映射，因为有冲音符会添加到不是重音的 ASCII 字符，或者两个 ASCII 字符组合在一起。尽管如此，在 UTF-8 模式中，这仍是一个问题，例如，对于希腊语，其中的字符有些时候需要在字母 <quote>alpha</quote> 上添加重音号。解决方案就是要么避免使用 UTF-8，要么安装在输入处理中没有这个限制的 X window 系统。</para>
+      Linux-&linux-version; 仅在组合成一起的源字符不是多字节的时候才能正确的解释键映射中的无效键和合成规则。这样的缺陷不会影响用于欧洲语言的键映射，因为有冲音符会添加到不是重音的 ASCII 字符，或者两个 ASCII 字符组合在一起。尽管如此，在 UTF-8 模式中，这仍是一个问题，例如，对于希腊语，其中的字符有些时候需要在字母 <quote>alpha</quote> 上添加重音号。解决方案就是要么避免使用 UTF-8，要么安装在输入处理中没有这个限制的 X window 系统。</para>
     </listitem>
 
     <listitem>
@@ -175,7 +178,85 @@ EOF</userinput></screen>
   <!-- Added because folks keep posting their console file with X questions
   to blfs-support list -->
   <note>
-    <para><filename>/etc/sysconfig/console</filename> 文件只控制 Linux 文本控制台本地化。在 X Window 系统、带有 ssh 会话或者带有串行控制台的中，无需设置正确的键盘布局和终端字体。在这样的情况下，上述内容列表中的最后两项就不再适用。</para>
+    <para><filename>/etc/sysconfig/console</filename> 文件仅控制 Linux 文本控制台的本地化，
+    对于在带有 ssh 会话或带有串行控制台的 X Window 系统中设置正确的键盘布局和终端字体则无能为力。
+    在这样的情况下，上面最后连个列表项提及的限制将不适用。</para>
   </note>
+
+  </sect2>
+
+  <sect2 id="ch-scripts-systemd-console">
+    <title>Systemd</title>
+
+  <indexterm zone="ch-scripts-systemd-console">
+    <primary sortas="d-console">systemd 控制台</primary>
+    <secondary>配置</secondary>
+  </indexterm>
+
+  <para>这个部分讨论如何配置 <command>systemd-vconsole-setup</command> 系统服务，它配置虚拟控制台字体和控制台键映射。</para>
+
+  <para><command>systemd-vconsole-setup</command> 服务读取
+  <filename>/etc/vconsole.conf</filename> 文件的配置信息。
+  确定将要使用的键映射和屏幕字体。各种语言专用的 HOWTO 也有助于此，参阅
+  <ulink
+  url="http://www.tldp.org/HOWTO/HOWTO-INDEX/other-lang.html"/>.
+  检查 <command>localectl list-keymaps</command> 输出获得可用的控制台键映射列表。
+  查询
+  <filename class="directory">/usr/share/consolefonts</filename> 目录获得可用的屏幕字体。</para>
+
+  <para><filename>/etc/vconsole.conf</filename> 文件应该包含 VARIABLE="value" 形式的行。能够识别下列变量:</para>
+
+  <variablelist>
+
+    <varlistentry>
+      <term>KEYMAP</term>
+      <listitem>
+        <para>这个变量指定用于键盘的按键映射表。如果不设置的话，它默认为 <literal>us</literal>。</para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term>KEYMAP_TOGGLE</term>
+      <listitem>
+        <para>这个变量可用用于配置一个备用的切换按键映射，而且按默认是不设置的。</para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term>FONT</term>
+      <listitem>
+        <para>这个变量指定被虚拟控制台使用的字体。</para>
+      </listitem>
+    </varlistentry>
+    <varlistentry>
+      <term>FONT_MAP</term>
+      <listitem>
+        <para>这个变量指定要使用的控制台映射。</para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term>FONT_UNIMAP</term>
+      <listitem>
+        <para>这个变量指定 unicode 字体映射。</para>
+      </listitem>
+    </varlistentry>
+
+  </variablelist>
+
+  <para>一个用于德国键盘的来自，控制台如下给定:</para>
+
+<screen role="nodump"><userinput>cat &gt; /etc/vconsole.conf &lt;&lt; "EOF"
+<literal>KEYMAP=de-latin1
+FONT=Lat2-Terminus16</literal>
+EOF</userinput></screen>
+
+  <para>您可以在运行时使用 <command>localectl</command> 实用工具更改 KEYMAP 的值:</para>
+
+<screen role="nodump"><userinput>localectl set-keymap MAP</userinput></screen>
+
+  <note><para>请注意 <command>localectl</command> 命令尽可以在使用 Systemd 引导的系统上使用。</para></note>
+
+  </sect2>
 
 </sect1>

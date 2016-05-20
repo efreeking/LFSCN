@@ -42,19 +42,21 @@
 
     <para>准备 MPC 编译:</para>
 
-<screen><userinput remap="configure">./configure --prefix=/usr</userinput></screen>
+<screen><userinput remap="configure">./configure --prefix=/usr --docdir=/usr/share/doc/mpc-&mpc-version;</userinput></screen>
 
-    <para>编译包:</para>
+    <para>编译包并生成 HTML 文档:</para>
 
-<screen><userinput remap="make">make</userinput></screen>
+<screen><userinput remap="make">make
+make html</userinput></screen>
 
     <para>要测试结果，执行:</para>
 
 <screen><userinput remap="test">make check</userinput></screen>
 
-    <para>安装包:</para>
+    <para>安装包及其文档:</para>
 
-<screen><userinput remap="install">make install</userinput></screen>
+<screen><userinput remap="install">make install
+make install-html</userinput></screen>
 
   </sect2>
 
@@ -64,9 +66,11 @@
 
     <segmentedlist>
       <segtitle>安装的库</segtitle>
+      <segtitle>安装的目录</segtitle>
 
       <seglistitem>
         <seg>libmpc.{a,so}</seg>
+        <seg>/usr/share/doc/mpc-&mpc-version;</seg>
       </seglistitem>
     </segmentedlist>
 

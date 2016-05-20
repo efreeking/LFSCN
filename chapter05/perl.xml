@@ -42,14 +42,16 @@
 
   <sect2 role="installation">
     <title>Perl 的安装</title>
-
+<!--
     <para>首先，应用下列补丁改写某些到 C 库的硬连接:</para>
 
 <screen><userinput remap="pre">patch -Np1 -i ../&perl-libc-patch;</userinput></screen>
-
++ 
++    Note: -Dlibs=-lm below avoids looking for gdbm and db libraries causing failure
++-->
     <para>准备 Perl 编译:</para>
 
-<screen><userinput remap="configure">sh Configure -des -Dprefix=/tools</userinput></screen>
+<screen><userinput remap="configure">sh Configure -des -Dprefix=/tools -Dlibs=-lm</userinput></screen>
 
     <para>构建软件包:</para>
 

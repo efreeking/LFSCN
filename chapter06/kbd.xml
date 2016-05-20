@@ -253,7 +253,7 @@ cp -R -v docs/doc/* /usr/share/doc/kbd-&kbd-version;</userinput></screen>
       <varlistentry id="psfaddtable">
         <term><command>psfaddtable</command></term>
         <listitem>
-          <para>到 <command>psfxtable</command> 的链接</para>
+          <para>添加一个 Unicode 字符表到一个控制台字体</para>
           <indexterm zone="ch-system-kbd psfaddtable">
             <primary sortas="b-psfaddtable">psfaddtable</primary>
           </indexterm>
@@ -263,7 +263,7 @@ cp -R -v docs/doc/* /usr/share/doc/kbd-&kbd-version;</userinput></screen>
       <varlistentry id="psfgettable">
         <term><command>psfgettable</command></term>
         <listitem>
-          <para>到 <command>psfxtable</command> 的链接</para>
+          <para>从一个控制台字体提取嵌入的 Unicode 字符表</para>
           <indexterm zone="ch-system-kbd psfgettable">
             <primary sortas="b-psfgettable">psfgettable</primary>
           </indexterm>
@@ -273,7 +273,7 @@ cp -R -v docs/doc/* /usr/share/doc/kbd-&kbd-version;</userinput></screen>
       <varlistentry id="psfstriptable">
         <term><command>psfstriptable</command></term>
         <listitem>
-          <para>到 <command>psfxtable</command> 的链接</para>
+          <para>从一个控制台字体中去掉嵌入的 Unicode 字符表</para>
           <indexterm zone="ch-system-kbd psfstriptable">
             <primary sortas="b-psfstriptable">psfstriptable</primary>
           </indexterm>

@@ -15,6 +15,18 @@
     <itemizedlist>
 
       <listitem>
+        <para>Acl</para>
+
+        <para>这个包包含管理访问控制列表的实用工具，它们用于定义文件和目录的更细致自由的访问权限。</para>
+      </listitem>
+
+      <listitem>
+        <para>Attr</para>
+
+        <para>这个包包含用于管理在文件系统对象上的扩展属性。</para>
+      </listitem>
+
+      <listitem>
         <para>Autoconf</para>
 
         <para>这个包包含了用于产生可以从开发者的模板自动配置源代码的 Shell 脚本的程序。在更新到构建过程后，通常需要重新构建包。</para>
@@ -69,7 +81,13 @@
 
         <para>这个包包含了一些用于查看和操作文件和目录的重要程序。这些程序是命令行文件管理所需的，也是在 LFS 中每个包的安装过程所需的。</para>
       </listitem>
+<!--
+      <listitem>
+        <para>D-Bus</para>
 
+        <para>这个包包含实现一个消息总线系统的程序，它是用于程序相互通话的简单方式。</para>
+      </listitem>
+-->
       <listitem>
         <para>DejaGNU</para>
 
@@ -86,6 +104,20 @@
         <para>E2fsprogs</para>
 
         <para>这个包包含了处理 ext2、ext3 和 ext4 文件系统的工具。这些是 Linux 支持的最常用和经彻底测试的文件系统。</para>
+      </listitem>
+
+      <listitem>
+        <para>Eudev</para>
+
+        <para>这个包是一个设备管理器。它随着设备在系统中添加或删除的同时动态的控制在 /dev 目录中的条目。
+        </para>
+      </listitem>
+
+      <listitem>
+        <para>Expat</para>
+
+        <para>这个包包含了一个相对小型的 XML 分析库。它是 XML::Parser Perl 模块所需的。
+        </para>
       </listitem>
 
       <listitem>
@@ -150,6 +182,12 @@
       </listitem>
 
       <listitem>
+        <para>Gperf</para>
+
+        <para>这个包包含了一个从一个密钥集生成一个完美的散列函数的程序。它是 Eudev 所需的。</para>
+      </listitem>
+
+      <listitem>
         <para>Grep</para>
 
         <para>这个包包含了在文件中搜索的程序。这些程序被大多数包的构建脚本使用。</para>
@@ -186,6 +224,12 @@
       </listitem>
 
       <listitem>
+        <para>Intltool</para>
+
+        <para>这个包包含从源文件提取可翻译字符串的工具。</para>
+      </listitem>
+
+      <listitem>
         <para>IProute2</para>
 
         <para>这个包包含了基本和高级 IPv4 和 IPv6 网络的程序。它在各种常用网络工具包(net-tools)突围而出是因为其 IPv6 的功能。</para>
@@ -207,6 +251,13 @@
          <para>Less</para>
 
          <para>这个包包含了可以在查看文件时上下滚动的一个非常友好的文本文件查看器。它也被 Man-DB 用于查看手册页。</para>
+      </listitem>
+
+      <listitem>
+        <para>Libcap</para>
+
+        <para>这个包实现了在 Linux 内核中可用的 POSIX 1003.1e 功能的用户空间接口。
+        </para>
       </listitem>
 
       <listitem>
@@ -322,7 +373,14 @@
 
         <para>这个包包含了记录系统消息(譬如当发生异常事件是，有内核或后台程序发出的那些消息)的程序。</para>
       </listitem>
+<!--
+      <listitem>
+        <para>Systemd</para>
 
+        <para>这个包提供了 和 <application>init</application> 程序和各种作为 Sysvinit 的替代的额外的引导和系统控制功能。
+        它被多个商业发行版使用。在 LFS 中，它是和 Sysvinit 一起安装的，为用户提供了备选的引导系统以作比较。</para>
+      </listitem>
+-->
       <listitem>
         <para>Sysvinit</para>
 
@@ -349,12 +407,6 @@
       </listitem>
 
       <listitem>
-        <para>Udev</para>
-
-        <para>这个包包含了设备节点的动态创建的程序。它是在 /dev 目录下创建成千上万个静态设备的替代办法。</para>
-      </listitem>
-
-      <listitem>
         <para>Util-linux</para>
 
         <para>这个包包含了各种工具程序。其中有用于处理文件系统、控制台、分区和消息的工具。</para>
@@ -364,6 +416,12 @@
         <para>Vim</para>
 
         <para>这个包包含了一个编辑器。它被选择是因为它和经典的 vi 编辑器的兼容性和其大量的强大功能。编辑器对许多用户来说是一个非常个性化的选择，而且需要的话，可以被其它编辑器替代。</para>
+      </listitem>
+
+      <listitem>
+        <para>XML::Parser</para>
+
+        <para>这个包是和 Expat 进行接口的一个 Perl 模块。</para>
       </listitem>
 
       <listitem>

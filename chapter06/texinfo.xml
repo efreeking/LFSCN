@@ -75,11 +75,12 @@
 
     <para>信息文档(Info 文档)系统使用一个纯文本文件来保存它的菜单项的列表。文件位于 <filename>/usr/share/info/dir</filename>。遗憾的是，由于各种包的 Makefiles 中的偶然出现的问题，有时候可能无法和安装在系统上的信息页进行同步。如果 <filename>/usr/share/info/dir</filename> 文件在任何时候需要重建，下列的可选命令将可以完成任务:</para>
 
-<screen role="nodump"><userinput>cd /usr/share/info
+<screen role="nodump"><userinput>pushd /usr/share/info
 rm -v dir
 for f in *
-do install-info $f dir 2&gt;/dev/null
-done</userinput></screen>
+  do install-info $f dir 2&gt;/dev/null
+done
+popd</userinput></screen>
 
   </sect2>
 

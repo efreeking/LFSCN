@@ -89,7 +89,7 @@ cd ../gcc-build</userinput></screen>
       </varlistentry>
 
       <varlistentry>
-        <term><parameter>--with-gxx-include-dir=/tools/include/c++/&gcc-version;</parameter></term>
+        <term><parameter>--with-gxx-include-dir=/tools/$LFS_TGT/include/c++/&gcc-version;</parameter></term>
         <listitem>
           <para>这是 C++ 编译器搜索的标准包含文件所在的位置。
           在正常的构建中，本信息会自动传递到来自顶级目录的 Libstdc++ 的 <command>configure</command> 选项。在我们的情况下，这个信息必须明确给出。</para>

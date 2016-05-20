@@ -33,7 +33,7 @@
       <title>Vim 的替代品</title>
 
       <para>如果您更喜欢其它的编辑器&mdash;如 Emacs、Joe 或 Nano&mdash;请参考<ulink
-      url="&blfs-root;view/svn/postlfs/editors.html"/>获得建议的安装说明。</para>
+      url="&blfs-root;view/&short-version;/postlfs/editors.html"/>获得建议的安装说明。</para>
     </tip>
 
   </sect2>
@@ -47,19 +47,7 @@
 
     <para>准备 Vim 编译:</para>
 
-<screen><userinput remap="configure">./configure --prefix=/usr --enable-multibyte</userinput></screen>
-
-    <variablelist>
-      <title>配置选项的含义:</title>
-
-      <varlistentry>
-        <term><parameter>--enable-multibyte</parameter></term>
-        <listitem>
-          <para>这个开关启用编辑多字节字符编码的文件的支持。这是配合多字节字符集使用所需的。这个开关也对能够编辑在使用 UTF-8 作为默认字符集的 Linux 发行版中(如 Fedora)初始创建的文本文件有帮助。</para>
-        </listitem>
-      </varlistentry>
-
-    </variablelist>
+<screen><userinput remap="configure">./configure --prefix=/usr</userinput></screen>
 
     <para>编译包:</para>
 
@@ -67,7 +55,7 @@
 
     <para>要测试结果，执行:</para>
 
-<screen><userinput remap="test">make test</userinput></screen>
+<screen><userinput remap="test">make -j1 test</userinput></screen>
 
     <para>尽管如此，这个测试套装输出大量的二进制数据到屏幕而导致当前终端设置的问题。这可以通过重定向输出到一个记录文件的方式来解决。一个成功的测试最终以词组“ALL DONE”结束。</para>
 
@@ -90,7 +78,7 @@ done</userinput></screen>
 <screen><userinput remap="install">ln -sv ../&vim-docdir;/doc /usr/share/doc/vim-&vim-version;</userinput></screen>
 
     <para>如果将要在 LFS 系统上安装 X Window 系统，可能需要安装 X 后重新编译 Vim。Vim 附带了一个需要已经安装 X 和某些附加库的图形用户界面版本的编辑器。要获得更多这个过程的信息，参考 Vim 文档和在 <ulink
-    url="&blfs-root;view/svn/postlfs/editors.html#postlfs-editors-vim"/> 的 BLFS 书中的 Vim 安装页面。</para>
+    url="&blfs-root;view/&short-version;/postlfs/vim.html"/> 的 BLFS 书中的 Vim 安装页面。</para>
 
   </sect2>
 

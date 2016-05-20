@@ -46,7 +46,6 @@
             --bindir=/bin          \
             --sysconfdir=/etc      \
             --with-rootlibdir=/lib \
-            --disable-manpages     \
             --with-xz              \
             --with-zlib</userinput></screen>
 
@@ -57,14 +56,6 @@
         <term><parameter>--with-xz, --with-zlib</parameter></term>
         <listitem>
           <para>这些选项让 Kmod 可以处理压缩的内核模块。</para>
-        </listitem>
-      </varlistentry>
-
-      <varlistentry>
-        <term><parameter>--disable-manpages</parameter></term>
-        <listitem>
-          <para>这个选项防止手册页被构建，因为它们依赖于
-          libxslt，它在 chroot 环境中不可用。</para>
         </listitem>
       </varlistentry>
 
@@ -85,12 +76,10 @@
 
 <screen><userinput remap="test">make check</userinput></screen>
 
-    <para>安装包、手册页，并创建为了和先前处理 Linux 内核模块的包 Module-Init-Tools (先前处理 Linux 内核模块的包)兼容的符号链接。
-    还有确保所有的库文件在正确的目录中:
+    <para>安装包，并创建为了和先前处理 Linux 内核模块的包 Module-Init-Tools (先前处理 Linux 内核模块的包)兼容的符号链接:
     </para>
 
 <screen><userinput remap="install">make install
-make -C man install
 
 for target in depmod insmod modinfo modprobe rmmod; do
   ln -sv ../bin/kmod /sbin/$target

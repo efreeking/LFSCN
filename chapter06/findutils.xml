@@ -73,7 +73,7 @@
     在引导的早期阶段可能还不可用，所以这个程序需要放置在根分区上。<command>updatedb</command> 脚本也需要修改以纠正一个明显的路径:</para>
 
 <screen><userinput remap="install">mv -v /usr/bin/find /bin
-sed -i 's/find:=${BINDIR}/find:=\/bin/' /usr/bin/updatedb</userinput></screen>
+sed -i 's|find:=${BINDIR}|find:=/bin|' /usr/bin/updatedb</userinput></screen>
 
   </sect2>
 

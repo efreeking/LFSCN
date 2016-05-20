@@ -8,12 +8,11 @@
 
 <appendix id="rules" xreflabel="Appendix E">
   <?dbhtml dir="scripts"?>
-  <?dbhtml filename="udev-rules.html"?>
+  <?dbhtml filename="eudev-rules.html"?>
 
   <title>Udev 配置规则</title>
 
-  <para>在附录中列出来自 &udev-lfs;.tar.bz2 的规则是为了方便。通过<xref
-  linkend='ch-system-udev'/>中的说明一般能够完成安装。</para>
+  <para>在本附录中的规则列出来是为了方便。安装正常情况下是通过 <xref linkend='ch-system-eudev'/> 中的指令完成的。</para>
 
   <sect1 id="lfsrules" role="wrap">
     <title>55-lfs.rules</title>

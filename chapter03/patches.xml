@@ -26,18 +26,67 @@
     </varlistentry>
 
     <varlistentry>
+      <term>Bc 内存泄露补丁 - <token>&bc-memory-leak-patch-size;</token>:</term>
+      <listitem>
+        <para>下载: <ulink url="&patches-root;&bc-memory-leak-patch;"/></para>
+        <para>MD5 和: <literal>&bc-memory-leak-patch-md5;</literal></para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term>Binutils LTO 补丁 - <token>&binutils-lto-patch-size;</token>:</term>
+      <listitem>
+        <para>下载: <ulink url="&patches-root;&binutils-lto-patch;"/></para>
+        <para>MD5 和: <literal>&binutils-lto-patch-md5;</literal></para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term>Binutils LTO 测试套件补丁 - <token>&binutils-lto-testsuite-patch-size;</token>:</term>
+      <listitem>
+        <para>下载: <ulink url="&patches-root;&binutils-lto-testsuite-patch;"/></para>
+        <para>MD5 和: <literal>&binutils-lto-testsuite-patch-md5;</literal></para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
       <term>Bzip2 Documentation (文档)补丁 - <token>&bzip2-docs-patch-size;</token>:</term>
       <listitem>
         <para>下载: <ulink url="&patches-root;&bzip2-docs-patch;"/></para>
         <para>MD5 和: <literal>&bzip2-docs-patch-md5;</literal></para>
       </listitem>
     </varlistentry>
-
+<!--
     <varlistentry>
       <term>Coreutils Internationalization Fixes (国际化修复)补丁 - <token>&coreutils-i18n-patch-size;</token>:</term>
       <listitem>
         <para>下载: <ulink url="&patches-root;&coreutils-i18n-patch;"/></para>
         <para>MD5 和: <literal>&coreutils-i18n-patch-md5;</literal></para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term>Coreutils shuf Segmentation Fault Fix 补丁 - <token>&coreutils-shuf-segfault-patch-size;</token>:</term>
+      <listitem>
+        <para>下载: <ulink url="&patches-root;&coreutils-shuf-segfault-patch;"/></para>
+        <para>MD5 和: <literal>&coreutils-shuf-segfault-patch-md5;</literal></para>
+      </listitem>
+    </varlistentry>
+-->
+<!--
+    <varlistentry>
+      <term>E2fsprogs Fix Test Patch - <token>&e2fsprogs-fix-test-patch-size;</token>:</term>
+      <listitem>
+        <para>Download: <ulink url="&patches-root;&e2fsprogs-fix-test-patch;"/></para>
+        <para>MD5 sum: <literal>&e2fsprogs-fix-test-patch-md5;</literal></para>
+      </listitem>
+    </varlistentry>
+-->
+    <varlistentry>
+      <term>Gcc 上游补丁 - <token>&gcc-upstream-patch-size;</token>:</term>
+      <listitem>
+        <para>下载: <ulink url="&patches-root;&gcc-upstream-patch;"/></para>
+        <para>MD5 和: <literal>&gcc-upstream-patch-md5;</literal></para>
       </listitem>
     </varlistentry>
 
@@ -58,10 +107,10 @@
     </varlistentry>
 
     <varlistentry>
-      <term>Perl Libc 补丁 - <token>&perl-libc-patch-size;</token>:</term>
+      <term>Mpfr Upstream Fixes 补丁 - <token>&mpfr-fixes-patch-size;</token>:</term>
       <listitem>
-        <para>下载: <ulink url="&patches-root;&perl-libc-patch;"/></para>
-        <para>MD5 和: <literal>&perl-libc-patch-md5;</literal></para>
+        <para>下载: <ulink url="&patches-root;&mpfr-fixes-patch;"/></para>
+        <para>MD5 和: <literal>&mpfr-fixes-patch-md5;</literal></para>
       </listitem>
     </varlistentry>
 
@@ -80,21 +129,12 @@
         <para>MD5 和: <literal>&sysvinit-consolidated-patch-md5;</literal></para>
       </listitem>
     </varlistentry>
-
+<!--
     <varlistentry>
       <term>Tar 手册页补丁 - <token>&tar-manpage-patch-size;</token>:</term>
       <listitem>
         <para>下载: <ulink url="&patches-root;&tar-manpage-patch;"/></para>
         <para>MD5 和: <literal>&tar-manpage-patch-md5;</literal></para>
-      </listitem>
-    </varlistentry>
-
-<!--
-    <varlistentry>
-      <term>Texinfo 测试补丁 - <token>&texinfo-test-patch-size;</token>:</term>
-      <listitem>
-        <para>下载: <ulink url="&patches-root;&texinfo-test-patch;"/></para>
-        <para>MD5 和: <literal>&texinfo-test-patch-md5;</literal></para>
       </listitem>
     </varlistentry>
 -->

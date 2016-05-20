@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sect1 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+  "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+  <!ENTITY % general-entities SYSTEM "../general.ent">
+  %general-entities;
+]>
+
+<sect1 id="ch-scripts-sysd-custom">
+  <?dbhtml filename="sysd-custom.html"?>
+
+  <title>Systemd 用法和配置</title>
+
+  <indexterm zone="ch-scripts-sysd-custom">
+    <primary sortas="e-Systemd">Systemd 定制</primary>
+  </indexterm>
+
+  <sect2>
+    <title>基本配置</title>
+
+    <para><filename>/etc/systemd/system.conf</filename> 文件包含一组控制基本操作的项目。
+    默认文件拥有所有使用默认设置象征的注释掉的条目。
+    在这个文件中可以更改记录级别以及某些基本的日志设置。</para>
+
+  </sect2>
+
+  <sect2>
+    <title>禁止在引导时的清屏</title>
+
+    <para>systemd 的正常的行为是在引导序列最后清理屏幕。
+    如果需要的话，这种行为是可以如下更改的:</para>
+
+<screen role="nodump"><userinput>mkdir -p /etc/systemd/system/getty@tty1.service.d
+
+cat > /etc/systemd/system/getty@tty1.service.d/noclear.conf &lt;&lt; EOF
+[Service]
+TTYVTDisallocate=no
+EOF</userinput></screen>
+
+    <para>引导消息总是可以使用 root 用户身份运行的
+    <userinput>journalctl -b</userinput> 命令来审查的。</para>
+
+  </sect2>
+
+  <sect2>
+    <title>禁止 tmpfs 用于 /tmp </title>
+
+    <para>按默认，<filename class="directory">/tmp</filename> 是作为一个 tmpfs （临时文件系统）创建的。
+    如果不需要的话，可以如下改写:</para>
+
+<screen role="nodump"><userinput>ln -s /dev/null /etc/systemd/system/tmp.mount</userinput></screen>
+
+    <para>如果在 <filename>/etc/fstab</filename> 中指定了一个单独的分区作为 /tmp 的话，这不是必需的。</para>
+  </sect2>
+
+  <sect2>
+    <title>配置自动化的文件创建和删除</title>
+
+    <para>有多个服务创建或删除文件或目录:</para>
+
+    <itemizedlist>
+      <listitem><para>systemd-tmpfiles-clean.service</para></listitem>
+      <listitem><para>systemd-tmpfiles-setup-dev.service</para></listitem>
+      <listitem><para>systemd-tmpfiles-setup.service</para></listitem>
+    </itemizedlist>
+  
+    <para>配置文件的系统位置是 <filename>/usr/lib/tmpfiles.d/*.conf</filename>。
+    局部配置文件是在 <filename>/etc/tmpfiles.d/*.conf</filename> 中。
+    在 /etc/tmpfiles.d 中的文件会覆盖在 /usr/lib/tmpfiles.d 中的同名文件。
+    参阅 <userinput>man tmpfiles.d</userinput> 了解文件格式细节。</para>
+
+  </sect2>
+
+  <sect2>
+    <title>添加自定义单元和服务</title>
+
+    <para>自定义服务可以通过在 <filename class="directory">/etc/systemd/system/</filename> 中创建一个目录和配置文件来添加。
+    例如:</para>
+
+<screen role="nodump"><userinput>mkdir -p /etc/systemd/system/foobar.service.d
+
+cat > /etc/systemd/system/foobar.service.d/foobar.conf &lt;&lt; EOF
+[Service]
+Restart=always
+RestartSec=30
+EOF</userinput></screen>
+
+     <para>参阅 systemd.unit 的手册页获得更多的信息。
+     在创建配置文件后，运行 <userinput>systemctl
+     daemon-reload</userinput> 和 <userinput>systemctl restart
+     foobar</userinput> 来激活一个服务或更改到一个服务。</para>
+
+  </sect2>
+
+  <sect2 id="ch-scripts-systemd-console">
+    <title>设置控制台字体和键盘</title>
+
+    <indexterm zone="ch-scripts-systemd-console">
+      <primary sortas="d-console">systemd console</primary>
+      <secondary>configuring</secondary>
+    </indexterm>
+  
+    <para>这一部分讨论如何配置 <command>systemd-vconsole-setup</command> 系统服务，它配置虚拟控制台字体和控制台键映射。</para>
+  
+    <para><command>systemd-vconsole-setup</command> 服务读取 <filename>/etc/vconsole.conf</filename> 文件获得配置信息。
+    确定将要使用何种键映射和屏幕字体。
+    各种语言专用 HOWTOs 也有助于此，参阅 <ulink
+    url="http://www.tldp.org/HOWTO/HOWTO-INDEX/other-lang.html"/>。
+    检查 <command>localectl list-keymaps</command> 输出获得有效控制台键映射的列表。
+    查询 <filename class="directory">/usr/share/consolefonts</filename> 目录获得有效的屏幕字体。</para>
+  
+    <para><filename>/etc/vconsole.conf</filename> 文件应该包含多行这样格式的内容: 变量="值"。
+    可识别下列变量:</para>
+  
+    <variablelist>
+  
+      <varlistentry>
+        <term>KEYMAP</term>
+        <listitem>
+          <para>这个变量指定键盘的键位映射表。
+          如果未设置的话，它默认为 <literal>us</literal>。</para>
+        </listitem>
+      </varlistentry>
+  
+      <varlistentry>
+        <term>KEYMAP_TOGGLE</term>
+        <listitem>
+          <para>这个变量可以用于配置一个次要的变换键映射，而且按默认是不设置的。</para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term>FONT</term>
+        <listitem>
+          <para>这个变量指定虚拟控制台使用的字体。</para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term>FONT_MAP</term>
+        <listitem>
+          <para>这个变量指定要使用的控制台映射。</para>
+        </listitem>
+      </varlistentry>
+  
+      <varlistentry>
+        <term>FONT_UNIMAP</term>
+        <listitem>
+          <para>这个变量指定 unicode 字体映射。</para>
+        </listitem>
+      </varlistentry>
+  
+    </variablelist>
+  
+    <para>下面给出德文键盘和控制台的范例:</para>
+
+<screen role="nodump"><userinput>cat &gt; /etc/vconsole.conf &lt;&lt; "EOF"
+<literal>KEYMAP=de-latin1
+FONT=Lat2-Terminus16</literal>
+EOF</userinput></screen>
+
+    <para>您可以使用 <command>localectl</command> 工具在运行时更改 KEYMAP 值:</para>
+
+<screen role="nodump"><userinput>localectl set-keymap MAP</userinput></screen>
+
+    <note><para>请注意 <command>localectl</command> 命令仅可以在使用 Systemd 引导的系统上使用。</para></note>
+
+  </sect2>
+
+  <sect2>
+    <title>时钟配置</title>
+
+    <indexterm zone="ch-scripts-clock">
+      <primary sortas="d-clock">clock</primary>
+    <secondary>configuring</secondary></indexterm>
+  
+    <para>这个部分讨论如何配置 <command>systemd-timedated</command> 系统服务，它配置系统的时钟和时区。</para>
+  
+    <para><command>systemd-timedated</command> 读取 <filename>/etc/adjtime</filename>，并根据文件的内容设置时钟为 UTC 或者本地时间。
+    <emphasis>如果你的硬件时钟被设置为本地时间的话</emphasis>，使用下列内容创建 <filename>/etc/adjtime</filename> 文件:</para>
+
+<screen role="nodump"><userinput>cat &gt; /etc/adjtime &lt;&lt; "EOF"
+<literal>0.0 0 0.0
+0
+LOCAL</literal>
+EOF</userinput></screen>
+
+    <para>如果在首次引导时不存在 <filename>/etc/adjtime</filename> 的话，
+    <command>systemd-timedated</command> 将会假设硬件时钟被设置为 UTC 并使用该设置创建文件。</para>
+
+    <para>你也可以使用 <command>timedatectl</command> 工具告诉 <command>systemd-timedated</command>，你的硬件时钟是设置为 UTC 还是本地时间:</para>
+
+<screen role="nodump"><userinput>timedatectl set-local-rtc 1</userinput></screen>
+
+    <para><command>timedatectl</command> 也可以用于灌溉系统时间和时区。</para>
+
+    <para>要更改你的当前系统时间，执行:</para>
+
+<screen role="nodump"><userinput>timedatectl set-time YYYY:MM:DD HH:MM:SS</userinput></screen>
+
+    <para>硬件时钟也将会相应更新。</para>
+
+    <para>要更改你的当前时区，发出命令:</para>
+
+<screen role="nodump"><userinput>timedatectl set-timezone TIMEZONE</userinput></screen>
+
+    <para>你可以通过运行下列命令获得可用时区的列表:</para>
+
+<screen role="nodump"><userinput>timedatectl list-timezones</userinput></screen>
+
+    <note><para><command>timedatectl</command> 命令仅可在使用 Systemd 引导的系统上使用。</para></note>
+
+  </sect2>
+
+  <sect2>
+    <title>调试引导序列</title>
+
+    <para>有多个命令可以用于帮助调试 systemd 引导进程。
+    这里是某些例子:</para>
+
+    <itemizedlist>
+       <listitem><para>systemctl list-units -t service [--all]</para></listitem>
+       <listitem><para>systemctl list-units -t target  [--all]</para></listitem>
+       <listitem><para>systemctl show -p Wants multi-user.target</para></listitem>
+       <listitem><para>systemctl status sshd.service</para></listitem>
+    </itemizedlist>
+
+  </sect2>
+
+</sect1>

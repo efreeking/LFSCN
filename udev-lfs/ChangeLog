@@ -1,3 +1,6 @@
+2014-03-02  <bdubbs@linuxfromscratch.org>
+   * Makefile.lfs: 删除 build 过程，仅保留 LFS 规则
+
 2014-02-16  <bdubbs@linuxfromscratch.org>
    * Makefile.lfs: 调整警告标志。调整链接规则为允许使用 LFS 的 /tools 目录
      中的 util-linux 构建。

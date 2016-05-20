@@ -30,14 +30,14 @@
 
       <para>这个指南涵盖了各种 Linux 软件的使用。这份参考也相当旧，但是仍有效。</para>
     </listitem>
-
+<!--
     <listitem>
       <para>The Essential Pre-Reading Hint
       <ulink url="&hints-root;essential_prereading.txt"/></para>
 
       <para>这是为 Linux 新手用户特别编写的 LFS 窍门。它包含了一个指向非常好的广泛主题的信息来源的链接列表。尝试安装 LFS 的任何人都应该对这些建议中的多个话题有所了解。</para>
     </listitem>
-
+-->
   </itemizedlist>
 
 </sect1>

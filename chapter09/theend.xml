@@ -14,6 +14,10 @@
     <primary sortas="e-/etc/lfs-release">/etc/lfs-release</primary>
   </indexterm>
 
+  <indexterm zone="ch-finish-theend">
+    <primary sortas="e-/etc/lsb-release">/etc/lsb-release</primary>
+  </indexterm>
+
   <para>做的不错！新的 LFS 系统已经安装！我们希望您使用您铮亮的新自定义构建的 Linux 系统获得更多的成功。</para>
 
   <para>创建一个 <filename>/etc/lfs-release</filename> 是一个不错的主意哦。有了这个文件，您很容易就可以(也方便我们在您需要帮助的时候)找到在系统上安装的 LFS 的版本。通过运行以下命令创建这个文件:</para>

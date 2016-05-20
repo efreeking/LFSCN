@@ -40,6 +40,10 @@
   <sect2 role="installation">
     <title>Bc 的安装</title>
 
+    <para>首先，修复在代码中的某些次要的内存泄露:</para>
+
+<screen><userinput remap="pre">patch -Np1 -i ../&bc-memory-leak-patch;</userinput></screen> 
+
     <para>准备 Bc 用于编译:</para>
 
 <screen><userinput remap="configure">./configure --prefix=/usr           \

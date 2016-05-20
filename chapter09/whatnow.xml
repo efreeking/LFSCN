@@ -24,12 +24,6 @@
       <itemizedlist>
 
         <listitem>
-          <para>Freecode (<ulink url="http://freecode.com/"/>)</para>
-
-          <para>Freecode 可以通知您(通过电子邮件)安装在您的系统上的包的新版本。</para>
-        </listitem>
-
-        <listitem>
           <para><ulink url="http://www.cert.org/">CERT</ulink> (计算机紧急响应团队)</para>
 
           <para>CERT 有一个公布涉及各种操作系统和应用程序的安全告警的邮件列表。订阅信息可以在 <ulink

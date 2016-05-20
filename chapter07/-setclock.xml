@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sect1 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+  "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+  <!ENTITY % general-entities SYSTEM "../general.ent">
+  %general-entities;
+]>
+
+<sect1 id="ch-scripts-clock">
+  <?dbhtml filename="clock.html"?>
+
+  <title>配置系统时钟</title>
+
+  <para>设置系统时钟的过程，systemd 和 System V 是有所不同的，尽管如此，单独的进程不会冲突，因此两个过程
+  应该能够实现允许在不同的进程间切换。</para>
+
+  <sect2 id="ch-scripts-setclock">
+    <title>System V 时钟配置</title>
+
+    <indexterm zone="ch-scripts-setclock">
+      <primary sortas="d-setclock">setclock</primary>
+    <secondary>配置</secondary></indexterm>
+
+  <para>如果您记不住硬件时钟是否被设置为 UTC，通过运行
+   <userinput>hwclock --localtime --show</userinput>
+  命令找出。这将会根据硬件时钟显示当前的时间。如果这个时间和您手表的匹配，那么硬件时钟就是被设置为本地时间。如果 <command>hwclock</command> 的输出不是本地时间，则有机会是被设为 UTC 时间。通过在 <command>hwclock</command> 显示的时间上根据时区添加或减少适当的小时数来进行验证。例如，您当前正在 MST 时区，也就是所谓的 GMT -0700，添加 7 小时到本地时间。</para>
+
+  <para>如果硬件时钟<emphasis>不</emphasis>是设置为 UTC 时间的话， 更改下面 <envar>UTC</envar> 变量的值为 <parameter>0</parameter> (零)。</para>
+
+  <para>通过运行以下命令创建一个新的文件 <filename>/etc/sysconfig/clock</filename>:</para>
+
+<screen><userinput>cat &gt; /etc/sysconfig/clock &lt;&lt; "EOF"
+<literal># Begin /etc/sysconfig/clock
+
+UTC=1
+
+# Set this to any options you might need to give to hwclock, (设置这个为任何您需要赋予 hwclock 的选项，譬如机器硬件时钟类型)
+# such as machine hardware clock type for Alphas.
+CLOCKPARAMS=
+
+# End /etc/sysconfig/clock</literal>
+EOF</userinput></screen>
+
+  <para>在<ulink url="&hints-root;time.txt"/>有一个解释如何处理 LFS 上的时间的不错的提示。它解释了譬如时区、UTC 和 <envar>TZ</envar> 环境变量等。</para>
+
+  <note><para>CLOCKPARAMS 和 UTC 参数也可以在 <filename>/etc/sysconfig/rc.site</filename> 文件中设置。</para></note>
+
+</sect1>

@@ -54,6 +54,9 @@
 
 <screen><userinput remap="pre">cat gcc/limitx.h gcc/glimits.h gcc/limity.h &gt; \
   `dirname $($LFS_TGT-gcc -print-libgcc-file-name)`/include-fixed/limits.h</userinput></screen>
+<!--
+    <para>对于 x86 机器，有限数量的寄存器是系统的瓶颈。
+    通过不使用一个不需要的帧指针来释放一个:</para>
 
     <para>对于 x86 机器，GCC 的自举(bootstrap)构建使用
     <option>-fomit-frame-pointer</option> 编译器标志。非自举的构建则默认省略这个标志，并且目标应该是产生一个和能够自举的完全一样的编译器。
@@ -62,7 +65,7 @@
 <screen><userinput remap="pre">case `uname -m` in
   i?86) sed -i 's/^T_CFLAGS =$/&amp; -fomit-frame-pointer/' gcc/Makefile.in ;;
 esac</userinput></screen>
-
+-->
     <para>再一次，更改 GCC 的默认动态链接器的位置为使用 <filename
     class="directory">/tools</filename> 中安装的那个。</para>
 
@@ -82,12 +85,16 @@ done</userinput></screen>
 
     <para>因为 GCC 的第一次构建中，它需要 GMP、MPFR 和 MPC 包。解压 tarballs 并把它们移到需要的目录名中:</para>
 
-<screen><userinput remap="pre">tar -jxf ../mpfr-&mpfr-version;.tar.bz2
+<screen><userinput remap="pre">tar -xf ../mpfr-&mpfr-version;.tar.bz2
 mv -v mpfr-&mpfr-version; mpfr
-tar -jxf ../gmp-&gmp-version;.tar.xz
-mv -v gmp-&gmp-version; gmp
-tar -zxf ../mpc-&mpc-version;.tar.gz
+tar -xf ../gmp-&gmp-version;.tar.xz
+mv -v gmp-&gmp-extracted-version; gmp
+tar -xf ../mpc-&mpc-version;.tar.gz
 mv -v mpc-&mpc-version; mpc</userinput></screen>
+
+    <para>如同在 GCC 的第一次构建中一样，修复上游标识的问题:</para>
+
+<screen><userinput remap="pre">sed -i 's/if \((code.*))\)/if (\1 \&amp;\&amp; \!DEBUG_INSN_P (insn))/' gcc/sched-deps.c</userinput></screen>
 
     <para>再次创建独立的构建目录:</para>
 
@@ -106,41 +113,14 @@ RANLIB=$LFS_TGT-ranlib                               \
     --prefix=/tools                                  \
     --with-local-prefix=/tools                       \
     --with-native-system-header-dir=/tools/include   \
-    --enable-clocale=gnu                             \
-    --enable-shared                                  \
-    --enable-threads=posix                           \
-    --enable-__cxa_atexit                            \
     --enable-languages=c,c++                         \
     --disable-libstdcxx-pch                          \
     --disable-multilib                               \
     --disable-bootstrap                              \
-    --disable-libgomp                                \
-    --with-mpfr-include=$(pwd)/../gcc-&gcc-version;/mpfr/src \
-    --with-mpfr-lib=$(pwd)/mpfr/src/.libs</userinput></screen>
+    --disable-libgomp</userinput></screen>
 
     <variablelist>
       <title>新配置选项的含义:</title>
-
-      <varlistentry>
-        <term><parameter>--enable-clocale=gnu</parameter></term>
-        <listitem>
-          <para>这个选项确保在所有的情况下，为 C++ 库选择正确的 locale 模型。如果 configure 脚本查找已安装的 <emphasis>de_DE</emphasis> locale，它将会选择正确的 GNU Locale 模型。但是，如果 <emphasis>de_DE</emphasis> 语言环境未安装的话，就会有构建应用程序二进制接口(Application Binary Interface，ABI)不兼容的 C++ 库的风险，因为选择了不正确的通用语言环境模型。</para>
-        </listitem>
-      </varlistentry>
-
-      <varlistentry>
-        <term><parameter>--enable-threads=posix</parameter></term>
-        <listitem>
-          <para>这个启用了对多线程代码的 C++ 异常处理。</para>
-        </listitem>
-      </varlistentry>
-
-      <varlistentry>
-        <term><parameter>--enable-__cxa_atexit</parameter></term>
-        <listitem>
-          <para>这个选项允许使用 <function>__cxa_atexit</function> 代替 <function>atexit</function> 来注册 C++ 局部静态和全局对象的析构函数。这个选项是析构函数的完全标准编译处理所必需的。它也会影响 C++ ABI，从而导致 C++ 共享库和 C++ 程序能够和其它 Linux 发行版可共同使用。</para>
-        </listitem>
-      </varlistentry>
 
       <varlistentry>
         <term><parameter>--enable-languages=c,c++</parameter></term>

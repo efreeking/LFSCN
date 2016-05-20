@@ -40,14 +40,16 @@
   <sect2 role="installation">
     <title>Coreutils 的安装</title>
 <!--
-    <para>修复了一些测试失败:</para>
+    <para>首先，修复在 <command>shuf</command> 程序中的一个段错误:</para>
 
-<screen><userinput remap="pre">patch -Np1 -i ../&coreutils-test-patch;</userinput></screen>
+<screen><userinput remap="pre">patch -Np1 -i ../&coreutils-shuf-segfault-patch;</userinput></screen>
 -->
     <para>POSIX 要求来自 Coreutils 的程序即使在多字节语言环境中也能够正确的识别字符的边界。
-    下列的补丁可以修复这个不兼容和其它的与国际化相关的问题:</para>
+    下列的补丁可以修复这个不兼容和其它的与国际化相关的问题。
+    之后，确保 <filename>Makefile.in</filename> 的时间戳比所有其它的文件都要新，防止 <command>make</command> 错误:</para>
 
-<screen><userinput remap="pre">patch -Np1 -i ../&coreutils-i18n-patch;</userinput></screen>
+<screen><userinput remap="pre">patch -Np1 -i ../&coreutils-i18n-patch; &amp;&amp;
+touch Makefile.in</userinput></screen>
 
     <note>
       <para>在过去，这个补丁中找到很多错误。当报告新的错误给 Coreutils 维护者时，请首先检查它们是否不应用这个补丁就不会重现。</para>
@@ -107,7 +109,7 @@
 
 <screen><userinput remap="install">mv -v /usr/bin/{cat,chgrp,chmod,chown,cp,date,dd,df,echo} /bin
 mv -v /usr/bin/{false,ln,ls,mkdir,mknod,mv,pwd,rm} /bin
-mv -v /usr/bin/{rmdir,stty,sync,true,uname,test,[} /bin
+mv -v /usr/bin/{rmdir,stty,sync,true,uname} /bin
 mv -v /usr/bin/chroot /usr/sbin
 mv -v /usr/share/man/man1/chroot.1 /usr/share/man/man8/chroot.8
 sed -i s/\"1\"/\"8\"/1 /usr/share/man/man8/chroot.8</userinput></screen>
@@ -116,7 +118,7 @@ sed -i s/\"1\"/\"8\"/1 /usr/share/man/man8/chroot.8</userinput></screen>
     <command>head</command>、<command>sleep</command> 和 <command>nice</command>。由于
     <filename class="directory">/usr</filename> 在引导的早期阶段还未可用，那些二进制文件需要在根分区上:</para>
 
-<screen><userinput remap="install">mv -v /usr/bin/{head,sleep,nice} /bin</userinput></screen>
+<screen><userinput remap="install">mv -v /usr/bin/{head,sleep,nice,test,[} /bin</userinput></screen>
 
   </sect2>
 

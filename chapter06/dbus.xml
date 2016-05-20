@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE sect1 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+  "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+  <!ENTITY % general-entities SYSTEM "../general.ent">
+  %general-entities;
+]>
+
+<sect1 id="ch-system-dbus" role="wrap">
+  <?dbhtml filename="dbus.html"?>
+
+  <sect1info condition="script">
+    <productname>dbus</productname>
+    <productnumber>&dbus-version;</productnumber>
+    <address>&dbus-url;</address>
+  </sect1info>
+
+  <title>D-Bus-&dbus-version;</title>
+
+  <indexterm zone="ch-system-dbus">
+    <primary sortas="a-dbus">D-Bus</primary>
+  </indexterm>
+
+  <sect2 role="package">
+    <title/>
+
+    <para>D-Bus 是一个消息总线系统，一个让应用程序相互沟通的简单的办法。
+    D-Bus 提供了一个系统值守程序(用于 "new hardware device added" 或 "printer queue changed"之类的事件)
+    和一个 per-user-login-session(每用户登录会话)值守程序(用于用户应用程序之间所需的常规 IPC)。
+    还有，消息总线是构建在一个常规的一对一的消息传递框架的顶部的，可以被任何两个应用程序用来进行
+    直接的通信(而无需通过消息总线值守程序)。</para>
+
+    <segmentedlist>
+      <segtitle>&buildtime;</segtitle>
+      <segtitle>&diskspace;</segtitle>
+
+      <seglistitem>
+        <seg>&dbus-ch6-sbu;</seg>
+        <seg>&dbus-ch6-du;</seg>
+      </seglistitem>
+    </segmentedlist>
+
+  </sect2>
+
+  <sect2 role="installation">
+    <title>D-Bus 的安装</title>
+
+    <para>准备 D-Bus 进行编译:</para>
+
+<screen><userinput remap="configure">./configure --prefix=/usr                       \
+            --sysconfdir=/etc                   \
+            --localstatedir=/var                \
+            --docdir=/usr/share/doc/dbus-&dbus-version;  \
+            --with-console-auth-dir=/run/console</userinput></screen>
+
+    <variablelist>
+      <title>配置选项的含义:</title>
+
+      <varlistentry>
+        <term><parameter>--with-console-auth-dir=/run/console</parameter></term>
+        <listitem>
+          <para>这个指定 ConsoleKit auth （认证）目录的位置。</para>
+        </listitem>
+      </varlistentry>
+
+    </variablelist>
+
+    <para>编译包:</para>
+
+<screen><userinput remap="make">make</userinput></screen>
+
+    <para>这个包附带了一个测试套件，但是它需要多个不包含在 LFS 中的包。
+    运行测试套件的只能可以在 BLFS 一书中的
+    <ulink url="&blfs-root;/view/&short-version;/general/dbus.html"/> 找到。</para>
+
+    <para>安装包:</para>
+
+<screen><userinput remap="install">make install</userinput></screen>
+
+    <para>共享库需要移到
+    <filename class="directory">/lib</filename>，因此在
+    <filename class="directory">/usr/lib</filename> 中的
+    <filename class="extension">.so</filename> 文件将需要重新创建:</para>
+
+<screen><userinput remap="install">mv -v /usr/lib/libdbus-1.so.* /lib
+ln -sfv ../../lib/$(readlink /usr/lib/libdbus-1.so) /usr/lib/libdbus-1.so</userinput></screen>
+
+    <para>创建一个符号链接，以便 D-Bus 和 Systemd 可以使用同样的
+    <filename>machine-id</filename> 文件:</para>
+
+<screen><userinput remap="install">ln -sv /etc/machine-id /var/lib/dbus</userinput></screen>
+
+    <para>最后，生成一个 D-Bus UUID 避免在 BLFS 中构建某些包时的可能的警告:</para>
+
+<screen><userinput remap="install">dbus-uuidgen --ensure</userinput></screen>
+
+  </sect2>
+
+  <sect2 id="contents-dbus" role="content">
+    <title>D-Bus 的内容</title>
+
+    <segmentedlist>
+      <segtitle>安装的程序</segtitle>
+      <segtitle>安装的库</segtitle>
+      <segtitle>安装的目录</segtitle>
+
+      <seglistitem>
+        <seg>dbus-cleanup-sockets, dbus-daemon, dbus-launch, dbus-monitor,
+        dbus-send 和 dbus-uuidgen</seg>
+        <seg>libdbus-1.{a,so}</seg>
+        <seg>/etc/dbus-1, /usr/include/dbus-1.0, /usr/lib/dbus-1.0,
+        /usr/share/dbus-1, /usr/share/doc/dbus-&dbus-version;,
+        /var/lib/dbus</seg>
+      </seglistitem>
+    </segmentedlist>
+
+    <variablelist>
+      <bridgehead renderas="sect3">简述</bridgehead>
+      <?dbfo list-presentation="list"?>
+      <?dbhtml list-presentation="table"?>
+
+      <varlistentry id="dbus-cleanup-sockets">
+        <term><command>dbus-cleanup-sockets</command></term>
+        <listitem>
+          <para>用于清理在目录中残余的套接字。</para>
+          <indexterm zone="ch-system-dbus dbus-cleanup-sockets">
+            <primary sortas="b-dbus-cleanup-sockets">dbus-cleanup-sockets</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="dbus-daemon">
+        <term><command>dbus-daemon</command></term>
+        <listitem>
+          <para>D-Bus 消息总线值守后台。</para>
+          <indexterm zone="ch-system-dbus dbus-daemon">
+            <primary sortas="b-dbus-daemon">dbus-daemon</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="dbus-launch">
+        <term><command>dbus-launch</command></term>
+        <listitem>
+          <para>从一个 Shell 脚本中启动 <command>dbus-daemon</command>。</para>
+          <indexterm zone="ch-system-dbus dbus-launch">
+            <primary sortas="b-dbus-launch">dbus-launch</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="dbus-monitor">
+        <term><command>dbus-monitor</command></term>
+        <listitem>
+          <para>监控通过 D-Bus 消息总线传递的消息。</para>
+          <indexterm zone="ch-system-dbus dbus-monitor">
+            <primary sortas="b-dbus-monitor">dbus-monitor</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="dbus-send">
+        <term><command>dbus-send</command></term>
+        <listitem>
+          <para>发送一条消息到一个 D-Bus 消息总线。</para>
+          <indexterm zone="ch-system-dbus dbus-send">
+            <primary sortas="b-dbus-send">dbus-send</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="dbus-uuidgen">
+        <term><command>dbus-uuidgen</command></term>
+        <listitem>
+          <para>生成一个唯一 ID。</para>
+          <indexterm zone="ch-system-dbus dbus-uuidgen">
+            <primary sortas="b-dbus-uuidgen">dbus-uuidgen</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+    </variablelist>
+
+  </sect2>
+
+</sect1>

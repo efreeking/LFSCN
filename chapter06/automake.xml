@@ -70,7 +70,7 @@ make -j4 check</userinput></screen>
       <segtitle>安装目录</segtitle>
 
       <seglistitem>
-        <seg>acinstall, aclocal, aclocal-&am-minor-version;, automake,
+        <seg>aclocal, aclocal-&am-minor-version;, automake,
         automake-&am-minor-version;, compile, config.guess, config.sub,
         depcomp, install-sh, mdate-sh, missing, mkinstalldirs,
         py-compile, symlink-tree 和 ylwrap</seg>
@@ -83,16 +83,6 @@ make -j4 check</userinput></screen>
       <bridgehead renderas="sect3">简述</bridgehead>
       <?dbfo list-presentation="list"?>
       <?dbhtml list-presentation="table"?>
-
-      <varlistentry id="acinstall">
-        <term><command>acinstall</command></term>
-        <listitem>
-          <para>一个安装 aclocal-style M4 文件的脚本</para>
-          <indexterm zone="ch-system-automake acinstall">
-            <primary sortas="b-acinstall">acinstall</primary>
-          </indexterm>
-        </listitem>
-      </varlistentry>
 
       <varlistentry id="aclocal">
         <term><command>aclocal</command></term>

@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sect1 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+  "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+  <!ENTITY % general-entities SYSTEM "../general.ent">
+  %general-entities;
+]>
+
+<sect1 id="ch-scripts-udev">
+  <?dbhtml filename="udev.html"?>
+
+  <title>LFS 系统上的设备和模块处理</title>
+
+  <indexterm zone="ch-scripts-udev">
+    <primary sortas="a-Udev">Udev</primary>
+    <secondary>用法</secondary>
+  </indexterm>
+
+  <para>在<xref linkend="chapter-building-system"/>中，我们安装了 Udev 包。在我们深入探讨它如何工作之前，先按顺序回顾一下处理设备的原先办法的简单历史。</para>
+
+  <para>Linux 系统一般而言，按传统使用一个静态的设备创建方式，凭借着 <filename
+  class="directory">/dev</filename> 下创建的大量的设备节点(有些时候是成千上万个节点)，而无论相应的硬件设备实际上是否存在。这通常是通过一个 <command>MAKEDEV</command> 脚本来完成的，它包含大量对 <command>mknod</command> 程序的调用，并带上可能存在于世界上的每个可能的设备的有关主要和次要设备号。</para>
+
+  <para>使用 Udev 方式，只有那些通过内核获取设备节点检测到的设备会被创建。因为这些设备节点将会在每次系统引导时都将会创建，所以它们将会存储在一个 <systemitem
+  class="filesystem">devtmpfs</systemitem> 文件系统上(整个驻留在系统内存中的一个虚拟文件系统)。设备节点不想要太多的空间，所以使用的内存微不足道。</para>
+
+  <sect2>
+    <title>历史</title>
+
+    <para>在2000年2月，一个称为 <systemitem
+    class="filesystem">devfs</systemitem> 的新文件系统被整合到 2.3.46 内核，并可以在 2.4 系列的稳定内核中使用。尽管它本身存在于内核源代码，但这种动态创建设备的方法从未受到核心的内核开发成员的全力支持。</para>
+
+    <para><systemitem
+    class="filesystem">devfs</systemitem> 采取的方式的最大问题是它处理设备检测、创建和命名的方式。最后一个问题，也就是设备节点的命名，可能是最重要的。一般认为，如果设备名称是可配置的，那么设备命名策略应该取决于系统管理员，而不是被任何特定的开发者来强加到它们身上。<systemitem
+    class="filesystem">devfs</systemitem> 文件系统还受到“竞争条件”(race conditions)的问题，这是其设计中固有的缺陷，不对内核进行大规模的修正是无法修复的。由于时间太长，它被标记为“deprecated”(不赞成)&ndash;由于缺乏维护&ndash; 并最终在 2006年6月从内核中删除。</para>
+
+    <para>随着不稳定的 2.5 内核树的开发，之后发布为 2.6 系列的稳定内核，一个称为 <systemitem class="filesystem">sysfs</systemitem> 的新虚拟文件系统诞生了。
+    <systemitem class="filesystem">sysfs</systemitem> 的工作是导出一个系统硬件配置的视图到用户空间的进程。使用这种用户空间可见的表现形式，查看 <systemitem class="filesystem">devfs</systemitem> 的用户空间的替代的可能性越来越可行了。</para>
+
+  </sect2>
+
+  <sect2>
+    <title>Udev 实现</title>
+
+    <sect3>
+      <title>Sysfs</title>
+
+      <para>上面简单的提到 <systemitem class="filesystem">sysfs</systemitem> 文件系统。有人可能想知道 <systemitem
+      class="filesystem">sysfs</systemitem> 如何知道存在系统的设备以及对它们应该用怎样的设备编号。已经直接编译到内核中的驱动程序在内核检测到的时候，使用 <systemitem class="filesystem">sysfs</systemitem> (devtmpfs 内在)注册它们的对象。对于编译为模块的驱动程序，这个注册会在模块加载的时候发生。一旦 <systemitem
+      class="filesystem">sysfs</systemitem> 文件系统被挂载(在 <filename
+      class="directory">/sys</filename> 上)，内建驱动程序注册到 <systemitem class="filesystem">sysfs</systemitem> 的数据就可用于用户空间进程和给 <command>udevd</command> 进行处理(包括对设备节点的修改)。</para>
+
+    </sect3>
+
+    <sect3>
+      <title>设备节点创建</title>
+
+      <para>设备文件是由内核使用 <systemitem class="filesystem">devtmpfs</systemitem> 文件系统创建的。
+      任何希望注册一个设备节点的驱动程序将会通过 <systemitem
+      class="filesystem">devtmpfs</systemitem> (经由驱动程序核心) 这样做。
+      当一个 <systemitem class="filesystem">devtmpfs</systemitem> 实例被装载在 <filename class="directory">/dev</filename> 上时，
+      设备节点最初将会使用一个固定的名称，权限和属主创建。</para>
+
+      <para>稍后，内核将会发送一个 uevent 给 <command>udevd</command>。
+      根据在 <filename class="directory">/etc/udev/rules.d</filename>, 
+      <filename class="directory">/lib/udev/rules.d</filename> 及 <filename class="directory">/run/udev/rules.d</filename> 目录中的文件中所指定的规则，
+      <command>udevd</command> 将会创建额外的符号链接指向设备节点，或者为那些对象更改其权限、属主或分组，或修改内部
+      <command>udevd</command> 数据库条目(名称)。</para>
+
+      <para>在这三个目录中的规则将会以和 LFS-Bootscripts 包中类似的方式编号，并会合并到一起。
+      如果 <command>udevd</command> 不能找到设备创建的规则，它将会保留权限和属主关系为
+      <systemitem class="filesystem">devtmpfs</systemitem> 最初使用的情况。</para> </sect3>
+
+    <sect3>
+      <title>Udev 引导脚本</title>
+
+      <para>第一个 LFS 引导脚本，<filename>/etc/init.d/mountvirtfs</filename> 将会复制位于
+      <filename class="directory">/lib/udev/devices</filename> 的任意设备到
+      <filename class="directory">/dev</filename>。这是必需的，因为在引导系统的早期阶段，在动态设备处理进程可用之前，需要某些设备、目录和符号链接，或者是 <command>udevd</command> 自身需要。
+      在 <filename class="directory">/lib/udev/devices</filename> 中创建静态设备节点也为不被动态设备处理结构所支持的设备提供了一种简单的变通方案。</para>
+
+      <para><filename>/etc/rc.d/init.d/udev</filename> 初始脚本启动
+      <command>udevd</command>，触发任何已经由内核创建的 "coldplug" 设备，并等待任何规则来完成。
+      脚本还从 <filename>/sbin/hotplug </filename> 的默认中取消设置(unset)了 uevent 句柄。
+      这样做是因为内核不再需要调用一个外部二进制。
+      相反，<command>udevd</command> 将会在一个 netlink 套接字上监听内核引起的 uevents。</para>
+
+      <para><command>/etc/rc.d/init.d/udev_retry</command> 初始脚本照顾那些其规则可能依赖于在 <command>mountfs</command>
+      脚本运行前还未装载的文件系统的子系统的重新触发事件(特别是, <filename class="directory">/usr</filename>
+      和 <filename class="directory">/var</filename> 可能会导致这个)。
+      这个脚本在 <command>mountfs</command> 脚本之后运行，以便那些规则(如果被重新触发)应该可以在第二次成功。
+      它是从 <filename>/etc/sysconfig/udev_retry</filename> 文件配置的;在这个文件中的任何词组，除了注释外都会被视为在重试时要触发的子系统的名称。
+      要查找一个设备的子系统名称，使用
+      <command>udevadm info --attribute-walk &lt;device&gt;</command> 其中
+      &lt;device&gt; 是在 /dev 或 /sys 中的一个绝对路径，譬如 /dev/sr0 或 /sys/class/rtc。</para>
+
+    </sect3>
+
+    <sect3>
+      <title>设备节点创建</title>
+
+      <para>要获取一个设备的正确的主和次设备号，Udev 依靠由 <filename class="directory">/sys</filename> 中的 <systemitem class="filesystem">sysfs</systemitem>
+      提供的信息。例如，<filename>/sys/class/tty/vcs/dev</filename> 包含字符串 <quote>7:0</quote>。这个字符串是 <command>udevd</command> 用来创建一个主设备号为 <emphasis>7</emphasis> 次设备号为 <emphasis>0</emphasis> 的设备节点。在 <filename class="directory">/dev</filename> 目录下创建的节点的名称和权限由 <filename
+      class="directory">/etc/udev/rules.d/</filename> 目录中的文件中指定的规则决定。这些是以类似 LFS-Bootscripts 包的风格进行编号。如果
+      <command>udevd</command> 找不到用于它正在创建的设备的规则，它将默认设置权限为 <emphasis>660</emphasis> 和所有者关系为 <emphasis>root:root</emphasis>。 Udev 规则配置文件的语法的文档可以在 <filename>/usr/share/doc/udev-&udev-version;/writing_udev_rules/index.html</filename> 找到。
+      </para>
+
+    </sect3>
+
+    <sect3>
+      <title>模块加载</title>
+
+      <para>编译为模块的设备驱动程序可能把别名编译进去。别名可以在 <command>modinfo</command> 程序的输出中看到，并且通常和模块所支持的设备的总线专用识别符相关。 例如，<emphasis>snd-fm801</emphasis> 驱动程序支持厂商 ID 0x1319 和设备 ID 为 0x0801 的 PCI 设备，而且有一个 <quote>pci:v00001319d00000801sv*sd*bc04sc01i*</quote> 的别名。对于大多数设备，总线驱动程序导出会通过 <systemitem class="filesystem">sysfs</systemitem> 处理设备的驱动程序的别名。譬如，<filename>/sys/bus/pci/devices/0000:00:0d.0/modalias</filename> 文件可以包含字符串 <quote>pci:v00001319d00000801sv00001319sd00001319bc04sc01i00</quote>。Udev 提供的默认规则将会导致 <command>udevd</command> 调用 <command>/sbin/modprobe</command> 并带上 <envar>MODALIAS</envar> uevent 环境变量的内容(这应该和 sysfs 中的 <filename>modalias</filename> 文件的内容一样)，从而加载所有其别名匹配通配符扩展后的这个字符串的模块。</para>
+
+      <para>在本例子中，这个意味着除了 <emphasis>snd-fm801</emphasis> 外，已过时(和不想要)的
+      <emphasis>forte</emphasis> 驱动程序如果可用的话也会被加载。查看下面在其中找到可以阻止不想要的驱动程序加载的方法。</para>
+
+      <para>内核本身也可以按需加载用于网络协议、文件系统和 NLS 支持的模块。</para>
+
+    </sect3>
+
+    <sect3>
+      <title>处理热插拔/动态设备</title>
+
+      <para>当您插入一个设备，譬如一个通用串行总线 (USB) MP3 播放器时，内核识别到设备现在已经连接并且生成一个 uevent。这个 uevent 之后由 <command>udevd</command> 如上述方式处理。</para>
+
+    </sect3>
+
+  </sect2>
+
+  <sect2>
+    <title>加载模块和创建设备的问题</title>
+
+    <para>当自动创建设备节点实现时，可能会有一些问题。</para>
+
+    <sect3>
+      <title>内核模块不能自动加载</title>
+
+      <para>Udev 只会加载有总线专用别名和总线驱动程序正确的导出需要的别名到 <systemitem
+      class="filesystem">sysfs</systemitem> 的模块。在其它情况下，应该以其它方式安排模块的加载。至于 Linux-&linux-version;，Udev 已知能加载 INPUT、IDE、PCI、USB、SCSI、SERIO 和 FireWire 设备的正确编写的驱动程序。</para>
+
+      <para>要判断您需要的设备驱动程序是否有对 Udev 的必需的支持，以模块名称为参数运行 <command>modinfo</command>。现在尝试在
+      <filename class="directory">/sys/bus</filename> 下定位设备目录并检查在那里是否有一个 <filename>modalias</filename> 文件。</para>
+
+      <para>如果 <filename>modalias</filename> 文件存在于 <systemitem
+      class="filesystem">sysfs</systemitem> 中，那么驱动程序支持设备并可以直接与其通信，但是没有别名,这是驱动程序中的一个问题。不在 Udev 的帮助下加载驱动程序，希望问题在以后能够得到修复。</para>
+
+      <para>如果在 <filename class="directory">/sys/bus</filename> 下相应的目录中没有 <filename>modalias</filename> 文件，这意味着内核开发者还没有添加 modalias 支持到该总线类型。对于 Linux-&linux-version;，ISA 总线就是这样的情况。希望在以后的内核版本中这个问题得到修复。</para>
+
+      <para>Udev 完全就不是用于加载譬如 <emphasis>snd-pcm-oss</emphasis> 之类的 <quote>封装</quote> 驱动程序和譬如 <emphasis>loop</emphasis> 之类的非硬件驱动程序。</para>
+
+    </sect3>
+
+    <sect3>
+      <title>一个内核模块没有自动加载，而 Udev 也不打算加载它</title>
+
+      <para>如果<quote>wrapper</quote>模块仅仅增强了由某些其它的模块提供的功能(如 <emphasis>snd-pcm-oss</emphasis> 通过使得声卡可以用于 OSS 应用程序来增强 <emphasis>snd-pcm</emphasis> 的功能)，配置 <command>modprobe</command> 在 Udev 加载封装模块后加载封装程序(wrapper)。要这样做，添加一 <quote>softdep</quote> 行到任何的
+      <filename>/etc/modprobe.d/<replaceable>&lt;filename&gt;</replaceable>.conf</filename>
+      文件中。例如:</para>
+
+<screen role="nodump"><literal>softdep snd-pcm post: snd-pcm-oss</literal></screen>
+
+      <para>注意 <quote>softdep</quote> 命令也允许
+      <literal>pre:</literal> 依赖关系，或者
+      <literal>pre:</literal> 和 <literal>post:</literal> 的混合。
+      参阅 <filename>modprobe.d(5)</filename> 手册页了解更多关于 <quote>softdep</quote> 语法和功能的信息。</para>
+
+      <para>如果问题中的模块不是一个封装程序，而是本身有用，配置 <command>modules</command> 引导脚本在系统引导时加载这个模块。要这样做，添加模块的名称到
+      <filename>/etc/sysconfig/modules</filename> 文本上单独的一行。
+      这个也可以用于 wrapper (封装程序)模块，但是不是最好的办法。</para>
+
+    </sect3>
+
+    <sect3>
+      <title>Udev 加载了某些不想要的模块</title>
+
+      <para>在下面的例子中，对 <emphasis>forte</emphasis> 模块，既没有构建模块，或者在 <filename>/etc/modprobe.d/blacklist.conf</filename> 文件中把它列入黑名单:</para>
+
+<screen role="nodump"><literal>blacklist forte</literal></screen>
+
+      <para>列入黑名单的模块仍可用明确的 <command>modprobe</command> 命令手动加载。</para>
+
+    </sect3>
+
+    <sect3>
+      <title>Udev 不正确的创建了一个设备，或建立了错误的符号链接</title>
+
+      <para>这个通常发生在规则意外的匹配了一个设备。例如，一个编写的不好的规则通过供应商匹配，既可以匹配一个 SCSI 磁盘(预期的)也可以匹配相应的 SCSI 通用设备(不正确的)。
+      利用 <command>udevadm info</command>命令，找出错的规则并使它更规范。</para>
+
+    </sect3>
+
+    <sect3>
+      <title>Udev 规则工作不可信赖</title>
+
+      <para>这可能是上一个问题的另一个表现形式。如果不是，而且您的规则使用 <systemitem class="filesystem">sysfs</systemitem> 属性，它可能是内核计时问题，要在以后的内核中修复。而现在，您可以通过创建一个等待使用
+      <systemitem class="filesystem">sysfs</systemitem> 属性的规则并附加它到 <filename>/etc/udev/rules.d/10-wait_for_sysfs.rules</filename>
+      文件(如果不存在则创建这个文件)。如果您这样做或者是有帮助的话，请通知 LFS 开发列表。</para>
+
+    </sect3>
+
+    <sect3>
+      <title>Udev 不创建设备</title>
+
+      <para>后面的文本假设驱动器是静态构建到内核中，或者已加载为一个模块，而且您已经检查了 Udev 没有创建错误命名的设备。</para>
+
+      <para>如果一个内核驱动程序没有导出它的数据到 <systemitem
+      class="filesystem">sysfs</systemitem>，那么 Udev 就没有所需的信息创建设备节点。这个最常见的是来自内核树意外的第三方驱动程序。在 <filename>/lib/udev/devices</filename> 中使用恰当的主/次设备号创建静态设备节点(查看内核文档中的 <filename>devices.txt</filename> 或由第三方驱动程序供应商提供的文档)。静态设备节点将会由 <command>udev</command> 引导脚本复制到 <filename class="directory">/dev</filename>。</para>
+
+    </sect3>
+
+    <sect3>
+      <title>重启后设备命名顺序随机变化</title>
+
+      <para>这是由于 Udev 按设计是并行处理 uevents 和加载模块的，从而导致一个无法预测的顺序。这永远不会得到<quote>修复</quote>。您不应该依赖于内核设备命名的稳定。而是创建您自己的规则，给予设备的某些稳定的属性来建立带稳定名称的符号链接，譬如序列号或由 Udev 安装的各种 *_id 工具的输出。
+      查看<xref linkend="ch-scripts-symlinks"/>和<xref linkend="ch-scripts-network"/>的示例。</para>
+
+    </sect3>
+
+  </sect2>
+
+  <sect2>
+    <title>开卷有益</title>
+
+    <para>下列站点有额外的有用文档:</para>
+
+    <itemizedlist>
+
+      <listitem>
+        <para><systemitem class="filesystem">devfs</systemitem> 的用户空间实现
+        <ulink url="http://www.kroah.com/linux/talks/ols_2003_udev_paper/Reprint-Kroah-Hartman-OLS2003.pdf"/></para>
+      </listitem>
+
+      <listitem>
+        <para><systemitem class="filesystem">sysfs</systemitem> 文件系统
+        <ulink url="http://www.kernel.org/pub/linux/kernel/people/mochel/doc/papers/ols-2005/mochel.pdf"/></para>
+      </listitem>
+<!--  No longer available
+      <listitem>
+        <para>Pointers to further reading
+        <ulink url="http://www.kernel.org/pub/linux/utils/kernel/hotplug/udev.html"/>
+        </para>
+      </listitem>
+-->
+    </itemizedlist>
+
+  </sect2>
+
+</sect1>

@@ -23,7 +23,7 @@
   <sect2 role="package">
     <title/>
 
-    <para>LFS-Bootscripts 包包含一组在引导/关机时启动/停止 LFS 系统的脚本。</para>
+    <para>LFS-Bootscripts 包包含一组在引导/关机时启动/停止 LFS 系统的脚本。定制想要的引导过程所需的配置文件和过程将会在下面的章节阐述。</para>
 
     <segmentedlist>
       <segtitle>&buildtime;</segtitle>
@@ -297,7 +297,7 @@
       <varlistentry id="udev-retry-bootscripts">
         <term><command>udev_retry</command></term>
         <listitem>
-          <para>重试失败的 udev uevents，并在需要的时候复制生成的规则文件到
+          <para>重试失败的 udev uevents，并在需要的时候从 <filename class="directory">/run/udev</filename> 复制生成的规则文件到
           <filename class="directory">/etc/udev/rules.d</filename></para>
           <indexterm zone="ch-scripts-bootscripts udev-retry-bootscripts">
             <primary sortas="d-udev-retry">udev_retry</primary>

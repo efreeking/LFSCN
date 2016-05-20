@@ -160,6 +160,7 @@ esac</userinput></screen>
 
 <screen><userinput remap="make">make</userinput></screen>
 
+<!--
     <para>这个包附带了一个测试套装，然而它在此时无法运行，因为我们还没有 C++ 编译器。</para>
 
     <note>
@@ -170,7 +171,7 @@ esac</userinput></screen>
       Glibc locales 的话，参考
 	  <xref linkend="ch-system-glibc" role="."/> 的说明</para>
     </note>
-
+-->
     <para>安装软件包:</para>
 
 <screen><userinput remap="install">make install</userinput></screen>

@@ -15,11 +15,12 @@
     <secondary>配置</secondary>
   </indexterm>
 
-  <para>设置系统的主机名是 <command>localnet</command> 脚本的任务的一部分。这需要在 <filename>/etc/sysconfig/network</filename> 文件中配置。</para>
+  <para>在引导过程中， Systemd 和 System V 都使用相同的文件建立系统的主机名。
+  这需要通过创建 <filename>/etc/hostname</filename> 进行配置。</para>
 
-  <para>通过运行一下命令并输入一个主机名来创建 <filename>/etc/sysconfig/network</filename> 文件:</para>
+  <para>通过运行一下命令并输入一个主机名来创建 <filename>/etc/hostname</filename> 文件:</para>
 
-<screen><userinput>echo "HOSTNAME=<replaceable>&lt;lfs&gt;</replaceable>" &gt; /etc/sysconfig/network</userinput></screen>
+<screen><userinput>echo "<replaceable>&lt;lfs&gt;</replaceable>" &gt; /etc/hostname</userinput></screen>
 
   <para><replaceable>&lt;lfs&gt;</replaceable> 需要被替换为赋给主界面的名称。不要在这里输入正式域名(FQDN)。那是放在 <filename>/etc/hosts</filename> 文件中的。</para>
 

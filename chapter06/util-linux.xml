@@ -43,22 +43,25 @@
     <para>FHS 建议使用 <filename
     class="directory">/var/lib/hwclock</filename> 目录代替
     常用的 <filename class="directory">/etc</filename> 目录，原因是
-    <filename>adjtime</filename> 文件的位置。为了使得
-    <command>hwclock</command> 程序兼容 FHS，运行下列命令:</para>
+    <filename>adjtime</filename> 文件的位置。首先创建一个目录来确保
+    <command>hwclock</command> 程序的存储:</para>
 
-<screen><userinput remap="pre">sed -i -e 's@etc/adjtime@var/lib/hwclock/adjtime@g' \
-          $(grep -rl '/etc/adjtime' .)
-
-mkdir -pv /var/lib/hwclock</userinput></screen>
+<screen><userinput remap="pre">mkdir -pv /var/lib/hwclock</userinput></screen>
 
   </sect2>
 
   <sect2 role="installation">
     <title>Util-linux 的安装</title>
 
+    <para>首先，修复回归测试之一:</para>
+
+<screen><userinput remap="pre">sed -e 's/2^64/(2^64/' -e 's/E &lt;/E) &lt;=/' -e 's/ne /eq /' \
+    -i tests/ts/ipcs/limits2</userinput></screen>
+
     <para>准备 Util-linux 进行编译:</para>
 
-<screen><userinput remap="configure">./configure</userinput></screen>
+<screen><userinput remap="configure">./configure ADJTIME_PATH=/var/lib/hwclock/adjtime \
+            --docdir=/usr/share/doc/util-linx-&util-linux-version;</userinput></screen>
 
     <para>编译包:</para>
 
@@ -75,11 +78,10 @@ mkdir -pv /var/lib/hwclock</userinput></screen>
     <screen role="nodump"><userinput>bash tests/run.sh --srcdir=$PWD --builddir=$PWD</userinput></screen> 
     </warning>
 
-    <note><para>两个测试，last/ipv6 和 last/last，在 chroot 环境中失败是由于 DNS 解析器还未激活。
-    如果在引导后重新运行测试，它们就可以通过了。</para></note>
-
     <screen><userinput remap="test">chown -Rv nobody .
 su nobody -s /bin/bash -c "PATH=$PATH make -k check"</userinput></screen>
+
+    <note><para>以上的一个测试，tests/ts/ipcs/limits2，当宿主使用新近的内核时将会失败。这个失败可以安全的忽略掉</para></note>
 
     <para>安装包:</para>
 
@@ -97,12 +99,12 @@ su nobody -s /bin/bash -c "PATH=$PATH make -k check"</userinput></screen>
 
       <seglistitem>
         <seg>addpart, agetty, blkdiscard, blkid, blockdev, cal, cfdisk, chcpu,
-        chrt, col, colcrt, colrm, column, ctrlaltdel, cytune, delpart, dmesg,
+        chrt, col, colcrt, colrm, column, ctrlaltdel, delpart, dmesg,
         eject, fallocate, fdformat, fdisk, findfs, findmnt, flock, fsck,
         fsck.cramfs, fsck.minix, fsfreeze, fstrim, getopt, hexdump, hwclock,
         i386, ionice, ipcmk, ipcrm, ipcs, isosize, kill, last, lastb (链接到
         last), ldattach, linux32, linux64, logger, look, losetup, lsblk, lscpu,
-        lslocks, mcookie, mkfs, mkfs.bfs, mkfs.cramfs, mkfs.minix, mkswap,
+        lslocks, lslogins, mcookie, mkfs, mkfs.bfs, mkfs.cramfs, mkfs.minix, mkswap,
         more, mount, mountpoint, namei, partx, pg, pivot_root, prlimit, raw,
         readprofile, rename, renice, resizepart, rev, rtcwake, script,
         scriptreplay, setarch, setsid, setterm, sfdisk, sulogin, swaplabel,
@@ -112,8 +114,8 @@ su nobody -s /bin/bash -c "PATH=$PATH make -k check"</userinput></screen>
 
         <seg>libblkid.{a,so}, libmount.{a,so}, libuuid.{a,so}</seg>
 
-        <seg>/usr/include/blkid, /usr/include/libmount, /usr/include/uuid,
-        /usr/share/doc/util-linux/getopt, /var/lib/hwclock</seg>
+        <seg>/etc/terminal-colors.d, /usr/include/blkid, /usr/include/libmount, 
+        /usr/include/uuid, /usr/share/doc/util-linux-&util-linux-version;/getopt, /var/lib/hwclock</seg>
       </seglistitem>
     </segmentedlist>
 
@@ -258,16 +260,6 @@ su nobody -s /bin/bash -c "PATH=$PATH make -k check"</userinput></screen>
           <para>设置 Ctrl+Alt+Del 组合键的功能为硬或软复位</para>
           <indexterm zone="ch-system-util-linux ctrlaltdel">
             <primary sortas="b-ctrlaltdel">ctrlaltdel</primary>
-          </indexterm>
-        </listitem>
-      </varlistentry>
-
-      <varlistentry id="cytune">
-        <term><command>cytune</command></term>
-        <listitem>
-          <para>调整 Cyclades 卡的串行线驱动程序的参数</para>
-          <indexterm zone="ch-system-util-linux cytune">
-            <primary sortas="b-cytune">cytune</primary>
           </indexterm>
         </listitem>
       </varlistentry>
@@ -619,6 +611,16 @@ su nobody -s /bin/bash -c "PATH=$PATH make -k check"</userinput></screen>
           <para>列出本地系统锁定</para>
           <indexterm zone="ch-system-util-linux lslocks">
             <primary sortas="b-lslocks">lslocks</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="lslogins">
+        <term><command>lslogins</command></term>
+        <listitem>
+          <para>列出关于用户、组和系统账户的信息</para>
+          <indexterm zone="ch-system-util-linux lslogins">
+            <primary sortas="b-lslogins">lslogins</primary>
           </indexterm>
         </listitem>
       </varlistentry>

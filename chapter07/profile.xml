@@ -100,8 +100,8 @@ EOF</userinput></screen>
   消息(在发出的邮件中的字符集被指定为 <quote>unknown
   8-bit</quote>)。所以您只可以在您明确您永远不需要 8 位的字符的情况下使用 <quote>C</quote> 语言环境。</para>
 
-  <para>基于 UTF-8 的语言环境还不能被许多程序很好的支持。
+  <para>基于 UTF-8 的语言环境还不能被某些程序很好的支持。
   在文档制作时，工作还在进行中，如果可以的话，修复这些问题，查看
-  <ulink url="&blfs-root;view/svn/introduction/locale-issues.html"/>。</para>
+  <ulink url="&blfs-root;view/&short-version;/introduction/locale-issues.html"/>。</para>
 
 </sect1>

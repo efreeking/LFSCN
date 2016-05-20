@@ -40,23 +40,14 @@
   <sect2 role="installation">
     <title>GCC 的安装</title>
 
-    <para>如同在<xref linkend="ch-tools-gcc-pass2"/>中的一样，应用下列
-    <command>sed</command> 以强制构建过程使用
-    <option>-fomit-frame-pointer</option> 编译器标志，以确保统一的编译器构建:</para> 
+    <para>如同在第 5 章中一样，修复一个上游标识的问题:</para>
 
-<screen><userinput remap="pre">case `uname -m` in
-  i?86) sed -i 's/^T_CFLAGS =$/&amp; -fomit-frame-pointer/' gcc/Makefile.in ;;
-esac</userinput></screen>
-<!--
-    <para>变通处理一个问题，以便 GCC 不会安装
-    <filename class="libraryfile">libiberty.a</filename>，它已经由 Binutils 提供了:</para>
+<screen><userinput remap="pre">sed -i 's/if \((code.*))\)/if (\1 \&amp;\&amp; \!DEBUG_INSN_P (insn))/' gcc/sched-deps.c</userinput></screen>
 
-<screen><userinput remap="pre">sed -i 's/install_to_$(INSTALL_DEST) //' libiberty/Makefile.in</userinput></screen>
--->
-    <para>还要修复一个检查 Makefiles 之一的错误，并禁止在 g++ libmudflap 测试套件中的一个测试:</para>
 
-<screen><userinput remap="pre">sed -i -e /autogen/d -e /check.sh/d fixincludes/Makefile.in 
-mv -v libmudflap/testsuite/libmudflap.c++/pass41-frag.cxx{,.disable}</userinput></screen>
+    <para>现在修复另一个确认导致某些程序失败的上游的问题:</para>
+
+<screen><userinput remap="pre">patch -Np1 -i ../&gcc-upstream-patch;</userinput></screen>
 
     <para>GCC 文档推荐在源代码目录外的一个专用构建目录中构建 GCC:</para>
 
@@ -65,19 +56,15 @@ cd ../gcc-build</userinput></screen>
 
     <para>准备 GCC 编译:</para>
 
-<screen><userinput remap="configure">SED=sed                          \
-../gcc-&gcc-version;/configure           \
-     --prefix=/usr               \
-     --enable-shared             \
-     --enable-threads=posix      \
-     --enable-__cxa_atexit       \
-     --enable-clocale=gnu        \
-     --enable-languages=c,c++    \
-     --disable-multilib          \
-     --disable-bootstrap         \
+<screen><userinput remap="configure">SED=sed                       \
+../gcc-&gcc-version;/configure        \
+     --prefix=/usr            \
+     --enable-languages=c,c++ \
+     --disable-multilib       \
+     --disable-bootstrap      \
      --with-system-zlib</userinput></screen>
 
-    <para>注意，对于其它语言，有一些不可用的先决条件。参阅 BLFS 书中关于如何构建所有 GCC 支持的语言的说明。</para>
+    <para>注意，对于其它语言，有一些还未可用的先决条件。参阅 <ulink url="&blfs-root;view/&short-version;/general/gcc.html">BLFS 书</ulink>中关于如何构建所有 GCC 支持的语言的说明。</para>
 
     <variablelist>
       <title>新配置选项的含义:</title>
@@ -122,9 +109,9 @@ cd ../gcc-build</userinput></screen>
     <para>结果可以和 <ulink
     url="&test-results;"/> 以及 <ulink url="http://gcc.gnu.org/ml/gcc-testresults/"/> 的进行比较。</para>
 
-    <para>一些意料之外的失败无法总能避免。GCC 开发者常常意识到这些问题，但是还未解决它们。特别是，
+    <para>一些意料之外的失败无法总能避免。GCC 开发者常常意识到这些问题，但是还未解决它们。<!--特别是，
     <filename class="libraryfile">libmudflap</filename> 测试被认为是尤其有问题的，以作为 GCC 中的一个错误的结果
-    (<ulink url="http://gcc.gnu.org/bugzilla/show_bug.cgi?id=20003"/>)。
+    (<ulink url="http://gcc.gnu.org/bugzilla/show_bug.cgi?id=20003"/>)。 -->
     除非测试结果和在上述 URL 的那些大大的不同，否则可以安全继续。</para>
 
     <para>安装包:</para>
@@ -140,6 +127,11 @@ cd ../gcc-build</userinput></screen>
     <para>很多包使用名称 <command>cc</command> 调用 C 编译器。为了满足那些包，创建一个符号链接:</para>
 
 <screen><userinput remap="install">ln -sv gcc /usr/bin/cc</userinput></screen>
+
+    <para>添加一个兼容性符号链接以使用链接时间优化(LTO)构建程序:</para> 
+
+<screen><userinput remap="install">install -v -dm755 /usr/lib/bfd-plugins
+ln -sfv ../../libexec/gcc/$(gcc -dumpmachine)/&gcc-version;/liblto_plugin.so /usr/lib/bfd-plugins/</userinput></screen>
 
     <para>现在，我们的最终工具链已经准备就绪，再次确认编译和链接能够如预期的那样工作，是非常重要的。
     我们通过执行在本章前期所作的一样的健全性测试:</para>
@@ -210,12 +202,16 @@ cd ../gcc-build</userinput></screen>
     href="adjusting.xml"
     xpointer="xpointer(//*[@os='k'])"/>
 
-<screen><computeroutput>SEARCH_DIR("/usr/i686-pc-linux-gnu/lib")
+<screen><computeroutput>SEARCH_DIR("/usr/i686-pc-linux-gnu/lib32")
+SEARCH_DIR("/usr/local/lib32")
+SEARCH_DIR("/lib32")
+SEARCH_DIR("/usr/lib32")
+SEARCH_DIR("/usr/i686-pc-linux-gnu/lib")
 SEARCH_DIR("/usr/local/lib")
 SEARCH_DIR("/lib")
 SEARCH_DIR("/usr/lib");</computeroutput></screen>
 
-   <para>64 位的系统可能会看到多一些目录。例如，这里是来自一个 X86_64 机器的输出:</para>
+   <para>64 位的系统可能会看到一些不同的目录。例如，这里是来自一个 X86_64 机器的输出:</para>
 
 <screen><computeroutput>SEARCH_DIR("/usr/x86_64-unknown-linux-gnu/lib64")
 SEARCH_DIR("/usr/local/lib64")
@@ -291,7 +287,7 @@ mv -v /usr/lib/*gdb.py /usr/share/gdb/auto-load/usr/lib</userinput></screen>
 
         <seg>libasan.{a,so}, libatomic.{a,so}, libgcc.a, libgcc_eh.a, 
         libgcc_s.so, libgcov.a, libgomp.{a,so}, libiberty.a, libitm.{a,so},
-        liblto_plugin.so, libmudflap.{a,so}, libmudflapth.{a,so},
+        liblto_plugin.so, 
         libquadmath.{a,so}, libssp.{a,so},
         libssp_nonshared.a, libstdc++.{a,so}, libsupc++.a 和 libtsan.{a,so}</seg>
 
@@ -461,7 +457,7 @@ mv -v /usr/lib/*gdb.py /usr/share/gdb/auto-load/usr/lib</userinput></screen>
           </indexterm>
         </listitem>
       </varlistentry>
-
+<!--
       <varlistentry id="libmudflap">
         <term><filename class="libraryfile">libmudflap</filename></term>
         <listitem>
@@ -471,7 +467,7 @@ mv -v /usr/lib/*gdb.py /usr/share/gdb/auto-load/usr/lib</userinput></screen>
           </indexterm>
         </listitem>
       </varlistentry>
-
+-->
       <varlistentry id="libquadmath">
         <term><filename class="libraryfile">libquadmath</filename></term>
         <listitem>

@@ -45,13 +45,11 @@
 
 <screen><userinput remap="pre">echo "127.0.0.1 localhost $(hostname)" &gt; /etc/hosts</userinput></screen>
 
-    <para>这个 Perl 版本现在构建 Compress::Raw::Zlib 模块。按默认 Perl 将会使用 Zlib 源代码的内部副本进行构建。
-    执行下列命令以便 Perl 使用安装在系统上的 Zlib 库:</para>
+    <para>这个 Perl 版本现在构建 Compress::Raw::Zlib 和 Compress::Raw::BZip2 模块。按默认 Perl 将会使用源代码的内部副本进行构建。
+    执行下列命令以便 Perl 使用安装在系统上的库:</para>
 
-<screen><userinput remap="pre">sed -i -e "s|BUILD_ZLIB\s*= True|BUILD_ZLIB = False|"           \
-       -e "s|INCLUDE\s*= ./zlib-src|INCLUDE    = /usr/include|" \
-       -e "s|LIB\s*= ./zlib-src|LIB        = /usr/lib|"         \
-    cpan/Compress-Raw-Zlib/config.in</userinput></screen>
+<screen><userinput remap="pre">export BUILD_ZLIB=False
+export BUILD_BZIP2=0</userinput></screen>
 
     <para>要完全控制 Perl 设置的方式，您可以从下列命令删除
     <quote>-des</quote> 选项并手动选取这个包构建的方式。另外，也可以一字不差的使用如下的命令来使用 Perl 自动检测的默认设置:</para>
@@ -76,7 +74,7 @@
       <varlistentry>
         <term><parameter>-Dpager="/usr/bin/less -isR"</parameter></term>
         <listitem>
-          <para>这个以 <command>perldoc</command> 调用 <command>less</command> 程序的方式纠正一个错误。</para>
+          <para>这个确保使用 <command>less</command> 代替 <userinput>more</userinput>。</para>
         </listitem>
       </varlistentry>
 
@@ -106,9 +104,10 @@
 
 <screen><userinput remap="test">make -k test</userinput></screen>
 
-    <para>安装包:</para>
+    <para>安装包并清理:</para>
 
-<screen><userinput remap="install">make install</userinput></screen>
+<screen><userinput remap="install">make install
+unset BUILD_ZLIB BUILD_BZIP2</userinput></screen>
 
   </sect2>
 

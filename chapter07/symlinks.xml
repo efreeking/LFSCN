@@ -8,7 +8,105 @@
 <sect1 id="ch-scripts-symlinks">
   <?dbhtml filename="symlinks.html"?>
 
-  <title>创建自定义的符号链接到设备</title>
+  <title>管理设备</title>
+ 
+   <sect2>
+ 
+    <title>网络设备</title>
+
+    <para>Udev，按默认，根据固件/BIOS 数据或物理特征，如总线、插槽或 MAC 地址等来命名网络设备。这个命名约定的目的就是确保设备能够保持一致而不是基于网卡被发现的时间。
+    例如，一台计算机上有两张网卡，分别有 Intel 和 Realtek 制作，由 Intel 生产的网卡可能变成 eth0 而 Realtek 的卡变成 eth1。在某些情况下，可能在重启后，网卡就可能以其他方式被重新编号了。</para>
+    
+    <para>在新的命名方案中，典型的网络设备名称应该是类似于 enp5s0 或 wlp3s0 之类的。如果不想要这种命名约定，可以实现传统的命名方案或一个自定义的方案。</para>
+
+    <sect3>
+      <title>禁止在内核命令行上的持久性命名</title>
+   
+      <para>传统的命名方案使用 eth0, eth1 等，可以通过在内核命令 kernel 上添加 <userinput>net.ifnames=0</userinput> 来恢复。这个对于那些只有同样类型的一个以太网设备的系统最适用。
+      笔记本通常有多个以太网连接，被命名为 eth0 和 wlan0，也可以候选使用这种方式。
+      命令行在 GRUB 配置文件中传递。
+      参阅 <xref linkend="grub-cfg"/>。</para>
+    </sect3>
+
+    <sect3>
+      <title>创建自定义 Udev 规则</title>
+   
+      <para>命名方案可以通过创建自定义 Udev 规则来定制。
+      包含了一个脚本来生成初始规则。通过运行下列命令生成这些规则:</para>
+
+<screen role="install"><userinput>bash /lib/udev/init-net-rules.sh</userinput></screen>
+
+      <para>现在，观察 <filename>/etc/udev/rules.d/70-persistent-net.rules</filename> 文件，找出哪个名称被指派给哪个网络设备:</para>
+
+<screen role="nodump"><userinput>cat /etc/udev/rules.d/70-persistent-net.rules</userinput></screen>
+
+      <note><para>在某些情况下，譬如当 MAC 地址已经手动指派给一个网卡，或者在一个虚拟环境中，譬如 Qemu 或 Xen 中，网络规则文件可能还未生成，因为地址还未统一分配。在这种情况下，这个方式不能使用。</para></note>
+  
+      <para>文件以注释块开始，并尾随是用于每个网络接口卡的一个或多个两行。
+      每个网络接口卡的第一行是显示其硬件 ID（譬如，如果它是 PCI 卡的话，则是它的 PCI 厂商和设备 ID）的注释式描述，随之是在括号中的它的驱动程序（如果可以找到驱动程序的话）。
+      无论是硬件 ID 还是驱动程序，都不会用于决定赋予一个接口什么名称；本信息仅作参考。第二行是匹配该网络接口卡的 Udev 规则，并实际赋予它一个名称。</para>
+  
+      <para>所有 Udev 规则由多个键组成，用逗号和可选的空白间隔。
+      这些规则的键和它们每个的说明如下:</para>
+  
+      <itemizedlist>
+        <listitem>
+          <para><literal>SUBSYSTEM=="net"</literal> - 这是告诉 Udev 忽略不是网卡的设备。</para>
+        </listitem>
+        <listitem>
+          <para><literal>ACTION=="add"</literal> - 这个告诉 Udev 对于不是一个 add 的 uevent 忽略本规则("remove" 和 "change" uevents 也会发生，但是这不需要重命名网络接口)。</para>
+        </listitem>
+        <listitem>
+          <para><literal>DRIVERS=="?*"</literal> - 这个的存在以便 Udev 将会忽略 VLAN 或桥接的子接口(因为这些子接口没有驱动程序)。
+          这些子接口被跳过是因为指派的名称将会和它们的父设备抵触。</para>
+        </listitem>
+        <listitem>
+          <para><literal>ATTR{address}</literal> - 这个键的值是网络接口卡的 MAC 地址。</para>
+        </listitem>
+        <listitem>
+          <para><literal>ATTR{type}=="1"</literal> - 这个确保规则在会创建多个虚拟接口的特定的无线驱动程序中仅匹配主接口。次要的接口基于和 VLAN 和桥接子接口被跳过的一样的理由会被跳过: 否则会有名称冲突。</para>
+        </listitem>
+        <listitem>
+          <para><literal>NAME</literal> - 这个键的值是 Udev 将会赋予给这个接口的名称。</para>
+        </listitem>
+      </itemizedlist>
+  
+      <para><literal>NAME</literal> 的值是重要的部分。在继续前确保您知道你的每个网卡被赋予何名称，并确保在如下创建你的配置文件时使用该 <literal>NAME</literal> 值。</para>
+
+    </sect3>
+<!--
+    <sect3>
+      <title>在 Systemd 中的自定义命名</title>
+   
+      <para>网络接口名称也可以使用一组专用于 systemd 的文件定制。
+      在 /etc/systemd/network 目录中带有譬如 10-eth0.link 之类名称的文件可以设置一个接口名称。
+      在目录中的所有文件将会按词典顺序应用。
+      在 /lib/systemd/network 目录中将会被在 /etc/systemd/network 中的同名文件所覆盖。
+      查看 systemd.link 的手册页可以获得一个完整的说明。</para>
+
+      <para>示例文件看起来像这样:</para>
+
+<screen role="nodump">[Match]
+MACAddress=12:34:56:78:9a:bc
+Driver=brcmsmac
+Path=pci-0000:02:00.0-*
+Type=wlan
+Virtualization=no
+Host=my-laptop
+Architecture=x86-64
+
+[Link]
+Name=wireless0
+MTUBytes=1450
+BitsPerSecond=10M
+WakeOnLan=magic
+MACAddress=cb:a9:87:65:43:21</screen>
+
+    <para>[Match] 节指定应用规则的时机。在上述的例子中，条目可以被缩短为最小，只需保持唯一的标识网络设备。类似的，[Link] 节仅需要指定想要的对默认的修改。在大多数情况下，仅需要的就是 Name 条目。</para>
+
+    </sect3>
+-->
+  </sect2>
 
   <sect2>
 
@@ -53,7 +151,7 @@
 
     <title>处理重复设备</title>
 
-    <para>如<xref linkend="ch-scripts-udev"/>中所阐述的，同一功能的设备在 <filename class="directory">/dev</filename> 中出现的顺序是非常随机的。例如，如果您有一个 USB Web 摄像头和一个电视调谐器，有时候 <filename>/dev/video0</filename> 引用摄像头而 <filename>/dev/video1</filename> 引用调谐器，而重启后的某些时候，顺序会颠倒过来。对于所有类型的硬件，除了声卡和网卡外，是可以通过为自定义的永久符号链接创建 udev 规则的方式修复的。网卡的情况单独在<xref linkend="ch-scripts-network"/>中说明，而声卡配置可以在 <ulink url="&blfs-root;view/svn/postlfs/devices.html">BLFS</ulink> 中找到。</para>
+    <para>如<xref linkend="ch-scripts-udev"/>中所阐述的，同一功能的设备在 <filename class="directory">/dev</filename> 中出现的顺序是非常随机的。例如，如果您有一个 USB Web 摄像头和一个电视调谐器，有时候 <filename>/dev/video0</filename> 引用摄像头而 <filename>/dev/video1</filename> 引用调谐器，而重启后的某些时候，顺序会颠倒过来。对于所有类型的硬件，除了声卡和网卡外，是可以通过为自定义的永久符号链接创建 Udev 规则的方式修复的。网卡的情况单独在<xref linkend="ch-scripts-network"/>中说明，而声卡配置可以在 <ulink url="&blfs-root;view/&short-version;/postlfs/devices.html">BLFS</ulink> 中找到。</para>
 
     <para>对于每个有类似这种问题的设备，
     (即使问题不存在于您当前的 Linux 发行版上)，在

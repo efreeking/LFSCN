@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
 <!DOCTYPE sect1 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
   "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
   <!ENTITY % general-entities SYSTEM "../general.ent">
@@ -10,72 +11,184 @@
 
   <title>介绍</title>
 
-  <para>本章讨论配置文件和引导脚本。首先存在网络需要设置的一般配置文件。</para>
-  
-  <itemizedlist>
-     <listitem>
-       <para><xref linkend="ch-scripts-network" role="."/></para>
-     </listitem>
-     <listitem>
-       <para><xref linkend="ch-scripts-hosts" role="."/></para>
-     </listitem>
-  </itemizedlist>
-  
-  <para>第二，讨论影响设备正确配置的问题。</para>
+    <para>引导一个 Linux 系统涉及多个任务。过程必须挂载虚拟的和真实的文件系统，初始化设备，
+    激活交换空间，检查文件系统的完整性，挂载任何交换分区或文件，设置系统时钟，启动网络，启动系统所需的值守进程，
+    并完成用户所需的任何其它的自定义任务。这个过程必须组织起来，确保任务以正确的顺序执行，同时，尽可能快的执行。</para>
 
-  <itemizedlist>
-     <listitem>
-       <para><xref linkend="ch-scripts-udev" role="."/></para>
-     </listitem>
-     <listitem>
-       <para><xref linkend="ch-scripts-symlinks" role="."/></para>
-     </listitem>
-  </itemizedlist>
+<!--    <para>在第 6 章中安装的某些包中，安装了两种不同的引导系统。
+    LFS 提供了轻易选择用户想使用的系统的功能，并通过在本地电脑上实际运行每个系统来比较和对比两个系统。
+    这些系统的优势和劣势展示如下。</para>-->
 
-  <para>下一节详述如何安装和配置引导过程所需的 LFS 系统脚本。这些脚本大部分可以无需修改即可使用，但是有一些需要额外配置，因为它们涉及到和硬件相关的信息。</para>
-  
-  <para>在本章利用 System-V 风格的初始化脚本，因为它们被广泛使用而且相当简单。作为补充选项，在 <ulink
-  url="&hints-root;bsd-init.txt"/> 中可以找到详述 BSD 风格初始化安装的建议。在 LFS 邮件列表搜索
-  <quote>depinit</quote>、<quote>upstart</quote> 或 <quote>systemd</quote>，也将会提供额外的信息。</para>
- 
-  <para>如果使用备选风格的初始化脚本的话，跳过这些章节。</para>
+  <sect2 id='sysv-desc'>
+    <title>System V</title>
 
-  <para>引导脚本的列表可以在<xref linkend="scripts"
-  role="."/>中找到。</para>
+    <para>System V 从大约 1983 年开始就已经在 Unix 和类 Unix 的系统，譬如 Linux 中使用的经典引导进程。
+    它有一个小程序 <command>init</command> 组成，它设置基本的程序，譬如 <command>login</command> (通过 getty)并运行一个脚本。
+    这个脚本，通常命名为 <command>rc</command>，控制一组执行初始化系统所需的任务的额外脚本的执行。</para>
 
+    <para><command>init</command> 程序由
+    <filename>/etc/inittab</filename> 文件控制，并按用户可以运行的运行级别分类组织:</para>
 
-  <itemizedlist>
-     <listitem>
-       <para><xref linkend="ch-scripts-bootscripts" role="."/></para>
-     </listitem>
-     <listitem>
-       <para><xref linkend="ch-scripts-usage" role="."/></para>
-     </listitem>
-     <listitem>
-       <para><xref linkend="ch-scripts-hostname" role="."/></para>
-     </listitem>
-     <listitem>
-       <para><xref linkend="ch-scripts-setclock" role="."/></para>
-     </listitem>
-     <listitem>
-       <para><xref linkend="ch-scripts-console" role="."/></para>
-     </listitem>
-     <listitem>
-       <para><xref linkend="ch-scripts-sysklogd" role="."/></para>
-     </listitem>
-  </itemizedlist>
-  
-  
-  <para>最后，有一个当用户登录到系统中时使用的脚本和配置文件的简单介绍。</para>
+<literallayout>
+0 &mdash; halt	挂起
+1 &mdash; Single user mode	单用户模式
+2 &mdash; Multiuser, without networking	不带网络的多用户
+3 &mdash; Full multiuser mode	完整的多用户模式
+4 &mdash; User definable	用户可定义
+5 &mdash; Full multiuser mode with display manager	带显示管理器的完整多用户模式
+6 &mdash; reboot	重新启动
+</literallayout>
 
-  <itemizedlist>
-     <listitem>
-       <para><xref linkend="ch-scripts-profile" role="."/></para>
-     </listitem>
-     <listitem>
-       <para><xref linkend="ch-scripts-inputrc" role="."/></para>
-     </listitem>
-  </itemizedlist>
+    <para>常用的默认运行级别是 3 或 5。</para>
+
+    <bridgehead renderas="sect3">优势</bridgehead>
+
+    <itemizedlist>
+      <listitem>
+          <para>既定的，很好理解的系统。</para>
+      </listitem>
+
+      <listitem>
+          <para>易于定制。</para>
+      </listitem>
+
+    </itemizedlist>
 
 
+    <bridgehead renderas="sect3">劣势</bridgehead>
+
+    <itemizedlist>
+      <listitem>
+          <para>引导较慢。中等速度的基础 LFS 系统的引导时间 8- 12 秒，其中的引导时间是从首条内核信息开始到登录提示符来衡量。
+          网络连接通常是在登录提示符后约 2 秒建立</para>
+      </listitem>
+
+      <listitem>
+          <para>引导任务的串行处理。这个和上一点相关。任何进程中的延时，譬如文件系统检查，将会延迟整个引导过程。</para>
+      </listitem>
+
+      <listitem>
+          <para>不能直接支持高级的功能，像控制组 (cgroups)，以及基于每个用户的公平共享调度安排。</para>
+      </listitem>
+
+      <listitem>
+          <para>添加脚本需要手动，静态排序决定。</para>
+      </listitem>
+
+    </itemizedlist>
+
+  </sect2>
+<!--
+  <sect2 id='sysd-desc'>
+    <title>Systemd</title>
+
+    <para>Systemd 是一组处理系统和独立的进程请求的相互联通的程序。
+    它为称为“units”（单元）的各种实体之间提供一个依赖关系系统。
+    它自动定位单元之间的依赖关系，并可以并发执行多个启动任务。
+    它提供 login, inetd, logging, time 和网络服务。</para>
+
+    <bridgehead renderas="sect3">优势</bridgehead>
+
+    <itemizedlist>
+      <listitem>
+          <para>按默认在许多既定的发行版上使用。</para>
+      </listitem>
+
+      <listitem>
+          <para>有大量的文档。查看 <ulink url="http://www.freedesktop.org/wiki/Software/systemd/"/>。</para>
+      </listitem>
+
+      <listitem>
+          <para>引导过程的并发执行。中等速度的基础 LFS 系统从内核启动到登录提示花费 6-10 秒。
+          网络连接通常在登录提示符后大约 2 秒建立。相对于 System V，更复杂的启动过程可以显示更强大的提速。</para>
+      </listitem>
+
+      <listitem>
+          <para>实现高级功能，譬如控制分组管理相关的进程。</para>
+      </listitem>
+
+      <listitem>
+          <para>保持和 System V 程序与脚本的向后兼容性。</para>
+      </listitem>
+    </itemizedlist>
+
+    <bridgehead renderas="sect3">劣势</bridgehead>
+
+    <itemizedlist>
+      <listitem>
+          <para>有一个巨大的学习曲线。</para>
+      </listitem>
+
+      <listitem>
+          <para>某些高级功能，譬如 dbus 或 cgroups，无论是否需要的都不能禁用。</para>
+      </listitem>
+
+      <listitem>
+          <para>尽管实现了多种可执行程序，但是用户不能选择仅实现想要的部分。</para>
+      </listitem>
+
+      <listitem>
+          <para>由于使用编译程序的性质，systemd 更难以调试。</para>
+      </listitem>
+
+      <listitem>
+          <para>记录是以二进制格式完成的。必须使用额外的工具来处理日志或必须实现附加的进程来重复传统的记录程序。</para>
+      </listitem>
+
+    </itemizedlist>
+
+  </sect2>
+-->
+<!--
+  <sect2 id='sysv'>
+    <title>选择一种引导方式</title>
+
+    <para>在 LFS 中选择一种引导方式相当简单。
+    两种系统都一起安装了。所需的唯一任务就是确保系统所需的文件拥有正确的名称。
+    下面的脚本来完成。</para>
+
+<screen><userinput remap="install">cat &gt; /usr/sbin/set-systemd &lt;&lt; "EOF"
+#! /bin/bash
+
+ln -svfn init-systemd   /sbin/init
+ln -svfn init.d-systemd /etc/init.d
+
+for tool in halt poweroff reboot runlevel shutdown telinit; do
+  ln -sfvn  ${tool}-systemd   /sbin/${tool}
+  ln -svfn  ${tool}-systemd.8 /usr/share/man/man8/${tool}.8
+done
+
+echo "Now reboot with /sbin/reboot-sysv"
+EOF
+
+chmod 0744 /usr/sbin/set-systemd
+
+cat &gt; /usr/sbin/set-sysv &lt;&lt; "EOF"
+#! /bin/bash
+
+ln -sfvn init-sysv    /sbin/init
+ln -svfn init.d-sysv  /etc/init.d
+
+for tool in halt poweroff reboot runlevel shutdown telinit; do
+  ln -sfvn  ${tool}-sysv   /sbin/${tool}
+  ln -svfn  ${tool}-sysv.8 /usr/share/man/man8/${tool}.8
+done
+
+echo "Now reboot with /sbin/reboot-systemd"
+EOF
+
+chmod 0744 /usr/sbin/set-sysv</userinput></screen>
+
+  <note><para>在上述脚本中关于重启的正确命令的注解是正确的。
+  当前引导系统的 reboot 命令必须在脚本更改了默认的 reboot 命令后使用。
+  </para></note>
+
+  <para>现在设置想要的引导系统。默认是 System V:</para>
+
+<screen><userinput remap="install">/usr/sbin/set-sysv</userinput></screen>
+
+  <para>更改引导系统可以在任何时候通过运行上述恰当的脚本并重启来完成。</para>
+
+  </sect2>
+-->
 </sect1>

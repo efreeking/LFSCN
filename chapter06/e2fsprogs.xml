@@ -41,10 +41,6 @@
   <sect2 role="installation">
     <title>E2fsprogs 的安装</title>
 
-    <para>首先修复了一个在 LFS chroot 环境中运行回归测试的一个问题:</para>
-
-<screen><userinput remap="pre">sed -i -e 's|^LD_LIBRARY_PATH.*|&amp;:/tools/lib|' tests/test_config</userinput></screen>
-
     <para>E2fsprogs 文档推荐在源代码目录树中的一个子目录中构建包: </para>
 
 <screen><userinput remap="pre">mkdir -v build
@@ -56,6 +52,7 @@ cd build</userinput></screen>
 CFLAGS=-I/tools/include              \
 PKG_CONFIG_PATH=/tools/lib/pkgconfig \
 ../configure --prefix=/usr           \
+             --bindir=/bin           \
              --with-root-prefix=""   \
              --enable-elf-shlibs     \
              --disable-libblkid      \
@@ -75,7 +72,8 @@ PKG_CONFIG_PATH=/tools/lib/pkgconfig \
       </varlistentry>
 
       <varlistentry>
-        <term><parameter>--with-root-prefix=""</parameter></term>
+        <term><parameter>--with-root-prefix=""</parameter> 和
+              <parameter>--bindir=/bin</parameter></term>
         <listitem>
           <para>某些程序(譬如 <command>e2fsck</command> 程序)被视为是必不可少的程序。
           有些时候，例如 <filename class="directory">/usr</filename> 未挂载，这些程序仍需要可用。
@@ -100,7 +98,7 @@ PKG_CONFIG_PATH=/tools/lib/pkgconfig \
           <systemitem class="library">libuuid</systemitem> 及
           <systemitem class="library">libblkid</systemitem> 库，
           <systemitem class="daemon">uuidd</systemitem> 后台程序以及
-          <command>fsck</command> 封装程序，因为 Util-Linux 在前面就已经安装了它们全部。</para>
+          <command>fsck</command> 封装程序，因为 Util-Linux 安装了更新的版本。</para>
         </listitem>
       </varlistentry>
 
@@ -110,12 +108,12 @@ PKG_CONFIG_PATH=/tools/lib/pkgconfig \
 
 <screen><userinput remap="make">make</userinput></screen>
 
-    <para>要测试结果，执行:</para>
+    <para>要设置并运行测试套件，我们需要首先链接某些来自 /tools/lib 的库到一个测试程序会查找的位置。要运行测试，执行:</para>
 
 <screen><userinput remap="test">make check</userinput></screen>
 
     <para>E2fsprogs 的测试之一将尝试分配 256 MB 的内存。如果您没有足够多的 RAM 的话，确保为测试启用足够的交换空间。参阅
-    <xref linkend="space-creatingfilesystem"/>和<xref linkend="space-mounting"/>获得创建和启用交换空间的详细说明。此外，三个测试尝试分配一个 2 TB的分区并且将会失败，除非您至少拥有这么多的未使用的磁盘空间。</para>
+    <xref linkend="space-creatingfilesystem"/>和<xref linkend="space-mounting"/>获得创建和启用交换空间的详细说明。</para>
 
     <para>安装二进制, 文档和共享库:</para>
 

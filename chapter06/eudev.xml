@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE sect1 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+  "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+  <!ENTITY % general-entities SYSTEM "../general.ent">
+  %general-entities;
+]>
+
+<sect1 id="ch-system-eudev" role="wrap">
+  <?dbhtml filename="eudev.html"?>
+
+  <sect1info condition="script">
+    <productname>eudev</productname>
+    <productnumber>&eudev-version;</productnumber>
+    <address>&eudev-url;</address>
+  </sect1info>
+
+  <title>Eudev-&eudev-version;</title>
+
+  <indexterm zone="ch-system-eudev">
+    <primary sortas="a-Eudev">Eudev</primary>
+  </indexterm>
+
+  <sect2 role="package">
+    <title/>
+
+    <para>Eudev 软件包包含了用于设备节点动态创建的程序。</para> 
+
+    <segmentedlist>
+      <segtitle>&buildtime;</segtitle>
+      <segtitle>&diskspace;</segtitle>
+
+      <seglistitem>
+        <seg>&eudev-ch6-sbu;</seg>
+        <seg>&eudev-ch6-du;</seg>
+      </seglistitem>
+    </segmentedlist>
+  </sect2>
+
+  <sect2 role="installation">
+    <title>Eudev 的安装</title>
+
+    <para>首先，修复一个测试脚本:</para>
+
+<screen><userinput remap="pre">sed -r -i 's|/usr(/bin/test)|\1|' test/udev-test.pl</userinput></screen>
+
+<para>准备 Eudev 进行编译:</para>
+
+<screen><userinput remap="configure">BLKID_CFLAGS=-I/tools/include       \
+BLKID_LIBS='-L/tools/lib -lblkid'   \
+./configure --prefix=/usr           \
+            --bindir=/sbin          \
+            --sbindir=/sbin         \
+            --libdir=/usr/lib       \
+            --sysconfdir=/etc       \
+            --libexecdir=/lib       \
+            --with-rootprefix=      \
+            --with-rootlibdir=/lib  \
+            --enable-split-usr      \
+            --enable-libkmod        \
+            --enable-rule_generator \
+            --disable-keymap        \
+            --disable-introspection \
+            --disable-gudev         \
+            --disable-gtk-doc-html  \
+            --with-firmware-path=/lib/firmware </userinput></screen>
+
+<para>编译软件包:</para>
+
+<screen><userinput remap="make">make</userinput></screen>
+
+<para>现在创建某些测试所需的目录，这些目录也将会用作安装的一部分:</para>
+
+<screen><userinput remap="test">mkdir -pv /lib/{firmware,udev}
+mkdir -pv /lib/udev/rules.d
+mkdir -pv /etc/udev/rules.d</userinput></screen>
+
+<para>要测试结果，运行问题:</para>
+
+<screen><userinput remap="test">make check</userinput></screen>
+
+    <para>安装包:</para>
+
+<screen><userinput remap="install">make install</userinput></screen>
+
+<para>现在，安装手册页:</para>
+
+<screen><userinput remap="install">tar -xvf ../eudev-&eudev-version;-manpages.tar.bz2 -C /usr/share</userinput></screen>
+
+    <para>最后，安装某些在一个 LFS 环境中很有用的自定义规则和支持文件:</para>
+
+<screen><userinput remap="install">tar -xvf ../&udev-lfs-version;.tar.bz2
+make -f &udev-lfs-version;/Makefile.lfs install</userinput></screen>
+
+  </sect2>
+
+  <sect2 id="contents-eudev" role="content">
+    <title>Eudev 的内容</title>
+
+    <segmentedlist>
+      <segtitle>安装的程序</segtitle>
+      <segtitle>安装的库</segtitle>
+      <segtitle>安装的目录</segtitle>
+
+      <seglistitem>
+        <seg><!-- These are in /lib/udev and not to be called by the user:
+         accelerometer, ata_id, cdrom_id, collect, mtd_probe,
+         scsi_id, v4l_id,--> udevadm 和 udevd</seg>
+
+        <seg>libudev.so</seg>
+
+        <seg>/etc/udev, /lib/udev 和 /lib/firmware</seg>
+      </seglistitem>
+    </segmentedlist>
+
+    <variablelist>
+      <bridgehead renderas="sect3">简述</bridgehead>
+      <?dbfo list-presentation="list"?>
+      <?dbhtml list-presentation="table"?>
+<!--
+      <varlistentry id="ata_id">
+        <term><command>ata_id</command></term>
+        <listitem>
+          <para>Provides Udev with a unique string and
+          additional information (uuid, label) for an ATA drive</para>
+          <indexterm zone="ch-system-eudev ata_id">
+            <primary sortas="b-ata_id">ata_id</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="cdrom_id">
+        <term><command>cdrom_id</command></term>
+        <listitem>
+          <para>Provides Udev with the capabilities of a
+          CD-ROM or DVD-ROM drive</para>
+          <indexterm zone="ch-system-eudev cdrom_id">
+            <primary sortas="b-cdrom_id">cdrom_id</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="collect">
+        <term><command>collect</command></term>
+        <listitem>
+          <para>Given an ID for the current uevent and a list of
+          IDs (for all target uevents), registers the current ID
+          and indicates whether all target IDs have been registered</para>
+          <indexterm zone="ch-system-eudev collect">
+            <primary sortas="b-collect">collect</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="scsi_id">
+        <term><command>scsi_id</command></term>
+        <listitem>
+          <para>Provides Udev with a unique SCSI identifier
+          based on the data returned from sending a SCSI INQUIRY command to
+          the specified device</para>
+          <indexterm zone="ch-system-eudev scsi_id">
+            <primary sortas="b-scsi_id">scsi_id</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+-->
+      <varlistentry id="udevadm">
+        <term><command>udevadm</command></term>
+        <listitem>
+          <para>普通 udev 管理工具: 控制 udevd 后台程序，提供来自 Udev 数据库的信息，监控 uevents，等待 uevents 完成，测试 Udev 配置并触发给出设备的 uevents</para>
+          <indexterm zone="ch-system-eudev udevadm">
+            <primary sortas="b-udevadm">udevadm</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="udevd">
+        <term><command>udevd</command></term>
+        <listitem>
+          <para>监听在网络链接套接字上的 uevents 的守候程序，针对这些 uevents 创建设备并运行配置的外部程序</para>
+          <indexterm zone="ch-system-eudev udevd">
+            <primary sortas="b-udevd">udevd</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="libudev">
+        <term><filename class="libraryfile">libudev</filename></term>
+        <listitem>
+          <para>一个 udev 设备信息的库接口</para>
+          <indexterm zone="ch-system-eudev libudev">
+            <primary sortas="c-libudev">libudev</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="etc-udev">
+        <term><filename class="directory">/etc/udev</filename></term>
+        <listitem>
+          <para>包含 Udev 配置文件，设备曲线和设备命名的规则</para>
+          <indexterm zone="ch-system-eudev etc-udev">
+            <primary sortas="e-/etc/udev">/etc/udev</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+    </variablelist>
+
+  </sect2>
+
+</sect1>

@@ -40,15 +40,20 @@
   <sect2 role="installation">
     <title>MPFR 的安装</title>
 
+    <para>首先，应用下列补丁修复已经在上游定位的各种错误:</para>
+
+<screen><userinput remap="pre">patch -Np1 -i ../&mpfr-fixes-patch;</userinput></screen>
+
     <para>准备 MPFR 编译:</para>
 
 <screen><userinput remap="configure">./configure --prefix=/usr        \
             --enable-thread-safe \
             --docdir=/usr/share/doc/mpfr-&mpfr-version;</userinput></screen>
 
-    <para>编译包:</para>
+    <para>编译包并生成 HTML 文档:</para>
 
-<screen><userinput remap="make">make</userinput></screen>
+<screen><userinput remap="make">make
+make html</userinput></screen>
 
     <important>
       <para>本节中的 MPFR 的测试套装被视为是紧要的。
@@ -59,14 +64,10 @@
 
 <screen><userinput remap="test">make check</userinput></screen>
 
-    <para>安装包:</para>
+    <para>安装包及其文档:</para>
 
-<screen><userinput remap="install">make install</userinput></screen>
-
-    <para>安装文档:</para>
-
-<screen><userinput remap="make">make html
-</userinput><userinput remap="install">make install-html</userinput></screen>
+<screen><userinput remap="install">make install
+make install-html</userinput></screen>
 
   </sect2>
 

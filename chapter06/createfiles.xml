@@ -43,6 +43,82 @@ ln -sv /tools/lib/libstdc++.so{,.6} /usr/lib
 sed 's/tools/usr/' /tools/lib/libstdc++.la > /usr/lib/libstdc++.la
 ln -sv bash /bin/sh</userinput></screen>
 
+  <variablelist>
+    <title>每个链接的用途:</title>
+
+    <varlistentry>
+      <term><parameter><filename>/bin/bash</filename></parameter></term>
+      <listitem>
+        <para>多个 <command>bash</command> 脚本指定
+        <filename>/bin/bash</filename>。</para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term><parameter><filename>/bin/cat</filename></parameter></term>
+      <listitem>
+        <para>这个路径名称是硬编码到 Glibc 的配置脚本中的。</para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term><parameter><filename>/bin/echo</filename></parameter></term>
+      <listitem>
+        <para>这是为了满足 Glibc 的测试套件之一的，它需要 <filename>/bin/echo</filename>。</para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term><parameter><filename>/bin/pwd</filename></parameter></term>
+      <listitem>
+        <para>某些 <command>configure</command> 脚本，尤其是 Glibc 的，把这个路径名硬编码了。</para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term><parameter><filename>/bin/stty</filename></parameter></term>
+      <listitem>
+        <para>这个路径名被硬编码到 Expect 中，因此它时跳过 Binutils 和 GCC 测试套件所需的。</para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term><parameter><filename>/usr/bin/perl</filename></parameter></term>
+      <listitem>
+        <para>多个 Perl 脚本硬编码这个到 <command>perl</command> 程序的路径。</para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term><parameter><filename>/usr/lib/libgcc_s.so{,.1}</filename></parameter></term>
+      <listitem>
+        <para>Glibc 需要这个来让 pthreads 库运作。</para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term><parameter><filename>/usr/lib/libstdc++{,.6}</filename></parameter></term>
+      <listitem>
+        <para>这是被 Glibc 的测试套件中的几个测试所需的，就和用于在 GMP 中的 C++ 支持一样。</para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term><parameter><filename>/usr/lib/libstdc++.la</filename></parameter></term>
+      <listitem>
+        <para>这个避免了一个一旦 GCC 安装后就会在 <filename>/usr/lib/libstdc++.la</filename> 中的 <filename class="directory">/tools</filename> 的引用。</para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term><parameter><filename>/bin/sh</filename></parameter></term>
+      <listitem>
+        <para>许多 shell 脚本硬编码 <filename>/bin/sh</filename>。</para>
+      </listitem>
+    </varlistentry>
+
+  </variablelist>
+
   <para>历史上，Linux 系统在文件
   <filename>/etc/mtab</filename> 中维护一个挂载文件系统的列表。
 现在的内核在内部维护这个列表，并通过 <filename class="directory">/proc</filename> 文件系统向用户展现。
@@ -58,6 +134,8 @@ ln -sv bash /bin/sh</userinput></screen>
 <screen><userinput>cat &gt; /etc/passwd &lt;&lt; "EOF"
 <literal>root:x:0:0:root:/root:/bin/bash
 bin:x:1:1:bin:/dev/null:/bin/false
+daemon:x:6:6:Daemon User:/dev/null:/bin/false
+messagebus:x:18:18:D-Bus Message Daemon User:/var/run/dbus:/bin/false
 nobody:x:99:99:Unprivileged User:/dev/null:/bin/false</literal>
 EOF</userinput></screen>
 
@@ -68,7 +146,7 @@ EOF</userinput></screen>
 
 <screen><userinput>cat &gt; /etc/group &lt;&lt; "EOF"
 <literal>root:x:0:
-bin:x:1:
+bin:x:1:daemon
 sys:x:2:
 kmem:x:3:
 tape:x:4:
@@ -83,12 +161,17 @@ video:x:12:
 utmp:x:13:
 usb:x:14:
 cdrom:x:15:
+adm:x:16:
+messagebus:x:18:
+systemd-journal:x:23:
+input:x:24:
 mail:x:34:
-nogroup:x:99:</literal>
+nogroup:x:99:
+users:x:999:</literal>
 EOF</userinput></screen>
 
   <para>创建的组不是任何标准的一部分&mdash;它们部分是由于本章中 Udev 配置的要求，而部分是为了一些已有的 Linux 发行版使用的通用惯例。
-  Linux 标准基础(LSB，可以在 <ulink url="http://www.linuxbase.org"/> 找到)仅推荐除了组 ID (GID) 为 0 的
+  此外，某些测试套装依赖于特定的用户和组。Linux 标准基础(LSB，可以在 <ulink url="http://www.linuxbase.org"/> 找到)仅推荐除了组 ID (GID) 为 0 的
   <systemitem class="groupname">root</systemitem> 组外，还需要存在一个 GID 为 1 的 <systemitem class="groupname">bin</systemitem> 组。
   所有其它组名和 GID 都可以由系统管理员自由选选择，因为编写精良的程序并不依赖于 GID 编号，而是使用组的名称。</para>
 

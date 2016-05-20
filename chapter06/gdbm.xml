@@ -23,7 +23,7 @@
   <sect2 role="package">
     <title/>
 
-    <para>GDBM 包包含 GNU 数据库管理器。这是一个在单一的文件中存储“键名/数据”对的磁盘文件格式的数据库。任何被存储的记录的实际数据是使用一个唯一键进行索引，这可以比以文本文件格式存储时更节省检索时间。</para>
+    <para>GDBM 包包含 GNU 数据库管理器。它是一个使用扩展散列并类似于 标准 UNIX dbm 运作的数据库函数的库。这个库提供了存储“键名/数据”、根据键搜索和检索数据，以及删除一个键连同其数据的函数原型。</para>
 
     <segmentedlist>
       <segtitle>&buildtime;</segtitle>
@@ -77,7 +77,7 @@
       <segtitle>安装的库</segtitle>
 
       <seglistitem>
-        <seg>testgdbm</seg>
+        <seg>gdbm_dump, gdbm_load 和 gdbmtool</seg>
         <seg>libgdbm.{a,so} 和 libgdbm_compat.{a,so}</seg>
       </seglistitem>
     </segmentedlist>
@@ -87,12 +87,32 @@
       <?dbfo list-presentation="list"?>
       <?dbhtml list-presentation="table"?>
 
-      <varlistentry id="testgdbm">
-        <term><command>testgdbm</command></term>
+      <varlistentry id="gdbm_dump">
+        <term><command>gdbm_dump</command></term>
+        <listitem>
+          <para>转储一个 GDBM 数据库到一个文件。</para>
+          <indexterm zone="ch-system-gdbm gdbm_dump">
+            <primary sortas="b-gdbm_dump">gdbm_dump</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="gdbm_load">
+        <term><command>gdbm_load</command></term>
+        <listitem>
+          <para>从一个转储文件重新创建一个 GDBM 数据库。</para>
+          <indexterm zone="ch-system-gdbm gdbm_load">
+            <primary sortas="b-gdbm_load">gdbm_load</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="gdbmtool">
+        <term><command>gdbmtool</command></term>
         <listitem>
           <para>测试和修改一个 GDBM 数据库</para>
-          <indexterm zone="ch-system-gdbm testgdbm">
-            <primary sortas="b-testgdbm">testgdbm</primary>
+          <indexterm zone="ch-system-gdbm gdbmtool">
+            <primary sortas="b-gdbmtool">gdbmtool</primary>
           </indexterm>
         </listitem>
       </varlistentry>
@@ -103,6 +123,16 @@
           <para>包含操作一个散列数据库的函数</para>
           <indexterm zone="ch-system-gdbm libgdbm">
             <primary sortas="c-libgdbm">libgdbm</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="libgdbm_compat">
+        <term><filename class="libraryfile">libgdbm_compat</filename></term>
+        <listitem>
+          <para>包含较旧的 DBM 函数的兼容性库</para>
+          <indexterm zone="ch-system-gdbm libgdbm_compat">
+            <primary sortas="c-libgdbm_compat">libgdbm_compat</primary>
           </indexterm>
         </listitem>
       </varlistentry>

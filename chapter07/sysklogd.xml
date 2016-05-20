@@ -16,7 +16,8 @@
   </indexterm>
 
   <para><filename>sysklogd</filename> 脚本调用
-  <command>syslogd</command> 程序和 <parameter>-m 0</parameter> 选项。这个选项关闭周期的时间戳标记，<command>syslogd</command> 按默认每 20 分钟把标记写入日志文件一次。如果您想开启这个周期时间戳标记，编辑
+  <command>syslogd</command> 程序是作为 System V 的一部分。
+  <parameter>-m 0</parameter> 选项关闭周期的时间戳标记，<command>syslogd</command> 按默认每 20 分钟把标记写入日志文件一次。如果您想开启这个周期时间戳标记，编辑
   <filename>/etc/sysconfig/rc.site</filename> 并定义变量
   SYSKLOGD_PARMS 为想要的值。例如要删除所有参数，设置变量为一个 null 值:</para>
 

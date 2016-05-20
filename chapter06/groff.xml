@@ -59,11 +59,6 @@
 
 <screen><userinput remap="install">make install</userinput></screen>
 
-    <para>某些文档程序，譬如 <command>xman</command>，将不能和下列的符号链接正常的配合使用:</para>
-
-<screen><userinput remap="install">ln -sv eqn /usr/bin/geqn
-ln -sv tbl /usr/bin/gtbl</userinput></screen>
-
   </sect2>
 
   <sect2 id="contents-groff" role="content">

@@ -99,7 +99,7 @@
         <term><emphasis>LSB 核心:</emphasis></term>
         <listitem>
           <para>At, Batch (At 的一部分), Cpio, Ed, Fcrontab, Initd-tools,
-          Lsb_release, PAM, Sendmail (或 Postfix 或 Exim) </para>
+          Lsb_release, PAM, Pax, Sendmail (或 Postfix 或 Exim) </para>
         </listitem>
       </varlistentry>
 
@@ -150,7 +150,7 @@
       <varlistentry>
         <term><emphasis>LSB 核心:</emphasis></term>
         <listitem>
-          <para>time (可执行)和 pax</para>
+          <para>无</para>
         </listitem>
       </varlistentry>
 

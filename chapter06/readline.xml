@@ -40,19 +40,19 @@
   <sect2 role="installation">
     <title>Readline 的安装</title>
 
+    <para>首先安装某些补丁修复已在上游定位的各种错误:</para>
+
+<screen><userinput remap="pre">patch -Np1 -i ../&readline-fixes-patch;</userinput></screen>
+
     <para>重新安装 Readline 将会导致旧的库被移到
     &lt;libraryname&gt;.old。这通常不是一个问题，但在某些情况下，它将会触发 <command>ldconfig</command> 中的一个链接错误。这个可以通过执行下列两个 sed 命令来避免:</para>
 
 <screen><userinput remap="pre">sed -i '/MV.*old/d' Makefile.in
 sed -i '/{OLDSUFF}/c:' support/shlib-install</userinput></screen>
 
-    <para>应用一个补丁修复已经被 upstream 修复的已知问题:</para>
-
-<screen><userinput remap="pre">patch -Np1 -i ../&readline-fixes-patch;</userinput></screen>
-
     <para>准备 Readline 编译:</para>
 
-<screen><userinput remap="configure">./configure --prefix=/usr</userinput></screen>
+<screen><userinput remap="configure">./configure --prefix=/usr --docdir=/usr/share/doc/readline-&readline-version;</userinput></screen>
 
     <para>编译包:</para>
 
@@ -76,7 +76,7 @@ sed -i '/{OLDSUFF}/c:' support/shlib-install</userinput></screen>
 
     <para>安装包:</para>
 
-<screen><userinput remap="install">make install</userinput></screen>
+<screen><userinput remap="install">make SHLIB_LIBS=-lncurses install</userinput></screen>
 
     <para>现在移动动态库到更适合的位置，
     并布置某些符号链接:</para>
@@ -87,8 +87,7 @@ ln -sfv ../../lib/$(readlink /usr/lib/libhistory.so ) /usr/lib/libhistory.so</us
 
     <para>如果需要的话，安装文档:</para>
 
-<screen><userinput remap="install">mkdir   -v /usr/share/doc/readline-&readline-version;
-install -v -m644 doc/*.{ps,pdf,html,dvi} /usr/share/doc/readline-&readline-version;</userinput></screen>
+<screen><userinput remap="install">install -v -m644 doc/*.{ps,pdf,html,dvi} /usr/share/doc/readline-&readline-version;</userinput></screen>
 
   </sect2>
 

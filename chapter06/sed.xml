@@ -50,30 +50,24 @@
       <varlistentry>
         <term><parameter>--htmldir</parameter></term>
         <listitem>
-          <para>这个设置 HTML 将会安装到的目录。</para>
+          <para>这个设置 HTML 的安装目录。</para>
         </listitem>
       </varlistentry>
     </variablelist>
 
-    <para>编译包:</para>
+    <para>编译包并生成 HTML 文档:</para>
 
-<screen><userinput remap="make">make</userinput></screen>
-
-    <para>生成 HTML 文档:</para>
-
-<screen><userinput remap="make">make html</userinput></screen>
+<screen><userinput remap="make">make
+make html</userinput></screen>
 
     <para>要测试结果，执行:</para>
 
 <screen><userinput remap="test">make check</userinput></screen>
 
-    <para>安装包:</para>
+    <para>安装包及其文档:</para>
 
-<screen><userinput remap="install">make install</userinput></screen>
-
-    <para>安装 HTML 文档:</para>
-
-<screen><userinput remap="install">make -C doc install-html</userinput></screen>
+<screen><userinput remap="install">make install
+make -C doc install-html</userinput></screen>
 
   </sect2>
 

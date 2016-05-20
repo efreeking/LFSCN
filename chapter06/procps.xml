@@ -55,7 +55,7 @@
       <varlistentry>
         <term><parameter>--disable-kill</parameter></term>
         <listitem>
-          <para>这个开关符禁止了构建在 util-linux 中安装的 kill 命令。</para>
+          <para>这个开关符禁止了构建在 util-linux 中安装的 <command>kill</command> 命令。</para>
         </listitem>
       </varlistentry>
     </variablelist>
@@ -126,7 +126,7 @@ ln -sfv ../../lib/$(readlink /usr/lib/libprocps.so) /usr/lib/libprocps.so</useri
       <varlistentry id="pidof">
         <term><command>pidof</command></term>
         <listitem>
-          <para>基于进程的名称和其它属性查询进程</para>
+          <para>报告给出程序的 PID</para>
           <indexterm zone="ch-system-procps pidof">
             <primary sortas="b-pidof">pidof</primary>
           </indexterm>

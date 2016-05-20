@@ -46,10 +46,6 @@
       的实现。</quote> Glibc 提供了一个 <function>iconv()</function> 实现并且可以与 Unicode 相互转换，因此在 LFS 系统上不再需要 libiconv。</para>
     </note>
 
-    <para>首先修复一个在安装 tzselect 脚本时的小问题:</para>
-
-<screen><userinput remap="pre">sed -i 's/\\$$(pwd)/`pwd`/' timezone/Makefile</userinput></screen>
-
     <para>Glibc 其中的某些程序使用非 FHS 兼容 <filename class="directory">/var/db</filename>
     目录存储它们的运行时数据。应用下列补丁使得这些程序在 FHS 兼容位置
     中存储它们的运行时数据:</para>
@@ -95,15 +91,13 @@ cd ../glibc-build</userinput></screen>
     <para>一般，一些测试不能通过，但是通常您可以忽略下面列出的任意测试失败。
     现在测试构建结果:</para>
 
-<screen><userinput remap="test">make -k check 2&gt;&amp;1 | tee glibc-check-log
-grep Error glibc-check-log</userinput></screen>
+<screen><userinput remap="test">make check</userinput></screen>
 
-    <para>您将可能看到一个预期的(被忽略的)失败于 <emphasis>posix/annexc</emphasis> 和
-    <emphasis>conform/run-conformtest</emphasis> 测试中。
-    另外 Glibc 测试套件稍微依赖于宿主系统。这是最常见问题的一个列表:</para>
+    <para>您将可能看到某些测试失败。 
+    Glibc 测试套件稍微依赖于宿主系统。这是这个版本的 LFS 会看到的最常见问题的一个列表:</para>
 
     <itemizedlist>
-
+<!--
       <listitem>
         <para><emphasis>nptl/tst-clock2</emphasis>,
         <emphasis>nptl/tst-attr3</emphasis>,
@@ -124,11 +118,11 @@ grep Error glibc-check-log</userinput></screen>
         消除这些错误(如 <command>TIMEOUTFACTOR=16
         make -k check</command>)。</para>
       </listitem>
-
+-->
       <listitem>
         <para>posix/tst-getaddrinfo4 由于在测试运行时没有网络连接，所以将总是失败的。</para>
       </listitem>
-
+<!--
       <listitem>
         <para>libio/tst-ftell-partial-wide.out 失败，因为它需要一个还未被生成的语言环境。</para>
       </listitem>
@@ -136,7 +130,7 @@ grep Error glibc-check-log</userinput></screen>
       <listitem>
         <para>其他测试已知在某些是 posix/bug-regex32, misc/tst-writev, elf/check-textrel, nptl/tst-getpid2, nptl/tst-robust8 和 stdio-common/bug22 的架构上会失败。</para>
       </listitem>
-
+-->
     </itemizedlist>
 
     <para>尽管这是无害的消息，Glibc 的安装过程将会
@@ -250,7 +244,7 @@ for tz in etcetera southamerica northamerica europe africa antarctica  \
     zic -L leapseconds -d $ZONEINFO/right -y "sh yearistype.sh" ${tz}
 done
 
-cp -v zone.tab iso3166.tab $ZONEINFO
+cp -v zone.tab zone1970.tab iso3166.tab $ZONEINFO
 zic -d $ZONEINFO -p America/New_York
 unset ZONEINFO</userinput></screen>
 
@@ -350,7 +344,7 @@ mkdir /etc/ld.so.conf.d</userinput></screen>
         ldd, lddlibc4, locale, localedef, makedb, mtrace, nscd, pcprofiledump,
         pldd, rpcgen, sln, sotruss, sprof, tzselect, xtrace,
         zdump 和 zic</seg>
-        <seg>ld.so, libBrokenLocale.{a,so}, libSegFault.so, libanl.{a,so}, 
+        <seg>ld-&glibc-version;.so, libBrokenLocale.{a,so}, libSegFault.so, libanl.{a,so},
         libc.{a,so}, libc_nonshared.a, libcidn.so,
         libcrypt.{a,so}, libdl.{a,so}, libg.a, libieee.a, libm.{a,so}, 
         libmcheck.a, libmemusage.so, libnsl.{a,so}, libnss_compat.so, 
@@ -626,11 +620,11 @@ mkdir /etc/ld.so.conf.d</userinput></screen>
       </varlistentry>
 
       <varlistentry id="ld.so">
-        <term><filename class="libraryfile">ld.so</filename></term>
+        <term><filename class="libraryfile">ld-&glibc-version;.so</filename></term>
         <listitem>
           <para>用于共享库执行的辅助程序</para>
           <indexterm zone="ch-system-glibc ld.so">
-            <primary sortas="c-ld.so">ld.so</primary>
+            <primary sortas="c-ld.so">ld-&glibc-version;.so</primary>
           </indexterm>
         </listitem>
       </varlistentry>

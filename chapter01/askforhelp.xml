@@ -39,7 +39,7 @@
         <para>用于创建 LFS 的宿主的发行版和版本号</para>
       </listitem>
       <listitem>
-        <para>来自<xref linkend='version-check'/>的输出</para>
+        <para>来自<xref linkend='version-check'/>脚本的输出</para>
       </listitem>
       <listitem>
         <para>遇到问题的软件包或章节部分</para>

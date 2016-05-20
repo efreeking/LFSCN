@@ -28,7 +28,7 @@
 
 -->
 
-  <para>最小的系统需要大约 2.8 GB 的分区。这样才足够存储所有的源代码压缩包和编译软件包。
+  <para>最小的系统需要大约 4 GB 的分区。这样才足够存储所有的源代码压缩包和编译软件包。
   但是，如果 LFS 系统是打算作为主要 Linux 系统的话，可能需要安装额外的软件，这部分需要额外的空间。一个 10 GB 的分区是一个提供增长所需的合理大小。LFS 系统本身并不占用这么大的空间。这个需求的大部分是用来提供足够的可用临时存储空间。
   编译包会要求大量的磁盘空间，这部分空间只有在包安装后才能收回。</para>
 
@@ -43,10 +43,10 @@
 
   <note><para>对于有经验的用户，也可以使用其它分区方案。
   新的 LFS 系统可以在一个软件 <ulink
-  url="&blfs-root;/view/svn/postlfs/raid.html">RAID</ulink> 阵列或者一个 <ulink
-  url="&blfs-root;/view/svn/postlfs/aboutlvm.html">LVM</ulink> 逻辑卷上。
+  url="&blfs-root;view/&short-version;/postlfs/raid.html">RAID</ulink> 阵列或者一个 <ulink
+  url="&blfs-root;view/&short-version;/postlfs/aboutlvm.html">LVM</ulink> 逻辑卷上。
   尽管如此，某些这些选择需要一个 <ulink
-  url="&blfs-root;/view/svn/postlfs/initramfs.html">initramfs</ulink>，这是一个高级话题。
+  url="&blfs-root;view/&short-version;/postlfs/initramfs.html">initramfs</ulink>，这是一个高级话题。
   这些分区原则不建议首次 LFS 用户使用。</para></note>
 
   <para>记住新分区的名称(如 <filename class="devicefile">sda5</filename>)。

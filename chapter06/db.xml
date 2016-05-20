@@ -38,11 +38,11 @@
     <tip>
       <title>其它安装的可能性</title>
 
-      <para>如果您需要构建 RPC 服务器或者额外的语言绑定，在 BLFS 书中有构建该包的说明。额外的语言绑定将需要安装额外的包。查看 <ulink url="&blfs-root;view/svn/server/databases.html#db"/> 的建议安装说明。</para>
+      <para>如果您需要构建 RPC 服务器或者额外的语言绑定，在 BLFS 书中有构建该包的说明。额外的语言绑定将需要安装额外的包。查看 <ulink url="&blfs-root;view/&short-version;/server/databases.html#db"/> 的建议安装说明。</para>
 
       <para>还有，GDBM <emphasis>可以</emphasis>代替 Berkeley
       DB 来满足 Man-DB。但是由于 Berkeley DB 被认为是 LFS 构建的一个核心部分，它将不会列为 BLFS 书中任何包的依赖关系。同样的，很多时候，我们使用已安装的 Berkeley DB 测试 LFS 而不是使用 GDBM。如果您完全明白使用 GDBM 的风险和好处，而仍然无论如何都要使用它，查阅位于 <ulink
-      url="&blfs-root;view/svn/general/gdbm.html"/> 的 BLFS 说明。</para>
+      url="&blfs-root;view/&short-version;/general/gdbm.html"/> 的 BLFS 说明。</para>
 
     </tip>
 

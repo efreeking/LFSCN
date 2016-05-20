@@ -1,47 +1,109 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="ISO-8859-1"?>
 <!DOCTYPE sect1 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
   "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
   <!ENTITY % general-entities SYSTEM "../general.ent">
   %general-entities;
 ]>
 
-<sect1 id="ch-scripts-setclock">
-  <?dbhtml filename="setclock.html"?>
+<sect1 id="ch-scripts-clock">
+  <?dbhtml filename="clock.html"?>
 
-  <title>配置 setclock 脚本</title>
+  <title>配置系统时钟</title>
 
-  <indexterm zone="ch-scripts-setclock">
-    <primary sortas="d-setclock">setclock</primary>
-  <secondary>配置</secondary></indexterm>
+  <para>在 systemd 和 System V 之间，设置系统时钟的过程有所不同，
+  尽管如此，单独的过程不会冲突，所以两个过程之间应该可以达到在系统间相互交换。</para>
 
-  <para><command>setclock</command> 脚本从硬件时钟(也就是总所周知的 BIOS 或互补金属氧化物半导体(CMOS)时钟)读取时间。如果硬件时钟被设置为 UTC，这个脚本将会转换硬件时钟的时间为使用 <filename>/etc/localtime</filename> 文件的本地时间(它告诉
-  <command>hwclock</command> 程序用户所处的时区)。没有办法检测硬件时钟是否被设置为 UTC，所以需要手动配置。</para>
+  <sect2 id="ch-scripts-setclock">
+    <title>System V 时钟配置</title>
 
-  <para><command>setclock</command> 是在引导时，内核检测硬件功能时通过
-  <application>udev</application> 运行的。它也可以使用 stop 参数手动运行来存储系统的时间到 CMOS 时钟。</para>
+    <indexterm zone="ch-scripts-setclock">
+      <primary sortas="d-setclock">setclock</primary>
+    <secondary>configuring</secondary></indexterm>
 
-  <para>如果您记不住硬件时钟是否被设置为 UTC，通过运行
-   <userinput>hwclock --localtime --show</userinput>
-  命令找出。这将会根据硬件时钟显示当前的时间。如果这个时间和您手表的匹配，那么硬件时钟就是被设置为本地时间。如果 <command>hwclock</command> 的输出不是本地时间，则有机会是被设为 UTC 时间。通过在 <command>hwclock</command> 显示的时间上根据时区添加或减少适当的小时数来进行验证。例如，您当前正在 MST 时区，也就是所谓的 GMT -0700，添加 7 小时到本地时间。</para>
+    <para><command>setclock</command> 脚本会从硬件时钟读取时钟，
+    也即被称为 BIOS 或互补金属氧化物半导体 (CMOS) 时钟。
+    如果硬件时钟被设置为 UTC，那么这个脚本将会使用 <filename>/etc/localtime</filename> 文件
+    转换硬件时钟的时间为本地时间(它告诉 <command>hwclock</command> 程序用户所处的时区)。
+    没有办法判断硬件时钟是否被设为 UTC，所以这个需要手动配置。</para>
 
-  <para>如果硬件时钟<emphasis>不</emphasis>是设置为 UTC 时间的话， 更改下面 <envar>UTC</envar> 变量的值为 <parameter>0</parameter> (零)。</para>
+    <para><command>setclock</command> 是通过在引导时，内核探测硬件功能时由 <application>udev</application> 运行的。
+    它也可以使用 stop 参数手动运行来存储系统时间到 CMOS 时钟。</para>
 
-  <para>通过运行以下命令创建一个新的文件 <filename>/etc/sysconfig/clock</filename>:</para>
+    <para>如果您不能记住硬件时钟是否被设为 UTC，那么通过运行 <userinput>hwclock --localtime --show</userinput> 命令判断。
+    这将会显示当前时间是否是根据硬件时钟的。如果这个时间匹配您的手表所报的，那么硬件时钟是被设为本地时间。
+    如果来自 <command>hwclock</command> 的输出不是本地时间，那么就有机会是设置为 UTC 时间。
+    检查这个，根据时区通过添加或减少适当的小时数到 <command>hwclock</command> 所显示的时间。
+    例如，如果您当前在 MST （美国山地标准）时区，也就是所谓的 GMT -0700，添加 7 个小时到本地时间。</para>
+
+    <para>如果硬件时钟<emphasis>不</emphasis>是设为 UTC 时间，更改下面 <envar>UTC</envar> 变量的值
+    为一个 <parameter>0</parameter> (零)。</para>
+
+    <para>通过运行如下命令创建一个新文件 <filename>/etc/sysconfig/clock</filename>:</para>
 
 <screen><userinput>cat &gt; /etc/sysconfig/clock &lt;&lt; "EOF"
 <literal># Begin /etc/sysconfig/clock
 
 UTC=1
 
-# Set this to any options you might need to give to hwclock, (设置这个为任何您需要赋予 hwclock 的选项，譬如机器硬件时钟类型)
+# Set this to any options you might need to give to hwclock,
 # such as machine hardware clock type for Alphas.
 CLOCKPARAMS=
 
 # End /etc/sysconfig/clock</literal>
 EOF</userinput></screen>
 
-  <para>在<ulink url="&hints-root;time.txt"/>有一个解释如何处理 LFS 上的时间的不错的提示。它解释了譬如时区、UTC 和 <envar>TZ</envar> 环境变量等。</para>
+    <para>在 <ulink url="&hints-root;time.txt"/> 上有一个解释如何处理 LFS 上的时间的很好的提示说明。
+    它解释了譬如时区、UTC 以及 <envar>TZ</envar> 环境变量等的问题。</para>
 
-  <note><para>CLOCKPARAMS 和 UTC 参数也可以在 <filename>/etc/sysconfig/rc.site</filename> 文件中设置。</para></note>
+    <note><para>在 <filename>/etc/sysconfig/rc.site</filename> 文件中可以选择设置 CLOCKPARAMS 和 UTC 参数。</para></note>
+
+  </sect2>
+
+  <sect2 id="ch-scripts-systemd-clock">
+    <title>系统时钟配置</title>
+
+  <indexterm zone="ch-scripts-clock">
+    <primary sortas="d-clock">clock</primary>
+  <secondary>configuring</secondary></indexterm>
+
+  <para>这个部分讨论如何配置 <command>systemd-timedated</command> 系统服务，它配置系统时钟和时区。</para>
+
+  <para><command>systemd-timedated</command> 读取 <filename>/etc/adjtime</filename>，并根据文件的内容，
+  它设置时钟为 UTC 或本地时间。<emphasis>如果您的硬件时钟被设置为本地时间</emphasis>，那么使用下列内容创建
+  <filename>/etc/adjtime</filename> 文件:</para>
+
+<screen role="nodump"><userinput>cat &gt; /etc/adjtime &lt;&lt; "EOF"
+<literal>0.0 0 0.0
+0
+LOCAL</literal>
+EOF</userinput></screen>
+
+    <para>如果 <filename>/etc/adjtime</filename> 在第一次引导时不存在，<command>systemd-timedated</command>
+    将会假设硬件时钟被设置为 UTC 并使用该设置创建文件。</para>
+
+    <para>您也可以使用 <command>timedatectl</command> 工具告知
+    <command>systemd-timedated</command> 您的硬件时钟是被设置为 UTC 还是本地时间:</para>
+
+<screen role="nodump"><userinput>timedatectl set-local-rtc 1</userinput></screen>
+
+    <para><command>timedatectl</command> 也可以用于更改系统时间和时区。</para>
+
+    <para>要更改您的当前系统时间，执行:</para>
+
+<screen role="nodump"><userinput>timedatectl set-time YYYY:MM:DD HH:MM:SS</userinput></screen>
+
+    <para>硬件时钟也将会相应更新。</para>
+
+    <para>要更改您的当前时区，执行:</para>
+
+<screen role="nodump"><userinput>timedatectl set-timezone TIMEZONE</userinput></screen>
+
+    <para>您可以通过运行如下命令获得可用时区的列表:</para>
+
+<screen role="nodump"><userinput>timedatectl list-timezones</userinput></screen>
+
+    <note><para>请注意，<command>timedatectl</command> 命令只可以在使用 System 引导的系统上使用。</para></note>
+
+  </sect2>
 
 </sect1>

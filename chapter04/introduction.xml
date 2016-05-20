@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sect1 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+  "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+  <!ENTITY % general-entities SYSTEM "../general.ent">
+  %general-entities;
+]>
+
+<sect1 id="prepare-introduction">
+  <?dbhtml filename="introduction.html"?>
+
+  <title>说明</title>
+
+  <para>在本章中，我们将执行一些额外的任务来准备构建临时系统。我们将会在  <filename class="directory">$LFS</filename> 中创建一个目录用于临时工具的安装，添加一个非特权用户来降低风险，并为该用户创建一个适当的构建环境。我们还会解释我们用来衡量 LFS 包要花费多长时间构建的时间单位，或者说是 <quote>SBUs</quote>，并给出关于包测试套件的一些信息。</para>
+
+</sect1>
