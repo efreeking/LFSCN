@@ -23,15 +23,15 @@
 
   <para>然后使用以下命令重新进入:</para>
 
-<screen role="nodump"><userinput>chroot $LFS /tools/bin/env -i \
+<screen role="nodump"><userinput>chroot $LFS /tools/bin/env -i            \
     HOME=/root TERM=$TERM PS1='\u:\w\$ ' \
-    PATH=/bin:/usr/bin:/sbin:/usr/sbin \
+    PATH=/bin:/usr/bin:/sbin:/usr/sbin   \
     /tools/bin/bash --login</userinput></screen>
 
   <para>现在二进制文件和库文件可以安全的进行剥离清理:</para>
 
 <screen><userinput>/tools/bin/find /{,usr/}{bin,lib,sbin} -type f \
-  -exec /tools/bin/strip --strip-debug '{}' ';'</userinput></screen>
+    -exec /tools/bin/strip --strip-debug '{}' ';'</userinput></screen>
 
   <para>大量的文件将会报告有它们不能识别的文件格式。这些警告可以安全的忽略。这些警告说明那些文件是脚本而不是二进制文件。</para>
 

@@ -59,11 +59,6 @@ Ask your system administrator to create more.</computeroutput></screen>
 <screen><userinput remap="pre">rm -fv etc/standards.info
 sed -i.bak '/^INFO/s/standards.info //' etc/Makefile.in</userinput></screen>
 
-    <para>修复某些阻碍文档使用 Texinfo-&texinfo-version; 构建的语法错误:</para>
-
-<screen><userinput remap="pre">sed -i -e 's/@colophon/@@colophon/' \
-       -e 's/doc@cygnus.com/doc@@cygnus.com/' bfd/doc/bfd.texinfo</userinput></screen>
-
     <para>Binutils 文档推荐在源代码目录外的一个专用目录中构建 Binutils:</para>
 
 <screen><userinput remap="pre">mkdir -v ../binutils-build
@@ -105,12 +100,11 @@ cd ../binutils-build</userinput></screen>
     <para>安装包:</para>
 
 <screen><userinput remap="install">make tooldir=/usr install</userinput></screen>
-
+<!--
     <para>安装某些包所需要的 <filename class="headerfile">libiberty</filename> 头文件:</para>
 
-<!-- <screen><userinput remap="install">cp -v ../binutils-&binutils-version;/include/libiberty.h /usr/include</userinput></screen> -->
 <screen><userinput remap="install">cp -v ../binutils-&binutils-version;/include/libiberty.h /usr/include</userinput></screen>
-
+-->
   </sect2>
 
 
@@ -125,7 +119,7 @@ cd ../binutils-build</userinput></screen>
       <seglistitem>
         <seg>addr2line, ar, as, c++filt, elfedit, gprof, ld, ld.bfd, nm,
         objcopy, objdump, ranlib, readelf, size, strings 和 strip</seg>
-        <seg>libiberty.a、libbfd.{a,so} 和 libopcodes.{a,so}</seg>
+        <seg><!--libiberty.a,--> libbfd.{a,so} 和 libopcodes.{a,so}</seg>
         <seg>/usr/lib/ldscripts</seg>
       </seglistitem>
     </segmentedlist>
@@ -295,7 +289,7 @@ cd ../binutils-build</userinput></screen>
           </indexterm>
         </listitem>
       </varlistentry>
-
+<!--
       <varlistentry id="libiberty">
         <term><filename class="libraryfile">libiberty</filename></term>
         <listitem>
@@ -308,7 +302,7 @@ cd ../binutils-build</userinput></screen>
           </indexterm>
         </listitem>
       </varlistentry>
-
+-->
       <varlistentry id="libbfd">
         <term><filename class="libraryfile">libbfd</filename></term>
         <listitem>

@@ -56,6 +56,13 @@
 
     <listitem>
       <para><emphasis role="strong">Glibc-2.5.1</emphasis> (不建议超过 &glibc-version; 的版本，因为它们未经测试)</para>
+
+      <note><para>在某些发行版上，有报告称 gcc 所使用的某些库可能会处于一个不稳定的状态，并且这个会干扰到构建某些 LFS 包。
+      要检查这个问题，在
+      /usr/lib 中或 /usr/lib64 中查找 libgmp.la, libmpfr.la 和 libmpc.la。
+      所有这三个要么存在，要么都不存在，而不是只有其中一个或两个。
+      如果在您的系统上存在这个问题，要么重命名或删除 .la 文件，或者安装适当的缺少的包。</para></note>
+
     </listitem>
 
     <listitem>
@@ -99,11 +106,6 @@
       <para><emphasis role="strong">Tar-1.18</emphasis></para>
     </listitem>
 
-    <!-- Needed by the apparently broken Binutils-2.18 -->
-    <listitem>
-      <para><emphasis role="strong">Texinfo-4.9</emphasis></para>
-    </listitem>
-
     <listitem>
       <para><emphasis role="strong">Xz-5.0.0</emphasis></para>
     </listitem>
@@ -112,7 +114,11 @@
 
   <para>注意，以上提及的符号链接是使用本书中所包含的说明构建 LFS 系统所需的。指向其它软件(譬如 dash、mawk 等)的符号链接可以工作，但是未经 LFS 开发团队测试或支持，并且可能需要偏离说明或者需要某些包的额外补丁。</para>
 
-  <para id="version-check">要查看您的宿主系统是否拥有所有的合适版本并且能够编译程序，运行下列命令:</para>
+  <!-- 使用一个空的 sect2 元素来避免 pdf 警告。  -->
+  <sect2 id="version-check">
+  <title> </title>
+
+  <para >要查看您的宿主系统是否拥有所有的合适版本并且能够编译程序，运行下列命令:</para>
 
 <!-- ANY additional lines in the script cause a pdf rendering problem-->
 <screen role="nodump"><userinput>cat &gt; version-check.sh &lt;&lt; "EOF"
@@ -147,16 +153,21 @@ patch --version | head -n1
 echo Perl `perl -V:version`
 sed --version | head -n1
 tar --version | head -n1
-echo "Texinfo: `makeinfo --version | head -n1`"
 xz --version | head -n1
 
 echo 'main(){}' &gt; dummy.c &amp;&amp; g++ -o dummy dummy.c
 if [ -x dummy ]
   then echo "g++ compilation OK";
   else echo "g++ compilation failed"; fi
-rm -f dummy.c dummy</literal>
+rm -f dummy.c dummy
+
+for lib in lib{gmp,mpfr,mpc}.la; do
+  echo $lib: $(if find /usr/lib* -name $lib|
+               grep -q $lib;then :;else echo not;fi) found
+done
+unset lib</literal>
 EOF
 
 bash version-check.sh</userinput></screen>
-
+</sect2>
 </sect1>

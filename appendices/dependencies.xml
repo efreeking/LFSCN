@@ -933,7 +933,7 @@
         <segtitle>&testsuites;</segtitle>
 
         <seglistitem>
-          <seg>Diffutils. Less</seg>
+          <seg>Diffutils, Less</seg>
         </seglistitem>
       </segmentedlist>
 
@@ -995,8 +995,8 @@
         <segtitle>&dependencies;</segtitle>
 
         <seglistitem>
-         <seg>Bash, Binutils, Coreutils, GCC, Glibc, Grep, Make, Ncurses,
-         Patch, Sed, Texinfo 和 Zlib</seg>
+         <seg>Bash, Binutils, Bison, Check, Coreutils, Flex, GCC, Gettext,
+         Glibc, Gzip, Make, Patch 和 Zlib</seg>
         </seglistitem>
       </segmentedlist>
 
@@ -1364,7 +1364,7 @@
         <segtitle>&testsuites;</segtitle>
 
         <seglistitem>
-          <seg>Not run. Requires Man-DB 测试套件 package</seg>
+          <seg>Util-linux</seg>
         </seglistitem>
       </segmentedlist>
 
@@ -2035,7 +2035,7 @@
 
         <seglistitem>
          <seg>Bash, Binutils, Coreutils, Diffutils, Gawk, GCC, Glibc, Grep,
-         Kmod, Make 和 Sed</seg>
+         Kmod, Make, Sed 和 Util-linux</seg>
         </seglistitem>
       </segmentedlist>
 
@@ -2071,7 +2071,7 @@
 
         <seglistitem>
          <seg>Bash, Binutils, Coreutils, Diffutils, Findutils, Gawk, GCC,
-         Gettext, Glibc, Grep, Make, Ncurses, Sed 和 Zlib</seg>
+         Gettext, Glibc, Grep, Make, Ncurses, Sed, Udev 和 Zlib</seg>
         </seglistitem>
       </segmentedlist>
 
@@ -2079,7 +2079,7 @@
         <segtitle>&testsuites;</segtitle>
 
         <seglistitem>
-          <seg>无测试套件可用</seg>
+          <seg>无</seg>
         </seglistitem>
       </segmentedlist>
 

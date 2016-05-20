@@ -251,7 +251,7 @@
 
 
       <varlistentry id="libdb">
-        <term><filename class="libraryfile">libdb.{so,a}</filename></term>
+        <term><filename class="libraryfile">libdb.{a,so}</filename></term>
         <listitem>
           <para>包含从 C 程序操纵数据库文件的函数</para>
           <indexterm zone="ch-system-db libdb">
@@ -261,7 +261,7 @@
       </varlistentry>
 
       <varlistentry id="libdb_cxx">
-        <term><filename class="libraryfile">libdb_cxx.{so,a}</filename></term>
+        <term><filename class="libraryfile">libdb_cxx.{a,so}</filename></term>
         <listitem>
           <para>包含从 C++ 程序操纵数据库文件的函数</para>
           <indexterm zone="ch-system-db libdb_cxx">

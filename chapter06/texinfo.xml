@@ -40,10 +40,6 @@
   <sect2 role="installation">
     <title>Texinfo 的安装</title>
 
-    <para>修复测试套装和 Perl-&perl-version; 之间的不兼容:</para>
-
-<screen><userinput remap="pre">patch -Np1 -i ../&texinfo-test-patch;</userinput></screen>
-
     <para>准备 Texinfo 编译:</para>
 
 <screen><userinput remap="configure">./configure --prefix=/usr</userinput></screen>
@@ -51,8 +47,6 @@
     <para>编译包:</para>
 
 <screen><userinput remap="make">make</userinput></screen>
-
-    <note><para>在测试套装中一个测试由于过期的 perl 代码而失败。</para></note>
 
     <para>要测试结果，执行:</para>
 
@@ -97,9 +91,8 @@ done</userinput></screen>
       <segtitle>安装的目录</segtitle>
 
       <seglistitem>
-        <seg>info, infokey, install-info, makeinfo, pdftexi2dvi, 
-        pod2texi, texi2any, texi2dvi, texi2pdf 和
-        texindex</seg>
+        <seg>info, infokey, install-info, makeinfo (链接到 texi2any), 
+        pdftexi2dvi, pod2texi, texi2any, texi2dvi, texi2pdf 和 texindex</seg>
         <seg>/usr/share/texinfo</seg>
       </seglistitem>
     </segmentedlist>

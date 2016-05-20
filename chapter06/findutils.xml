@@ -42,9 +42,7 @@
 
     <para>准备 Findutils 编译:</para>
 
-<screen><userinput remap="configure">./configure --prefix=/usr                   \
-            --libexecdir=/usr/lib/findutils \
-            --localstatedir=/var/lib/locate</userinput></screen>
+<screen><userinput remap="configure">./configure --prefix=/usr --localstatedir=/var/lib/locate</userinput></screen>
 
     <variablelist>
       <title>配置选项的含义:</title>
@@ -84,11 +82,9 @@ sed -i 's/find:=${BINDIR}/find:=\/bin/' /usr/bin/updatedb</userinput></screen>
 
     <segmentedlist>
       <segtitle>安装的程序</segtitle>
-      <segtitle>安装的目录</segtitle>
 
       <seglistitem>
         <seg>bigram, code, find, frcode, locate, oldfind, updatedb 和 xargs</seg>
-        <seg>/usr/lib/findutils</seg>
       </seglistitem>
     </segmentedlist>
 

@@ -43,11 +43,6 @@
   <sect2 role="installation">
     <title>Binutils 安装</title>
 
-    <para>修复一些阻碍文档使用 Texinfo-&texinfo-version; 构建的语法错误:</para>
-
-<screen><userinput remap="pre">sed -i -e 's/@colophon/@@colophon/' \
-       -e 's/doc@cygnus.com/doc@@cygnus.com/' bfd/doc/bfd.texinfo</userinput></screen>
-
     <para>再次创建一个独立的构建目录:</para>
 
 <screen><userinput remap="pre">mkdir -v ../binutils-build
@@ -58,7 +53,7 @@ cd ../binutils-build</userinput></screen>
 <screen><userinput remap="configure">CC=$LFS_TGT-gcc                \
 AR=$LFS_TGT-ar                 \
 RANLIB=$LFS_TGT-ranlib         \
-../binutils-&binutils-version;/configure   \
+../binutils-&binutils-version;/configure     \
     --prefix=/tools            \
     --disable-nls              \
     --with-lib-path=/tools/lib \

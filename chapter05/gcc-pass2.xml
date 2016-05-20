@@ -59,9 +59,9 @@
     <option>-fomit-frame-pointer</option> 编译器标志。非自举的构建则默认省略这个标志，并且目标应该是产生一个和能够自举的完全一样的编译器。
     应用下列 <command>sed</command> 命令强制使用标志构建:</para> 
 
-<screen><userinput remap="pre">cp -v gcc/Makefile.in{,.tmp}
-sed 's/^T_CFLAGS =$/&amp; -fomit-frame-pointer/' gcc/Makefile.in.tmp \
-  &gt; gcc/Makefile.in</userinput></screen>
+<screen><userinput remap="pre">case `uname -m` in
+  i?86) sed -i 's/^T_CFLAGS =$/&amp; -fomit-frame-pointer/' gcc/Makefile.in ;;
+esac</userinput></screen>
 
     <para>再一次，更改 GCC 的默认动态链接器的位置为使用 <filename
     class="directory">/tools</filename> 中安装的那个。</para>
@@ -71,7 +71,7 @@ sed 's/^T_CFLAGS =$/&amp; -fomit-frame-pointer/' gcc/Makefile.in.tmp \
 do
   cp -uv $file{,.orig}
   sed -e 's@/lib\(64\)\?\(32\)\?/ld@/tools&amp;@g' \
-  -e 's@/usr@/tools@g' $file.orig &gt; $file
+      -e 's@/usr@/tools@g' $file.orig &gt; $file
   echo '
 #undef STANDARD_STARTFILE_PREFIX_1
 #undef STANDARD_STARTFILE_PREFIX_2

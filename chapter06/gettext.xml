@@ -42,8 +42,7 @@
 
     <para>准备 Gettext 编译:</para>
 
-<screen><userinput remap="configure">./configure --prefix=/usr \
-            --docdir=/usr/share/doc/gettext-&gettext-version;</userinput></screen>
+<screen><userinput remap="configure">./configure --prefix=/usr --docdir=/usr/share/doc/gettext-&gettext-version;</userinput></screen>
 
     <para>编译包:</para>
 

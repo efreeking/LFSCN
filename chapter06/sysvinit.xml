@@ -39,7 +39,7 @@
 
   <sect2 role="installation">
     <title>Sysvinit 的安装</title>
-
+<!--
     <para>当运行级改变的时候(例如，当停止(halt)系统时)，<command>init</command> 会发送终止(termination)信号给那些由 <command>init</command> 自身启动并且不会运行在新的运行级的进程。在进行该操作同时，<command>init</command> 输出类似 <quote>Sending processes
     the TERM signal</quote> 之类似乎暗示它正在发送这些信号给所有当前正在运行的进程。为了避免这种误解，修改源代码，以便使得这些消息读起来类似
     <quote>Sending processes configured via /etc/inittab the TERM signal</quote>:</para>
@@ -47,10 +47,20 @@
 <screen><userinput remap="pre">sed -i 's@Sending processes@&amp; configured via /etc/inittab@g' src/init.c</userinput></screen>
 
     <para><command>wall</command>，
-    <command>mountpoint</command> 和 <command>utmpdump</command> 程序的维护版本之前已经由 Util-linux 安装。为了阻止这些程序和其手册页的 Sysvinit 版本的安装，运行:</para>
+    <command>mountpoint</command>, <command>last</command>,
+    <command>mesg</command>, <command>sulogin</command> 和
+    <command>utmpdump</command> 程序较早前已由 Util-linux 安装。
+    要阻止这些程序及其手册页的 Sysvinit 版本的安装:</para>
 
-<screen><userinput remap="make">sed -i -e '/utmpdump/d' \
-       -e '/mountpoint/d' src/Makefile</userinput></screen>
+<screen><userinput remap="make">sed -ri -e '/utmpdump/d'   \
+        -e '/mountpoint/d' \
+        -e '/mesg/d'       \
+        -e 's/= sulogin(\.8)?/=/' src/Makefile</userinput></screen>
+-->
+    <para>首先，应用一个删除由其它包安装的多个程序，
+    澄清一条消息并修复一个编译器警告的补丁:</para>
+ 
+<screen><userinput remap="pre">patch -Np1 -i ../&sysvinit-consolidated-patch;</userinput></screen>
 
     <para>编译包:</para>
 
@@ -71,10 +81,9 @@
       <segtitle>安装的程序</segtitle>
 
       <seglistitem>
-        <seg>bootlogd, fstab-decode, halt, init, killall5, last,
-        lastb (链接到 last), mesg, pidof (链接到 killall5),
-        poweroff (链接到 halt), reboot (链接到 halt), runlevel, shutdown,
-        sulogin 和 telinit (链接到 init)</seg>
+        <seg>bootlogd, fstab-decode, halt, init, killall5, 
+        poweroff (链接到 halt), reboot (链接到 halt), runlevel,
+        shutdown 和 telinit (链接到 init)</seg>
       </seglistitem>
     </segmentedlist>
 
@@ -135,46 +144,6 @@
         </listitem>
       </varlistentry>
 
-      <varlistentry id="last">
-        <term><command>last</command></term>
-        <listitem>
-          <para>显示最后登录(注销)的用户，向后搜索整个 <filename>/var/log/wtmp</filename> 文件；它还会显示系统引导、关机和运行级的改变</para>
-          <indexterm zone="ch-system-sysvinit last">
-            <primary sortas="b-last">last</primary>
-          </indexterm>
-        </listitem>
-      </varlistentry>
-
-      <varlistentry id="lastb">
-        <term><command>lastb</command></term>
-        <listitem>
-          <para>显示登录失败的尝试，同时记录在 <filename>/var/log/btmp</filename> 中</para>
-          <indexterm zone="ch-system-sysvinit lastb">
-            <primary sortas="b-lastb">lastb</primary>
-          </indexterm>
-        </listitem>
-      </varlistentry>
-
-      <varlistentry id="mesg">
-        <term><command>mesg</command></term>
-        <listitem>
-          <para>控制其它用户是否可以发送消息到当前用户的终端</para>
-          <indexterm zone="ch-system-sysvinit mesg">
-            <primary sortas="b-mesg">mesg</primary>
-          </indexterm>
-        </listitem>
-      </varlistentry>
-
-      <varlistentry id="pidof">
-        <term><command>pidof</command></term>
-        <listitem>
-          <para>报告给定的各程序的 PID</para>
-          <indexterm zone="ch-system-sysvinit pidof">
-            <primary sortas="b-pidof">pidof</primary>
-          </indexterm>
-        </listitem>
-      </varlistentry>
-
       <varlistentry id="poweroff">
         <term><command>poweroff</command></term>
         <listitem>
@@ -213,16 +182,6 @@
           <para>以安全的方式停机，向所有进程发送信号并通知所有已经登录的用户</para>
           <indexterm zone="ch-system-sysvinit shutdown">
             <primary sortas="b-shutdown">shutdown</primary>
-          </indexterm>
-        </listitem>
-      </varlistentry>
-
-      <varlistentry id="sulogin">
-        <term><command>sulogin</command></term>
-        <listitem>
-          <para>让 <systemitem class="username">root</systemitem> 登录；一般它是由 <command>init</command> 在系统进入单用户模式时调用的</para>
-          <indexterm zone="ch-system-sysvinit sulogin">
-            <primary sortas="b-sulogin">sulogin</primary>
           </indexterm>
         </listitem>
       </varlistentry>

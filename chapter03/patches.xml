@@ -18,14 +18,6 @@
   <variablelist role="materials">
 
     <varlistentry>
-      <term>Automake Test Fix Patch(测试修复补丁) - <token>&automake-test-patch-size;</token>:</term>
-      <listitem>
-        <para>下载: <ulink url="&patches-root;&automake-test-patch;"/></para>
-        <para>MD5 和: <literal>&automake-test-patch-md5;</literal></para>
-      </listitem>
-    </varlistentry>
-
-    <varlistentry>
       <term>Bash Upstream Fixes (上游修复)补丁 - <token>&bash-fixes-patch-size;</token>:</term>
       <listitem>
         <para>下载: <ulink url="&patches-root;&bash-fixes-patch;"/></para>
@@ -50,19 +42,18 @@
     </varlistentry>
 
     <varlistentry>
-
-      <term>Kbd Backspace/Delete Fix 补丁 - <token>&kbd-backspace-patch-size;</token>:</term>
+      <term>Glibc FHS 补丁 - <token>&glibc-fhs-patch-size;</token>:</term>
       <listitem>
-        <para>下载: <ulink url="&patches-root;&kbd-backspace-patch;"/></para>
-        <para>MD5 和: <literal>&kbd-backspace-patch-md5;</literal></para>
+        <para>下载: <ulink url="&patches-root;&glibc-fhs-patch;"/></para>
+        <para>MD5 和: <literal>&glibc-fhs-patch-md5;</literal></para>
       </listitem>
     </varlistentry>
 
     <varlistentry>
-      <term>Make Upstream Fixes 补丁 - <token>&make-fixes-patch-size;</token>:</term>
+      <term>Kbd Backspace/Delete Fix 补丁 - <token>&kbd-backspace-patch-size;</token>:</term>
       <listitem>
-        <para>下载: <ulink url="&patches-root;&make-fixes-patch;"/></para>
-        <para>MD5 和: <literal>&make-fixes-patch-md5;</literal></para>
+        <para>下载: <ulink url="&patches-root;&kbd-backspace-patch;"/></para>
+        <para>MD5 和: <literal>&kbd-backspace-patch-md5;</literal></para>
       </listitem>
     </varlistentry>
 
@@ -75,14 +66,6 @@
     </varlistentry>
 
     <varlistentry>
-      <term>Tar Manpage Patch (手册页补丁) - <token>&tar-manpage-patch-size;</token>:</term>
-      <listitem>
-        <para>下载: <ulink url="&patches-root;&tar-manpage-patch;"/></para>
-        <para>MD5 和: <literal>&tar-manpage-patch-md5;</literal></para>
-      </listitem>
-    </varlistentry>
-
-    <varlistentry>
       <term>Readline Upstream Fixes 补丁 - <token>&readline-fixes-patch-size;</token>:</term>
       <listitem>
         <para>下载: <ulink url="&patches-root;&readline-fixes-patch;"/></para>
@@ -91,13 +74,30 @@
     </varlistentry>
 
     <varlistentry>
+      <term>Sysvinit Consolidated 补丁 - <token>&sysvinit-consolidated-patch-size;</token>:</term>
+      <listitem>
+        <para>下载: <ulink url="&patches-root;&sysvinit-consolidated-patch;"/></para>
+        <para>MD5 和: <literal>&sysvinit-consolidated-patch-md5;</literal></para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term>Tar 手册页补丁 - <token>&tar-manpage-patch-size;</token>:</term>
+      <listitem>
+        <para>下载: <ulink url="&patches-root;&tar-manpage-patch;"/></para>
+        <para>MD5 和: <literal>&tar-manpage-patch-md5;</literal></para>
+      </listitem>
+    </varlistentry>
+
+<!--
+    <varlistentry>
       <term>Texinfo 测试补丁 - <token>&texinfo-test-patch-size;</token>:</term>
       <listitem>
         <para>下载: <ulink url="&patches-root;&texinfo-test-patch;"/></para>
         <para>MD5 和: <literal>&texinfo-test-patch-md5;</literal></para>
       </listitem>
     </varlistentry>
-
+-->
   </variablelist>
 
   <para>这些补丁的总大小: 大约 <returnvalue/></para>

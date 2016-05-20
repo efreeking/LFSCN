@@ -43,7 +43,7 @@
   <sect2 role="installation">
     <title>Gettext 的安装</title>
 
-    <para>对于我们的临时工具集来说，我们只需要从 Gettext 安装和构建一个二进制文件。</para>
+    <para>对于我们的临时工具集来说，我们只需要从 Gettext 构建并安装 3 个程序。</para>
 
     <para>准备 Gettext 编译:</para>
 
@@ -73,13 +73,15 @@ EMACS="no" ./configure --prefix=/tools --disable-shared</userinput></screen>
     <para>编译软件包:</para>
 
 <screen><userinput remap="make">make -C gnulib-lib
-make -C src msgfmt</userinput></screen>
+make -C src msgfmt
+make -C src msgmerge
+make -C src xgettext</userinput></screen>
 
-    <para>由于只有一个二进制文件需要编译，而不编译来自 Gettext 包的额外支持库的话，不可能运行测试套装的。因此不建议在这个阶段尝试运行测试套装。</para>
+    <para>由于只有 3 个程序被编译，而不编译来自 Gettext 包的额外支持库的话，是不可能运行测试套装的。因此不建议在这个阶段尝试运行测试套装。</para>
 
-    <para>安装 <command>msgfmt</command> 二进制文件:</para>
+    <para>安装 <command>msgfmt</command>, <command>msgmerge</command> 和 <command>xgettext</command> 程序:</para>
 
-<screen><userinput remap="install">cp -v src/msgfmt /tools/bin</userinput></screen>
+<screen><userinput remap="install">cp -v src/{msgfmt,msgmerge,xgettext} /tools/bin</userinput></screen>
 
   </sect2>
 

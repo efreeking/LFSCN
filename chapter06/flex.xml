@@ -46,8 +46,7 @@
 
     <para>准备 Flex 编译:</para>
 
-<screen><userinput remap="configure">./configure --prefix=/usr \
-            --docdir=/usr/share/doc/flex-&flex-version;</userinput></screen>
+<screen><userinput remap="configure">./configure --prefix=/usr --docdir=/usr/share/doc/flex-&flex-version;</userinput></screen>
 
     <para>编译包:</para>
 
@@ -60,13 +59,13 @@
     <para>安装包:</para>
 
 <screen><userinput remap="install">make install</userinput></screen>
-
+<!--
     <para>有一些包预期在 <filename
     class="directory">/usr/lib</filename> 中查找
     <filename class="libraryfile">lex</filename> 库。为此创建一个符号链接账户:</para>
 
 <screen><userinput remap="install">ln -sv libfl.a /usr/lib/libl.a</userinput></screen>
-
+-->
     <para>一些程序还不知道 <command>flex</command> ，而且尝试运行它的前任，<command>lex</command>。要支持那些程序，创建一个名为 <filename>lex</filename> 的封装器脚本，它会以 <command>lex</command> 模拟模式调用 <filename>flex</filename>:</para>
 
 <screen><userinput remap="install">cat &gt; /usr/bin/lex &lt;&lt; "EOF"
@@ -91,7 +90,7 @@ chmod -v 755 /usr/bin/lex</userinput></screen>
 
       <seglistitem>
         <seg>flex, flex++ (到 flex 的链接) 以及 lex</seg>
-        <seg>libfl.a 和 libfl_pic.a</seg>
+        <seg>libfl.{a,so} 和 libfl_pic.{a,so}</seg>
         <seg>/usr/share/doc/flex-&flex-version;</seg>
       </seglistitem>
     </segmentedlist>
@@ -132,12 +131,12 @@ chmod -v 755 /usr/bin/lex</userinput></screen>
         </listitem>
       </varlistentry>
 
-      <varlistentry id="libfl.a">
-        <term><filename class="libraryfile">libfl.a</filename></term>
+      <varlistentry id="libfl">
+        <term><filename class="libraryfile">libfl</filename></term>
         <listitem>
           <para><filename class="libraryfile">flex</filename> 库</para>
-          <indexterm zone="ch-system-flex libfl.a">
-            <primary sortas="c-libfl.a">libfl.a</primary>
+          <indexterm zone="ch-system-flex libfl">
+            <primary sortas="c-libfl">libfl</primary>
           </indexterm>
         </listitem>
       </varlistentry>

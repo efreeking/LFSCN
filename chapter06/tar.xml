@@ -44,16 +44,11 @@
  
  <screen><userinput remap="pre">patch -Np1 -i ../&tar-manpage-patch;</userinput></screen>
 
-    <para>修复这个包和 Glibc-&glibc-version; 之间的一个不兼容:</para>
-
-<screen><userinput remap="pre">sed -i -e '/gets is a/d' gnu/stdio.in.h</userinput></screen>
-
     <para>准备 Tar 编译:</para>
 
 <screen><userinput remap="configure">FORCE_UNSAFE_CONFIGURE=1  \
 ./configure --prefix=/usr \
-            --bindir=/bin \
-            --libexecdir=/usr/sbin</userinput></screen>
+            --bindir=/bin</userinput></screen>
 
     <variablelist>
       <title>配置选项的含义:</title>

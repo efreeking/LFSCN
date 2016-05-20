@@ -40,10 +40,6 @@
   <sect2 role="installation">
     <title>Automake 的安装</title>
 
-    <para>修复一个间歇性测试失败:</para>
-
-<screen><userinput remap="pre">patch -Np1 -i ../&automake-test-patch;</userinput></screen>
-
     <para>准备 Automake 编译:</para>
 
 <screen><userinput remap="configure">./configure --prefix=/usr --docdir=/usr/share/doc/automake-&automake-version;</userinput></screen>
@@ -52,11 +48,12 @@
 
 <screen><userinput remap="make">make</userinput></screen>
 
-    <note><para>测试花费非常长的时间: 超过 30 SBUs。</para></note>
+    <para>有一些测试不正确的链接到了错误版本的 flex 库，所以我们临时变通解决这个问题。
+    还有，使用 -j4 make 选项来提高测试的速度，哪怕是在只有一个处理器的系统上，因为在各个测试之间的内部延时问题。
+    要测试结果，发出命令:</para>
 
-    <para>要测试结果，执行:</para>
-
-<screen><userinput remap="test">make check</userinput></screen>
+<screen><userinput remap="test">sed -i "s:./configure:LEXLIB=/usr/lib/libfl.a &amp;:" t/lex-{clean,depend}-cxx.sh
+make -j4 check</userinput></screen>
 
     <para>安装包:</para>
 

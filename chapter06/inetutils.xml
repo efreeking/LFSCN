@@ -40,16 +40,14 @@
   <sect2 role="installation">
     <title>Inetutils 的安装</title>
 
-    <para>修复一个本包和 Glibc-&glibc-version; 之间的不兼容</para>
+    <para>创建一个定义以允许 <command>ifconfig</command> 程序正确构建。</para>
 
-<screen><userinput remap="pre">sed -i -e '/gets is a/d' lib/stdio.in.h</userinput></screen>
+<screen><userinput remap="pre">echo '#define PATH_PROCNET_DEV "/proc/net/dev"' &gt;&gt; ifconfig/system/linux.h </userinput></screen>
 
     <para>准备 Inetutils 进行编译:</para>
 
 <screen><userinput remap="configure">./configure --prefix=/usr  \
-    --libexecdir=/usr/sbin \
     --localstatedir=/var   \
-    --disable-ifconfig     \
     --disable-logger       \
     --disable-syslogd      \
     --disable-whois        \
@@ -57,14 +55,6 @@
 
     <variablelist>
       <title>配置选项的含义:</title>
-
-      <varlistentry>
-        <term><parameter>--disable-ifconfig</parameter></term>
-        <listitem>
-          <para>这个选项禁止 Inetutils 安装
-          <command>ifconfig</command> 程序，它可以用于配置网络接口。LFS 使用来自 IPRoute2 的 <command>ip</command> 来执行这个任务。</para>
-        </listitem>
-      </varlistentry>
 
       <varlistentry>
         <term><parameter>--disable-logger</parameter></term>
@@ -95,7 +85,7 @@
       <varlistentry>
         <term><parameter>--disable-servers</parameter></term>
         <listitem>
-          <para>这个禁止了包含作为 Inetutils 包的一部分的各种网络服务器的安装。这些服务器被认为在基本的 LFS 系统中不是适当的。某些是由于自身的不安全，或者只能在信任的网络中才认为是安全的。更多信息可以在 <ulink url="&blfs-root;view/svn/basicnet/inetutils.html"/> 找到。注意，有很多这些服务器的更好的替代品。</para>
+          <para>这个禁止了包含作为 Inetutils 包的一部分的各种网络服务器的安装。这些服务器被认为在基本的 LFS 系统中不是适当的。某些是由于自身的不安全，或者只能在信任的网络中才认为是安全的。注意，有很多这些服务器的更好的替代品。</para>
         </listitem>
       </varlistentry>
 
@@ -112,14 +102,12 @@
     <para>安装包:</para>
 
 <screen><userinput remap="install">make install</userinput></screen>
-<!-- The html file generation is broken as of texinfo-5.0
-make -C doc html
-make -C doc install-html docdir=/usr/share/doc/inetutils-&inetutils-version;</userinput></screen>
--->
+
     <para>移动某些程序以便它们在 <filename
     class='directory'>/usr</filename> 不可访问时可供使用:</para>
 
-<screen><userinput remap="install">mv -v /usr/bin/{hostname,ping,ping6,traceroute} /bin</userinput></screen>
+<screen><userinput remap="install">mv -v /usr/bin/{hostname,ping,ping6,traceroute} /bin
+mv -v /usr/bin/ifconfig /sbin</userinput></screen>
   </sect2>
 
   <sect2 id="contents-inetutils" role="content">
@@ -129,8 +117,8 @@ make -C doc install-html docdir=/usr/share/doc/inetutils-&inetutils-version;</us
       <segtitle>安装的程序</segtitle>
 
       <seglistitem>
-        <seg>ftp, hostname, ping, ping6, rcp, rexec, rlogin, rsh, talk, telnet,
-        tftp 和 traceroute</seg>
+        <seg>ftp, ifconfig, hostname, ping, ping6, rcp, rexec, rlogin, 
+        rsh, talk, telnet, tftp 和 traceroute</seg>
       </seglistitem>
     </segmentedlist>
 
@@ -145,6 +133,16 @@ make -C doc install-html docdir=/usr/share/doc/inetutils-&inetutils-version;</us
         <para>是文件传输协议(FTP)程序</para>
         <indexterm zone="ch-system-inetutils ftp">
           <primary sortas="b-ftp">ftp</primary>
+        </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="ifconfig">
+        <term><command>ifconfig</command></term>
+        <listitem>
+        <para>管理网络接口</para>
+        <indexterm zone="ch-system-inetutils ifconfig">
+          <primary sortas="b-ifconfig">ifconfig</primary>
         </indexterm>
         </listitem>
       </varlistentry>

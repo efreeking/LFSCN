@@ -131,8 +131,8 @@ cp -r Documentation/* /usr/share/doc/linux-&linux-version;</userinput></screen>
     </warning>
 
     <warning>
-      <para>在系统的 <filename class="directory">include</filename> 目录中的头文件应该<emphasis>总是</emphasis>针对 Glibc 编译的头文件，
-      也就是，来自这个 Linux 内核源代码包的健全的头文件。因此，它们应该<emphasis>永远</emphasis>不要被原始的内核头文件或任何其它的内核健全头文件所代替。</para>
+      <para>在系统的 <filename class="directory">include</filename> 目录(<filename class="directory">/usr/include</filename>)中的头文件应该<emphasis>总是</emphasis>针对 Glibc 编译的头文件，
+      也就是，在 <xref linkend="ch-system-linux-headers"/> 中安装了健全的头文件。因此，它们应该<emphasis>永远</emphasis>不要被原始的内核头文件或任何其它的内核健全头文件所代替。</para>
     </warning>
 
   </sect2>

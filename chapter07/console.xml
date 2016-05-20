@@ -26,8 +26,9 @@
   <filename>/etc/sysconfig/console</filename> 文件用于配置信息。
   决定将会使用何种键映射和屏幕字体。各种语言专用指引可有助于此，
   参阅 <ulink url="http://www.tldp.org/HOWTO/HOWTO-INDEX/other-lang.html"/>。
-  如果仍有怀疑，在 <filename class="directory">/lib/kbd</filename> 
-  目录中查找有效的键映射和屏幕字体。阅读 <filename>loadkeys(1)</filename> 和
+  如果仍有怀疑，在 <filename class="directory">/usr/share/keymaps</filename>
+  和 <filename class="directory">/usr/share/consolefonts</filename> 目录中查找有效的键映射和屏幕字体。
+  阅读 <filename>loadkeys(1)</filename> 和
   <filename>setfont(8)</filename> 手册页确定这些程序的正确参数。</para>
 
   <para><filename>/etc/sysconfig/console</filename> 文件应该包含这样形式的行: VARIABLE="value"。下列变量可以被识别:</para>

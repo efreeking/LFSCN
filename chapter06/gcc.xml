@@ -47,12 +47,12 @@
 <screen><userinput remap="pre">case `uname -m` in
   i?86) sed -i 's/^T_CFLAGS =$/&amp; -fomit-frame-pointer/' gcc/Makefile.in ;;
 esac</userinput></screen>
-
+<!--
     <para>变通处理一个问题，以便 GCC 不会安装
     <filename class="libraryfile">libiberty.a</filename>，它已经由 Binutils 提供了:</para>
 
 <screen><userinput remap="pre">sed -i 's/install_to_$(INSTALL_DEST) //' libiberty/Makefile.in</userinput></screen>
-
+-->
     <para>还要修复一个检查 Makefiles 之一的错误，并禁止在 g++ libmudflap 测试套件中的一个测试:</para>
 
 <screen><userinput remap="pre">sed -i -e /autogen/d -e /check.sh/d fixincludes/Makefile.in 
@@ -65,17 +65,17 @@ cd ../gcc-build</userinput></screen>
 
     <para>准备 GCC 编译:</para>
 
-<screen><userinput remap="configure">../gcc-&gcc-version;/configure --prefix=/usr               \
-                       --libexecdir=/usr/lib       \
-                       --enable-shared             \
-                       --enable-threads=posix      \
-                       --enable-__cxa_atexit       \
-                       --enable-clocale=gnu        \
-                       --enable-languages=c,c++    \
-                       --disable-multilib          \
-                       --disable-bootstrap         \
-                       --disable-install-libiberty \
-                       --with-system-zlib</userinput></screen>
+<screen><userinput remap="configure">SED=sed                          \
+../gcc-&gcc-version;/configure           \
+     --prefix=/usr               \
+     --enable-shared             \
+     --enable-threads=posix      \
+     --enable-__cxa_atexit       \
+     --enable-clocale=gnu        \
+     --enable-languages=c,c++    \
+     --disable-multilib          \
+     --disable-bootstrap         \
+     --with-system-zlib</userinput></screen>
 
     <para>注意，对于其它语言，有一些不可用的先决条件。参阅 BLFS 书中关于如何构建所有 GCC 支持的语言的说明。</para>
 
@@ -290,12 +290,13 @@ mv -v /usr/lib/*gdb.py /usr/share/gdb/auto-load/usr/lib</userinput></screen>
         gcc-ar, gcc-nm, gcc-ranlib 和 gcov</seg>
 
         <seg>libasan.{a,so}, libatomic.{a,so}, libgcc.a, libgcc_eh.a, 
-        libgcc_s.so, libgcov.a, libgomp.{a,so}, libitm.{a,so},
+        libgcc_s.so, libgcov.a, libgomp.{a,so}, libiberty.a, libitm.{a,so},
         liblto_plugin.so, libmudflap.{a,so}, libmudflapth.{a,so},
         libquadmath.{a,so}, libssp.{a,so},
-        libssp_nonshared.a, libstdc++.{a,so} 和 libsupc++.a</seg>
+        libssp_nonshared.a, libstdc++.{a,so}, libsupc++.a 和 libtsan.{a,so}</seg>
 
-        <seg>/usr/include/c++, /usr/lib/gcc, /usr/share/gcc-&gcc-version;</seg>
+        <seg>/usr/include/c++, /usr/lib/gcc, /usr/libexec/gcc, 
+        /usr/share/gcc-&gcc-version;</seg>
       </seglistitem>
     </segmentedlist>
 
@@ -398,6 +399,16 @@ mv -v /usr/lib/*gdb.py /usr/share/gdb/auto-load/usr/lib</userinput></screen>
         </listitem>
       </varlistentry>
 
+      <varlistentry id="libasan">
+        <term><command>libasan</command></term>
+        <listitem>
+          <para>地址消毒器运行时库</para>
+          <indexterm zone="ch-system-gcc libasan">
+            <primary sortas="b-libasan">libasan</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
       <varlistentry id="libgcc">
         <term><filename class="libraryfile">libgcc</filename></term>
         <listitem>
@@ -424,6 +435,19 @@ mv -v /usr/lib/*gdb.py /usr/share/gdb/auto-load/usr/lib</userinput></screen>
           <para>在 C/C++ 和 Fortran 中进行多平台共享内存的并发编程的 OpenMP API 的 GNU 实现</para>
           <indexterm zone="ch-system-gcc libgomp">
             <primary sortas="c-libgomp">libgomp</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="libiberty">
+        <term><filename class="libraryfile">libiberty</filename></term>
+        <listitem>
+          <para>包含被各种 GNU 程序所使用的例程，包括
+          <command>getopt</command>, <command>obstack</command>,
+          <command>strerror</command>, <command>strtol</command> 以及
+          <command>strtoul</command></para>
+          <indexterm zone="ch-system-gcc libiberty">
+            <primary sortas="c-libiberty">libiberty</primary>
           </indexterm>
         </listitem>
       </varlistentry>
@@ -484,6 +508,16 @@ mv -v /usr/lib/*gdb.py /usr/share/gdb/auto-load/usr/lib</userinput></screen>
           <para>提供 C++ 编程语言的支持例程</para>
           <indexterm zone="ch-system-gcc libsupc">
             <primary sortas="c-libsupc++">libsupc++</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="libtsan">
+        <term><filename class="libraryfile">libtsan</filename></term>
+        <listitem>
+          <para>线程消毒器运行时库</para>
+          <indexterm zone="ch-system-gcc libtsan">
+            <primary sortas="c-libtsan">libtsan</primary>
           </indexterm>
         </listitem>
       </varlistentry>

@@ -57,8 +57,7 @@
 
     <para>安装包:</para>
 
-<screen><userinput remap="install">mkdir -p /usr/share/doc/groff-1.22/pdf
-make install</userinput></screen>
+<screen><userinput remap="install">make install</userinput></screen>
 
     <para>某些文档程序，譬如 <command>xman</command>，将不能和下列的符号链接正常的配合使用:</para>
 

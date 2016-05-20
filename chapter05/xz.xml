@@ -6,10 +6,10 @@
 ]>
 
 <sect1 id="ch-tools-xz" role="wrap">
-  <?dbhtml filename="xz-utils.html"?>
+  <?dbhtml filename="xz.html"?>
 
   <sect1info condition="script">
-    <productname>xz-utils</productname>
+    <productname>xz</productname>
     <productnumber>&xz-version;</productnumber>
     <address>&xz-url;</address>
   </sect1info>
@@ -17,7 +17,7 @@
   <title>Xz-&xz-version;</title>
 
   <indexterm zone="ch-tools-xz">
-    <primary sortas="a-xz">xz</primary>
+    <primary sortas="a-xz">Xz</primary>
     <secondary>工具</secondary>
   </indexterm>
 
@@ -41,7 +41,7 @@
   </sect2>
 
   <sect2 role="installation">
-    <title>Xz-Utils 的安装</title>
+    <title>Xz 的安装</title>
 
     <para>准备 Xz 编译:</para>
 

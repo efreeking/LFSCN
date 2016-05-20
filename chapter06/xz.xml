@@ -6,10 +6,10 @@
 ]>
 
 <sect1 id="ch-system-xz" role="wrap">
-  <?dbhtml filename="xz-utils.html"?>
+  <?dbhtml filename="xz.html"?>
 
   <sect1info condition="script">
-    <productname>xz-utils</productname>
+    <productname>xz</productname>
     <productnumber>&xz-version;</productnumber>
     <address>&xz-url;</address>
   </sect1info>
@@ -42,7 +42,7 @@
 
     <para>准备 Xz 进行编译:</para>
 
-<screen><userinput remap="configure">./configure --prefix=/usr --libdir=/lib --docdir=/usr/share/doc/xz-&xz-version;</userinput></screen>
+<screen><userinput remap="configure">./configure --prefix=/usr --docdir=/usr/share/doc/xz-&xz-version;</userinput></screen>
 
     <para>编译包:</para>
 
@@ -52,9 +52,12 @@
 
 <screen><userinput remap="test">make check</userinput></screen>
 
-  <para>安装包:</para>
+  <para>安装包并确保所有必需的文件在正确的目录中:</para>
 
-<screen><userinput remap="install">make pkgconfigdir=/usr/lib/pkgconfig install</userinput></screen>
+<screen><userinput remap="install">make install
+mv -v   /usr/bin/{lzma,unlzma,lzcat,xz,unxz,xzcat} /bin
+mv -v /usr/lib/liblzma.so.* /lib
+ln -svf ../../lib/$(readlink /usr/lib/liblzma.so) /usr/lib/liblzma.so</userinput></screen>
 
   </sect2>
 

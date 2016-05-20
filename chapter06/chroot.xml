@@ -13,7 +13,7 @@
   <para>现在是时候进入 chroot 环境开始构建和安装最终的 LFS 系统了。
   以用户 <systemitem class="username">root</systemitem> 身份，运行下列命令进入当前只装配了临时工具的领域:</para>
 
-<screen><userinput>chroot "$LFS" /tools/bin/env -i \
+<screen role="nodump"><userinput>chroot "$LFS" /tools/bin/env -i \
     HOME=/root                  \
     TERM="$TERM"                \
     PS1='\u:\w\$ '              \

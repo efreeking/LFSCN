@@ -46,12 +46,17 @@
       的实现。</quote> Glibc 提供了一个 <function>iconv()</function> 实现并且可以与 Unicode 相互转换，因此在 LFS 系统上不再需要 libiconv。</para>
     </note>
 
+    <para>首先修复一个在安装 tzselect 脚本时的小问题:</para>
+
+<screen><userinput remap="pre">sed -i 's/\\$$(pwd)/`pwd`/' timezone/Makefile</userinput></screen>
+
+    <para>Glibc 其中的某些程序使用非 FHS 兼容 <filename class="directory">/var/db</filename>
+    目录存储它们的运行时数据。应用下列补丁使得这些程序在 FHS 兼容位置
+    中存储它们的运行时数据:</para>
+
+<screen><userinput remap="pre">patch -Np1 -i ../&glibc-fhs-patch;</userinput></screen>
+
     <para>Glibc 构建系统是自包含的并且可以完美安装，即使编译器的 specs 文件和链接器仍指向 <filename class="directory">/tools</filename>。在 Glibc 安装前，specs 和链接器不能进行调整，因为 Glibc 的 autoconf 测试将会给出错误的结果，从而阻碍了达到干净构建的目标。</para>
-
-    <para>需要倒退一个上游更改:</para>
-
-<screen><userinput remap="pre">sed -i -e 's/static __m128i/inline &amp;/' sysdeps/x86_64/multiarch/strstr.c</userinput></screen>
-
 
     <para>Glibc 文档推荐在源代码目录外一个专用的构建目录中构建 Glibc:</para>
 
@@ -64,17 +69,16 @@ cd ../glibc-build</userinput></screen>
     --prefix=/usr          \
     --disable-profile      \
     --enable-kernel=&min-kernel; \
-    --libexecdir=/usr/lib/glibc</userinput></screen>
+    --enable-obsolete-rpc</userinput></screen>
 
     <variablelist>
       <title>新配置选项的含义:</title>
 
       <varlistentry>
-        <term><parameter>--libexecdir=/usr/lib/glibc</parameter></term>
+        <term><parameter>--enable-obsolete-rpc</parameter></term>
         <listitem>
-          <para>这个更改了某些辅助文件的位置，从 <filename
-          class="directory">/usr/libexec</filename> 的默认位置更改为 <filename
-          class="directory">/usr/lib/glibc</filename>。</para>
+          <para>安装默认不会安装的 NIS 和 RPC 相关的头文件;
+          这些是重新构建 Glibc 和多个 BLFS 包所需的。</para>
         </listitem>
       </varlistentry>
 
@@ -126,7 +130,11 @@ grep Error glibc-check-log</userinput></screen>
       </listitem>
 
       <listitem>
-        <para>其他测试已知在某些是 are posix/bug-regex32, misc/tst-writev, elf/check-textrel, nptl/tst-getpid2 和 stdio-common/bug22 的架构上会失败。</para>
+        <para>libio/tst-ftell-partial-wide.out 失败，因为它需要一个还未被生成的语言环境。</para>
+      </listitem>
+
+      <listitem>
+        <para>其他测试已知在某些是 posix/bug-regex32, misc/tst-writev, elf/check-textrel, nptl/tst-getpid2, nptl/tst-robust8 和 stdio-common/bug22 的架构上会失败。</para>
       </listitem>
 
     </itemizedlist>
@@ -141,11 +149,10 @@ grep Error glibc-check-log</userinput></screen>
 
 <screen><userinput remap="install">make install</userinput></screen>
 
-    <para>安装 NIS 而 RPC 相关的头文件按默认是不会安装的; 这些是重新构建 glibc 以及被多个 BLFS 包所需的:</para>
+    <para>安装 <command>nscd</command> 的配置文件和运行时目录:</para>
 
-<screen><userinput remap="install">cp -v ../glibc-&glibc-version;/sunrpc/rpc/*.h /usr/include/rpc
-cp -v ../glibc-&glibc-version;/sunrpc/rpcsvc/*.h /usr/include/rpcsvc
-cp -v ../glibc-&glibc-version;/nis/rpcsvc/*.h /usr/include/rpcsvc</userinput></screen>
+<screen><userinput remap="install">cp -v ../glibc-&glibc-version;/nscd/nscd.conf /etc/nscd.conf
+mkdir -pv /var/cache/nscd</userinput></screen>
 
     <para>通过上述命令，语言环境 (locales) 可以使得系统以未安装的不同语言响应。虽然不需要任何语言环境，但是如果缺少了其中的默认，以后的包的测试套装可能会跳过重要的测试情况。</para>
 
@@ -237,8 +244,7 @@ ZONEINFO=/usr/share/zoneinfo
 mkdir -pv $ZONEINFO/{posix,right}
 
 for tz in etcetera southamerica northamerica europe africa antarctica  \
-          asia australasia backward pacificnew solar87 solar88 solar89 \
-          systemv; do
+          asia australasia backward pacificnew systemv; do
     zic -L /dev/null   -d $ZONEINFO       -y "sh yearistype.sh" ${tz}
     zic -L /dev/null   -d $ZONEINFO/posix -y "sh yearistype.sh" ${tz}
     zic -L leapseconds -d $ZONEINFO/right -y "sh yearistype.sh" ${tz}
@@ -289,26 +295,11 @@ unset ZONEINFO</userinput></screen>
     class='directory'>/usr/share/zoneinfo</filename> 中列出，譬如
     <emphasis>Canada/Eastern</emphasis> 或 <emphasis>EST5EDT</emphasis>，它们无法被脚本识别，但是却可以使用。</para>
 
-    <para>Then create the <filename>/etc/localtime</filename> file by
-    running:</para>
+    <para>然后，通过运行下面命令创建 <filename>/etc/localtime</filename> 文件:</para>
 
-<screen><userinput>cp -v --remove-destination /usr/share/zoneinfo/<replaceable>&lt;xxx&gt;</replaceable> \
-    /etc/localtime</userinput></screen>
+<screen><userinput>cp -v /usr/share/zoneinfo/<replaceable>&lt;xxx&gt;</replaceable> /etc/localtime</userinput></screen>
 
     <para>替换 <replaceable>&lt;xxx&gt;</replaceable> 为选择的时区的名称(如 Canada/Eastern).</para>
-
-    <variablelist>
-      <title>cp 选项的含义:</title>
-
-      <varlistentry>
-        <term><parameter>--remove-destination</parameter></term>
-        <listitem>
-          <para>这是强制移除已经存在的符号链接。复制文件而不使用符号链接的原因是为了涵盖当 <filename class="directory">/usr</filename>
-          在独立分区上的情况。这个在引导进单用户模式时很重要。</para>
-        </listitem>
-      </varlistentry>
-
-    </variablelist>
 
   </sect2>
 
@@ -360,7 +351,7 @@ mkdir /etc/ld.so.conf.d</userinput></screen>
         pldd, rpcgen, sln, sotruss, sprof, tzselect, xtrace,
         zdump 和 zic</seg>
         <seg>ld.so, libBrokenLocale.{a,so}, libSegFault.so, libanl.{a,so}, 
-        libbsd-compat.a, libc.{a,so}, libc_nonshared.a, libcidn.so, 
+        libc.{a,so}, libc_nonshared.a, libcidn.so,
         libcrypt.{a,so}, libdl.{a,so}, libg.a, libieee.a, libm.{a,so}, 
         libmcheck.a, libmemusage.so, libnsl.{a,so}, libnss_compat.so, 
         libnss_dns.so, libnss_files.so, libnss_hesiod.so, libnss_nis.so, 
@@ -373,8 +364,9 @@ mkdir /etc/ld.so.conf.d</userinput></screen>
         /usr/include/netipx, /usr/include/netiucv, /usr/include/netpacket, 
         /usr/include/netrom, /usr/include/netrose, /usr/include/nfs, 
         /usr/include/protocols, /usr/include/rpc, /usr/include/rpcsvc, 
-        /usr/include/sys, /usr/lib/audit, /usr/lib/gconv, /usr/lib/glibc,
-        /usr/lib/locale, /usr/share/i18n, /usr/share/zoneinfo, /var/db</seg>
+        /usr/include/sys, /usr/lib/audit, /usr/lib/gconv, /usr/lib/locale,
+        /usr/libexec/getconf, /usr/share/i18n, /usr/share/zoneinfo,
+        /var/cache/nscd, and /var/lib/nss_db</seg>
       </seglistitem>
     </segmentedlist>
 
@@ -672,17 +664,6 @@ mkdir /etc/ld.so.conf.d</userinput></screen>
           <para>一个异步名称查询库</para>
           <indexterm zone="ch-system-glibc libanl">
             <primary sortas="c-libanl">libanl</primary>
-          </indexterm>
-        </listitem>
-      </varlistentry>
-
-      <varlistentry id="libbsd-compat">
-        <term><filename class="libraryfile">libbsd-compat</filename></term>
-        <listitem>
-          <para>提供所需的可移植性，以便在 Linux 运行特定的
-          Berkeley Software Distribution (BSD) 程序</para>
-          <indexterm zone="ch-system-glibc libbsd-compat">
-            <primary sortas="c-libbsd-compat">libbsd-compat</primary>
           </indexterm>
         </listitem>
       </varlistentry>

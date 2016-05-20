@@ -42,19 +42,19 @@
 
     <para>准备 Kmod 用于编译:</para>
 
-<screen><userinput remap="configure">./configure --prefix=/usr       \
-            --bindir=/bin       \
-            --libdir=/lib       \
-            --sysconfdir=/etc   \
-            --disable-manpages  \
-            --with-xz           \
+<screen><userinput remap="configure">./configure --prefix=/usr          \
+            --bindir=/bin          \
+            --sysconfdir=/etc      \
+            --with-rootlibdir=/lib \
+            --disable-manpages     \
+            --with-xz              \
             --with-zlib</userinput></screen>
 
     <variablelist>
       <title>配置选项的含义:</title>
 
       <varlistentry>
-        <term><parameter>--with-*</parameter></term>
+        <term><parameter>--with-xz, --with-zlib</parameter></term>
         <listitem>
           <para>这些选项让 Kmod 可以处理压缩的内核模块。</para>
         </listitem>
@@ -68,6 +68,13 @@
         </listitem>
       </varlistentry>
 
+      <varlistentry>
+        <term><parameter>--with-rootlibdir=/lib</parameter></term>
+        <listitem>
+          <para>这个选项确保不同的和库相关的文件被放置在正确的目录中。</para>
+        </listitem>
+      </varlistentry>
+
     </variablelist>
 
     <para>编译包:</para>
@@ -78,10 +85,12 @@
 
 <screen><userinput remap="test">make check</userinput></screen>
 
-    <para>安装包，并创建为了和先前处理 Linux 内核模块的包 Module-Init-Tools 兼容的符号链接:
+    <para>安装包、手册页，并创建为了和先前处理 Linux 内核模块的包 Module-Init-Tools (先前处理 Linux 内核模块的包)兼容的符号链接。
+    还有确保所有的库文件在正确的目录中:
     </para>
 
-<screen><userinput remap="install">make pkgconfigdir=/usr/lib/pkgconfig install
+<screen><userinput remap="install">make install
+make -C man install
 
 for target in depmod insmod modinfo modprobe rmmod; do
   ln -sv ../bin/kmod /sbin/$target
@@ -102,7 +111,7 @@ ln -sv kmod /bin/lsmod</userinput></screen>
         <seg>depmod (链接到 kmod), insmod (链接到 kmod), kmod,
         lsmod (链接到 kmod), modinfo (链接到 kmod), modprobe (链接到 kmod),
         和 rmmod (链接到 kmod)</seg>
-        <seg>/lib/kmod.so</seg>
+        <seg>libkmod.so</seg>
       </seglistitem>
     </segmentedlist>
 
@@ -139,16 +148,6 @@ ln -sv kmod /bin/lsmod</userinput></screen>
           <para>加载和卸载内核模块</para>
           <indexterm zone="ch-system-kmod kmod">
             <primary sortas="b-kmod">kmod</primary>
-          </indexterm>
-        </listitem>
-      </varlistentry>
-
-      <varlistentry id="libkmod">
-        <term><filename class="libraryfile">libkmod</filename></term>
-        <listitem>
-          <para>这个库文件被其它程序用来加载和卸载内核模块</para>
-          <indexterm zone="ch-system-kmod">
-            <primary sortas="c-libkmod">libkmod</primary>
           </indexterm>
         </listitem>
       </varlistentry>
@@ -191,6 +190,16 @@ ln -sv kmod /bin/lsmod</userinput></screen>
           <para>从运行中的内核卸载模块</para>
           <indexterm zone="ch-system-kmod rmmod">
             <primary sortas="b-rmmod">rmmod</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="libkmod">
+        <term><filename class="libraryfile">libkmod</filename></term>
+        <listitem>
+          <para>这个库文件被其它程序用来加载和卸载内核模块</para>
+          <indexterm zone="ch-system-kmod">
+            <primary sortas="c-libkmod">libkmod</primary>
           </indexterm>
         </listitem>
       </varlistentry>

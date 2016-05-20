@@ -4,8 +4,8 @@
 # vim: tabstop=3
 
 SHELL=/bin/bash
-SYSTEMD_VERSION=206
-VERSION=$(SYSTEMD_VERSION)-1
+SYSTEMD_VERSION=208
+VERSION=$(SYSTEMD_VERSION)-3
 
 ifeq ($(V),)
  VB = @
@@ -21,7 +21,7 @@ WARN = -Wall -W -Wextra -Wno-inline -Wvla -Wundef -Wformat=2 \
 -Wmissing-noreturn -Wshadow -Wendif-labels -Wcast-align \
 -Wstrict-aliasing=2 -Wwrite-strings -Wno-overlength-strings \
 -Wno-unused-parameter -Wno-missing-field-initializers -Wno-unused-result \
--Werror=overflow -Wp,-D_FORTIFY_SOURCE=2 -Wno-long-long 
+-Werror=overflow -Wp,-D_FORTIFY_SOURCE=2 -Wno-long-long -Wno-vla
 
 OPTIONS = -O2 -pipe -ffast-math -fno-common -fdiagnostics-show-option \
 -fno-strict-aliasing -ffunction-sections -fdata-sections -fPIC -std=gnu99
@@ -29,7 +29,7 @@ OPTIONS = -O2 -pipe -ffast-math -fno-common -fdiagnostics-show-option \
 OPTIONS2 := $(OPTIONS) -fvisibility=hidden
 
 LDFLAGS1  = -pthread -lrt -Wl,--as-needed -Wl,--gc-sections -Wl,--no-undefined 
-LDFLAGS2 := $(LDFLAGS1) -lblkid -lkmod 
+LDFLAGS2 := $(LDFLAGS1) -L /tools/lib -lblkid -lkmod 
 
 DEF = -include cfg.h                    \
       -DSYSCONFDIR=\"/etc\"             \
@@ -42,7 +42,7 @@ DEF = -include cfg.h                    \
       -DHAVE_FIRMWARE
 
 INCLUDE = -I src/libudev -I src/shared -I src -I src/login -I src/systemd \
-          -I src/core    -I udev-lfs-206-1
+          -I src/core    -I udev-lfs-$(VERSION)
 
 LIBUDEV_SRCS = libudev-device-private.c \
                libudev-device.c         \
@@ -53,7 +53,9 @@ LIBUDEV_SRCS = libudev-device-private.c \
                libudev-queue-private.c  \
                libudev-queue.c          \
                libudev-util.c           \
-               libudev.c
+               libudev.c                \
+               test-device-nodes.c      \
+               device-nodes.c
 
 LIBUDEV_OBJS := $(addprefix build/, $(LIBUDEV_SRCS:.c=.o))
 
@@ -79,6 +81,7 @@ COMMON_SRCS = log.c         \
               set.c         \
               exit-status.c \
               util.c        \
+              mkdir-label.c \
               dev-setup.c   \
               sd-login.c    \
               sd-daemon.c   \
@@ -144,12 +147,11 @@ LFS_RULES = 55-lfs.rules
 VPATH = src/login          src/udev          src/udev/accelerometer \
         src/udev/scsi_id   src/udev/cdrom_id src/udev/v4l_id        \
         src/udev/mtd_probe src/udev/collect  src/udev/ata_id        \
-        src/libudev        src/libsystemd-daemon
+        src/libudev        src/test          src/libsystemd-daemon
 
 SED_PROCESS = \
   sed  -e 's|@VERSION@|$(SYSTEMD_VERSION)|g'       \
        -e 's|@prefix@|/usr|g'              \
-       -e 's|@exec_prefix@|/usr|g'         \
        -e 's|@udevlibexecdir@|/lib/udev|g' \
        -e 's|@libdir@|/usr/lib|g'          \
        -e 's|@includedir@|/usr/include|g'  \

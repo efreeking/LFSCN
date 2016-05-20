@@ -50,7 +50,14 @@
 
 <screen><userinput remap="pre">tar -xvf ../&udev-lfs;.tar.bz2</userinput></screen>
 
-    <para>编译包:</para>
+    <para>创建两个到头文件的符号链接并设置一个环境变量以正确的使用
+    <xref linkend="ch-tools-util-linux"/>。</para>
+
+<screen><userinput remap="pre">ln -svf /tools/include/blkid /usr/include
+ln -svf /tools/include/uuid  /usr/include
+export LD_LIBRARY_PATH=/tools/lib</userinput></screen>
+
+    <para>构建包:</para>
 
 <screen><userinput remap="make">make -f &udev-lfs;/Makefile.lfs</userinput></screen>
 
@@ -74,6 +81,12 @@
     如本章中开始处所解释的一样，以使下列脚本运作。</para>
 
 <screen><userinput remap="install">bash &udev-lfs;/init-net-rules.sh</userinput></screen>
+
+    <para>进行某些清理:</para>
+
+<screen><userinput remap="install">rm -fv /usr/include/{uuid,blkid}
+unset LD_LIBRARY_PATH</userinput></screen>
+
   </sect2>
 
   <sect2 id="contents-udev" role="content">

@@ -46,20 +46,16 @@
 
     <para>在补丁后，Backspace 键生成代码 127 的字符，而 Delete 键生成一个众所周知的转义序列。</para>
 
-    <para>修复导致某些键盘映射不能正确加载的一个错误:</para>
-
-<screen><userinput remap="pre">sed -i -e '326 s/if/while/' src/loadkeys.analyze.l</userinput></screen>
-
     <para>删除多余的 <command>resizecons</command> 程序(它需要
     非现存的 svgalib 来提供视频模式文件 - 用于正常使用
     <command>setfont</command> 恰当的设置控制台大小)连同它的手册页。</para>
 
 <screen><userinput remap="pre">sed -i 's/\(RESIZECONS_PROGS=\)yes/\1no/g' configure
-sed -i 's/resizecons.8 //' man/man8/Makefile.in</userinput></screen>
+sed -i 's/resizecons.8 //' docs/man/man8/Makefile.in</userinput></screen>
 
     <para>准备 Kbd 编译:</para>
 
-<screen><userinput remap="configure">./configure --prefix=/usr --disable-vlock</userinput></screen>
+<screen><userinput remap="configure">PKG_CONFIG_PATH=/tools/lib/pkgconfig ./configure --prefix=/usr --disable-vlock</userinput></screen>
 
     <variablelist>
       <title>配置选项的含义:</title>
@@ -85,7 +81,9 @@ sed -i 's/resizecons.8 //' man/man8/Makefile.in</userinput></screen>
 
 <screen><userinput remap="make">make</userinput></screen>
 
-    <para>这个包不附带测试套装。</para>
+    <para>要测试结果，发出:</para>
+
+<screen><userinput remap="test">make check</userinput></screen>
 
     <para>安装包:</para>
 
@@ -104,7 +102,7 @@ sed -i 's/resizecons.8 //' man/man8/Makefile.in</userinput></screen>
     <para>如果需要的话，安装文档:</para>
 
 <screen><userinput remap="install">mkdir -v       /usr/share/doc/kbd-&kbd-version;
-cp -R -v doc/* /usr/share/doc/kbd-&kbd-version;</userinput></screen>
+cp -R -v docs/doc/* /usr/share/doc/kbd-&kbd-version;</userinput></screen>
 
   </sect2>
 

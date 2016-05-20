@@ -62,8 +62,7 @@ find man -name Makefile.in -exec sed -i 's/groups\.1 / /' {} \;</userinput></scr
     <note>
       <para>如果您选择构建 Shadow 带 Cracklib 支持，运行下列命令:</para>
 
-<screen role="nodump"><userinput>sed -i 's@DICTPATH.*@DICTPATH\t/lib/cracklib/pw_dict@' \
-    etc/login.defs</userinput></screen>
+<screen role="nodump"><userinput>sed -i 's@DICTPATH.*@DICTPATH\t/lib/cracklib/pw_dict@' etc/login.defs</userinput></screen>
     </note>
 
     <para>准备 Shadow 编译:</para>

@@ -44,7 +44,19 @@
 
     <para>准备 Make 编译:</para>
 
-<screen><userinput remap="configure">./configure --prefix=/tools</userinput></screen>
+<screen><userinput remap="configure">./configure --prefix=/tools --without-guile</userinput></screen>
+ 
+    <variablelist>
+      <title>configure 选项的含义:</title>
+
+      <varlistentry>
+        <term><parameter>--without-guile</parameter></term>
+        <listitem>
+          <para>这个确保 Make-&make-version; 将不会针对 Guile 库进行链接，这个库可能存在于宿主系统上，但是在下一章节的
+          <command>chroot</command> 环境中将变得不可用。</para>
+        </listitem>
+      </varlistentry>
+    </variablelist>
 
     <para>编译软件包:</para>
 

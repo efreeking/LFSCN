@@ -101,7 +101,7 @@ ln -v -sf ../../lib/libpcre.so.0 /usr/lib/libpcre.so</userinput></screen>
 
       <seglistitem>
         <seg>pcregrep, pcretest 和 pcre-config</seg>
-        <seg>libpcre.{so,a}, libpcrecpp.{so,a} 和 libpcreposix.{so,a}</seg>
+        <seg>libpcre.{a,so}, libpcrecpp.{a,so} 和 libpcreposix.{a,so}</seg>
         <seg>/usr/share/doc/pcre-&pcre-version;</seg>
       </seglistitem>
     </segmentedlist>

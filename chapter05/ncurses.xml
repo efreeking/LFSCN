@@ -45,8 +45,12 @@
 
     <para>准备 Ncurses 编译:</para>
 
-<screen><userinput remap="configure">./configure --prefix=/tools --with-shared \
-    --without-debug --without-ada --enable-overwrite</userinput></screen>
+<screen><userinput remap="configure">./configure --prefix=/tools \
+            --with-shared   \
+            --without-debug \
+            --without-ada   \
+            --enable-widec  \
+            --enable-overwrite</userinput></screen>
 
     <variablelist>
       <title>配置选项的含义:</title>
@@ -64,6 +68,18 @@
           <para>这个告诉 Ncurses 安装它的头文件到
           <filename class="directory">/tools/include</filename> 中，而不是在
           <filename class="directory">/tools/include/ncurses</filename> 中，以确保其他包能够成功的找到 Ncurses 头文件。</para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term><parameter>--enable-widec</parameter></term>
+        <listitem>
+          <para>这个开关导致构建 wide-character(宽字符)版的库(如, <filename
+          class="libraryfile">libncursesw.so.&ncurses-version;</filename>)
+          来代替正常的版本(如, <filename
+          class="libraryfile">libncurses.so.&ncurses-version;</filename>).
+          这些宽字符库在多字节和传统的 8 位语言环境中都可用，而正常的库
+          只能在 8 位的语言环境中正常工作。宽字符和正常版本的库是源代码兼容，而二进制不兼容。</para>
         </listitem>
       </varlistentry>
 

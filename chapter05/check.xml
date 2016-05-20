@@ -42,7 +42,19 @@
 
     <para>准备 Check 编译:</para>
 
-<screen><userinput remap="configure">./configure --prefix=/tools</userinput></screen>
+<screen><userinput remap="configure">PKG_CONFIG= ./configure --prefix=/tools</userinput></screen>
+
+    <variablelist>
+      <title>configure 参数的含义:</title>
+
+      <varlistentry>
+        <term><parameter>PKG_CONFIG=</parameter></term>
+        <listitem>
+          <para>这个告知 configure 脚本忽略任何可能导致系统尝试使用不在 <filename class="directory">/tools</filename>
+          目录中的库进行链接的 pkg-config 选项。</para>
+        </listitem>
+      </varlistentry>
+    </variablelist>
 
     <para>构建包:</para>
 

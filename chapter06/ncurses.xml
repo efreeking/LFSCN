@@ -103,7 +103,7 @@
 
     <para>由于库已经被移动，所以有一个符号链接指向了不存在的文件。重新创建它:</para>
 
-<screen><userinput remap="install">ln -sfv ../../lib/libncursesw.so.5 /usr/lib/libncursesw.so</userinput></screen>
+<screen><userinput remap="install">ln -sfv ../../lib/$(readlink /usr/lib/libncursesw.so) /usr/lib/libncursesw.so</userinput></screen>
 
     <para>很多应用程序仍预期链接器可以查找
     非 wide-character Ncurses 的库。通过符号链接的方式和链接器脚本，欺骗那些程序和

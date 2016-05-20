@@ -14,9 +14,10 @@
   到目前为止，构建的可执行文件和库包含大约 70 MB 的不需要的调试符号。使用以下命令去掉那些符号:</para>
 
 <screen><userinput>strip --strip-debug /tools/lib/*
-strip --strip-unneeded /tools/{,s}bin/*</userinput></screen>
+/usr/bin/strip --strip-unneeded /tools/{,s}bin/*</userinput></screen>
 
-  <para>这些命令将跳过一些文件，报告它不能识别这些文件的格式。其中大多数是脚本而不是二进制文件。</para>
+  <para>这些命令将跳过一些文件，报告它不能识别这些文件的格式。其中大多数是脚本而不是二进制文件。
+  还有使用系统 strip 命令包含 /tools 中的 strip 二进制文件。</para>
 
   <para>小心<emphasis>不要</emphasis>在库文件上使用
   <parameter>--strip-unneeded</parameter>。静态库可能会被破坏，而工具链包可能需要从头开始重新全部编译一次。</para>

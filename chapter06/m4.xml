@@ -40,10 +40,6 @@
   <sect2 role="installation">
     <title>M4 的安装</title>
 
-    <para>修复这个包和 Glibc-&glibc-version; 之间的一个不兼容:</para>
-
-<screen><userinput remap="pre">sed -i -e '/gets is a/d' lib/stdio.in.h</userinput></screen>
-
     <para>准备 M4 编译:</para>
 
 <screen><userinput remap="configure">./configure --prefix=/usr</userinput></screen>
@@ -52,11 +48,9 @@
 
 <screen><userinput remap="make">make</userinput></screen>
 
-    <!--<para>To test the results, issue:</para>-->
-    <para>要测试结果，首先修复一个测试程序然后运行测试程序:</para>
+    <para>要测试结果，发出:</para>
 
-<screen><userinput remap="test">sed -i -e '41s/ENOENT/&amp; || errno == EINVAL/' tests/test-readlink.h
-make check</userinput></screen>
+<screen><userinput remap="test">make check</userinput></screen>
 
     <para>安装包:</para>
 

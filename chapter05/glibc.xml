@@ -51,10 +51,6 @@
   su -c 'cp -v sunrpc/rpc/*.h /usr/include/rpc'
 fi</userinput></screen>
 
-    <para>一个上游更改需要倒退:</para>
-
-<screen><userinput remap="pre">sed -i -e 's/static __m128i/inline &amp;/' sysdeps/x86_64/multiarch/strstr.c</userinput></screen>
-
     <para>Glibc 文档推荐在源代码目录外，在一个专用的构建目录中构建 Glibc:</para>
 
 <screen><userinput remap="pre">mkdir -v ../glibc-build
@@ -120,7 +116,7 @@ esac</userinput></screen>
         <term><parameter>libc_cv_forced_unwind=yes</parameter></term>
         <listitem>
           <para>在
-          <xref linkend="ch-tools-binutils-pass1"/> was cross-compiled and as
+          <xref linkend="ch-tools-binutils-pass1"/>
           期间安装的链接器会被交叉编译，而因此不能使用直至 Glibc 被安装。这意味着对于 forced unwind 支持的配置测试将会失败，因为它依赖于工作中的链接器。
           libc_cv_forced_unwind=yes 变量会被传递，以便告知
           <command>configure</command>
@@ -139,9 +135,9 @@ esac</userinput></screen>
       <varlistentry>
         <term><parameter>libc_cv_ctors_header=yes</parameter></term>
         <listitem>
-          <para>Simlarly, we pass libc_cv_ctors_header=yes through to the
-          <command>configure</command> script so that the test is skipped and
-          gcc constructor support is configured.</para>
+          <para>类似的，我们传递 libc_cv_ctors_header=yes 给
+          <command>configure</command> 脚本以便测试被跳过而且
+          gcc 构造器支持被配置。</para>
         </listitem>
       </varlistentry>
 

@@ -1,37 +1,36 @@
+2014-02-16  <bdubbs@linuxfromscratch.org>
+   * Makefile.lfs: 调整警告标志。调整链接规则为允许使用 LFS 的 /tools 目录
+     中的 util-linux 构建。
+
 2010-01-26	Matt Burgess <matthew@linuxfromscratch.org>
-	* 55-lfs.rules: Remove lots of rules that have been merged upstream.
-	* 61-cdrom.rules: Remove as upstream has a replacement.
-	* doc/*: Cleanup and rewrite now that the rules are much simpler.
+	* 55-lfs.rules: 删除了大量已被合并上游的规则。
+	* 61-cdrom.rules: 因为上游已经有一个替代而删除。
+	* doc/*: 进行了清理和重写，现在规则更简化。
 
 2009-09-25	Bryan Kadzban <bryan@linuxfromscratch.org>
-	* 55-lfs.rules: Make the RTC rule (which runs setclock) work for people
-	  that don't use the RTC-class driver -- add another copy of the rule,
-	  using KERNEL=="rtc" instead of SUBSYSTEM=="rtc".  Also move the ACTION
-	  match before the assignment to MODE.
+	* 55-lfs.rules: 使 RTC 规则(它运行 setclock)能够为没有使用 RTC 类
+	  驱动程序的人工作 -- 添加了规则的另一个副本，
+	  使用 KERNEL=="rtc" 代替 SUBSYSTEM=="rtc"。在赋予 MODE 前还移动
+	  了 ACTION 匹配。
 
 2009-05-23	Bruce Dubbs <bdubbs@linuxfromscratch.org>
-	* 55-lfs.rules: Set the rtc by udev upon boot.  Removed aio device from
-	  udev configuration so defaults are used.
+	* 55-lfs.rules: 在引导时使用 udev 设置 rtc。从 udev 配置中删除了
+	  aio 设备，所以使用默认。
 
 2009-05-16	Bryan Kadzban <bryan@linuxfromscratch.org>
-	* 55-lfs.rules: Adopt udev permissions for random, urandom, kmsg, and
-	  input devices (including psaux, which probably doesn't exist anymore
-	  anyway).
+	* 55-lfs.rules: 为 random, urandom, kmsg 和 input 设备
+	  (包括 psaux，它可能不再以任何形式存在) 调整 udev 权限。
 
 2009-05-16	Matt Burgess <matthew@linuxfromscratch.org>
-	* 55-lfs.rules: Remove the block rule as it was only setting
-	  permissions that Udev will set by default
-	* 55-lfs.rules: Remove the rfcomm rule as the group it sets is already
-	  included in upstream's rule
-	* 55-lfs-rules: Remove the tape rules as the group they sets is already
-	  included in upstream's rules
+	* 55-lfs.rules: 删除了 block 规则，因为它仅设置了 Udev 将会默认设置的权限
+	* 55-lfs.rules: 删除 rfcomm 规则，因为它设置的组已经在上游的规则中包含
+	* 55-lfs-rules: 删除了 tape 规则，因为它们设置的组已经在上游的规则中包含
 
 2009-03-15	Bryan Kadzban <bryan@linuxfromscratch.org>
-	* 55-lfs.rules: Remove the ISDN-handling rules (replaced with upstream's
-	  version, which has a better match via SUBSYSTEM).
-	* 55-lfs.rules: Replace "uucp" with "dialout" now that udev has decided
-	  to standardize on a Debian-like setup (uucp is for UUCP daemons to use
-	  for privilege separation; dialout is for users and devices).
+	* 55-lfs.rules: 删除 ISDN-handling 规则(使用上游的版本替换，它通过 SUBSYSTEM 拥有一个更好的匹配)。
+	* 55-lfs.rules: 替换 "uucp" 为 "dialout"，现在 udev 已经决定在
+	  类 Debian 设置上规范(uucp 是用于权限分离的 UUCP 后台程序的;
+	  dialout 是用于用户和设备的)。
 
 2008-12-07  Bruce Dubbs <bdubbs@linuxfromscratch.org>
 	* 55-lfs.rules: Change one line to use continuation so it does

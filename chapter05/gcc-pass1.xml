@@ -197,9 +197,16 @@ cd ../gcc-build</userinput></screen>
         </listitem>
       </varlistentry>
 
+      <varlistentry>
+        <term><parameter>--with-mpfr-*</parameter></term>
+        <listitem>
+          <para>这些选项让构建系统正确的使用 MPFR 源代码的树中拷贝。</para>
+        </listitem>
+      </varlistentry>
+
     </variablelist>
 
-    <para>通过运行一下命令编译 GCC:</para>
+    <para>通过运行以下命令编译 GCC:</para>
 
 <screen><userinput remap="make">make</userinput></screen>
 

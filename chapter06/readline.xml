@@ -52,7 +52,7 @@ sed -i '/{OLDSUFF}/c:' support/shlib-install</userinput></screen>
 
     <para>准备 Readline 编译:</para>
 
-<screen><userinput remap="configure">./configure --prefix=/usr --libdir=/lib</userinput></screen>
+<screen><userinput remap="configure">./configure --prefix=/usr</userinput></screen>
 
     <para>编译包:</para>
 
@@ -78,23 +78,17 @@ sed -i '/{OLDSUFF}/c:' support/shlib-install</userinput></screen>
 
 <screen><userinput remap="install">make install</userinput></screen>
 
-    <para>现在移动静态库到更适合的位置:</para>
+    <para>现在移动动态库到更适合的位置，
+    并布置某些符号链接:</para>
 
-<screen><userinput remap="install">mv -v /lib/lib{readline,history}.a /usr/lib</userinput></screen>
-
-    <para>下一步，移除
-    <filename class="directory">/lib</filename> 中的 <filename class="extension">.so</filename> 文件并重新链接它们到 <filename
-    class="directory">/usr/lib</filename> 中:</para>
-
-<screen><userinput remap="install">rm -v /lib/lib{readline,history}.so
-ln -sfv ../../lib/libreadline.so.6 /usr/lib/libreadline.so
-ln -sfv ../../lib/libhistory.so.6 /usr/lib/libhistory.so</userinput></screen>
+<screen><userinput remap="install">mv -v /usr/lib/lib{readline,history}.so.* /lib
+ln -sfv ../../lib/$(readlink /usr/lib/libreadline.so) /usr/lib/libreadline.so
+ln -sfv ../../lib/$(readlink /usr/lib/libhistory.so ) /usr/lib/libhistory.so</userinput></screen>
 
     <para>如果需要的话，安装文档:</para>
 
-<screen><userinput remap="install">mkdir   -v       /usr/share/doc/readline-&readline-version;
-install -v -m644 doc/*.{ps,pdf,html,dvi} \
-                 /usr/share/doc/readline-&readline-version;</userinput></screen>
+<screen><userinput remap="install">mkdir   -v /usr/share/doc/readline-&readline-version;
+install -v -m644 doc/*.{ps,pdf,html,dvi} /usr/share/doc/readline-&readline-version;</userinput></screen>
 
   </sect2>
 

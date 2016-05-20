@@ -21,8 +21,9 @@
         POSIX.1-2008</ulink>.</para>
       </listitem>
       <listitem>
-        <para><ulink url="http://www.pathname.com/fhs/pub/fhs-2.3.html">Filesystem 
-        Hierarchy Standard (FHS 文件系统层次标准)</ulink></para>
+        <para><ulink 
+        url="http://www.linuxfoundation.org/collaborate/workgroups/lsb/fhs-30-draft-1">
+        Filesystem Hierarchy Standard(FHS 文件系统层次标准) 3.0 版草案 1 (FHS)</ulink></para>
 
       </listitem>
       <listitem>
@@ -149,7 +150,7 @@
       <varlistentry>
         <term><emphasis>LSB 核心:</emphasis></term>
         <listitem>
-          <para>无</para>
+          <para>time (可执行)和 pax</para>
         </listitem>
       </varlistentry>
 
