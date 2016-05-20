@@ -1,0 +1,330 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sect1 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+  "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+  <!ENTITY % general-entities SYSTEM "../general.ent">
+  %general-entities;
+]>
+
+<sect1 id="ch-system-xz" role="wrap">
+  <?dbhtml filename="xz-utils.html"?>
+
+  <sect1info condition="script">
+    <productname>xz-utils</productname>
+    <productnumber>&xz-version;</productnumber>
+    <address>&xz-url;</address>
+  </sect1info>
+
+  <title>Xz-&xz-version;</title>
+
+  <indexterm zone="ch-system-xz">
+    <primary sortas="a-xz">Xz</primary>
+  </indexterm>
+
+  <sect2 role="package">
+    <title/>
+
+    <para>Xz 包包含用于压缩和解压文件的程序。它提供了对 lzma 和较新的 xz 压缩格式的功能。使用 <command>xz</command> 压缩文本文件能够产生比使用传统的 <command>gzip</command> 或 <command>bzip2</command> 命令更好的压缩率。</para>
+
+    <segmentedlist>
+      <segtitle>&buildtime;</segtitle>
+      <segtitle>&diskspace;</segtitle>
+
+      <seglistitem>
+        <seg>&xz-ch6-sbu;</seg>
+        <seg>&xz-ch6-du;</seg>
+      </seglistitem>
+    </segmentedlist>
+
+  </sect2>
+
+  <sect2 role="installation">
+    <title>Xz 的安装</title>
+
+    <para>准备 Xz 进行编译:</para>
+
+<screen><userinput remap="configure">./configure --prefix=/usr --docdir=/usr/share/doc/xz-&xz-version;</userinput></screen>
+
+    <para>编译包:</para>
+
+<screen><userinput remap="make">make</userinput></screen>
+
+    <para>要测试结果，执行:</para>
+
+<screen><userinput remap="test">make check</userinput></screen>
+
+  <para>安装包:</para>
+
+<screen><userinput remap="install">make install</userinput></screen>
+
+  </sect2>
+
+  <sect2 id="contents-xz" role="content">
+    <title>Xz 的内容</title>
+
+    <segmentedlist>
+      <segtitle>安装的程序</segtitle>
+      <segtitle>安装的库</segtitle>
+      <segtitle>安装目录</segtitle>
+
+      <seglistitem>
+        <seg>lzcat (链接到 xz), lzcmp (链接到 xzdiff), lzdiff (链接到
+        xzdiff), bzdiff, lzegrep (链接到 xzgrep), lzfgrep (链接到 xzgrep),
+        lz (链接到 xz), lzmadec, lzmainfo, lzmore (链接到 xzmore),
+        unlzma (链接到 xz), xzcat (链接到 xz), xzcmp (链接到 xzdiff),
+        xzdec, xzdiff, xzegrep (链接到 xzgrep), xzfgrep (链接到 xzgrep),
+        xzgrep, xzless, xzmore</seg>
+        <seg>liblzma.{a,so}</seg>
+        <seg>/usr/include/lzma 和 /usr/share/doc/xz-&xz-version;</seg>
+      </seglistitem>
+    </segmentedlist>
+
+    <variablelist>
+      <bridgehead renderas="sect3">简述</bridgehead>
+      <?dbfo list-presentation="list"?>
+      <?dbhtml list-presentation="table"?>
+
+      <varlistentry id="lzcat">
+        <term><command>lzcat</command></term>
+        <listitem>
+          <para>解压到标准输出</para>
+          <indexterm zone="ch-system-xz lzcat">
+            <primary sortas="b-lzcat">lzcat</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="lzcmp">
+        <term><command>lzcmp</command></term>
+        <listitem>
+          <para>在 LZMA 压缩的文件上运行 <command>cmp</command></para>
+          <indexterm zone="ch-system-xz lzcmp">
+            <primary sortas="b-lzcmp">lzcmp</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="lzdiff">
+        <term><command>lzdiff</command></term>
+        <listitem>
+          <para>在 LZMA 压缩的文件上运行 <command>diff</command></para>
+          <indexterm zone="ch-system-xz lzdiff">
+            <primary sortas="b-lzdiff">lzdiff</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="lzegrep">
+        <term><command>lzegrep</command></term>
+        <listitem>
+          <para>在 LZMA 压缩的文件上运行 <command>egrep</command></para>
+          <indexterm zone="ch-system-xz lzegrep">
+            <primary sortas="b-lzegrep">lzegrep</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="lzfgrep">
+        <term><command>lzfgrep</command></term>
+        <listitem>
+          <para>在 LZMA 压缩的文件上运行 <command>fgrep</command></para>
+          <indexterm zone="ch-system-xz lzfgrep">
+            <primary sortas="b-lzfgrep">lzfgrep</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="lzgrep">
+        <term><command>lzgrep</command></term>
+        <listitem>
+          <para>在 LZMA 压缩的文件上运行 <command>grep</command></para>
+          <indexterm zone="ch-system-xz lzgrep">
+            <primary sortas="b-lzgrep">lzgrep</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="lzless">
+        <term><command>lzless</command></term>
+        <listitem>
+          <para>在 LZMA 压缩的文件上运行 <command>less</command></para>
+          <indexterm zone="ch-system-xz lzless">
+            <primary sortas="b-lzless">lzless</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="lzma">
+        <term><command>lzma</command></term>
+        <listitem>
+          <para>使用 LZMA 格式压缩或解压文件</para>
+          <indexterm zone="ch-system-xz lzma">
+            <primary sortas="b-lzma">lzma</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="lzmadec">
+        <term><command>lzmadec</command></term>
+        <listitem>
+          <para>一个用于 LZMA 压缩文件的小而快速的解码器</para>
+          <indexterm zone="ch-system-xz lzmadec">
+            <primary sortas="b-lzmadec">lzmadec</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="lzmainfo">
+        <term><command>lzmainfo</command></term>
+        <listitem>
+          <para>显示存储在 LZMA 压缩的文件头部的信息</para>
+          <indexterm zone="ch-system-xz lzmainfo">
+            <primary sortas="b-lzmainfo">lzmainfo</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="lzmore">
+        <term><command>lzmore</command></term>
+        <listitem>
+          <para>在 LZMA 压缩的文件上运行 <command>more</command></para>
+          <indexterm zone="ch-system-xz lzmore">
+            <primary sortas="b-lzmamore">lzmore</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="unlzma">
+        <term><command>unlzma</command></term>
+        <listitem>
+          <para>解压使用 LZMA 格式的文件</para>
+          <indexterm zone="ch-system-xz unlzma">
+            <primary sortas="b-unlzma">unlzma</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="unxz">
+        <term><command>unxz</command></term>
+        <listitem>
+          <para>解压使用 XZ 格式的文件</para>
+          <indexterm zone="ch-system-xz unxz">
+            <primary sortas="b-unxz">unxz</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="xz">
+        <term><command>xz</command></term>
+        <listitem>
+          <para>压缩或解压使用 XZ 格式的文件</para>
+          <indexterm zone="ch-system-xz xz">
+            <primary sortas="b-xz">xz</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="xzcat">
+        <term><command>xzcat</command></term>
+        <listitem>
+          <para>解压到标准输出</para>
+          <indexterm zone="ch-system-xz xzcat">
+            <primary sortas="b-xzcat">xzcat</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="xzcmp">
+        <term><command>xzcmp</command></term>
+        <listitem>
+          <para>在 XZ 压缩的文件上运行 <command>cmp</command></para>
+          <indexterm zone="ch-system-xz xzcmp">
+            <primary sortas="b-xzcmp">xzcmp</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="xzdec">
+        <term><command>xzdec</command></term>
+        <listitem>
+          <para>一个用于 XZ 压缩文件的小型而快速的解码器</para>
+          <indexterm zone="ch-system-xz xzdec">
+            <primary sortas="b-xzdec">xzdec</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="xzdiff">
+        <term><command>xzdiff</command></term>
+        <listitem>
+          <para>在 XZ 压缩的文件上运行 <command>diff</command></para>
+          <indexterm zone="ch-system-xz xzdiff">
+            <primary sortas="b-xzdiff">xzdiff</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="xzegrep">
+        <term><command>xzegrep</command></term>
+        <listitem>
+          <para>在 XZ 压缩的文件上运行 <command>egrep</command></para>
+          <indexterm zone="ch-system-xz xzegrep">
+            <primary sortas="b-xzegrep">xzegrep</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="xzfgrep">
+        <term><command>xzfgrep</command></term>
+        <listitem>
+          <para>在 XZ 压缩的文件上运行 <command>fgrep</command></para>
+          <indexterm zone="ch-system-xz xzfgrep">
+            <primary sortas="b-xzfgrep">xzfgrep</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="xzgrep">
+        <term><command>xzgrep</command></term>
+        <listitem>
+          <para>在 XZ 压缩的文件上运行 <command>grep</command></para>
+          <indexterm zone="ch-system-xz xzgrep">
+            <primary sortas="b-xzgrep">xzgrep</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="xzless">
+        <term><command>xzless</command></term>
+        <listitem>
+          <para>在 XZ 压缩的文件上运行 <command>less</command></para>
+          <indexterm zone="ch-system-xz xzless">
+            <primary sortas="b-xzless">xzless</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="xzmore">
+        <term><command>xzmore</command></term>
+        <listitem>
+          <para>在 XZ 压缩的文件上运行 <command>more</command></para>
+          <indexterm zone="ch-system-xz xzmore">
+            <primary sortas="b-xzmore">xzmore</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="liblzma">
+        <term><filename class="libraryfile">liblzma*</filename></term>
+        <listitem>
+          <para>实现使用 Lempel-Ziv-Markov 链式算法的无损、块排序数据压缩的实现</para>
+          <indexterm zone="ch-system-xz liblzma">
+            <primary sortas="c-liblzma*">liblzma*</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+    </variablelist>
+
+  </sect2>
+
+</sect1>

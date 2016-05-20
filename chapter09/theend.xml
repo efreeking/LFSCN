@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sect1 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+  "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+  <!ENTITY % general-entities SYSTEM "../general.ent">
+  %general-entities;
+]>
+
+<sect1 id="ch-finish-theend">
+  <?dbhtml filename="theend.html"?>
+
+  <title>结束</title>
+
+  <indexterm zone="ch-finish-theend">
+    <primary sortas="e-/etc/lfs-release">/etc/lfs-release</primary>
+  </indexterm>
+
+  <para>做的不错！新的 LFS 系统已经安装！我们希望您使用您铮亮的新自定义构建的 Linux 系统获得更多的成功。</para>
+
+  <para>创建一个 <filename>/etc/lfs-release</filename> 是一个不错的主意哦。有了这个文件，您很容易就可以(也方便我们在您需要帮助的时候)找到在系统上安装的 LFS 的版本。通过运行以下命令创建这个文件:</para>
+
+<screen><userinput>echo &version; &gt; /etc/lfs-release</userinput></screen>
+
+</sect1>

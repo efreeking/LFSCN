@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sect1 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+  "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+  <!ENTITY % general-entities SYSTEM "../general.ent">
+  %general-entities;
+]>
+
+<sect1 id="ch-system-readline" role="wrap">
+  <?dbhtml filename="readline.html"?>
+
+  <sect1info condition="script">
+    <productname>readline</productname>
+    <productnumber>&readline-version;</productnumber>
+    <address>&readline-url;</address>
+  </sect1info>
+
+  <title>Readline-&readline-version;</title>
+
+  <indexterm zone="ch-system-readline">
+    <primary sortas="a-Readline">Readline</primary>
+  </indexterm>
+
+  <sect2 role="package">
+    <title/>
+
+    <para>Readline 包是一组提供命令行编辑和历史记录功能的库。</para>
+
+    <segmentedlist>
+      <segtitle>&buildtime;</segtitle>
+      <segtitle>&diskspace;</segtitle>
+
+      <seglistitem>
+        <seg>&readline-ch6-sbu;</seg>
+        <seg>&readline-ch6-du;</seg>
+      </seglistitem>
+    </segmentedlist>
+
+  </sect2>
+
+  <sect2 role="installation">
+    <title>Readline 的安装</title>
+
+    <para>重新安装 Readline 将会导致旧的库被移到
+    &lt;libraryname&gt;.old。这通常不是一个问题，但在某些情况下，它将会触发 <command>ldconfig</command> 中的一个链接错误。这个可以通过执行下列两个 sed 命令来避免:</para>
+
+<screen><userinput remap="pre">sed -i '/MV.*old/d' Makefile.in
+sed -i '/{OLDSUFF}/c:' support/shlib-install</userinput></screen>
+
+    <para>应用一个补丁修复已经被 upstream 修复的已知问题:</para>
+
+<screen><userinput remap="pre">patch -Np1 -i ../&readline-fixes-patch;</userinput></screen>
+
+    <para>准备 Readline 编译:</para>
+
+<screen><userinput remap="configure">./configure --prefix=/usr --libdir=/lib</userinput></screen>
+
+    <para>编译包:</para>
+
+<screen><userinput remap="make">make SHLIB_LIBS=-lncurses</userinput></screen>
+
+    <variablelist>
+      <title>make 选项的含义。:</title>
+
+      <varlistentry>
+        <term><parameter>SHLIB_LIBS=-lncurses</parameter></term>
+        <listitem>
+          <para>这个选项强制 Readline 针对
+          <filename class="libraryfile">libncurses</filename> (实际上是
+          <filename class="libraryfile">libncursesw</filename>) 库而链接。</para>
+        </listitem>
+      </varlistentry>
+
+    </variablelist>
+
+    <para>这个包不附带测试套装。</para>
+
+    <para>安装包:</para>
+
+<screen><userinput remap="install">make install</userinput></screen>
+
+    <para>现在移动静态库到更适合的位置:</para>
+
+<screen><userinput remap="install">mv -v /lib/lib{readline,history}.a /usr/lib</userinput></screen>
+
+    <para>下一步，移除
+    <filename class="directory">/lib</filename> 中的 <filename class="extension">.so</filename> 文件并重新链接它们到 <filename
+    class="directory">/usr/lib</filename> 中:</para>
+
+<screen><userinput remap="install">rm -v /lib/lib{readline,history}.so
+ln -sfv ../../lib/libreadline.so.6 /usr/lib/libreadline.so
+ln -sfv ../../lib/libhistory.so.6 /usr/lib/libhistory.so</userinput></screen>
+
+    <para>如果需要的话，安装文档:</para>
+
+<screen><userinput remap="install">mkdir   -v       /usr/share/doc/readline-&readline-version;
+install -v -m644 doc/*.{ps,pdf,html,dvi} \
+                 /usr/share/doc/readline-&readline-version;</userinput></screen>
+
+  </sect2>
+
+  <sect2 id="contents-readline" role="content">
+    <title>Readline 的内容</title>
+
+    <segmentedlist>
+      <segtitle>安装的库</segtitle>
+      <segtitle>安装目录</segtitle>
+
+      <seglistitem>
+        <seg>libhistory.{a,so} 和 libreadline.{a,so}</seg>
+        <seg>/usr/include/readline, /usr/share/readline,
+        /usr/share/doc/readline-&readline-version;</seg>
+      </seglistitem>
+    </segmentedlist>
+
+    <variablelist>
+      <bridgehead renderas="sect3">简述</bridgehead>
+      <?dbfo list-presentation="list"?>
+      <?dbhtml list-presentation="table"?>
+
+      <varlistentry id="libhistory">
+        <term><filename class="libraryfile">libhistory</filename></term>
+        <listitem>
+          <para>为调用历史行提供一个统一的用户接口</para>
+          <indexterm zone="ch-system-readline libhistory">
+            <primary sortas="c-libhistory">libhistory</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="libreadline">
+        <term><filename class="libraryfile">libreadline</filename></term>
+        <listitem>
+          <para>有助于涵盖各种需要提供命令行接口的不关联的程序的统一用户接口</para>
+          <indexterm zone="ch-system-readline libreadline">
+            <primary sortas="c-libreadline">libreadline</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+    </variablelist>
+
+  </sect2>
+
+</sect1>

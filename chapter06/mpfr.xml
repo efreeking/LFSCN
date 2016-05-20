@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sect1 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+  "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+  <!ENTITY % general-entities SYSTEM "../general.ent">
+  %general-entities;
+]>
+
+<sect1 id="ch-system-mpfr" role="wrap">
+  <?dbhtml filename="mpfr.html"?>
+
+  <sect1info condition="script">
+    <productname>mpfr</productname>
+    <productnumber>&mpfr-version;</productnumber>
+    <address>&mpfr-url;</address>
+  </sect1info>
+
+  <title>MPFR-&mpfr-version;</title>
+
+  <indexterm zone="ch-system-mpfr">
+    <primary sortas="a-MPFR">MPFR</primary>
+  </indexterm>
+
+  <sect2 role="package">
+    <title/>
+
+    <para>MPFR 包包含用于多精度数学的函数。</para>
+
+    <segmentedlist>
+      <segtitle>&buildtime;</segtitle>
+      <segtitle>&diskspace;</segtitle>
+
+      <seglistitem>
+        <seg>&mpfr-ch6-sbu;</seg>
+        <seg>&mpfr-ch6-du;</seg>
+      </seglistitem>
+    </segmentedlist>
+
+  </sect2>
+
+  <sect2 role="installation">
+    <title>MPFR 的安装</title>
+
+    <para>应用一个补丁修复 MPFR 中的一些错误:</para>
+
+<screen><userinput remap="pre">patch -Np1 -i ../&mpfr-fixes-patch;</userinput></screen>
+
+    <para>准备 MPFR 编译:</para>
+
+<screen><userinput remap="configure">./configure --prefix=/usr --enable-thread-safe \
+  --docdir=/usr/share/doc/mpfr-&mpfr-version;</userinput></screen>
+
+    <para>编译包:</para>
+
+<screen><userinput remap="make">make</userinput></screen>
+
+    <important>
+      <para>本节中的 MPFR 的测试套装被视为是紧要的。
+      任何情况下都不要跳过它。</para>
+    </important>
+
+    <para>测试结果并确保所有测试通过:</para>
+
+<screen><userinput remap="test">make check</userinput></screen>
+
+    <para>安装包:</para>
+
+<screen><userinput remap="install">make install</userinput></screen>
+
+    <para>安装文档:</para>
+
+<screen><userinput remap="install">make html
+make install-html</userinput></screen>
+
+  </sect2>
+
+
+  <sect2 id="contents-mpfr" role="content">
+    <title>MPFR 的内容</title>
+
+    <segmentedlist>
+      <segtitle>安装的库</segtitle>
+      <segtitle>安装的目录</segtitle>
+
+      <seglistitem>
+        <seg>libmpfr.{a,so}</seg>
+        <seg>/usr/share/doc/mpfr-&mpfr-version;</seg>
+      </seglistitem>
+    </segmentedlist>
+
+    <variablelist>
+      <bridgehead renderas="sect3">简述</bridgehead>
+      <?dbfo list-presentation="list"?>
+      <?dbhtml list-presentation="table"?>
+
+      <varlistentry id="libmpfr">
+        <term><filename class="libraryfile">libmpfr</filename></term>
+        <listitem>
+          <para>包含多精度数学函数。</para>
+          <indexterm zone="ch-system-mpfr libmpfr">
+            <primary sortas="c-libmpfr">libmpfr</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+    </variablelist>
+
+  </sect2>
+
+</sect1>

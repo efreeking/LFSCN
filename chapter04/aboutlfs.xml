@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sect1 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+  "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+  <!ENTITY % general-entities SYSTEM "../general.ent">
+  %general-entities;
+]>
+
+<sect1 id="prepare-aboutlfs">
+  <?dbhtml filename="aboutlfs.html"?>
+
+  <title>关于 $LFS</title>
+
+  <para>贯穿全书，到处都将使用到环境变量 <envar>LFS</envar>。保证这个变量总被定义相当重要。
+  它应该被设置为作为 LFS 分区的挂载点。
+  使用以下命令检查 <envar>LFS</envar> 变量是否设置正确:</para>
+
+<screen role="nodump"><userinput>echo $LFS</userinput></screen>
+
+  <para>确保输出显示的是 LFS 分区的挂载点的路径。
+  按照提供的范例，它应该是 <filename class="directory">/mnt/lfs</filename>。
+  如果输出不正确，变量可以通过下列命令设置:</para>
+
+<screen role="nodump"><userinput>export LFS=/mnt/lfs</userinput></screen>
+
+  <para>设置这个变量的好处就是可以按原型输入譬如
+  <command>mkdir $LFS/tools</command> 这样的命令。Shell 可以在处理命令行时
+  自动替换 <quote>$LFS</quote> 为
+  <quote>/mnt/lfs</quote> (或者变量被设置的其它值)。</para>
+
+  <para>在您离开和重新进入当前工作环境的任何时候(譬如在 <command>su</command> 到 <systemitem class="username">root</systemitem> 或其它用户时)，不要忘记检查 <envar>$LFS</envar> 是否被正确设置。</para>
+
+</sect1>
+

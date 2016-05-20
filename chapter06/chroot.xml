@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sect1 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+  "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+  <!ENTITY % general-entities SYSTEM "../general.ent">
+  %general-entities;
+]>
+
+<sect1 id="ch-system-chroot">
+  <?dbhtml filename="chroot.html"?>
+
+  <title>进入 Chroot 环境</title>
+
+  <para>现在是时候进入 chroot 环境开始构建和安装最终的 LFS 系统了。
+  以用户 <systemitem class="username">root</systemitem> 身份，运行下列命令进入当前只装配了临时工具的领域:</para>
+
+<screen><userinput>chroot "$LFS" /tools/bin/env -i \
+    HOME=/root TERM="$TERM" PS1='\u:\w\$ ' \
+    PATH=/bin:/usr/bin:/sbin:/usr/sbin:/tools/bin \
+    /tools/bin/bash --login +h</userinput></screen>
+
+  <para>把 <parameter>-i</parameter> 选项赋给 <command>env</command> 命令将会清除 chroot 环境的所有变量。之后，仅再次设置
+  <envar>HOME</envar>、<envar>TERM</envar>、<envar>PS1</envar> 和 <envar>PATH</envar> 变量。
+  <parameter>TERM=$TERM</parameter> 结构将会把 chroot 内部的 <envar>TERM</envar> 变量设置为何外部的一样。这个变量是类似
+  <command>vim</command> 和 <command>less</command> 之类的程序正常操作所需的。如果需要其它变量，譬如
+  <envar>CFLAGS</envar> 或 <envar>CXXFLAGS</envar>，这里是再次设置它们的好地方。</para>
+
+  <para>从现在开始，不再需要使用
+  <envar>LFS</envar> 变量了，因为所有的工作将会限制在 LFS 文件系统。
+  这是因为 Bash shell 被告知，<filename class="directory">$LFS</filename> 现在是根 (<filename class="directory">/</filename>) 目录。</para>
+
+  <para>通知一下，<filename class="directory">/tools/bin</filename> 是随着
+  <envar>PATH</envar> 变量的最后的位置来的。这意味着一旦临时工具的最终版本安装后，临时版本就不再使用。这个发生在 Shell 没有<quote>记住</quote>可执行二进制文件的位置的时候&mdash;因此，要传递 <parameter>+h</parameter> 选项给
+  <command>bash</command> 来关闭 Hashing 功能。</para>
+
+  <para>注意，<command>bash</command> 提示将会说
+  <computeroutput>I have no name!</computeroutput>(我没有名称！)这是很正常的，因为
+  <filename>/etc/passwd</filename> 文件还未创建。</para>
+
+  <note>
+    <para>贯穿本章的剩余部分以及之后的章节中的所有命令都将在 chroot 环境中运行，这一点很重要。
+    如果您由于某些原因离开了这个环境(例如重启)，确保在继续安装前，虚拟内核文件系统如<xref linkend="ch-system-bindmount"/>和<xref
+    linkend="ch-system-kernfsmount"/>中所述的那样被挂载，并再次进入 chroot。</para>
+  </note>
+
+</sect1>

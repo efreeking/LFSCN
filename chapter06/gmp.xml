@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sect1 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+  "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+  <!ENTITY % general-entities SYSTEM "../general.ent">
+  %general-entities;
+]>
+
+<sect1 id="ch-system-gmp" role="wrap">
+  <?dbhtml filename="gmp.html"?>
+
+  <sect1info condition="script">
+    <productname>gmp</productname>
+    <productnumber>&gmp-version;</productnumber>
+    <address>&gmp-url;</address>
+  </sect1info>
+
+  <title>GMP-&gmp-version;</title>
+
+  <indexterm zone="ch-system-gmp">
+    <primary sortas="a-GMP">GMP</primary>
+  </indexterm>
+
+  <sect2 role="package">
+    <title/>
+
+    <para>GMP 包包含数学库。这些库有用于任意精度的计算的有用函数。</para>
+
+    <segmentedlist>
+      <segtitle>&buildtime;</segtitle>
+      <segtitle>&diskspace;</segtitle>
+
+      <seglistitem>
+        <seg>&gmp-ch6-sbu;</seg>
+        <seg>&gmp-ch6-du;</seg>
+      </seglistitem>
+    </segmentedlist>
+
+  </sect2>
+
+  <sect2 role="installation">
+    <title>GMP 的安装</title>
+
+    <note>
+      <para>如果您正在为一个 32 位 x86 的架构构建，但是您只有一个具有运行 64 位代码功能的 CPU，
+      <emphasis>而且</emphasis>您已在环境中指定了
+      <envar>CFLAGS</envar>，配置脚本将会尝试为 64 位架构构建并失败。可以通过调用以下配置命令配合使用来避免这个问题
+<screen role="nodump"><userinput><parameter>ABI=32</parameter> ./configure ...</userinput></screen></para>
+    </note>
+
+    <para>首先，修复一个在 upstream 网页中说明的的小错误:</para>
+
+<screen><userinput remap="pre"> sed -i 's/np + dn, qn/&amp; - dn/' mpn/generic/dcpi1_bdiv_q.c</userinput></screen>
+
+
+    <para>准备 GMP 编译:</para>
+
+<screen><userinput remap="configure">./configure --prefix=/usr --enable-cxx --enable-mpbsd</userinput></screen>
+
+    <variablelist>
+      <title>新配置选项的含义:</title>
+
+      <varlistentry>
+        <term><parameter>--enable-cxx</parameter></term>
+        <listitem>
+          <para>这个参数启用 C++ 支持</para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term><parameter>--enable-mpbsd</parameter></term>
+        <listitem>
+          <para>这个构建兼容 Berkeley MP 的库</para>
+        </listitem>
+      </varlistentry>
+
+    </variablelist>
+
+    <para>编译包:</para>
+
+<screen><userinput remap="make">make</userinput></screen>
+
+    <important>
+      <para>在本节中的 GMP 测试套装被视为是紧要的。
+      任何情况下都不要跳过它。</para>
+    </important>
+
+    <para>测试结果:</para>
+
+<screen><userinput remap="test">make check 2>&amp;1 | tee gmp-check-log</userinput></screen>
+
+    <para>确保在测试套装中的所有 162 个测试全部通过。
+    通过执行下列命令检查结果:</para>
+
+<screen><userinput remap="test">awk '/tests passed/{total+=$2} ; END{print total}' gmp-check-log</userinput></screen>
+
+    <para>安装包:</para>
+
+<screen><userinput remap="install">make install</userinput></screen>
+
+    <para>如果需要的话，安装文档:</para>
+
+<screen><userinput remap="install">mkdir -v /usr/share/doc/gmp-&gmp-version;
+cp    -v doc/{isa_abi_headache,configuration} doc/*.html \
+         /usr/share/doc/gmp-&gmp-version;</userinput></screen>
+
+  </sect2>
+
+  <sect2 id="contents-gmp" role="content">
+    <title>GMP 的内容</title>
+
+    <segmentedlist>
+      <segtitle>安装的库</segtitle>
+      <segtitle>安装的目录</segtitle>
+
+      <seglistitem>
+        <seg>libgmp.{a,so}、libgmpxx.{a,so} 和 libmp.{a,so}</seg>
+        <seg>/usr/share/doc/gmp-&gmp-version;</seg>
+      </seglistitem>
+    </segmentedlist>
+
+    <variablelist>
+      <bridgehead renderas="sect3">简述</bridgehead>
+      <?dbfo list-presentation="list"?>
+      <?dbhtml list-presentation="table"?>
+
+      <varlistentry id="libgmp">
+        <term><filename class="libraryfile">libgmp</filename></term>
+        <listitem>
+          <para>包含精度数学函数。</para>
+          <indexterm zone="ch-system-gmp libgmp">
+            <primary sortas="c-libgmp">libgmp</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="libgmpxx">
+        <term><filename class="libraryfile">libgmpxx</filename></term>
+        <listitem>
+          <para>包含 C++ 精度数学函数。</para>
+          <indexterm zone="ch-system-gmp libgmpxx">
+            <primary sortas="c-libgmpxx">libgmpxx</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="libmp">
+        <term><filename class="libraryfile">libmp</filename></term>
+        <listitem>
+          <para>包含 Berkeley MP 数学函数。</para>
+          <indexterm zone="ch-system-gmp libmp">
+            <primary sortas="c-libmp">libmp</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+    </variablelist>
+
+  </sect2>
+
+</sect1>

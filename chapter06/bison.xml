@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sect1 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+  "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+  <!ENTITY % general-entities SYSTEM "../general.ent">
+  %general-entities;
+]>
+
+<sect1 id="ch-system-bison" role="wrap">
+  <?dbhtml filename="bison.html"?>
+
+  <sect1info condition="script">
+    <productname>bison</productname>
+    <productnumber>&bison-version;</productnumber>
+    <address>&bison-url;</address>
+  </sect1info>
+
+  <title>Bison-&bison-version;</title>
+
+  <indexterm zone="ch-system-bison">
+    <primary sortas="a-Bison">Bison</primary>
+  </indexterm>
+
+  <sect2 role="package">
+    <title/>
+
+    <para>Bison 包包含分析器生成器。</para>
+
+    <segmentedlist>
+      <segtitle>&buildtime;</segtitle>
+      <segtitle>&diskspace;</segtitle>
+
+      <seglistitem>
+        <seg>&bison-ch6-sbu;</seg>
+        <seg>&bison-ch6-du;</seg>
+      </seglistitem>
+    </segmentedlist>
+
+  </sect2>
+
+  <sect2 role="installation">
+    <title>Bison 的安装</title>
+
+    <para>准备 Bison 编译:</para>
+
+<screen><userinput remap="configure">./configure --prefix=/usr</userinput></screen>
+
+    <para>如果在 $PATH 中还没有 <command>bison</command> 程序，配置系统会导致 Bison 没有错误消息的国际化支持进行构建。
+    下列附加的处理将会纠正这个问题:</para>
+
+<screen><userinput remap="configure">echo '#define YYENABLE_NLS 1' &gt;&gt; lib/config.h</userinput></screen>
+
+    <para>编译包:</para>
+
+<screen><userinput remap="make">make</userinput></screen>
+
+    <para>要测试结果 (大约 0.5 SBU)，执行:</para>
+
+<screen><userinput remap="test">make check</userinput></screen>
+
+    <para>安装包:</para>
+
+<screen><userinput remap="install">make install</userinput></screen>
+
+  </sect2>
+
+  <sect2 id="contents-bison" role="content">
+    <title>Bison 的内容</title>
+
+    <segmentedlist>
+      <segtitle>安装的程序</segtitle>
+      <segtitle>安装的库</segtitle>
+      <segtitle>安装的目录</segtitle>
+
+      <seglistitem>
+        <seg>bison 和 yacc</seg>
+        <seg>liby.a</seg>
+        <seg>/usr/share/bison</seg>
+      </seglistitem>
+    </segmentedlist>
+
+    <variablelist>
+      <bridgehead renderas="sect3">简述</bridgehead>
+      <?dbfo list-presentation="list"?>
+      <?dbhtml list-presentation="table"?>
+
+      <varlistentry id="bison">
+        <term><command>bison</command></term>
+        <listitem>
+          <para>从一系列的规则生成一个用于分析文本文件结构的程序；Bison 是 Yacc (Yet Another
+          Compiler Compiler)的替代者</para>
+          <indexterm zone="ch-system-bison bison">
+            <primary sortas="b-bison">bison</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="yacc">
+        <term><command>yacc</command></term>
+        <listitem>
+          <para>一个 <command>bison</command> 的封装，是为了那些仍调用 <command>yacc</command> 而不是 <command>bison</command> 的程序；它调用 <command>bison</command> 并使用 <parameter>-y</parameter> 选项</para>
+          <indexterm zone="ch-system-bison yacc">
+            <primary sortas="b-yacc">yacc</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="liby.a">
+        <term><filename class="libraryfile">liby.a</filename></term>
+        <listitem>
+          <para>Yacc 库包含兼容 Yacc 的 <function>yyerror</function> 和 <function>main</function> 函数的实现；
+          这个库通常没有什么用，但是 POSIX 需要它</para>
+          <indexterm zone="ch-system-bison liby.a">
+            <primary sortas="c-liby.a">liby.a</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+    </variablelist>
+
+  </sect2>
+
+</sect1>

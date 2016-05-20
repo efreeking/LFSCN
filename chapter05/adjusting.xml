@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sect1 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+  "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+  <!ENTITY % general-entities SYSTEM "../general.ent">
+  %general-entities;
+]>
+
+<sect1 id="ch-tools-adjusting">
+  <?dbhtml filename="adjusting.html"?>
+
+  <title>调整工具链</title>
+
+  <para>现在，临时的 C 库已经安装，本章中剩余部分编译的所有工具应该针对这些库进行链接。为了达到这个目的，交叉编译器的
+  specs 文件需要做出调整，以指向在
+  <filename class="directory">/tools</filename> 中的新的动态链接器。</para>
+
+  <para>这个可以通过转储编译器的 <quote>specs</quote> 文件到按默认将会被查找的位置。
+  一个简单的 <command>sed</command> 替换然后改变 GCC 将要使用的动态链接器。这里的原理是查找所有对在 <filename class="directory">/lib</filename> 中的动态链接器文件的引用(如果宿主系统是具备 64 位的话，还可能包括 <filename class="directory">/lib64</filename> 目录)，然后调整它们以指向
+  <filename class="directory">/tools</filename> 中的新位置。</para>
+
+  <para>为了准确度起见，在发出下列命令时使用复制粘贴的方法。一定要视觉上查看
+  specs 文件，以检查是否正确的调整了所有对动态链接器位置的引用。如果需要的话，参考<xref
+    linkend="ch-tools-toolchaintechnotes" role=","/>的动态链接器的默认名称。</para>
+
+<!-- Ampersands are needed to allow copy and paste -->
+<screen><userinput>SPECS=`dirname $($LFS_TGT-gcc -print-libgcc-file-name)`/specs
+$LFS_TGT-gcc -dumpspecs | sed \
+  -e 's@/lib\(64\)\?/ld@/tools&amp;@g' \
+  -e "/^\*cpp:$/{n;s,$, -isystem /tools/include,}" &gt; $SPECS 
+echo "New specs file is: $SPECS"
+unset SPECS</userinput></screen>
+
+  <caution>
+    <para>到此为止，有必要停止一下，确保新工具链的基本功能(编译和链接)能够按预期的工作。运行下列命令，执行健全性检查:</para>
+
+<screen><userinput>echo 'main(){}' &gt; dummy.c
+$LFS_TGT-gcc -B/tools/lib dummy.c
+readelf -l a.out | grep ': /tools'</userinput></screen>
+
+    <para>如果每一项都可以正常工作，应该就没有错误，而最后命令的输出将会是如下形式:</para>
+
+<screen><computeroutput>[Requesting program interpreter: /tools/lib/ld-linux.so.2]</computeroutput></screen>
+
+    <para>注意，<filename class="directory">/tools/lib</filename> 或用于
+    64 位机器的 <filename class="directory">/tools/lib64</filename>
+    扮演动态链接库的前缀。</para>
+
+    <para>如果输出不是如上显示或者完全没有输出，那么应该有地方出错了。
+    审查并追溯每个步骤找出问题出在何处并纠正它。这个问题必须在继续前解决。有些问题可能出在上面修改的 specs 文件。在这样的情况下，重做 specs 文件的修改，小心的复制粘贴命令。</para>
+
+    <para>如果全部正常的话，清理测试文件:</para>
+
+<screen><userinput>rm -v dummy.c a.out</userinput></screen>
+
+  </caution>
+
+  <note><para>在下一节构建 Binutils 将会担当一次检查工具链是否正确构建的额外检查。如果 Binutils 无法构建，也就说明先前的 Binutils、GCC 或 Glibc 的安装出错。</para></note>
+
+</sect1>

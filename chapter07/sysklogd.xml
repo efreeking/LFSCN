@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sect1 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+  "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+  <!ENTITY % general-entities SYSTEM "../general.ent">
+  %general-entities;
+]>
+
+<sect1 id="ch-scripts-sysklogd">
+  <?dbhtml filename="sysklogd.html"?>
+
+  <title>配置 sysklogd 将本</title>
+
+  <indexterm zone="ch-scripts-sysklogd">
+    <primary sortas="d-sysklogd">sysklogd</primary>
+    <secondary>配置</secondary>
+  </indexterm>
+
+  <para><filename>sysklogd</filename> 脚本调用
+  <command>syslogd</command> 程序和 <parameter>-m 0</parameter> 选项。这个选项关闭周期的时间戳标记，<command>syslogd</command> 按默认每 20 分钟把标记写入日志文件一次。如果您想开启这个周期时间戳标记，编辑
+  <filename>/etc/sysconfig/rc.site</filename> 并定义变量
+  SYSKLOGD_PARMS 为想要的值。例如要删除所有参数，设置变量为一个 null 值:</para>
+
+<screen role="nodump">SYSKLOGD_PARMS=</screen>
+
+  <para>查看 <userinput>man syslogd</userinput> 获得更多选项。</para>
+
+</sect1>

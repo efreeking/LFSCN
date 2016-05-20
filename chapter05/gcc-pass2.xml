@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sect1 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+  "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+  <!ENTITY % general-entities SYSTEM "../general.ent">
+  %general-entities;
+]>
+
+<sect1 id="ch-tools-gcc-pass2" role="wrap">
+  <?dbhtml filename="gcc-pass2.html"?>
+
+  <sect1info condition="script">
+    <productname>gcc</productname>
+    <productnumber>&gcc-version;</productnumber>
+    <address>&gcc-url;</address>
+  </sect1info>
+
+  <title>GCC-&gcc-version; - 第 2 次</title>
+
+  <indexterm zone="ch-tools-gcc-pass2">
+    <primary sortas="a-GCC">GCC</primary>
+    <secondary>tools, 第 2 次</secondary>
+  </indexterm>
+
+  <sect2 role="package">
+    <title/>
+
+    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"
+    href="../chapter06/gcc.xml"
+    xpointer="xpointer(/sect1/sect2[1]/para[1])"/>
+
+    <segmentedlist>
+      <segtitle>&buildtime;</segtitle>
+      <segtitle>&diskspace;</segtitle>
+
+      <seglistitem>
+        <seg>&gcc-ch5p2-sbu;</seg>
+        <seg>&gcc-ch5p2-du;</seg>
+      </seglistitem>
+    </segmentedlist>
+
+  </sect2>
+
+  <sect2 role="installation">
+    <title>GCC 安装</title>
+
+    <para>GCC 4.3 之后的版本将把这次构建视为如同它是一个重定位的编译器，并且不允许在由 <parameter>--prefix</parameter> 指定的位置搜索启动文件(startfiles)。由于这个不是一个重定位的编译器，而
+	<filename class="directory">/tools</filename> 中的 startfiles 对于构建一个链接到
+    <filename class="directory">/tools</filename> 中的 lib 文件的工作编译器的至关重要的，应用下列补丁可以部分还原 GCC 的旧操作方式:</para>
+
+<screen><userinput remap="pre">patch -Np1 -i ../&gcc-startfiles-patch;</userinput></screen>
+
+    <para>在正常的情况下，运行 GCC <command>fixincludes</command> 脚本以修复潜在损坏的头文件。
+    由于 GCC-&gcc-version; 和 Glibc-&glibc-version; 此时已经安装，并且它们各自的头文件都已经知道无需修复，
+    <command>fixincludes</command> 脚本实际上并不是必需的。实际上，运行这个脚本可能会从宿主系统安装修复的头文件到 GCC 的私有包含目录而污染了构建环境。
+    <command>fixincludes</command> 脚本可以通过发出以下命令来阻止其运行:</para>
+
+<screen><userinput remap="pre">cp -v gcc/Makefile.in{,.orig}
+sed 's@\./fixinc\.sh@-c true@' gcc/Makefile.in.orig &gt; gcc/Makefile.in</userinput></screen>
+
+    <para>对于 x86 机器，GCC 的自举(bootstrap)构建使用
+    <option>-fomit-frame-pointer</option> 编译器标志。非自举的构建则默认省略这个标志，并且目标应该是产生一个和能够自举的完全一样的编译器。
+    应用下列 <command>sed</command> 命令强制使用标志构建:</para> 
+
+<screen><userinput remap="pre">cp -v gcc/Makefile.in{,.tmp}
+sed 's/^T_CFLAGS =$/&amp; -fomit-frame-pointer/' gcc/Makefile.in.tmp \
+  &gt; gcc/Makefile.in</userinput></screen>
+
+    <para>下列命令将更改 GCC 的默认动态链接器的位置，已使用安装在
+    <filename class="directory">/tools</filename> 中的。它也从 GCC 的包含搜索路径删除了
+	<filename class="directory">/usr/include</filename>。
+    现在进行这个操作比安装后调整 specs 文件更能确保在 GCC 的实际构建过程中使用新的动态链接器。也就是说，在构建期间创建的全部二进制文件将会针对新的 Glibc 进行连接。执行:</para>
+
+<screen><userinput remap="pre">for file in \
+ $(find gcc/config -name linux64.h -o -name linux.h -o -name sysv4.h)
+do
+  cp -uv $file{,.orig}
+  sed -e 's@/lib\(64\)\?\(32\)\?/ld@/tools&amp;@g' \
+  -e 's@/usr@/tools@g' $file.orig &gt; $file
+  echo '
+#undef STANDARD_INCLUDE_DIR
+#define STANDARD_INCLUDE_DIR 0
+#define STANDARD_STARTFILE_PREFIX_1 ""
+#define STANDARD_STARTFILE_PREFIX_2 ""' &gt;&gt; $file
+  touch $file.orig
+done</userinput></screen>
+
+    <para>上面的情况似乎难以遵循，让我们慢慢分说。
+    首先我们在
+    <filename class="directory">gcc/config</filename> 目录下查找所有名为
+    <filename>linux.h</filename>、<filename>linux64.h</filename> 或 <filename>sysv4.h</filename> 的文件。对于找到的每个文件，我们复制它为同名文件，但是加上一个
+    <quote>.orig</quote> 的后缀。然后第一个 sed 表达式把
+    <quote>/tools</quote> 添加到每个 <quote>/lib/ld</quote>、
+    <quote>/lib64/ld</quote> 或 <quote>/lib32/ld</quote> 的前面，而同时第二个表达式则替换
+    <quote>/usr</quote> 的硬编码实例。然后我们添加我们的定义语句，它会改变包含搜索路径和默认的启动文件后缀到文件的结尾。
+    最后，我们使用 <command>touch</command> 更新复制文件的时间戳。当和
+    <command>cp -u</command> 结合使用，这样可以防止一旦命令不经意的运行两次时对原始文件的意外修改。
+    </para>
+
+    <para>在 x86_64 上，取消设置(unset) GCC 的多库规范(spec)，确保它不会尝试针对宿主上的库链接:</para>
+
+<screen><userinput remap="pre">case $(uname -m) in
+  x86_64)
+    for file in $(find gcc/config -name t-linux64) ; do \
+      cp -v $file{,.orig}
+      sed '/MULTILIB_OSDIRNAMES/d' $file.orig &gt; $file
+    done
+  ;;
+esac</userinput></screen>
+
+    <para>因为 GCC 的第一次构建中，它需要 GMP、MPFR 和 MPC 包。解压 tarballs 并把它们移到需要的目录名中:</para>
+
+<screen><userinput remap="pre">tar -jxf ../mpfr-&mpfr-version;.tar.bz2
+mv -v mpfr-&mpfr-version; mpfr
+tar -jxf ../gmp-&gmp-version;.tar.bz2
+mv -v gmp-&gmp-version; gmp
+tar -zxf ../mpc-&mpc-version;.tar.gz
+mv -v mpc-&mpc-version; mpc</userinput></screen>
+
+    <para>再次创建独立的构建目录:</para>
+
+<screen><userinput remap="pre">mkdir -v ../gcc-build
+cd ../gcc-build</userinput></screen>
+
+    <para>在开始构建 GCC 前，记住取消设置任何可能会凌驾于默认优化标志的环境变量。</para>
+
+    <para>现在准备好 GCC 编译:</para>
+
+<screen><userinput remap="configure">CC="$LFS_TGT-gcc -B/tools/lib/" \
+    AR=$LFS_TGT-ar RANLIB=$LFS_TGT-ranlib \
+    ../gcc-&gcc-version;/configure --prefix=/tools \
+    --with-local-prefix=/tools --enable-clocale=gnu \
+    --enable-shared --enable-threads=posix \
+    --enable-__cxa_atexit --enable-languages=c,c++ \
+    --disable-libstdcxx-pch --disable-multilib \
+    --disable-bootstrap --disable-libgomp \
+    --without-ppl --without-cloog</userinput></screen>
+
+    <variablelist>
+      <title>新配置选项的含义:</title>
+
+      <varlistentry>
+        <term><parameter>--enable-clocale=gnu</parameter></term>
+        <listitem>
+          <para>这个选项确保在所有的情况下，为 C++ 库选择正确的 locale 模型。如果 configure 脚本查找已安装的 <emphasis>de_DE</emphasis> locale，它将会选择正确的 GNU Locale 模型。但是，如果 <emphasis>de_DE</emphasis> 语言环境未安装的话，就会有构建应用程序二进制接口(Application Binary Interface，ABI)不兼容的 C++ 库的风险，因为选择了不正确的通用语言环境模型。</para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term><parameter>--enable-threads=posix</parameter></term>
+        <listitem>
+          <para>这个启用了对多线程代码的 C++ 异常处理。</para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term><parameter>--enable-__cxa_atexit</parameter></term>
+        <listitem>
+          <para>这个选项允许使用 <function>__cxa_atexit</function> 代替 <function>atexit</function> 来注册 C++ 局部静态和全局对象的析构函数。这个选项是析构函数的完全标准编译处理所必需的。它也会影响 C++ ABI，从而导致 C++ 共享库和 C++ 程序能够和其它 Linux 发行版可共同使用。</para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term><parameter>--enable-languages=c,c++</parameter></term>
+        <listitem>
+          <para>这个选项确保 C 和 C++ 编译器都被构建。</para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term><parameter>--disable-libstdcxx-pch</parameter></term>
+        <listitem>
+          <para>不为
+          <filename class="libraryfile">libstdc++</filename> 构建预编译的头文件(PCH)。它花费大量的空间，而我们并不使用它。</para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term><parameter>--disable-bootstrap</parameter></term>
+        <listitem>
+          <para>对于 GCC 的原生构建，默认是进行一次“bootstrap”(自举)的构建。这个不仅编译 GCC，还会编译它多次。它使用第一轮中编译的程序来编译自己第二次，然后再三的编译第三次。第二次和第三次的重复是为了保证它能够完美的重新生成它自己。这些暗示它被正确的编译了。LFS 构建方式应该提供一个固定的编译器，并不需要每次都自举的。</para> 
+        </listitem>
+      </varlistentry>
+
+    </variablelist>
+
+    <para>编译软件包:</para>
+
+<screen><userinput remap="make">make</userinput></screen>
+
+    <para>安装软件包:</para>
+
+<screen><userinput remap="install">make install</userinput></screen>
+
+    <para>作为最后的修饰，创建符号链接。很多程序和脚本运行 <command>cc</command> 而不是 <command>gcc</command>，以保持程序的通用性，从而可以在所有类型的 UNIX 系统上可用，而这些系统上并不是总是安装了 GNU C 编译器的。运行 <command>cc</command> 让系统管理员自由决定安装哪个 C 编译器:</para>
+
+<screen><userinput remap="install">ln -vs gcc /tools/bin/cc</userinput></screen>
+
+  <caution>
+    <para>到此，有必要停一下确保新的工具链的基本功能(编译和链接)能够如所期望的运作。运行下列命令执行一次健全性检查:</para>
+
+<screen><userinput>echo 'main(){}' &gt; dummy.c
+cc dummy.c
+readelf -l a.out | grep ': /tools'</userinput></screen>
+
+    <para>如果所有东西的工作正常的话，应该没有错误，而最后命令的输出应该是如下形式:</para>
+
+<screen><computeroutput>[Requesting program interpreter: /tools/lib/ld-linux.so.2]</computeroutput></screen>
+
+    <para>注意，<filename class="directory">/tools/lib</filename>(在 64 位机器上是
+    <filename class="directory">/tools/lib64</filename>)应该作为动态链接器的前缀出现。</para>
+
+    <para>如果输出没有如上显示，或者完全没有输出，那么有东西出错了。审查并追溯每个步骤找出问题所在并纠正它。这个问题必须在继续前解决。首先再次执行健全性检查，使用
+    <command>gcc</command> 代替 <command>cc</command>。如果这次能够工作的话，那么是缺少了 <filename class="symlink">/tools/bin/cc</filename> 符号链接了。如前所述的安装符号链接。
+    下一步，确保 <envar>PATH</envar> 正确。这个可以通过运行
+    <command>echo $PATH</command> 检查，检查
+    <filename class="directory">/tools/bin</filename> 是在列表的头部。
+    如果 <envar>PATH</envar> 错误，它可能意味着您没有以用户 <systemitem class="username">lfs</systemitem> 身份登录或者某些内容出错了，退回到
+    <xref linkend="ch-tools-settingenviron" role="."/>中。</para>
+
+    <para>一旦全部完好，清理测试文件:</para>
+
+<screen><userinput>rm -v dummy.c a.out</userinput></screen>
+
+  </caution>
+
+  </sect2>
+
+  <sect2 role="content">
+    <title/>
+
+    <para>本包上的详细信息位于
+    <xref linkend="contents-gcc" role="."/></para>
+
+  </sect2>
+
+</sect1>

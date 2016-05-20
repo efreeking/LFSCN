@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sect1 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+  "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+  <!ENTITY % general-entities SYSTEM "../general.ent">
+  <!ENTITY site               SYSTEM "../appendices/rc.site.script">
+  %general-entities;
+]>
+
+<sect1 id="ch-scripts-site">
+  <?dbhtml filename="site.html"?>
+
+  <title>rc.site 文件</title>
+
+  <indexterm zone="ch-scripts-site">
+    <primary sortas="a-rc.site">rc.site</primary>
+  </indexterm>
+
+  <para>可选的 <filename>/etc/sysconfig/rc.site</filename> 文件包含每个引导脚本自动设置的设置。它可以作为在 <filename class='directory'>/etc/sysconfig/</filename> 目录中的 <filename>hostname</filename>、 <filename>console</filename> 及 <filename>clock</filename> 文件中指定的值的另外一种设置方法。如果相关的变量既存在于这些单独的文件，也存在于 <filename>rc.site</filename> 中，在脚本专用的文件中的值具有优先权。</para>
+
+  <para><filename>rc.site</filename> 还包含可以定制引导过程的其他方面。设置 IPROMPT 变量将会启用选择性的运行引导脚本。其它选项会在文件注视中描述。文件的默认版本如下:</para>
+
+  <!-- Use role to fix a pdf generation problem -->
+  <screen role="auto">&site;</screen>
+
+</sect1>
+

@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sect1 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+  "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+  <!ENTITY % general-entities SYSTEM "../general.ent">
+  %general-entities;
+]>
+
+<sect1 id="ch-system-pkgmgt">
+  <?dbhtml filename="pkgmgt.html"?>
+
+  <title>包管理</title>
+
+  <para>包管理经常被要求加入 LFS 书的内容。包管理器可以跟踪文件的安装，使得删除和升级软件包变得容易。除了二进制和库文件外，包管理器还会处理配置文件的安装。在我们开始惊叹前，不要&mdash;这一节不会讨论也不会推荐任何特定的包管理器。而是提供更为流行的技术和它们如何运作的综述。对您来说，完美的包管理器可能就在这些技术当中，或者这些技术的组合。这一节简单的提及一些在升级包时可能会引起的问题。</para>
+
+  <para>在 LFS 或 BLFS 中不涉及包管理器的原因包括:</para>
+
+  <itemizedlist>
+    <listitem>
+      <para>对包管理的处理可能会使焦点偏离这些书的目标&mdash;教导如何构建一个 Linux 系统。</para>
+    </listitem>
+
+    <listitem>
+      <para>包管理有多种解决方案，每个都有优势和劣势。包含能够满足所有受众的很困难。</para>
+    </listitem>
+  </itemizedlist>
+
+  <para>在包管理的话题上编写了一些技巧。访问 <ulink url="&hints-index;">Hints Project</ulink> 并查看其中是否有满足您需要的。</para>
+
+  <sect2>
+    <title>升级问题</title>
+
+    <para>一个包管理器可以在新版本发行时，轻易的升级。通常，在 LFS 和 BLFS 书中的说明可以用于升级到较新的版本。这里有几点需要在升级包时注意，尤其在一个运行的系统上。</para>
+
+    <itemizedlist>
+      <listitem>
+        <para>如果工具链包(Glibc、GCC 或 Binutils) 只有需要升级到较新的小版本，重新构建 LFS 较为安全。尽管您<emphasis>可能</emphasis>可以通过重新构建它们的依赖关系顺序中的包来实现，但是我们不推荐。例如，如果 glibc-2.2.x 需要升级到 glibc-2.3.x，重新构建就较为安全。
+        对于微版本升级，简单的重新安装常常就可以解决，但是也不鼓励。例如，从 glibc-2.3.4 升级到 glibc-2.3.5 通常将导致某些问题。</para>
+      </listitem>
+
+      <listitem>
+        <para>如果一个包包含了要更新的共享库，而且如果库的名称发生改变的话，那么所有动态连接到库的包都需要重新编译以针对新的库进行链接。
+        (注意，包版本和库名称之间没有相互关系。)例如，考虑一个包 foo-1.2.3，它安装一个名为 <filename class='libraryfile'>libfoo.so.1</filename> 的共享库。比方说您升级包为一个较新的版本 foo-1.2.4，它安装了名为 <filename class='libraryfile'>libfoo.so.2</filename> 的共享库。在这种情况下，所有动态链接到 <filename class='libraryfile'>libfoo.so.1</filename> 的包对需要针对 <filename class='libraryfile'>libfoo.so.2</filename> 重新编译进行链接。注意，在依赖的包被重新编译前，您不应该删除原先的库。</para>
+      </listitem>
+    </itemizedlist>
+
+  </sect2>
+
+  <sect2>
+    <title>包管理技术</title>
+
+    <para>下面是一些常见的包管理技术。在绝对使用某包管理器前，对各种技术进行一些研究，尤其是特定方案的缺点。</para>
+
+    <sect3>
+      <title>It is All in My Head!(一切尽在我心中)</title>
+
+      <para>是的，这是一种包管理技术。某些人不需要报管理器，因为它们对包非常熟悉，并且知道每个包安装了什么文件。某些用户也不需要任何包管理，因为他们打算当一个包发生变化时，重新构建整个系统。</para>
+
+    </sect3>
+
+    <sect3>
+      <title>在独立的目录中安装</title>
+
+      <para>这是一种过分简单化的包管理，它必须要额外的包来管理安装。每个包都安装到一个独立的目录中。例如，包 foo-1.1 安装
+      <filename class='directory'>/usr/pkg/foo-1.1</filename> 并从 <filename>/usr/pkg/foo</filename> 中建立一个符号链接到 <filename class='directory'>/usr/pkg/foo-1.1</filename>。当安装新版本的 foo-1.2 时，它会安装在 <filename class='directory'>/usr/pkg/foo-1.2</filename> 中，然后先前的符号链接会替换为新版本的符号链接。</para>
+
+      <para>环境变量，如 <envar>PATH</envar>、
+      <envar>LD_LIBRARY_PATH</envar>、<envar>MANPATH</envar>、<envar>INFOPATH</envar> 和 <envar>CPPFLAGS</envar> 值了需要扩展为包含 <filename>/usr/pkg/foo</filename>。对于更多的包，这种方案就变得不可管理了。</para>
+
+    </sect3>
+
+    <sect3>
+      <title>符号链接式的包管理</title>
+
+      <para>这是上一种包管理技术的一种变种。每个包都和上一种方案类似的方式安装。但是不是建立符号了解诶，而是每个文件都符号链接到
+      <filename class='directory'>/usr</filename> 层。这样就消除了扩展环境变量的需要。虽然符号链接可以由用户自动创建时创建，但是很多包还是使用这种方式编写的。流行的就包括了 Stow、Epkg、Graft 和 Depot。</para>
+
+      <para>安装需要伪造，以便包认为它被安装到 <filename class="directory">/usr</filename> 中，而实际上它被安装到
+      <filename class="directory">/usr/pkg</filename> 层。以这种方式安装通常不是琐碎的任务。例如，假如您正在安装一个包 libfoo-1.1。下列指令可能无法正确的安装包:</para>
+
+<screen role="nodump"><userinput>./configure --prefix=/usr/pkg/libfoo/1.1
+make
+make install</userinput></screen>
+
+      <para>安装是可以运作，但是依赖的包可能不能如您所愿的链接到 libfoo。如果您编译一个针对 libfoo 链接的包，那你可以会注意到它被链接到
+      <filename class='libraryfile'>/usr/pkg/libfoo/1.1/lib/libfoo.so.1</filename>
+      而不是如您所愿的 <filename class='libraryfile'>/usr/lib/libfoo.so.1</filename>。正确的方法是使用
+      <envar>DESTDIR</envar> 策略来伪装包的安装。这种方式如下运作:</para>
+
+<screen role="nodump"><userinput>./configure --prefix=/usr
+make
+make DESTDIR=/usr/pkg/libfoo/1.1 install</userinput></screen>
+
+      <para>大多数包都提供了这种方式，但是某些没有。对于非编译的包，您可能还需要手动安装包，或者您会发现安装某些问题包到 <filename class='directory'>/opt</filename> 更为简单。</para>
+
+    </sect3>
+
+    <sect3>
+      <title>基于时间戳</title>
+
+      <para>在这种技术中，在包安装前，文件会被加上时间标志。在安装后，简单的使用 <command>find</command> 命令配合适当的选项就可以生成在时间标志文件创建后创建的所有文件的一个记录。使用这种方式编写的包管理器是 install-log。</para>
+
+      <para>尽管这种方案有简单化的好处，但是它有两个缺点。如果在安装时，文件使用任何当前时间以外的时间戳安装，那些文件将不会被包管理器跟踪到。还有，这种方案只能用于一次只有一个包安装的情况。如果两个包在不同的控制台上安装，记录就不可信赖了。</para>
+
+    </sect3>
+
+    <sect3>
+      <title>跟踪安装脚本</title>
+
+      <para>在这种方式中，安装脚本执行的命令将会被记录。有两种技术可以使用:</para>
+
+      <para><envar>LD_PRELOAD</envar> 环境变量可以设置为指向一个在安装前要预先加载的库。在安装时，这个库通过房价自身到各种可执行，如 <command>cp</command>、<command>install</command>、<command>mv</command> 来跟踪被安装的包，并跟踪修改文件系统的系统调用。为了使这种方法能够运作，所有的可执行文件都需要不带 suid 或 sgid 位的动态链接。在安装时，预载库可能会导致某些不想要边际效果。因此，建议执行某些测试来确保包管理器不会破坏了任何内容而且记录了所有的适当的文件。</para>
+
+      <para>第二种技术是使用 <command>strace</command>，它记录在安装脚本执行时做出的所有系统调用。</para>
+    </sect3>
+
+    <sect3>
+      <title>创建包压缩文档</title>
+
+      <para>在本方案中，包安装被为如符号链接式的包管理中所述的独立目录树。在安装后，会使用安装的文件创建一个包压缩文档。这个压缩文档之后既可以用于在本地机器上
+      也可以用于其它机器上安装包。</para>
+
+      <para>这种方式被大多数在商用发行版中找到的包管理器所使用。按照这种方式的包管理器的例子就有 RPM (顺带一句，也为 <ulink
+      url="http://www.linux-foundation.org/en/Specifications">Linux 标准库规范</ulink>所需)、pkg-utils、Debian 的 apt，以及 Gentoo 的 Portage 系统。描述如何为 LFS 系统采用这种风格的包管理器的技巧说明在<ulink
+      url="&hints-root;fakeroot.txt"/>上。</para>
+
+      <para>包含依赖信息的包文件的创建更复杂，已经超出了 LFS 的范围。</para>
+
+      <para>Slackware 使用一种基于 <command>tar</command> 的系统来处理包压缩文档。这个系统故意不像大多数更复杂的包管理器那样处理包的依赖关系。对于 Slackware 包管理的详细信息，查阅<ulink
+      url="http://www.slackbook.org/html/package-management.html"/>。</para>
+    </sect3>
+
+    <sect3>
+      <title>基于用户的管理</title>
+
+      <para>这个方案是 LFS 特有的，由 Matthias Benkmann 提出，并可以从 <ulink url="&hints-index;">Hints Project</ulink> 获得。在这个方案中，每个包分别以独立的用户安装到标准的位置。In属于一个包的文件就可以轻易的通过检查用户 ID 来识别。这个方式的功能和短处太复杂，无法在本节中阐述。要获的详细信息，请查阅<ulink url="&hints-root;more_control_and_pkg_man.txt"/>的技巧。</para>
+
+    </sect3>
+
+  </sect2>
+
+  <sect2>
+    <title>在多个系统上部署 LFS</title>
+
+    <para>LFS 系统的好处之一就是没有文件依赖于磁盘系统上的文件的位置。克隆一个 LFS 构建到其它类似于基础系统的架构的计算机上就如在包含根目录的 LFS 分区上使用 <command>tar</command> 一样简单(一个未压缩的基本 LFS 构建大约 250MB)，通过网络传输或 CD-ROM 复制文件到新的系统并解压它。那时必须更改一些配置文件。可能需要更新的配置文件包括: 
+    <filename>/etc/hosts</filename>、
+    <filename>/etc/fstab</filename>、
+    <filename>/etc/passwd</filename>、
+    <filename>/etc/group</filename>、
+    <filename>/etc/shadow</filename>、
+    <filename>/etc/ld.so.conf</filename>、
+    <filename>/etc/scsi_id.config</filename>、
+    <filename>/etc/sysconfig/network</filename> 和
+    <filename>/etc/sysconfig/network-devices/ifconfig.eth0/ipv4</filename>。
+    </para>
+
+    <para>根据新系统硬件和原始内核配置的不同，可能需要为新系统构建一个自定义内核。</para>
+
+    <para>最后，新的系统必须通过<xref
+    linkend="ch-bootable-grub"/>成为可引导的。</para>
+
+  </sect2>
+
+</sect1>

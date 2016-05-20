@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sect1 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+  "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+  <!ENTITY % general-entities SYSTEM "../general.ent">
+  %general-entities;
+]>
+
+<sect1 id="space-creatingfilesystem">
+  <?dbhtml filename="creatingfilesystem.html"?>
+
+  <title>在分区上创建一个文件系统</title>
+
+  <para>现在，空白分区已经设置，可以创建文件系统了。
+  在 Linux 世界中最常用的系统就是第2代扩展文件系统(<systemitem class="filesystem">ext2</systemitem>)，但是对于较新的高容量硬盘，日志文件系统变得越来越受欢迎。
+  第3代扩展文件系统 (<systemitem
+  class="filesystem">ext3</systemitem>) 是最广泛使用的对 <systemitem class="filesystem">ext2</systemitem> 的增强，它添加了日志功能并和 E2fsprogs 等工具兼容。
+  我们将创建一个 <systemitem class="filesystem">ext3</systemitem> 文件系统。
+  创建其它文件系统的说明可以在
+  <ulink url="&blfs-root;view/svn/postlfs/filesystems.html"/>中找到。</para>
+
+  <para>要在 LFS 分区上创建一个 <systemitem class="filesystem">ext3</systemitem> 文件系统，运行以下命令:</para>
+
+<screen role="nodump"><userinput>mke2fs -jv /dev/<replaceable>&lt;xxx&gt;</replaceable></userinput></screen>
+
+  <para>替换 <replaceable>&lt;xxx&gt;</replaceable> 为 LFS 分区的名称
+  (在我们先前的例子中是 <filename class="devicefile">hda5</filename>)。</para>
+
+  <note>
+    <para>某些宿主发行版使用它们的文件系统创建工具 (E2fsprogs) 中的自定义功能。
+    这个可能导致在第 9 章中的引导到您的新 LFS 时出现问题，因为那些特征并不被 LFS 安装的 E2fsprogs 所支持；您将会收到类似于 <quote>unsupported filesystem
+    features, upgrade your e2fsprogs</quote> 之类的错误。要检查您的宿主系统是否使用了自定义的增强，运行下列命令:</para>
+
+<screen role="nodump"><userinput>debugfs -R feature /dev/<replaceable>&lt;xxx&gt;</replaceable></userinput></screen>
+
+    <para>如果输出包含
+    <option>has_journal</option>、<option>ext_attr</option>、
+    <option>resize_inode</option>、<option>dir_index</option>、
+    <option>filetype</option>、<option>sparse_super</option>、
+    <option>large_file</option> 或 <option>needs_recovery</option> 意外的特征，那么您的宿主系统可能有自定义增强特征。
+    在这样的情况下，要避免后面出现的问题，您应该编译
+    stock E2fsprogs 包，并使用得到的二进制文件在您的 LFS 分区上重新创建文件系统:</para>
+
+<screen role="nodump"><userinput>cd /tmp
+tar -xzvf /path/to/sources/e2fsprogs-&e2fsprogs-version;.tar.gz
+cd e2fsprogs-&e2fsprogs-version;
+mkdir -v build
+cd build
+../configure
+make #注意，我们故意不在这里‘make install’！
+./misc/mke2fs -jv /dev/<replaceable>&lt;xxx&gt;</replaceable>
+cd /tmp
+rm -rfv e2fsprogs-&e2fsprogs-version;</userinput></screen>
+  </note>
+
+  <para>如果您正在使用已有的<systemitem class="filesystem">交换</systemitem>分区，就不需要格式化它。如果创建新的<systemitem class="filesystem">交换</systemitem>分区的话，将需要使用这个命令初始化它:</para>
+
+<screen role="nodump"><userinput>mkswap /dev/<replaceable>&lt;yyy&gt;</replaceable></userinput></screen>
+
+  <para>替换 <replaceable>&lt;yyy&gt;</replaceable> 为
+  <systemitem class="filesystem">交换</systemitem>分区的名称。</para>
+
+</sect1>

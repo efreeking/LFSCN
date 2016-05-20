@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sect1 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+  "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+  <!ENTITY % general-entities SYSTEM "../general.ent">
+  %general-entities;
+]>
+
+<sect1 id="ch-tools-toolchaintechnotes">
+  <?dbhtml filename="toolchaintechnotes.html"?>
+
+  <title>工具链技术说明</title>
+
+  <para>这个部分解释在整个构建方法背后的某些原因和技术的详细资料。
+  并不需要立即理解这个部分中的所有内容。这些信息的大部分将会在执行一次实际的构建后会更清晰。这个部分可以在整个过程中任何时刻作参考。</para>
+
+  <para><xref linkend="chapter-temporary-tools"/>的总体目标是产生一个包含了一组已知运行良好的工具集合的临时区域，这些工具可以从宿主系统剥离。通过使用 <command>chroot</command>，在剩余章节中的命令将会包含在环境中，以确保一个干净无故障的完成目标 LFS 系统的构建。构建过程已经被设计为尽量减低新读者的风险，并同时提供尽可能多的教育价值。</para>
+
+  <important>
+    <para>在继续前，请注意工作平台的名称，即通常所谓的“target triplet”。判断目标 triplet 的名称，一个简单的办法就是运行
+    多个软件包的源代码都随包附送的 <command>config.guess</command> 脚本。解压 Binutils
+    源代码并运行脚本: <userinput>./config.guess</userinput> 并注意输出。例如，对于一个现代的 32 位 Intel 处理器，输出将可能是 <emphasis>i686-pc-linux-gnu</emphasis>。</para>
+
+    <para>还要注意平台的动态链接器的名称，通常即所谓的
+    动态加载器(不要和 Binutils 里的标准链接器 <command>ld</command>混淆)。
+	由 Glibc 提供的动态链接器查找和加载程序所需的共享库，准备好要运行的程序，然后运行它。
+	一个 32 位 Intel 机器的动态链接器的名称将是
+    <filename class="libraryfile">ld-linux.so.2</filename>。
+    判断动态链接器的名称的一个完全的办法就是通过运行以下命令观察来自宿主系统的随机二进制文件:
+    <userinput>readelf -l &lt;name of binary&gt; | grep interpreter</userinput>
+    并注意其输出。涵盖所有平台的权威参考在 Glibc 源代码树根目录中的
+    <filename>shlib-versions</filename> 文件中。</para>
+  </important>
+
+  <para><xref
+  linkend="chapter-temporary-tools"/>构建方法如何运作的一些关键技术点:</para>
+
+  <itemizedlist>
+    <listitem>
+      <para>通过 <envar>LFS_TGT</envar> 变量的方式更改
+      &quot;vendor&quot; 目标 triplet 来略为调整工作平台的名称，确保 Binutils
+      和 GCC 的第一次构建产生一个兼容的交叉链接器和交叉不一起。交叉链接器和交叉不一起将会产生和当前硬件兼容的二进制文件而不是产生用于另一平台的二进制文件。</para>
+    </listitem>
+    <listitem>
+      <para>临时库是交叉编译的。因为一个交叉编译器由于其不能依赖于它的宿主系统的任何东西的性质，
+			这种方法通过降低来自宿主的头文件或库文件混入到新工具中的机会来删除目标系统的潜在污染。
+      交叉编译也使得在具 64 位能力的硬件上编译 32 位和 64 位的库变成可能。</para>
+    </listitem>
+    <listitem>
+      <para><command>gcc</command> 的
+      <filename>规范</filename> 文件的小心操作部分告诉编译器将会使用哪个目标动态链接库</para>
+    </listitem>
+  </itemizedlist>
+
+  <para>Binutils 是首先安装的，因为 GCC 和 Glibc 的 <command>configure</command> 运行都执行了多个在汇编器和连接器上的特征测试
+  来判断哪个软件特征被启用或禁用。这比首次实现更为重要。一个不正确配置的 GCC 或 Glibc 可能会导致难以捉摸的断裂的工具栏，其中
+  这种断裂的影响可能不会立即显示，直至接近整个发行版构建时才发现。
+  一个测试套装功能的失败会在执行太多的附加工作之前突出这个错误。</para>
+
+  <para>Binutils 安装它的汇编器和链接器在两个位置：
+  <filename class="directory">/tools/bin</filename> 和 <filename
+  class="directory">/tools/$LFS_TGT/bin</filename>。其中一个位置中的工具是另一个位置的硬链接。链接器的一个重要的方面就是它的库搜索顺序。详细的信息可以通过传递 <parameter>--verbose</parameter> 标志到 <command>ld</command> 获得。例如，命令 <userinput>ld --verbose | grep SEARCH</userinput> 将会说明当前的搜索路径和它们的顺序。
+  它通过编译一个虚拟的程序并传递 <parameter>--verbose</parameter>  开关到链接器来显示哪些文件被 <command>ld</command> 链接。例如，
+  <userinput>gcc dummy.c -Wl,--verbose 2&gt;&amp;1 | grep succeeded</userinput>
+  将会显示在链接期间，所有成功打开的文件。</para>
+
+  <para>下一个安装的包是 GCC。在它的 <command>configure</command> 运行时可以看到的内容的示例:</para>
+
+<screen><computeroutput>checking what assembler to use... /tools/i686-lfs-linux-gnu/bin/as
+checking what linker to use... /tools/i686-lfs-linux-gnu/bin/ld</computeroutput></screen>
+
+  <para>基于上述理由，这是重要的。(This is important for the reasons mentioned above.)它还演示了 GCC 的配置脚本不搜索 PATH 的目录来查找要使用的工具。然而，在 <command>gcc</command> 本身的实际操作期间，同一搜索路径也不是必须使用的。
+  要找出 <command>gcc</command> 将会使用哪个标准链接器，运行:
+  <userinput>gcc -print-prog-name=ld</userinput>.</para>
+
+  <para>详细的细心可以通过在编译虚拟程序时传递 <parameter>-v</parameter> 命令行参数选项给 <command>gcc</command> 而获得。
+  例如，<userinput>gcc -v dummy.c</userinput> 将会显示关于预编译器、编译和汇编阶段的相关信息，包括 <command>gcc</command> 的包含的搜索路径和它们的顺序。</para>
+
+  <para>下一个安装的包是 Glibc。构建 Glibc 最重要的注意事项是编译器、二进制工具和内核头文件。
+  编译器通常没有什么问题，因为 Glibc 将总是使用和传递给配置脚本的 <parameter>--host</parameter> 参数相关的编译器。
+  例如，在我们的例子中是 <command>i686-lfs-linux-gnu-gcc</command>。二进制工具和内核头文件可能有点复杂。
+  因此，慎重起见，使用可用的配置开关来强制使用正确的选择。在 <command>configure</command> 运行后，检查 <filename
+  class="directory">glibc-build</filename> 目录中的 <filename>config.make</filename> 文件，获得所有的重要的详细信息。
+  注意使用 <parameter>CC="i686-lfs-gnu-gcc"</parameter> 来控制要使用的二进制工具，并使用 <parameter>-nostdinc</parameter> 和
+  <parameter>-isystem</parameter> 标志来控制编译器的包含搜索的路径。
+  这些项目都突出了 Glibc 包的一个重要的方面&mdash;它在构建机制方面非常自给自足，并且通常不依赖于工具链的默认设置。</para>
+
+  <para>在 Glibc 安装后，更改 <command>gcc</command> 的 specs 文件为指向 <filename class="directory">/tools/lib</filename> 中的新的动态链接器。
+  这最后的一步在确保搜索和链接只在 <filename class="directory">/tools</filename> 前缀中发生是关键一步。
+  到动态链接器的硬连接(hard-wired)路径被嵌入到每个可执行和链接格式(ELF)共享的可执行文件中。这个可以通过运行以下命令观察:
+  <userinput>readelf -l &lt;name of binary&gt; | grep interpreter</userinput>.
+  修订 <command>gcc</command> 的 specs 文件，以确保从这里开始直至本章结束，编译的每个程序都将使用在
+  <filename class="directory">/tools/lib</filename> 中的新链接器。</para>
+
+  <para>对于 GCC 的第二次编译，它的源代码也需要修改修改，以告诉 GCC 使用新的动态链接器。
+  不这样做的结果就是导致 GCC 程序会把来自宿主系统的 <filename
+  class="directory">/lib</filename> 目录的动态链接器的名称嵌入到自身，这样有悖于从宿主剥离的目标。</para>
+
+  <para>在 Binutils 的第二次编译过程中，我们可以利用 <parameter>--with-lib-path</parameter> 配置开关来控制 <command>ld</command> 的库搜索路径。
+  从现在开始，核心工具链是自包含且自托管的(self-hosted)。<xref linkend="chapter-temporary-tools"/> 包剩下的部分，全部的构建都是针对在 <filename class="directory">/tools</filename> 中的 Glibc。</para>
+
+  <para>在进入<xref linkend="chapter-building-system"/>中的 chroot 环境后，第一个要安装的主要软件包是 Glibc，原因就是上述提到的它的自我满足的性质。
+  一旦这个 Glibc 被安装到 <filename class="directory">/usr</filename> 中，我们将执行一次工具链默认值的快速交接(即更改)，然后继续构建目标 LFS 系统的剩余部分。</para>
+
+  <!-- FIXME: Removed as part of the fix for bug 1061 - we no longer build pass1
+      packages statically, therefore this explanation isn't required
+
+  <sect2>
+  <title>Notes on Static Linking</title>
+
+  <para>Besides their specific task, most programs have to perform many
+  common and sometimes trivial operations. These include allocating
+  memory, searching directories, reading and writing files, string
+  handling, pattern matching, arithmetic, and other tasks. Instead of
+  obliging each program to reinvent the wheel, the GNU system provides
+  all these basic functions in ready-made libraries. The major library
+  on any Linux system is Glibc.</para>
+
+  <para>There are two primary ways of linking the functions from a
+  library to a program that uses them&mdash;statically or dynamically. When
+  a program is linked statically, the code of the used functions is
+  included in the executable, resulting in a rather bulky program. When
+  a program is dynamically linked, it includes a reference to the
+  dynamic linker, the name of the library, and the name of the function,
+  resulting in a much smaller executable. A third option is to use the
+  programming interface of the dynamic linker (see <filename>dlopen(3)</filename>
+  for more information).</para>
+
+  <para>Dynamic linking is the default on Linux and has three major
+  advantages over static linking. First, only one copy of the executable
+  library code is needed on the hard disk, instead of having multiple
+  copies of the same code included in several programs, thus saving
+  disk space. Second, when several programs use the same library
+  function at the same time, only one copy of the function's code is
+  required in core, thus saving memory space. Third, when a library
+  function gets a bug fixed or is otherwise improved, only the one
+  library needs to be recompiled instead of recompiling all programs
+  that make use of the improved function.</para>
+
+  <para>If dynamic linking has several advantages, why then do we
+  statically link the first two packages in this chapter? The reasons
+  are threefold&mdash;historical, educational, and technical. The
+  historical reason is that earlier versions of LFS statically linked
+  every program in this chapter. Educationally, knowing the difference
+  between static and dynamic linking is useful. The technical benefit is
+  a gained element of independence from the host, meaning that those
+  programs can be used independently of the host system. However, it is
+  worth noting that an overall successful LFS build can still be
+  achieved when the first two packages are built dynamically.</para>
+
+  </sect2>-->
+
+</sect1>

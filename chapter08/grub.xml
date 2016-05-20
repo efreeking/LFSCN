@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sect1 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+  "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+  <!ENTITY % general-entities SYSTEM "../general.ent">
+  %general-entities;
+]>
+
+<sect1 id="ch-bootable-grub" role="wrap">
+  <?dbhtml filename="grub.html"?>
+
+  <sect1info condition="script">
+    <productname>grub</productname>
+    <productnumber>&grub-version;</productnumber>
+    <address>&grub-url;</address>
+  </sect1info>
+
+  <title>使用 GRUB 设置引导进程</title>
+
+  <sect2>
+    <title>介绍</title>
+
+    <warning><para>不能正确的配置 GRUB 可能会导致您的系统在没有备选的引导设备(如 CD-ROM 时)不能运作。本节不需要引导到您的 LFS 系统。您可以指向修改您当前的引导加载器，如 旧版 Grub(Grub-Legacy)、GRUB2 或 LILO。</para></warning>
+
+
+    <para>首先确保准备好一张紧急引导盘，以备万一计算机不可使用(不可引导)时可以
+    <quote>挽救</quote>计算机。如果您还没有一个引导设备，您需要创建一个。为了以下的过程能够运作，您需要跳到 BLFS 的开头，并安装 <ulink
+    url="http://www.linuxfromscratch.org/blfs/view/svn/multimedia/xorriso.html">
+    xorriso</ulink>。</para>
+
+<screen role="nodump"><userinput>cd /tmp &amp;&amp;
+grub-mkrescue --output=grub-img.iso &amp;&amp;
+xorriso -as cdrecord -v dev=/dev/cdrw blank=as_needed grub-img.iso</userinput></screen>
+
+  </sect2>
+
+  <sect2>
+    <title>GRUB 命名约定</title>
+
+    <para>GRUB 使用它自己的命名结构，以 <emphasis>(hdn,m)</emphasis> 的形式来命名驱动器和分区，其中 <emphasis>n</emphasis> 是硬盘驱动器的编号，而 <emphasis>m</emphasis> 是分区的编号。硬盘驱动器编号从 0 开始，而分区编号，正常分区从 1 开始，而扩展分区从 5 开始。注意这和早期版本中两者都是从0开始的有所不同。例如，分区 <filename
+    class="partition">sda1</filename> 是对于 GRUB 来说是 <emphasis>(hd0,1)</emphasis> 而 <filename class="partition">sdb3</filename> 是
+    <emphasis>(hd1,3)</emphasis>。和 Linux 不同的是，GRUB 不会把 CD-ROM 驱动器视为硬盘。例如，如果您使用在 <filename class="partition">hdb</filename> 上的 CD，和在 <filename class="partition">hdc</filename> 上的第二个硬盘，第二个硬盘仍将是 <emphasis>(hd1)</emphasis>。</para>
+
+    <para>您可以通过运行以下命令来确定 GRUB 把您的磁盘设备当做什么内容:</para>
+
+<screen role="nodump"><userinput>grub-mkdevicemap --device-map=device.map
+cat device.map</userinput></screen>
+
+  </sect2>
+
+  <sect2>
+    <title>设置配置</title>
+
+    <para>GRUB 通过编写数据到硬盘的第一个物理轨道来实现运作。这个区域不是任何文件系统的一部分。在那里的程序访问引导分区中的 GRUB 模块。默认位置是 /boot/grub/。</para>
+
+    <para>引导分区的位置是影响配置的用户的选择。一种建议就是有一个独立的小
+    (建议大小为 100 MB)分区仅用于引导信息。这样，每个构建版本，无论是 LFS 还是其它的商业发行版，都可以访问同样的引导文件，并且可以从任何引导的系统中对其进行访问。如果您选择这样做的话，您需要挂载独立的分区，移动在当前的 <filename class="directory">/boot</filename> 目录中的所有文件(如您刚在上一节构建的 Linux 内核)到新的分区。之后，您只需要卸载分区并把它重新挂载为 <filename
+    class="directory">/boot</filename>。如果您这样做，确保要更新 <filename>/etc/fstab</filename>。</para>
+
+    <para>使用当前的 lfs 分区也可以工作，但是用于多系统的配置就较为困难。</para>
+
+    <para>使用以上信息，判断根分区的适当的指示符(或者如果是使用独立分区的话，则是引导分区)。对于以下的例子，假设根(或独立引导)分区是 <filename
+    class="partition">sda2</filename>.</para>
+
+    <para>安装 GRUB 文件到 <filename
+    class="directory">/boot/grub</filename> 中并设置引导轨道:</para> 
+
+    <warning>
+      <para>下列命令将会覆盖当前的引导加载程序。如果这不是您所希望的话，请不要运行命令。例如，在使用第三方引导管理器来管理主引导记录(MBR)时。</para> 
+    </warning>
+
+<screen role="nodump"><userinput>grub-install /dev/sda</userinput></screen>
+
+    <note><para><application>grub-install</application> 是一个脚本并调用另外一个程序 grub-probe，可能会失败并出现“cannot stat `/dev/root'”消息。  如果这样的话，从您的根分区建立一个临时的符号链接到 /dev/root:</para>
+
+<screen role="nodump"><userinput>ln -sv /dev/sda2 /dev/root</userinput></screen>
+
+    <para>符号链接将只会在系统重新引导前存在。链接只是安装过程所需。
+    </para></note>
+
+  </sect2>
+
+  <sect2>
+    <title>创建配置文件</title>
+
+    <para>生成 <filename>/boot/grub/grub.cfg</filename>:</para>
+
+    <screen><userinput>cat &gt; /boot/grub/grub.cfg &lt;&lt; "EOF"
+<literal># Begin /boot/grub/grub.cfg
+set default=0
+set timeout=5
+
+insmod ext2
+set root=(hd0,2)
+
+menuentry "GNU/Linux, Linux &linux-version;-lfs-&version;" {
+        linux   /boot/vmlinuz-&linux-version;-lfs-&version; root=/dev/sda2 ro
+}</literal>
+EOF</userinput></screen>
+
+    <para>GRUB 是一个极端强大的程序，并且它提供了大量的选项来从各种不同的设备、操作系统和分区类型中引导。也有很多选项用于定制，譬如图形启动画面、播放声音、鼠标输入等。这些选项的详细信息超出了本介绍的范围。</para>
+
+    <note><para>有一个命令，<application>grub-mkconfig</application>，它可以自动编写一个配置文件。它使用在.  It uses a set of scripts in
+    /etc/grub.d/ 中的一组脚本，并将会破坏您所做出的任何定制。这些脚本主要的设计目的是为了非源代码发行版而不推荐 LFS 使用。如果您安装了一个商用的 Linux 发行版，就有很好的机会将会运行到这个程序。 记住确定备份好您的 grub.cfg 文件。</para></note> 
+
+   </sect2>
+
+</sect1>

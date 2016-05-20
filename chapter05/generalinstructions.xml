@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sect1 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+  "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+  <!ENTITY % general-entities SYSTEM "../general.ent">
+  %general-entities;
+]>
+
+<sect1 id="ch-tools-generalinstructions">
+  <?dbhtml filename="generalinstructions.html"?>
+
+  <title>一般的编译说明</title>
+
+  <para>在构建软件包时，在说明中有一些假设:</para>
+
+  <itemizedlist>
+
+  <listitem>
+    <para>几个软件包在编译前是打了补丁的，但是只发生在补丁是克服问题所需的时候。
+    补丁通常是本章和下一章中都需要，但是有些时候，只是其中一章需要。
+    因此，如果似乎缺少了一个下载补丁的说明时，无需担心。在应用补丁时，也可能会遇到关于 <emphasis>offset</emphasis> 或
+    <emphasis>fuzz</emphasis> 的警告信息。不要担心这些警告，因为补丁仍将成功应用。</para>
+  </listitem>
+
+  <listitem>
+    <para>在大多数包的编译过程中，将会有多条警告信息在屏幕上滚动。这些是正常的，可以安全的忽略掉。这些警告就如它所说的&mdash;是关于过时的，但是不是无效的 C 或 C++ 语法的使用。C 的标准变化相当频繁，而某些包仍使用较旧的标准。这并不是一个大问题，只是提示警告而已。</para>
+  </listitem>
+
+  <listitem>
+    <para>最后一次检查 <envar>LFS</envar> 环境变量是否正确设置:</para>
+
+<screen role="nodump"><userinput>echo $LFS</userinput></screen>
+
+    <para>确保输出显示的路径是 LFS 分区的挂载点，我们的示例中使用的是 <filename class="directory">/mnt/lfs</filename>。</para>
+  </listitem>
+
+  <listitem>
+
+    <para>最后，必须强调两件重要事项:</para>
+
+    <important>
+      <para>构建指令假设是使用 <command>bash</command> Shell。</para>
+    </important>
+
+    <important>
+      <para>再次强调构建过程:</para>
+
+      <orderedlist numeration="arabic" spacing="compact">
+        <listitem>
+          <para>把所有的源代码和补丁放置在可以从 chroot 环境中访问到的一个目录中，譬如
+          <filename class="directory">/mnt/lfs/sources/</filename>。
+          <emphasis>不</emphasis>要把源代码放置在
+		  <filename class="directory">/mnt/lfs/tools/</filename>
+		  中。</para>
+        </listitem>
+        <listitem>
+          <para>切换到源代码目录。</para>
+        </listitem>
+        <listitem>
+          <para>对于每个包:</para>
+          <orderedlist numeration="loweralpha" spacing="compact">
+            <listitem>
+              <para>使用 <command>tar</command> 程序，提取要构建的包。在第 5 章中，确保在提取包时，您是使用 <emphasis>lfs</emphasis> 用户身份。</para>
+            </listitem>
+            <listitem>
+              <para>当包被提取时，切换到创建的目录。</para>
+            </listitem>
+            <listitem>
+              <para>按照书中的说明构建包。</para>
+            </listitem>
+            <listitem>
+              <para>切换回源代码目录。</para>
+            </listitem>
+            <listitem>
+              <para>删除提取的源代码目录和任何在构建过程中创建的
+              <filename class="directory"><replaceable>&lt;包名&gt;</replaceable>-build</filename>
+              目录(除非另有说明)。</para>
+            </listitem>
+          </orderedlist>
+        </listitem>
+      </orderedlist>
+    </important>
+  </listitem>
+
+  </itemizedlist>
+
+</sect1>

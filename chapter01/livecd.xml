@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sect1 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+  "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+  <!ENTITY % general-entities SYSTEM "../general.ent">
+  %general-entities;
+]>
+
+<sect1 id="ch-intro-livecd">
+  <?dbhtml filename="livecd.html"?>
+
+  <title>关于包含 CD</title>
+
+  <para>为了方便您，我们随书包含了一张包含有创建一个 LFS 系统所需的源代码包的 CD。
+  CD 是可引导的并提供了一个用于构建 LFS 的稳定的工作系统。
+  本书把这个系统称为<quote>宿主系统</quote>。CD 镜像正在积极维护中，可以在
+  <ulink url="ftp://ftp.lfs-matrix.net/pub/lfs-livecd/"/> 中找到更新版本、</para>
+
+  <para>除了构建 LFS 需要的工具外，CD 上的宿主系统还安装了一些其它的有用的工具:</para>
+
+  <itemizedlist>
+
+    <listitem>
+      <para>本书的 HTML 版本</para>
+    </listitem>
+
+    <listitem>
+      <para>X Window 系统环境</para>
+    </listitem>
+
+    <listitem>
+      <para>Web 工具</para>
+      <itemizedlist>
+        <listitem>
+          <para>Wget (命令行文件接收程序)</para>
+        </listitem>
+        <listitem>
+          <para>Lynx (文本网络浏览器)</para>
+        </listitem>
+        <listitem>
+          <para>Irssi (控制台 IRC 客户端)</para>
+        </listitem>
+        <listitem>
+          <para>Firefox (图形网络浏览器)</para>
+        </listitem>
+        <listitem>
+          <para>Xchat (基于 X 的 IRC 客户端)</para>
+        </listitem>
+      </itemizedlist>
+    </listitem>
+
+    <listitem>
+      <para>文本编辑器</para>
+      <itemizedlist>
+        <listitem>
+          <para>Vim</para>
+        </listitem>
+        <listitem>
+          <para>Nano</para>
+        </listitem>
+      </itemizedlist>
+    </listitem>
+
+    <listitem>
+      <para>网络工具</para>
+      <itemizedlist>
+        <listitem>
+          <para>SSH 服务器和客户端</para>
+        </listitem>
+        <listitem>
+          <para>NFS 服务器和客户端</para>
+        </listitem>
+        <listitem>
+          <para>用于 Windows 共享的 Smbmount (mount.cifs)</para>
+        </listitem>
+        <listitem>
+          <para>Subversion</para>
+        </listitem>
+        <listitem>
+          <para>Dhcpcd (DHCP 客户端)</para>
+        </listitem>
+      </itemizedlist>
+    </listitem>
+
+    <listitem>
+      <para>文件系统程序</para>
+      <itemizedlist>
+        <listitem>
+          <para>Reiserfsprogs</para>
+        </listitem>
+        <listitem>
+          <para>Xfsprogs</para>
+        </listitem>
+      </itemizedlist>
+    </listitem>
+
+    <listitem>
+      <para>nALFS - 一个用于自动 LFS 构建的工具</para>
+    </listitem>
+
+  </itemizedlist>
+
+</sect1>

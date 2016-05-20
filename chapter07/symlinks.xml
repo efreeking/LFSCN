@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sect1 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+  "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+  <!ENTITY % general-entities SYSTEM "../general.ent">
+  %general-entities;
+]>
+
+<sect1 id="ch-scripts-symlinks">
+  <?dbhtml filename="symlinks.html"?>
+
+  <title>创建自定义的符号链接到设备</title>
+
+  <sect2>
+
+    <title>CD-ROM 符号链接</title>
+
+    <para>某些您可能以后想安装的软件(如各种媒体播放器)会预期 <filename class="symlink">/dev/cdrom</filename> 和 <filename class="symlink">/dev/dvd</filename> 符号链接的存在，并且指向 CD-ROM 或 DVD-ROM 设备。还有把对那些符号链接的引用放入 <filename>/etc/fstab</filename> 中可能会更方便使用。Udev 附带一个脚本将会根据每个设备的功能，为您生成这些符号链接的规则文件，但是您需要决定您希望脚本使用的两种模式中的哪一种。</para>
+
+    <para>第一，脚本可以以<quote>按路径</quote>模式(按默认用于 USB 和火线设备)操作，其中它根据到 CD 或 DVD 设备的物理路径创建规则。第二，它可以以<quote>按 id</quote> 模式(默认用于 IDE 和 SCSI 设备)操作，其中它创建的规则是根据存储在 CD 或 DVD 设备本身的识别字符串。路径是由 Udev 的 <command>path_id</command>
+    脚本判断的，而识别字符串则是由它的
+    <command>ata_id</command> 或 <command>scsi_id</command> 程序，根据您拥有的设备的类型来从硬件中读取。</para>
+
+    <para>每种实现方式都有好处；要使用的正确的实现方式取决于可能发生什么类型的设备变化。如果您预期设备的物理路径(也就是它插入的端口或槽位)会更改，例如，由于您计划移动驱动器到一个不同的 IDE 端口或者一个不同的 USB 连接器，那么您应该使用<quote>按 id</quote>模式。在另一方面，如果您预期设备的识别号会改变，例如由于它可能会坏掉，而您将会使用同一容量的不同的的设备插入到同一连接器中，那么您应该使用<quote>按路径</quote>模式。</para>
+
+    <para>如果您的设备两种类型的情况都可能发生，那么根据您预期哪种情况发生更频繁来选择模式。</para>
+
+<!-- If you use by-id mode, the symlinks will survive even the transition
+     to libata for IDE drives, but that is not for the book. -->
+
+    <important><para>外置设备(例如 USB 连接的 CD 驱动器)不应该使用按路径持久性，因为每次设备插入到新的外部端口，它的物理路径都将改变。所有您编写 Udev 规则按它们的物理路径来识别它们，外部连接的设备将会有这样的问题；问题不仅仅限于 CD 和 DVD 驱动器。</para></important>
+
+    <para>如果您希望查看 Udev 脚本将会使用的值，那么对于适当的 CD-ROM 设备，在 <filename class="directory">/sys</filename> 下查找相应的目录(例如，它可以是 <filename class="directory">/sys/block/hdd</filename>)并运行类似如下的命令:</para>
+
+<screen role="nodump"><userinput>udevadm test /sys/block/hdd</userinput></screen>
+
+    <para>查看包含各种 *_id 程序的输出。<quote>按 id</quote>模式将会使用 ID_SERIAL 值(如果它存在并且不为空，否则它将会使用 ID_MODEL 和
+    ID_REVISION 的组合)。<quote>按路径</quote>模式将会使用 ID_PATH 值。</para>
+
+    <para>如果默认模式不适合您的情况，那么可以对
+    <filename>/lib/udev/rules.d/75-cd-aliases-generator.rules</filename> 文件进行下列修改，如下(其中 <replaceable>模式</replaceable> 是<quote>by-id</quote>(按 ID)或<quote>by-path</quote>(按路径)之一):</para>
+
+<screen role="nodump"><userinput>sed -i -e 's/"write_cd_rules"/"write_cd_rules <replaceable>模式</replaceable>"/' \
+    /lib/udev/rules.d/75-cd-aliases-generator.rules</userinput></screen>
+
+    <para>注意，此时并不需要创建规则文件或符号链接，因为您已经绑定挂载了宿主的 <filename class="directory">/dev</filename> 目录到 LFS 系统，并且我们假设符号链接已存在于宿主上。规则和符号链接将会在您首次引导您的 LFS 系统时创建。</para>
+
+    <para>尽管如此，如果您有多个 CD-ROM 设备，那么那时生成的符号链接可能会指向您在宿主上指向之外的不同的设备上，因为设备不是以一种可预测的顺序来发现的。当您首次引导 LFS 系统时创建的分配将会是稳定的，所以唯一的问题就是您需要在两个系统都指向同一设备。如果您需要这样做，那么观察(并可以编辑)引导后生成的 <filename>/etc/udev/rules.d/70-persistent-cd.rules</filename> 文件，确保分配的符号链接匹配您所需要的内容。</para>
+
+  </sect2>
+
+  <sect2>
+
+    <title>处理重复设备</title>
+
+    <para>如<xref linkend="ch-scripts-udev"/>中所阐述的，同一功能的设备在 <filename class="directory">/dev</filename> 中出现的顺序是非常随机的。例如，如果您有一个 USB Web 摄像头和一个电视调谐器，有时候 <filename>/dev/video0</filename> 引用摄像头而 <filename>/dev/video1</filename> 引用调谐器，而重启后的某些时候，顺序会颠倒过来。对于所有类型的硬件，除了声卡和网卡外，是可以通过为自定义的永久符号链接创建 udev 规则的方式修复的。网卡的情况单独在<xref linkend="ch-scripts-network"/>中说明，而声卡配置可以在 <ulink url="&blfs-root;view/svn/postlfs/devices.html">BLFS</ulink> 中找到。</para>
+
+    <para>对于每个有类似这种问题的设备，
+    (即使问题不存在于您当前的 Linux 发行版上)，在
+    <filename class="directory">/sys/class</filename> 或
+    <filename class="directory">/sys/block</filename> 下查找相应的目录。
+    对于视频设备，这个可能是 <filename
+    class="directory">/sys/class/video4linux/video<replaceable>X</replaceable></filename>。
+    找出能够识别设备的唯一的属性(通常制造商和产品 ID 或序列号有用):</para>
+
+<screen role="nodump"><userinput>udevadm info -a -p /sys/class/video4linux/video0</userinput></screen>
+
+    <para>然后编写创建符号链接的规则，如:</para>
+
+<screen role="nodump"><userinput>cat &gt; /etc/udev/rules.d/83-duplicate_devs.rules &lt;&lt; "EOF"
+<literal>
+# Persistent symlinks for webcam and tuner
+KERNEL=="video*", ATTRS{idProduct}=="1910", ATTRS{idVendor}=="0d81", \
+    SYMLINK+="webcam"
+KERNEL=="video*", ATTRS{device}=="0x036f", ATTRS{vendor}=="0x109e", \
+    SYMLINK+="tvtuner"
+</literal>
+EOF</userinput></screen>
+
+    <para>结果是 <filename>/dev/video0</filename> 和
+    <filename>/dev/video1</filename> 设备仍会随机引用调谐器和网络摄像头(并且因此不应该直接使用)，但是符号链接 <filename>/dev/tvtuner</filename> 和
+    <filename>/dev/webcam</filename> 会总是指向正确的设备。</para>
+
+ </sect2>
+
+</sect1>

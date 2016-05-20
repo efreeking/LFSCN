@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sect1 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+  "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+  <!ENTITY % general-entities SYSTEM "../general.ent">
+  %general-entities;
+]>
+
+<sect1 id="ch-system-glib" role="wrap">
+  <?dbhtml filename="glib.html"?>
+
+  <sect1info condition="script">
+    <productname>glib</productname>
+    <productnumber>&glib-version;</productnumber>
+    <address>&glib-url;</address>
+  </sect1info>
+
+  <title>Glib-&glib-version;</title>
+
+  <indexterm zone="ch-system-glib">
+    <primary sortas="a-Glib">Glib</primary>
+  </indexterm>
+
+  <sect2 role="package">
+    <title/>
+
+    <para>GLib 包包含一个低级的核心库。这对于为 C 、可移植性封装提供数据结构处理，为诸如事件循环、线程、动态加载之类的运行时功能的提供接口，以及提供对象系统很有用。</para>
+
+    <segmentedlist>
+      <segtitle>&buildtime;</segtitle>
+      <segtitle>&diskspace;</segtitle>
+
+      <seglistitem>
+        <seg>&glib-ch6-sbu;</seg>
+        <seg>&glib-ch6-du;</seg>
+      </seglistitem>
+    </segmentedlist>
+
+  </sect2>
+
+  <sect2 role="installation">
+    <title>Glib 的安装</title>
+
+    <para>准备 Glib 编译:</para>
+
+<screen><userinput remap="configure">PCRE_LIBS="-L/usr/lib -lpcre" PCRE_CFLAGS="-I/usr/include" \
+./configure --prefix=/usr --sysconfdir=/etc --with-pcre=system</userinput></screen>
+
+    <variablelist>
+      <title>配置选项的含义:</title>
+
+      <varlistentry>
+        <term><parameter>--with-pcre=system</parameter></term>
+        <listitem>
+          <para>这个参数使得构建使用一个系统提供的 PCRE 库版本代替内置的版本。</para>
+        </listitem>
+      </varlistentry>
+    </variablelist>
+
+    <para>编译包:</para>
+
+<screen><userinput remap="make">make</userinput></screen>
+
+    <para>由于对还不存在的额外的 Perl 模块和其它包(如 desktop-file-utils 和 DBus)的依赖关系，不可能运行 Glib 的测试套装。</para>
+
+    <para>安装包:</para>
+
+<screen><userinput remap="install">make install</userinput></screen>
+
+  </sect2>
+
+  <sect2 id="contents-glib" role="content">
+    <title>Glib 的内容</title>
+
+    <segmentedlist>
+      <segtitle>安装的程序</segtitle>
+      <segtitle>安装的库</segtitle>
+      <segtitle>安装目录</segtitle>
+
+      <seglistitem>
+        <seg>gio-querymodules, glib-genmarshal, glib-gettextize,
+        glib-mkenums, gobject-query, gtester and gtester-report</seg>
+        <seg>libgio-2.0.so, libglib-2.0.so, libgmodule-2.0.so,
+        libgobject-2.0.so 和 libgthread-2.0.so</seg>
+        <seg>/usr/include/{gio-unix-2.0/gio,glib-2.0/{gio,glib,gobject}},
+             /usr/lib/{gio/modules,glib-2.0/include},
+             /usr/share/{gdb/auto-load,glib-2.0/{gdb, gettext/po},gtk-doc/html/{gio,glib,gobject}}</seg>
+      </seglistitem>
+    </segmentedlist>
+
+    <variablelist>
+      <bridgehead renderas="sect3">简述</bridgehead>
+      <?dbfo list-presentation="list"?>
+      <?dbhtml list-presentation="table"?>
+
+      <varlistentry id="gio-querymodules">
+        <term><command>gio-querymodules</command></term>
+        <listitem>
+          <para>是一个用于 Glibc 闭合的 C 代码 marshaller 生成工具。</para>
+          <indexterm zone="ch-system-glib gio-querymodules">
+            <primary sortas="b-glib">gio-querymodules</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="glib-gettextize">
+        <term><command>glib-gettextize</command></term>
+        <listitem>
+          <para>是 gettext 国际化工具的一个变种。</para>
+          <indexterm zone="ch-system-glib glib-gettextize">
+            <primary sortas="b-glib-gettextize">glib-gettextize</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="glib-mkenums">
+        <term><command>glib-mkenums</command></term>
+        <listitem>
+          <para>是一个 C 语言枚举描述生成的工具。</para>
+          <indexterm zone="ch-system-glib glib-mkenums">
+            <primary sortas="b-glib-mkenums">glib-mkenums</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="gobject-query">
+        <term><command>gobject-query</command></term>
+        <listitem>
+          <para>是一个绘制类型树的小工具。</para>
+          <indexterm zone="ch-system-glib gobject-query">
+            <primary sortas="b-gobject-query">gobject-query</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="gtester">
+        <term><command>gtester</command></term>
+        <listitem>
+          <para>是一个测试运行工具。</para>
+          <indexterm zone="ch-system-glib gtester">
+            <primary sortas="b-gtester">gtester</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="gtester-report">
+        <term><command>gtester-report</command></term>
+        <listitem>
+          <para>是一个测试报告格式化工具。</para>
+          <indexterm zone="ch-system-glib gtester-report">
+            <primary sortas="b-gtester-report">gtester-report</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="glib">
+        <term><filename class="libraryfile">Glib libraries</filename></term>
+        <listitem>
+          <para>包含一个常规用途的低级核心库。</para>
+        </listitem>
+      </varlistentry>
+
+    </variablelist>
+
+  </sect2>
+
+</sect1>

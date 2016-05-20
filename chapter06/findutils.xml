@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sect1 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+  "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+  <!ENTITY % general-entities SYSTEM "../general.ent">
+  %general-entities;
+]>
+
+<sect1 id="ch-system-findutils" role="wrap">
+  <?dbhtml filename="findutils.html"?>
+
+  <sect1info condition="script">
+    <productname>findutils</productname>
+    <productnumber>&findutils-version;</productnumber>
+    <address>&findutils-url;</address>
+  </sect1info>
+
+  <title>Findutils-&findutils-version;</title>
+
+  <indexterm zone="ch-system-findutils">
+    <primary sortas="a-Findutils">Findutils</primary>
+  </indexterm>
+
+  <sect2 role="package">
+    <title/>
+
+    <para>Findutils 包包含查找文件的程序。这些程序提供了递归的搜索一个目录树并创建、操作和搜索一个数据库(通常比递归查找更快，但是如果数据库不是最近更新的话，可能不可靠)。</para>
+
+    <segmentedlist>
+      <segtitle>&buildtime;</segtitle>
+      <segtitle>&diskspace;</segtitle>
+
+      <seglistitem>
+        <seg>&findutils-ch6-sbu;</seg>
+        <seg>&findutils-ch6-du;</seg>
+      </seglistitem>
+    </segmentedlist>
+
+  </sect2>
+
+  <sect2 role="installation">
+    <title>Findutils 的安装</title>
+
+    <para>准备 Findutils 编译:</para>
+
+<screen><userinput remap="configure">./configure --prefix=/usr --libexecdir=/usr/lib/findutils \
+    --localstatedir=/var/lib/locate</userinput></screen>
+
+    <variablelist>
+      <title>配置选项的含义:</title>
+
+      <varlistentry>
+        <term><parameter>--localstatedir</parameter></term>
+        <listitem>
+          <para>这个选项更改 <filename class="directory">/var/lib/locate</filename> 中的 <command>locate</command> 数据库的位置，这是兼容 FHS 的。</para>
+        </listitem>
+      </varlistentry>
+
+    </variablelist>
+
+    <para>编译包:</para>
+
+<screen><userinput remap="make">make</userinput></screen>
+
+    <para>要测试结果，执行:</para>
+
+<screen><userinput remap="test">make check</userinput></screen>
+
+    <para>安装包:</para>
+
+<screen><userinput remap="install">make install</userinput></screen>
+
+    <para>在 LFS 引导脚本包中的某些脚本依赖于
+    <command>find</command>。因为 <filename class="directory">/usr</filename>
+    在引导的早期阶段可能还不可用，所以这个程序需要放置在根分区上。<command>updatedb</command> 脚本也需要修改以纠正一个明显的路径:</para>
+
+<screen><userinput remap="install">mv -v /usr/bin/find /bin
+sed -i 's/find:=${BINDIR}/find:=\/bin/' /usr/bin/updatedb</userinput></screen>
+
+  </sect2>
+
+  <sect2 id="contents-findutils" role="content">
+    <title>Findutils 的内容</title>
+
+    <segmentedlist>
+      <segtitle>安装的程序</segtitle>
+      <segtitle>安装的目录</segtitle>
+
+      <seglistitem>
+        <seg>bigram, code, find, frcode, locate, oldfind, updatedb 和 xargs</seg>
+        <seg>/usr/lib/findutils</seg>
+      </seglistitem>
+    </segmentedlist>
+
+    <variablelist>
+      <bridgehead renderas="sect3">简述</bridgehead>
+      <?dbfo list-presentation="list"?>
+      <?dbhtml list-presentation="table"?>
+
+      <varlistentry id="bigram">
+        <term><command>bigram</command></term>
+        <listitem>
+          <para>以前用于产生 <command>locate</command>
+          数据库</para>
+          <indexterm zone="ch-system-findutils bigram">
+            <primary sortas="b-bigram">bigram</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="code">
+        <term><command>code</command></term>
+        <listitem>
+          <para>以前用于产生 <command>locate</command>
+          数据库；它是 <command>frcode</command> 的前身。</para>
+          <indexterm zone="ch-system-findutils code">
+            <primary sortas="b-code">code</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="find">
+        <term><command>find</command></term>
+        <listitem>
+          <para>搜索给定的目录树以查找匹配指定条件的文件</para>
+          <indexterm zone="ch-system-findutils find">
+            <primary sortas="b-find">find</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="frcode">
+        <term><command>frcode</command></term>
+        <listitem>
+          <para>被 <command>updatedb</command> 调用来压缩文件名称的列表；它使用前压缩，通过把一个系数由 4 改为 5 来减少数据库大小。</para>
+          <indexterm zone="ch-system-findutils frcode">
+            <primary sortas="b-frcode">frcode</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="locate">
+        <term><command>locate</command></term>
+        <listitem>
+          <para>搜索一个数据库中的文件名，并报告包含给定字符串或匹配给定式样的名称</para>
+          <indexterm zone="ch-system-findutils locate">
+            <primary sortas="b-locate">locate</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="oldfind">
+        <term><command>oldfind</command></term>
+        <listitem>
+          <para>较旧的 find 版本，使用一种不同的算法</para>
+          <indexterm zone="ch-system-findutils oldfind">
+            <primary sortas="b-oldfind">oldfind</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="updatedb">
+      <term><command>updatedb</command></term>
+        <listitem>
+          <para>更新 <command>locate</command> 数据库；它扫描整个文件系统(包括其它当前已挂载的的文件系统，除了说明不要的外)并把它找到的每个文件放入到数据库中</para>
+          <indexterm zone="ch-system-findutils updatedb">
+            <primary sortas="b-updatedb">updatedb</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="xargs">
+        <term><command>xargs</command></term>
+        <listitem>
+          <para>可以用于应用一个给定的命令给一系列的文件</para>
+          <indexterm zone="ch-system-findutils xargs">
+            <primary sortas="b-xargs">xargs</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+    </variablelist>
+
+  </sect2>
+
+</sect1>

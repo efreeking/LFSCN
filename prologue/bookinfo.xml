@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE bookinfo PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+  "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+  <!ENTITY % general-entities SYSTEM "../general.ent">
+  %general-entities;
+]>
+
+<bookinfo>
+  <title>Linux From Scratch</title>
+  <subtitle>?? &version;</subtitle>
+
+
+  <authorgroup>
+    <author>
+      <firstname>??? Gerard</firstname>
+      <surname>Beekmans</surname>
+    </author>
+    <author>
+      <firstname>??? Matthew Burgess</firstname>
+      <surname>? Bruce Dubbs</surname>
+    </author>
+  </authorgroup>
+
+
+  <copyright id="copyright">
+    <year>&copyrightdate;</year>
+    <holder>Gerard Beekmans</holder>
+  </copyright>
+
+  <legalnotice>
+    <para>?? &copy; &copyrightdate;, Gerard Beekmans</para>
+
+    <para>???????</para>
+
+    <para>??? <xref linkend="CC"/> ?????</para>
+    <para>??? <xref linkend="MIT"/> ??????????????</para>
+
+    <para><trademark class='registered'>Linux</trademark> ? Linus Torvalds ????????</para>
+
+  </legalnotice>
+
+</bookinfo>

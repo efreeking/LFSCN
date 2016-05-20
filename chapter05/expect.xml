@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sect1 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+  "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+  <!ENTITY % general-entities SYSTEM "../general.ent">
+  %general-entities;
+]>
+
+<sect1 id="ch-tools-expect" role="wrap">
+  <?dbhtml filename="expect.html"?>
+
+  <sect1info condition="script">
+    <productname>expect</productname>
+    <productnumber>&expect-version;</productnumber>
+    <address>&expect-url;</address>
+  </sect1info>
+
+  <title>Expect-&expect-version;</title>
+
+  <indexterm zone="ch-tools-expect">
+    <primary sortas="a-Expect">Expect</primary>
+  </indexterm>
+
+  <sect2 role="package">
+    <title/>
+
+    <para>Expect 包包含一个通过调用执行脚本对话框和其它交互式程序的程序。</para>
+
+    <segmentedlist>
+      <segtitle>&buildtime;</segtitle>
+      <segtitle>&diskspace;</segtitle>
+
+      <seglistitem>
+        <seg>&expect-ch5-sbu;</seg>
+        <seg>&expect-ch5-du;</seg>
+      </seglistitem>
+    </segmentedlist>
+
+  </sect2>
+
+  <sect2 role="installation">
+    <title>Expect 的安装</title>
+
+    <para>首先，强制 Expect 的 configure 脚本使用 <filename>/bin/stty</filename>
+    来代替 <filename>/usr/local/bin/stty</filename>，它可能在宿主系统上查找。
+    这将会确保我们的测试套装工具保持健全能够用于我们的工具链的最终构建版本:</para>
+
+<screen><userinput remap="pre">cp -v configure{,.orig}
+sed 's:/usr/local/bin:/bin:' configure.orig &gt; configure</userinput></screen>
+
+    <para>现在准备 Expect 编译:</para>
+
+<screen><userinput remap="configure">./configure --prefix=/tools --with-tcl=/tools/lib \
+  --with-tclinclude=/tools/include</userinput></screen>
+
+    <variablelist>
+      <title>配置选项的含义:</title>
+
+      <varlistentry>
+        <term><parameter>--with-tcl=/tools/lib</parameter></term>
+        <listitem>
+          <para>这个确保了 configure 脚本在临时工具位置查找 Tcl 的安装，而不是位于宿主系统上的可用安装。</para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term><parameter>--with-tclinclude=/tools/include</parameter></term>
+        <listitem>
+          <para>这个明确的告诉 Expect 在何处查找 Tcl 的内置头信息。
+          使用这个选项避免导致
+          <command>configure</command> 失败的条件，因为它不能自动的发现
+          Tcl 的头文件的位置。</para>
+        </listitem>
+      </varlistentry>
+
+    </variablelist>
+
+    <para>构建软件包:</para>
+
+<screen><userinput remap="make">make</userinput></screen>
+
+    <para>编译现在完成了。如之前讨论，在本章中，对于这里的临时工具来说，运行测试套装不是强制的。无论如何都要运行 Expect 测试套装，发出下列命令:</para>
+
+<screen><userinput remap="test">make test</userinput></screen>
+
+    <para>注意，Expect 测试套装在某些不在我们控制范围内的宿主条件下会遇到失败。
+    因此，这里的测试套装失败并不奇怪，也不重要。</para>
+
+    <para>安装软件包:</para>
+
+<screen><userinput remap="install">make SCRIPTS="" install</userinput></screen>
+
+    <variablelist>
+      <title>make 参数的含义:</title>
+
+      <varlistentry>
+        <term><parameter>SCRIPTS=""</parameter></term>
+        <listitem>
+          <para>这个防止了增补 Expect 脚本的安装，它不是必需的。</para>
+        </listitem>
+      </varlistentry>
+
+    </variablelist>
+
+  </sect2>
+
+  <sect2 id="contents-expect" role="content">
+    <title>Expect 的内容</title>
+
+    <segmentedlist>
+      <segtitle>安装的程序</segtitle>
+      <segtitle>安装的库</segtitle>
+
+      <seglistitem>
+        <seg>expect</seg>
+        <seg>libexpect-&expect-lib-version;.a</seg>
+      </seglistitem>
+    </segmentedlist>
+
+    <variablelist>
+      <bridgehead renderas="sect3">简述</bridgehead>
+      <?dbfo list-presentation="list"?>
+      <?dbhtml list-presentation="table"?>
+
+      <varlistentry id="expect">
+        <term><command>expect</command></term>
+        <listitem>
+          <para>根据一个脚本和其它的交互式程序通信</para>
+          <indexterm zone="ch-tools-expect expect">
+            <primary sortas="b-expect">expect</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="libexpect">
+        <term><filename class="libraryfile">libexpect-&expect-lib-version;.a</filename></term>
+        <listitem>
+          <para>包含让 Expect 用于作为 Tcl 扩展或从 C 或 C++ 直接使用(不需 Tcl)的功能</para>
+          <indexterm zone="ch-tools-expect libexpect">
+            <primary sortas="c-libexpect-&expect-lib-version;">libexpect-&expect-lib-version;</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+    </variablelist>
+
+  </sect2>
+
+</sect1>

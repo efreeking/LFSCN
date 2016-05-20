@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sect1 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+  "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+  <!ENTITY % general-entities SYSTEM "../general.ent">
+  %general-entities;
+]>
+
+<sect1 id="ch-system-introduction">
+  <?dbhtml filename="introduction.html"?>
+
+  <title>介绍</title>
+
+  <para>在本章中，我们进入了“建筑工地”，开始精心构造 LFS 系统。也就是说，我们 chroot 到临时的迷你 Linux 系统中，进行一些最终的准备工作，然后开始安装软件包。</para>
+
+  <para>这个软件的安装直截了当。尽管在许多情况下，安装说明可以变得更短更通用，但是我们还是选择了为每个软件包提供完整的说明以减少出错的可能。学习 Linux 系统如何运作的关键在于了解每一个软件包的作用，以及您(或者说系统)为何需要它。</para>
+
+  <para>我们不建议使用优化。它们可以使程序运行稍微加快，但是也会导致编译的困难和运行程序时的问题。如果一个包在优化时拒绝变异，尝试不优化变异，看一下是否能够解决问题。即使在使用优化时，软件包可以编译，但是也有可能因为编码和构建工具之间的复杂的相会作用而发生不正确编译的风险存在。
+  还要注意 <option>-march</option> 和 <option>-mtune</option> 选项使用了书中未指定，还未测试的值。这可能导致和工具链(Binutils、GCC 和 Glibc)包的问题。使用编译器优化可能得到的好处远远大于造成的风险。
+  首次构建 LFS 的朋友鼓励不带定制优化进行构建。随后的系统仍将运行的非常快，而且同时也相当稳定。</para>
+
+  <para>本章中软件包的安装顺序需要严格遵循，以确保没有程序会把对
+  <filename class="directory">/tools</filename> 的路径引用硬连接到程序中。同样的原因，不要并发的编译多个单独的包。并发编译可能会节省时间(尤其在双 CPU 的机器上)，但是它会导致程序包含对 <filename class="directory">/tools</filename> 的硬连接路径，这将会导致当目录被移除时，程序会通知工作。</para>
+
+  <para>在安装说明前，每个安装页面提供了关于软件包的信息，包括它包含内容的简明描述，构建大约要花费的时间，在构建过程中需要多大的磁盘空间等。接着安装说明，有一个软件包安装的程序和库文件的列表(附带它们的简单描述)。</para>
+
+  <note><para>SBU 值和需要的磁盘空间包括在第 6 章中所有适用的软件包的测试套装数据。</para></note>
+
+</sect1>

@@ -1,0 +1,553 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sect1 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+  "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+  <!ENTITY % general-entities SYSTEM "../general.ent">
+  %general-entities;
+]>
+
+<sect1 id="ch-system-groff" role="wrap">
+  <?dbhtml filename="groff.html"?>
+
+  <sect1info condition="script">
+    <productname>groff</productname>
+    <productnumber>&groff-version;</productnumber>
+    <address>&groff-url;</address>
+  </sect1info>
+
+  <title>Groff-&groff-version;</title>
+
+  <indexterm zone="ch-system-groff">
+    <primary sortas="a-Groff">Groff</primary>
+  </indexterm>
+
+  <sect2 role="package">
+    <title/>
+
+    <para>Groff 包包含处理和格式化文本的程序。</para>
+
+    <segmentedlist>
+      <segtitle>&buildtime;</segtitle>
+      <segtitle>&diskspace;</segtitle>
+
+      <seglistitem>
+        <seg>&groff-ch6-sbu;</seg>
+        <seg>&groff-ch6-du;</seg>
+      </seglistitem>
+    </segmentedlist>
+
+  </sect2>
+
+  <sect2 role="installation">
+    <title>Groff 的安装</title>
+
+    <!-- It looks like many screen fonts still don't have Unicode single quotes
+    and dashes in them, but the sed below no longer makes any changes as the
+    format has changed in Groff-1.20.1 -->
+
+<!--    <para>Many screen fonts don't have Unicode single quotes and dashes in them.
+    Tell Groff to use the ASCII equivalents instead:</para>
+
+<screen><userinput remap="pre">sed -i -e 's/2010/002D/' -e 's/2212/002D/' \
+    -e 's/2018/0060/' -e 's/2019/0027/' font/devutf8/R.proto</userinput></screen> -->
+
+    <para>Groff 需要环境变量 <envar>PAGE</envar> 来包含默认的纸张尺寸。对于美国的用户，
+    <parameter>PAGE=letter</parameter> 是适当的。除此之外
+    <parameter>PAGE=A4</parameter> 可能更适合。尽管默认的纸张尺寸是在编译的时候配置的，但是它们之后可以通过回显(ECHO) <quote>A4</quote> 或 <quote>letter</quote> 到
+    <filename>/etc/papersize</filename> 文件来重写。</para>
+
+    <para>准备 Groff 编译:</para>
+
+<screen><userinput remap="configure">PAGE=<replaceable>&lt;paper_size&gt;</replaceable> ./configure --prefix=/usr</userinput></screen>
+
+    <para>编译包:</para>
+
+<screen><userinput remap="make">make</userinput></screen>
+
+    <para>这个包不附带测试套装。</para>
+
+    <para>安装包:</para>
+
+<screen><userinput remap="install">make install</userinput></screen>
+
+    <para>某些文档程序，譬如 <command>xman</command>，将不能和下列的符号链接正常的配合使用:</para>
+
+<screen><userinput remap="install">ln -sv eqn /usr/bin/geqn
+ln -sv tbl /usr/bin/gtbl</userinput></screen>
+
+  </sect2>
+
+  <sect2 id="contents-groff" role="content">
+  <title>Groff 的内容</title>
+
+    <segmentedlist>
+      <segtitle>安装的程序</segtitle>
+      <segtitle>安装目录</segtitle>
+
+      <seglistitem>
+        <seg>addftinfo, afmtodit, chem, eqn, eqn2graph, gdiffmk,
+        geqn (链接到 eqn), grap2graph, grn, grodvi, groff, groffer, grog,
+        grolbp, grolj4, grops, grotty, gtbl (链接到 tbl), hpftodit,
+        indxbib, lkbib, lookbib, mmroff, neqn, nroff, pdfroff, pfbtops, pic,
+        pic2graph, post-grohtml, preconv, pre-grohtml, refer, roff2dvi,
+        roff2html, roff2pdf, roff2ps, roff2text, roff2x, soelim, tbl, tfmtodit,
+        和 troff</seg>
+        <seg>/usr/lib/groff, /usr/share/doc/groff-&groff-version;,
+        /usr/share/groff</seg>
+      </seglistitem>
+    </segmentedlist>
+
+    <variablelist>
+      <bridgehead renderas="sect3">简述</bridgehead>
+      <?dbfo list-presentation="list"?>
+      <?dbhtml list-presentation="table"?>
+
+      <varlistentry id="addftinfo">
+        <term><command>addftinfo</command></term>
+        <listitem>
+          <para>读取一个 troff 字体文件并添加某些被 <command>groff</command> 使用的额外的字体阵列信息</para>
+          <indexterm zone="ch-system-groff addftinfo">
+            <primary sortas="b-addftinfo">addftinfo</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="afmtodit">
+        <term><command>afmtodit</command></term>
+        <listitem>
+          <para>创建一个用于 <command>groff</command> 和
+          <command>grops</command> 的字体文件</para>
+          <indexterm zone="ch-system-groff afmtodit">
+            <primary sortas="b-afmtodit">afmtodit</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="chem">
+        <term><command>chem</command></term>
+        <listitem>
+          <para>用于产生化学结构关系图的 Groff 处理器</para>
+          <indexterm zone="ch-system-groff chem">
+            <primary sortas="b-chem">chem</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="eqn">
+        <term><command>eqn</command></term>
+        <listitem>
+          <para>编译嵌入在 troff 输入文件中的方程的描述为能被
+          <command>troff</command> 理解的命令</para>
+          <indexterm zone="ch-system-groff eqn">
+            <primary sortas="b-eqn">eqn</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="eqn2graph">
+        <term><command>eqn2graph</command></term>
+        <listitem>
+          <para>转换一个 troff EQN (方程式)为一个剪辑的图像</para>
+          <indexterm zone="ch-system-groff eqn2graph">
+            <primary sortas="b-eqn2graph">eqn2graph</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="gdiffmk">
+        <term><command>gdiffmk</command></term>
+        <listitem>
+          <para>标记 groff/nroff/troff 文件之间的不同</para>
+          <indexterm zone="ch-system-groff gdiffmk">
+            <primary sortas="b-gdiffmk">gdiffmk</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="geqn">
+        <term><command>geqn</command></term>
+        <listitem>
+          <para>到 <command>eqn</command> 的链接</para>
+          <indexterm zone="ch-system-groff geqn">
+            <primary sortas="b-geqn">geqn</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="grap2graph">
+        <term><command>grap2graph</command></term>
+        <listitem>
+          <para>转换一个 grap 图为一个剪辑的位图图像</para>
+          <indexterm zone="ch-system-groff grap2graph">
+            <primary sortas="b-grap2graph">grap2graph</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="grn">
+        <term><command>grn</command></term>
+        <listitem>
+          <para>一个用于 gremlin 文件的 <command>groff</command> 预处理器</para>
+          <indexterm zone="ch-system-groff grn">
+            <primary sortas="b-grn">grn</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="grodvi">
+        <term><command>grodvi</command></term>
+        <listitem>
+          <para>一个产生 TeX dvi 格式的 <command>groff</command> 的驱动程序</para>
+          <indexterm zone="ch-system-groff grodvi">
+            <primary sortas="b-grodvi">grodvi</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="groff">
+        <term><command>groff</command></term>
+        <listitem>
+          <para>一个 groff 文档格式系统的前台；通常，它运行 <command>troff</command> 程序和一个适用于选择的设备的后处理器</para>
+          <indexterm zone="ch-system-groff groff">
+            <primary sortas="b-groff">groff</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="groffer">
+        <term><command>groffer</command></term>
+        <listitem>
+          <para>在 X 和 tty 终端上显示 groff 文件和手册页</para>
+          <indexterm zone="ch-system-groff groffer">
+            <primary sortas="b-groffer">groffer</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="grog">
+        <term><command>grog</command></term>
+        <listitem>
+          <para>读取文件并猜测需要 <command>groff</command>
+          选项 <option>-e</option>、<option>-man</option>、 <option>-me</option>、
+          <option>-mm</option>、<option>-ms</option>、 <option>-p</option>、
+          <option>-s</option> 和 <option>-t</option> 中的哪一个来打印文件，并报告 <command>groff</command> 命令包含哪些选项</para>
+          <indexterm zone="ch-system-groff grog">
+            <primary sortas="b-grog">grog</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="grolbp">
+        <term><command>grolbp</command></term>
+        <listitem>
+          <para>是一个用于佳能 CAPSL 打印机(LBP-4 和 LBP-8 系列的激光打印机)的 <command>groff</command> 驱动程序</para>
+          <indexterm zone="ch-system-groff grolbp">
+            <primary sortas="b-grolbp">grolbp</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="grolj4">
+        <term><command>grolj4</command></term>
+        <listitem>
+          <para>是用于产生适合 HP LaserJet 4 打印机的 PCL5 格式的输出的 <command>groff</command> 驱动程序</para>
+          <indexterm zone="ch-system-groff grolj4">
+            <primary sortas="b-grolj4">grolj4</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="grops">
+        <term><command>grops</command></term>
+        <listitem>
+          <para>翻译 GNU <command>troff</command> 的输出为 PostScript</para>
+          <indexterm zone="ch-system-groff grops">
+            <primary sortas="b-grops">grops</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="grotty">
+        <term><command>grotty</command></term>
+        <listitem>
+          <para>翻译 GNU <command>troff</command> 的输出为适合类打印机设备的形式</para>
+          <indexterm zone="ch-system-groff grotty">
+            <primary sortas="b-grotty">grotty</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="gtbl">
+        <term><command>gtbl</command></term>
+        <listitem>
+          <para>到 <command>tbl</command> 的链接</para>
+          <indexterm zone="ch-system-groff gtbl">
+            <primary sortas="b-gtbl">gtbl</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="hpftodit">
+        <term><command>hpftodit</command></term>
+        <listitem>
+          <para>创建一个字体文件用于和来自标签了 HP 的字体阵列文件的 <command>groff -Tlj4</command> 使用</para>
+          <indexterm zone="ch-system-groff hpftodit">
+            <primary sortas="b-hpftodit">hpftodit</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="indxbib">
+        <term><command>indxbib</command></term>
+        <listitem>
+          <para>使用和 <command>refer</command>、
+          <command>lookbib</command> 及 <command>lkbib</command> 使用的指定文件来创建书目数据库的反向索引</para>
+          <indexterm zone="ch-system-groff indxbib">
+            <primary sortas="b-indxbib">indxbib</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="lkbib">
+        <term><command>lkbib</command></term>
+        <listitem>
+          <para>搜索书目数据库，查找包含指定键的引用并报告任何找到的引用</para>
+          <indexterm zone="ch-system-groff lkbib">
+            <primary sortas="b-lkbib">lkbib</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="lookbib">
+        <term><command>lookbib</command></term>
+        <listitem>
+          <para>在标准错误上打印提示(除非标准输入不是一个终端)，从标准输入读取包含一组关键字的一行，在指定文件中的书目数据库中搜索包含那些关键字的引用，在标准输出上打印找到的任何引用，并重复这个过程直至输入结束</para>
+          <indexterm zone="ch-system-groff lookbib">
+            <primary sortas="b-lookbib">lookbib</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="mmroff">
+        <term><command>mmroff</command></term>
+        <listitem>
+          <para>一个用于 <command>groff</command> 的预处理器</para>
+          <indexterm zone="ch-system-groff mmroff">
+            <primary sortas="b-mmroff">mmroff</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="neqn">
+        <term><command>neqn</command></term>
+        <listitem>
+          <para>格式化方程式用于 American Standard Code for Information
+          Interchange (用于信息交换的美国标准代码 ASCII) 输出</para>
+          <indexterm zone="ch-system-groff neqn">
+            <primary sortas="b-neqn">neqn</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="nroff">
+        <term><command>nroff</command></term>
+        <listitem>
+          <para>一个模拟 <command>nroff</command> 命令
+          使用 <command>groff</command> 的脚本</para>
+          <indexterm zone="ch-system-groff nroff">
+            <primary sortas="b-nroff">nroff</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="pdfroff">
+        <term><command>pdfroff</command></term>
+        <listitem>
+          <para>使用 groff 创建 pdf 文档</para>
+          <indexterm zone="ch-system-groff pdfroff">
+            <primary sortas="b-pdfroff">pdfroff</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="pfbtops">
+        <term><command>pfbtops</command></term>
+        <listitem>
+          <para>把 <filename
+          class="extension">.pfb</filename> 格式的 PostScript 翻译为 ASCII</para>
+          <indexterm zone="ch-system-groff pfbtops">
+            <primary sortas="b-pfbtops">pfbtops</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="pic">
+        <term><command>pic</command></term>
+        <listitem>
+          <para>编译嵌入在 troff 中的图片的描述或
+          TeX 输入文件为能够被 TeX 或
+          <command>troff</command> 识别的命令</para>
+          <indexterm zone="ch-system-groff pic">
+            <primary sortas="b-pic">pic</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="pic2graph">
+        <term><command>pic2graph</command></term>
+        <listitem>
+          <para>转换一个 PIC 图为一个剪辑的图片</para>
+          <indexterm zone="ch-system-groff pic2graph">
+            <primary sortas="b-pic2graph">pic2graph</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="post-grohtml">
+        <term><command>post-grohtml</command></term>
+        <listitem>
+          <para>翻译 GNU <command>troff</command> 的输出为
+          HTML</para>
+          <indexterm zone="ch-system-groff post-grohtml">
+            <primary sortas="b-post-grohtml">post-grohtml</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="preconv">
+        <term><command>preconv</command></term>
+        <listitem>
+          <para>转换输入文件的编码为 GNU
+          <command>troff</command> 能够理解的内容</para>
+          <indexterm zone="ch-system-groff preconv">
+            <primary sortas="b-preconv">preconv</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="pre-grohtml">
+        <term><command>pre-grohtml </command></term>
+        <listitem>
+          <para>翻译 GNU <command>troff</command> 的输出为
+          HTML</para>
+          <indexterm zone="ch-system-groff pre-grohtml">
+            <primary sortas="b-pre-grohtml">pre-grohtml</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="refer">
+        <term><command>refer</command></term>
+        <listitem>
+          <para>复制一个文件的内容为标准的输出，除了 <emphasis>.[</emphasis> 和 <emphasis>.] 之间被解释为引用的行</emphasis>以及在 <emphasis>.R1</emphasis> 和 <emphasis>.R2</emphasis> 之间被解释为如何处理引用的命令的行</para>
+          <indexterm zone="ch-system-groff refer">
+            <primary sortas="b-refer">refer</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="roff2dvi">
+        <term><command>roff2dvi</command></term>
+        <listitem>
+          <para>变换 roff 文件为 DVI 格式</para>
+          <indexterm zone="ch-system-groff roff2dvi">
+            <primary sortas="b-roff2dvi">roff2dvi</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="roff2html">
+        <term><command>roff2html</command></term>
+        <listitem>
+          <para>变换 roff 文件为 HTML 格式</para>
+          <indexterm zone="ch-system-groff roff2html">
+            <primary sortas="b-roff2html">roff2html</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="roff2pdf">
+        <term><command>roff2pdf</command></term>
+        <listitem>
+          <para>变换 roff 文件为 PDFs</para>
+          <indexterm zone="ch-system-groff roff2pdf">
+            <primary sortas="b-roff2pdf">roff2pdf</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="roff2ps">
+        <term><command>roff2ps</command></term>
+        <listitem>
+          <para>变换 roff 文件为 ps 文件</para>
+          <indexterm zone="ch-system-groff roff2ps">
+            <primary sortas="b-roff2ps">roff2ps</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="roff2text">
+        <term><command>roff2text</command></term>
+        <listitem>
+          <para>变换 roff 文件为文本文件</para>
+          <indexterm zone="ch-system-groff roff2text">
+            <primary sortas="b-roff2text">roff2text</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="roff2x">
+        <term><command>roff2x</command></term>
+        <listitem>
+          <para>变换 roff 文件为其它格式</para>
+          <indexterm zone="ch-system-groff roff2x">
+            <primary sortas="b-roff2x">roff2x</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="soelim">
+        <term><command>soelim</command></term>
+        <listitem>
+          <para>读取文件并用提及的<emphasis>文件的内容</emphasis>替换组成 <emphasis>.so 文件</emphasis> 的行</para>
+          <indexterm zone="ch-system-groff soelim">
+            <primary sortas="b-soelim">soelim</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="tbl">
+        <term><command>tbl</command></term>
+        <listitem>
+          <para>编译嵌入在 troff 输入文件中的表的描述为能够被 <command>troff</command> 理解的命令</para>
+          <indexterm zone="ch-system-groff tbl">
+            <primary sortas="b-tbl">tbl</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="tfmtodit">
+        <term><command>tfmtodit</command></term>
+        <listitem>
+          <para>创建一个可以和 <command>groff
+          -Tdvi</command> 一起使用的字体文件</para>
+          <indexterm zone="ch-system-groff tfmtodit">
+            <primary sortas="b-tfmtodit">tfmtodit</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="troff">
+        <term><command>troff</command></term>
+        <listitem>
+          <para>和 Unix <command>troff</command> 高度兼容；它通常是使用 <command>groff</command> 命令调用的，它还会以适当的顺序和适当的选项运行预处理器和后处理器</para>
+          <indexterm zone="ch-system-groff troff">
+            <primary sortas="b-troff">troff</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+    </variablelist>
+
+  </sect2>
+
+</sect1>

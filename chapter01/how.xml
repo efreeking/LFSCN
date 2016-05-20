@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sect1 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+  "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+  <!ENTITY % general-entities SYSTEM "../general.ent">
+  %general-entities;
+]>
+
+<sect1 id="ch-intro-how">
+  <?dbhtml filename="how.html"?>
+
+  <title>如何构建 LFS 系统</title>
+
+  <para>LFS 系统将会使用已安装的 Linux 发行版(譬如 Debian、Mandriva、Red Hat 或 SUSE)来构建。
+  这个已存在的 Linux 系统(宿主)将会作为起点，提供构建新系统所需的程序，包括编译器、链接器和 Shell。
+  在安装发行版时选择 <quote>development</quote> (开发)选项，以便可以访问这些工具。</para>
+
+  <para>作为安装独立的发行版到机器之外的另一个选择，您可能希望使用 Linux From Scratch 的
+  LiveCD 或来自商用发行版的 LiveCD。LFS LiveCD 是像宿主系统一样工作的很好，提供您按照本书中
+  的说明完成工作所需的所有工具。LiveCD 版本是在当前书本之后的，但是仍能够作为构建本书的一个宿主。
+  LiveCD 的 <quote>-nosrc</quote> 或 <quote>-min</quote> 版本是最适用于构建当前的 LFS 系统。
+  要获得更多关于 LiveCD 的信息或者下载一个拷贝，访问 <ulink url="&livecd-root;"/>。</para>
+
+  <note>
+    <para>LFS LiveCD 可能不能很好的在新的硬件配置上工作，可能无法引导或者无法检测某些如 SATA 硬盘之类的设备。</para>
+  </note>
+
+  <para>本书的<xref linkend="chapter-partitioning"/>描述了如何创建一个新的 Linux 原生分区和文件系统，这是新的 LFS 系统将会进行编译和安装的地方。
+  <xref linkend="chapter-getting-materials"/>解释需要下载哪些包和补丁来构建 LFS 系统，以及如何在新的文件系统上存放它们。
+  <xref linkend="chapter-final-preps"/>讨论一个适当的工作环境的设置。
+  请认真阅读<xref linkend="chapter-final-preps"/>，因为它说明了您在开始通过<xref linkend="chapter-temporary-tools"/> 和之后的工作之前需要注意的重要事情。</para>
+
+  <para><xref linkend="chapter-temporary-tools"/> 解释了组成基本开发套装(或工具链)的软件包的安装，
+  这些开发套装(或工具链)将会在<xref linkend="chapter-building-system"/>中用于构建实际的系统。
+  这些包中的某些事解决循环依赖问题所需的&mdash;例如要编译一个编译器，您需要一个编译器。</para>
+
+  <para><xref linkend="chapter-temporary-tools"/> 还向您展示如何构建第一轮的工具链，包括 Binutils 和 GCC (第一轮基本上意味着这两个核心包将会重新安装)。
+  下一步是构建 Glibc (一个 C 库)。Glibc 将会使用第一轮中构建的工具链程序来编译。然后工具链的第二轮将会进行编译。
+  这一次工具链将会针对新构建的 Glibc 动态链接。剩下的 <xref linkend="chapter-temporary-tools"/> 包将会使用第二轮工具链构建。
+  当这一步完成时，除了运行中的内核外，LFS 安装进程将不再依赖于宿主发行版了。</para>
+
+  <para>这种从宿主发行版中分离新的系统出来的努力似乎很多余。
+  至于为什么这样做的完整技术解释将会在 <xref linkend="ch-tools-toolchaintechnotes"/> 中提供。</para>
+
+  <para>在<xref linkend="chapter-building-system"/>中，完整的 LFS 系统被构建。
+  <command>chroot</command> (更改 root)程序将会使用来进入一个虚拟的环境并启动一个新的 Shell，其根目录将会被设置为 LFS 分区。
+  这非常类似于重新引导并指示内核装载 LFS 分区作为根分区。系统实际上并没有重新启动，而是 <command>chroot</command>，因为
+  创建一个可引导的系统需要额外的工作，但现在还不需要。主要的好处是，<quote>chrooting</quote> 让您在 LFS 已经构建时仍可继续使用宿主系统。
+  在等待包的编译完成的同时，您可以继续正常的使用您的计算机。</para>
+
+  <para>为了完成安装，在<xref linkend="chapter-bootscripts"/>中将会设置 LFS 的引导脚本。而内核和引导装载程序的设置在<xref linkend="chapter-bootable"/>中进行。
+  <xref linkend="chapter-finalizing"/>包含在本书之后继续 LFS 体验的信息。在本书中的步骤都被实现后，计算机将准备好可以重新引导到新的 LFS 系统。</para>
+
+  <para>这是概括的过程。每一个步骤的详细信息将会在跟着的章节和包的描述中讨论。
+  看似复杂的项目将会详细说明，每一样东西都会在您开始 LFS 冒险的时候各就各位。</para>
+
+</sect1>

@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sect1 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+  "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+  <!ENTITY % general-entities SYSTEM "../general.ent">
+  %general-entities;
+]>
+
+<sect1 id="ch-tools-glibc" role="wrap">
+  <?dbhtml filename="glibc.html"?>
+
+  <sect1info condition="script">
+    <productname>glibc</productname>
+    <productnumber>&glibc-version;</productnumber>
+    <address>&glibc-url;</address>
+  </sect1info>
+
+  <title>Glibc-&glibc-version;</title>
+
+  <indexterm zone="ch-tools-glibc">
+    <primary sortas="a-Glibc">Glibc</primary>
+    <secondary>工具</secondary>
+  </indexterm>
+
+  <sect2 role="package">
+    <title/>
+
+    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"
+    href="../chapter06/glibc.xml"
+    xpointer="xpointer(/sect1/sect2[1]/para[1])"/>
+
+    <segmentedlist>
+      <segtitle>&buildtime;</segtitle>
+      <segtitle>&diskspace;</segtitle>
+
+      <seglistitem>
+        <seg>&glibc-ch5-sbu;</seg>
+        <seg>&glibc-ch5-du;</seg>
+      </seglistitem>
+    </segmentedlist>
+
+  </sect2>
+
+  <sect2 role="installation">
+    <title>Glibc 的安装</title>
+
+    <para>修复一个防止 Glibc 使用 GCC-&gcc-version; 构建的错误:</para>
+
+    <screen><userinput remap="pre">patch -Np1 -i ../&glibc-gcc_fix-patch;</userinput></screen>
+
+    <para>还要处理一个头文件检查(它会由于此时不完整的构建环境而失败):</para>
+
+    <screen><userinput remap="pre">patch -Np1 -i ../&glibc-cpuid-patch;</userinput></screen>
+
+    <para>Glibc 文档推荐在源代码目录外，在一个专用的构建目录中构建 Glibc:</para>
+
+<screen><userinput remap="pre">mkdir -v ../glibc-build
+cd ../glibc-build</userinput></screen>
+
+    <para>因为 Glibc 不再支持 i386，它的开发者说，当要构建 x86 机器的 Glibc 时，使用编译器标志 <parameter>-march=i486</parameter>。有几种办法来完成任务，但是测试显示，标志最好放置在构建变量
+	<quote>CFLAGS</quote> 中。
+    不是完全忽略 Glibc 的内部构建系统用于 CFLAGS 的内容，而是通过利用特殊的文件
+	<filename>configparms</filename> 以附加新的标志到已有的 CFLAGS 的内容。
+    -mtune=native 标志也是在设置 -march 时，重置 -mtune 的一个合理值所需的。</para>
+
+<screen><userinput remap="configure">case `uname -m` in
+  i?86) echo "CFLAGS += -march=i486 -mtune=native" &gt; configparms ;;
+esac</userinput></screen>
+
+    <para>下一步，准备好 Glibc 用于编译:</para>
+
+<screen><userinput remap="configure">../glibc-&glibc-version;/configure --prefix=/tools \
+    --host=$LFS_TGT --build=$(../glibc-&glibc-version;/scripts/config.guess) \
+    --disable-profile --enable-add-ons \
+    --enable-kernel=2.6.25 --with-headers=/tools/include \
+    libc_cv_forced_unwind=yes libc_cv_c_cleanup=yes</userinput></screen>
+
+    <variablelist>
+      <title>配置选项的含义:</title>
+
+      <varlistentry>
+        <term><parameter>--host=$LFS_TGT, --build=$(../glibc-&glibc-version;/scripts/config.guess)</parameter></term>
+        <listitem>
+          <para>这些开关的组合效果是 Glibc 的构建系统配置本身为交叉编译
+          (cross-compile)，使用
+          <filename class="directory">/tools</filename> 中的交叉编译器和交叉链接器。</para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term><parameter>--disable-profile</parameter></term>
+        <listitem>
+          <para>这个不带分析 (profiling) 信息构建库。如果需要临时工具上的分析，则省略这个选项。</para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term><parameter>--enable-add-ons</parameter></term>
+        <listitem>
+          <para>这个告诉 Glibc 使用 NPTL 附加件作为它的线程库。</para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term><parameter>--enable-kernel=2.6.25</parameter></term>
+        <listitem>
+          <para>这个告诉 Glibc 编译带支持 2.6.25 和之后的 Linux 内核的库。对于较旧的内核的变通方法就是不启用这个选项。</para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term><parameter>--with-headers=/tools/include</parameter></term>
+        <listitem>
+          <para>这个告诉 Glibc 针对最近安装到 tools 目录的头文件编译自己，以便它可以准确知道内核有哪些特征，并且相应的优化自身。</para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term><parameter>libc_cv_forced_unwind=yes</parameter></term>
+        <listitem>
+          <para>在
+          <xref linkend="ch-tools-binutils-pass1"/> was cross-compiled and as
+          期间安装的链接器会被交叉编译，而因此不能使用直至 Glibc 被安装。这意味着对于 forced unwind 支持的配置测试将会失败，因为它依赖于工作中的链接器。
+          libc_cv_forced_unwind=yes 变量会被传递，以便告知
+          <command>configure</command>
+          force-unwind 支持可用，而不必一定要运行测试。</para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term><parameter>libc_cv_c_cleanup=yes</parameter></term>
+        <listitem>
+          <para>同样的，我们直接传递 libc_cv_c_cleanup=yes 给
+          <command>configure</command> 脚本，以便测试被跳过而 C
+          清理处理支持被配置。</para>
+        </listitem>
+      </varlistentry>
+
+    </variablelist>
+
+    <para>在这个阶段，可能会出现下列警告:</para>
+
+    <blockquote>
+<screen><computeroutput>configure: WARNING:
+*** These auxiliary programs are missing or
+*** incompatible versions: msgfmt
+*** some features will be disabled.
+*** Check the INSTALL file for required versions.</computeroutput></screen>
+    </blockquote>
+
+    <para>缺少或者不兼容的 <command>msgfmt</command> 程序通常没什么问题。
+    这个 <command>msgfmt</command> 程序是宿主发行版应该提供的 Gettext 包的一部分。</para>
+
+    <para>编译软件包:</para>
+
+<screen><userinput remap="make">make</userinput></screen>
+
+    <para>这个包附带了一个测试套装，然而它在此时无法运行，因为我们还没有 C++ 编译器。</para>
+
+    <note>
+      <para>测试套装还需要安装了 locale 数据才能成功运行。
+      Locale 数据为系统提供相关的信息，譬如日期、时间和接受的货币格式以及系统工具的输出等。如果测试套装在本章中未被运行
+      (根据建议)，现在就不需要安装 locales。
+      在下一章中将会安装适当的 locales。一定要安装
+      Glibc locales 的话，参考
+	  <xref linkend="ch-system-glibc" role="."/> 的说明</para>
+    </note>
+
+    <para>安装软件包:</para>
+
+<screen><userinput remap="install">make install</userinput></screen>
+
+  </sect2>
+
+  <sect2 role="content">
+    <title/>
+
+    <para>本包上的详细信息位于
+    <xref linkend="contents-glibc" role="."/></para>
+
+  </sect2>
+
+</sect1>

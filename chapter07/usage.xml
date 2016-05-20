@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sect1 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+  "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+  <!ENTITY % general-entities SYSTEM "../general.ent">
+  %general-entities;
+]>
+
+<sect1 id="ch-scripts-usage">
+  <?dbhtml filename="usage.html"?>
+
+  <title>启动脚本如何运作?</title>
+
+  <indexterm zone="ch-scripts-usage">
+    <primary sortas="a-Bootscripts">启动脚本</primary>
+    <secondary>用法</secondary>
+  </indexterm>
+
+  <para>Linux 使用一种基于<emphasis>运行级</emphasis>概念的，名为 SysVinit 的特殊的引导措施。在不同的系统上，它可以明显的不同，所以它不能假设某些事情能够在一个特定的 Linux 发行版上运行，就应该也能够在 LFS 上运行。LFS 有自己的一套做事的方式，但是它遵守通常公认的标准。</para>
+
+  <para>SysVinit (从现在开始我们称之为 <quote>init</quote>)使用一种运行级的模式来运作。有 7 个(编号 0 到 6)运行级(实际上有更多的运行级，但是它们是用于特殊情况而平常不会使用的。 查看 <filename>init(8)</filename> 了解更多详细信息)，而它们每个都对应于计算机在启动时要执行的操作。默认的运行级是 3。这里是不同的运行级和它们实现的不同功能的描述:</para>
+
+<literallayout>0: 停止计算机
+1: 单用户模式
+2: 不带网络的多用户模式
+3: 带网络的多用户模式
+4: 保留用于定制，否则和 3 所作一样
+5: 和 4 一样，它常用于 GUI 登录(像 X 的 <command>xdm</command> 或 KDE 的 <command>kdm</command>)
+6: 重启计算机</literallayout>
+
+  <sect2 id="conf-sysvinit" role="configuration">
+  <title>配置 Sysvinit</title>
+
+  <indexterm zone="conf-sysvinit">
+    <primary sortas="a-Sysvinit">Sysvinit</primary>
+    <secondary>配置</secondary>
+  </indexterm>
+
+  <indexterm zone="conf-sysvinit">
+    <primary sortas="e-/etc/inittab">/etc/inittab</primary>
+  </indexterm>
+
+  <para>在内核初始化期间，运行的第一个程序可以在命令行指定，或者按默认是
+  <command>init</command>。这个程序读取初始化文件
+  <filename>/etc/inittab</filename>。使用以下命令创建这个文件:</para>
+
+<screen><userinput>cat &gt; /etc/inittab &lt;&lt; "EOF"
+<literal># Begin /etc/inittab
+
+id:3:initdefault:
+
+si::sysinit:/etc/rc.d/init.d/rc S
+
+l0:0:wait:/etc/rc.d/init.d/rc 0
+l1:S1:wait:/etc/rc.d/init.d/rc 1
+l2:2:wait:/etc/rc.d/init.d/rc 2
+l3:3:wait:/etc/rc.d/init.d/rc 3
+l4:4:wait:/etc/rc.d/init.d/rc 4
+l5:5:wait:/etc/rc.d/init.d/rc 5
+l6:6:wait:/etc/rc.d/init.d/rc 6
+
+ca:12345:ctrlaltdel:/sbin/shutdown -t1 -a -r now
+
+su:S016:once:/sbin/sulogin
+
+1:2345:respawn:/sbin/agetty tty1 9600
+2:2345:respawn:/sbin/agetty tty2 9600
+3:2345:respawn:/sbin/agetty tty3 9600
+4:2345:respawn:/sbin/agetty tty4 9600
+5:2345:respawn:/sbin/agetty tty5 9600
+6:2345:respawn:/sbin/agetty tty6 9600
+
+# End /etc/inittab</literal>
+EOF</userinput></screen>
+
+  <para>这个初始化文件的解释在
+  <emphasis>inittab</emphasis> 的手册页。对于 LFS，运行的关键命令是   <command>rc</command>。以上的初始化文件将会指示
+  <command>rc</command> 运行
+  <filename class="directory">/etc/rc.d/rcsysinit.d</filename> 目录中所有带 S 开头的脚本，紧接着是在 <filename
+  class="directory">/etc/rc.d/rc?.d</filename> 目录中所有以一个 S 开头的脚本，其中问号是有 initdefault 值指定。</para>
+
+  <para>为了方便，<command>rc</command> 脚本读取 <filename class="directory">/lib/lsb/init-functions</filename> 中的函数的库。这个库也读取一个可选的配置文件 <filename>/etc/sysconfig/init_params</filename>。在后续部分之中描述的任何系统配置文件的参数都可以放置在这个文件中，以整合所有的系统参数在这样的一个文件中。</para>
+
+  <para>为了调试的方便，函数脚本还会记录所有的输出到 <filename>/run/var/bootlog</filename>。因为 <filename
+  class="directory">/run</filename> 目录是一个 tmpfs，这个文件在每次引导间不会保留。</para>
+
+  </sect2>
+
+  <sect2 id="init-levels" >
+  <title>更改运行级</title>
+
+  <para>更改运行级可以通过 <command>init
+  <replaceable>&lt;运行级&gt;</replaceable></command> 完成，其中
+  <replaceable>&lt;运行级&gt;</replaceable> 是目标运行级。例如，要重启计算机，用户可以执行 <command>init 6</command> 命令，这是 <command>reboot</command> 命令的另一种形式。同样，<command>init 0</command> 也是 <command>halt</command> 命令的别名。</para>
+
+  <para>在 <filename
+  class="directory">/etc/rc.d</filename> 下有一些看起来像 <filename
+  class="directory">rc?.d</filename> 之类的目录(其中 ? 是运行级的编号) <filename class="directory">rcsysinit.d</filename>，全部都包含一些符号链接。某些以一个 <emphasis>K</emphasis> 开始，而其它的以 <emphasis>S</emphasis> 开始，它们全部都有两个数字跟在开始的字母后。K 表示停止(kill 杀掉)一个服务而 S 表示启动一个服务。编号确定脚本运行的顺序，从 00 到 99&mdash;编号越低越早被执行。当 <command>init</command> 切换到另一个运行级，根据选择的运行级，相应的服务就会被启动或停止。</para>
+
+  <para>真实的脚本是在 <filename
+  class="directory">/etc/rc.d/init.d</filename> 中。它们进行实际的工作，而符号链接全都指向它们。K 链接和 S 链接指向 <filename class="directory">/etc/rc.d/init.d</filename> 中的同一脚本。.
+  这是因为脚本可以使用不同的参数调用，如
+  <parameter>start</parameter>(启动)、<parameter>stop</parameter>(停止)、<parameter>restart</parameter>(重启)、<parameter>reload</parameter>(重载)和 <parameter>status</parameter>(状态)。当遇到 K 链接时，使用 <parameter>stop</parameter> 参数运行相应的脚本。当遇到 S 链接时，使用 <parameter>start</parameter> 参数运行相应的脚本。</para>
+
+  <para>这个说明有一个例外情况。如使用 <filename
+  class="directory">rc0.d</filename> 和 <filename
+  class="directory">rc6.d</filename> 目录中的 <emphasis>S</emphasis> 不会导致任何东西被启动。它们只会调用参数 <parameter>stop</parameter> 来停止某些东西。其背后的逻辑是当用户进入重启或停止计算机时，没有东西需要驱动。系统只是需要停止。</para>
+
+  <para>这些是参数使得脚本操作内容的描述:</para>
+
+  <variablelist>
+
+    <varlistentry>
+      <term><parameter>start</parameter></term>
+      <listitem>
+        <para>服务被启动。</para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term><parameter>stop</parameter></term>
+      <listitem>
+        <para>服务被停止。</para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term><parameter>restart</parameter></term>
+      <listitem>
+        <para>服务被停止然后被再次启动。</para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term><parameter>reload</parameter></term>
+      <listitem>
+        <para>服务的配置被更新。这通常用于在一个服务的配置文件被修改后，而服务不想要重启的时候使用。</para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term><parameter>status</parameter></term>
+      <listitem>
+        <para>说明服务是否在运行以及使用的 PIDs。</para>
+      </listitem>
+    </varlistentry>
+
+  </variablelist>
+
+  <para>随意修改引导进程工作的方式(毕竟这是您自己的 LFS 系统)。这里给出的文件只是它可以如何工作的一个例子。</para>
+
+  </sect2>
+
+</sect1>

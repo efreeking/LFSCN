@@ -1,0 +1,387 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sect1 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+  "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+  <!ENTITY % general-entities SYSTEM "../general.ent">
+  %general-entities;
+]>
+
+<sect1 id="ch-system-man-db" role="wrap">
+  <?dbhtml filename="man-db.html"?>
+
+  <sect1info condition="script">
+    <productname>man-db</productname>
+    <productnumber>&man-db-version;</productnumber>
+    <address>&man-db-url;</address>
+  </sect1info>
+
+  <title>Man-DB-&man-db-version;</title>
+
+  <indexterm zone="ch-system-man-db">
+    <primary sortas="a-Man-DB">Man-DB</primary>
+  </indexterm>
+
+  <sect2 role="package">
+    <title/>
+
+    <para>Man-DB 包包含查找和查看手册页的程序。</para>
+
+    <segmentedlist>
+      <segtitle>&buildtime;</segtitle>
+      <segtitle>&diskspace;</segtitle>
+
+      <seglistitem>
+        <seg>&man-db-ch6-sbu;</seg>
+        <seg>&man-db-ch6-du;</seg>
+      </seglistitem>
+    </segmentedlist>
+
+  </sect2>
+
+  <sect2 role="installation">
+    <title>Man-DB 的安装</title>
+
+    <para>准备 Man-DB 编译:</para>
+
+<screen><userinput remap="configure">PKG_CONFIG=/tools/bin/true \
+    libpipeline_CFLAGS='' \
+    libpipeline_LIBS='-lpipeline' \
+    ./configure --prefix=/usr --libexecdir=/usr/lib \
+    --docdir=/usr/share/doc/man-db-&man-db-version; --sysconfdir=/etc \
+    --disable-setuid --with-browser=/usr/bin/lynx \
+    --with-vgrind=/usr/bin/vgrind --with-grap=/usr/bin/grap</userinput></screen>
+
+    <variablelist>
+      <title>配置选项的含义:</title>
+
+      <varlistentry>
+        <term><parameter>PKG_CONFIG=, libpipeline_ ...</parameter></term>
+        <listitem>
+          <para>这些环境变量让配置进程能够在没有外部 <command>pkg-config</command> 程序的情况下完成。</para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term><parameter>--disable-setuid</parameter></term>
+        <listitem>
+          <para>这个禁止使得 <command>man</command> 程序 setuid
+          为用户 <systemitem class="username">man</systemitem>。</para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term><parameter>--with-...</parameter></term>
+        <listitem>
+          <para>这三个参数常常用于设置某些默认的程序。
+          <command>lynx</command> 是一个基于文本的网络浏览器(查看
+          BLFS 获得安装说明)，<command>vgrind</command>
+          转换程序源代码为 Groff 输入，而 <command>grap</command>
+          对于 Groff 文档中的排版图很有用。
+          <command>vgrind</command> 和 <command>grap</command> 程序一般不是查看手册页所需要的。
+          它们不是作为 LFS 或 BLFS 的一部分，但是如果您希望安装它们的话，您可以在完成 LFS 后自己安装。</para>
+        </listitem>
+      </varlistentry>
+
+    </variablelist>
+
+    <para>编译包:</para>
+
+<screen><userinput remap="make">make</userinput></screen>
+
+   <para>要测试结果，执行:</para>
+
+<screen><userinput remap="test">make check</userinput></screen>
+
+    <para>安装包:</para>
+
+<screen><userinput remap="install">make install</userinput></screen>
+
+  </sect2>
+
+  <sect2>
+    <title>在 LFS 中的非英语手册页</title>
+
+    <para>下列的表格显示了 Man-DB 假定在
+    <filename class="directory">/usr/share/man/&lt;ll&gt;</filename> 下安装的手册页编码使用的字符集。除此之外，Man-DB 会正确的判断安装在该目录下的手册页是否使用 UTF-8 编码。</para>
+
+    <!-- Origin: man-db-2.5.9/lib/encodings.c -->
+    <table>
+<title>旧式 8 位的手册页的预期字符编码</title>
+      <?dbfo table-width="6in" ?>
+
+      <tgroup cols="4">
+
+        <colspec colnum="1" colwidth="1.5in"/>
+        <colspec colnum="2" colwidth="1in"/>
+        <colspec colnum="3" colwidth="2.5in"/>
+        <colspec colnum="4" colwidth="1in"/>
+
+        <thead>
+          <row>
+            <entry>语言 (代码)</entry>
+            <entry>编码</entry>
+            <entry>语言 (代码)</entry>
+            <entry>编码</entry>
+          </row>
+        </thead>
+
+        <tbody>
+          <row>
+            <entry>Danish (da)</entry>
+            <entry>ISO-8859-1</entry>
+            <entry>Croatian (hr)</entry>
+            <entry>ISO-8859-2</entry>
+          </row>
+          <row>
+            <entry>German (de)</entry>
+            <entry>ISO-8859-1</entry>
+            <entry>Hungarian (hu)</entry>
+            <entry>ISO-8859-2</entry>
+          </row>
+          <row>
+            <entry>English (en)</entry>
+            <entry>ISO-8859-1</entry>
+            <entry>Japanese (ja)</entry>
+            <entry>EUC-JP</entry>
+          </row>
+          <row>
+            <entry>Spanish (es)</entry>
+            <entry>ISO-8859-1</entry>
+            <entry>Korean (ko)</entry>
+            <entry>EUC-KR</entry>
+          </row>
+          <row>
+            <entry>Estonian (et)</entry>
+            <entry>ISO-8859-1</entry>
+            <entry>Lithuanian (lt)</entry>
+            <entry>ISO-8859-13</entry>
+          </row>
+          <row>
+            <entry>Finnish (fi)</entry>
+            <entry>ISO-8859-1</entry>
+            <entry>Latvian (lv)</entry>
+            <entry>ISO-8859-13</entry>
+          </row>
+          <row>
+            <entry>French (fr)</entry>
+            <entry>ISO-8859-1</entry>
+            <entry>Macedonian (mk)</entry>
+            <entry>ISO-8859-5</entry>
+          </row>
+          <row>
+            <entry>Irish (ga)</entry>
+            <entry>ISO-8859-1</entry>
+            <entry>Polish (pl)</entry>
+            <entry>ISO-8859-2</entry>
+          </row>
+          <row>
+            <entry>Galician (gl)</entry>
+            <entry>ISO-8859-1</entry>
+            <entry>Romanian (ro)</entry>
+            <entry>ISO-8859-2</entry>
+          </row>
+          <row>
+            <entry>Indonesian (id)</entry>
+            <entry>ISO-8859-1</entry>
+            <entry>Russian (ru)</entry>
+            <entry>KOI8-R</entry>
+          </row>
+          <row>
+            <entry>Icelandic (is)</entry>
+            <entry>ISO-8859-1</entry>
+            <entry>Slovak (sk)</entry>
+            <entry>ISO-8859-2</entry>
+          </row>
+          <row>
+            <entry>Italian (it)</entry>
+            <entry>ISO-8859-1</entry>
+            <entry>Slovenian (sl)</entry>
+            <entry>ISO-8859-2</entry>
+          </row>
+          <row>
+            <entry>Norwegian Bokmal (nb)</entry>
+            <entry>ISO-8859-1</entry>
+            <entry>Serbian Latin (sr@latin)</entry>
+            <entry>ISO-8859-2</entry>
+          </row>
+          <row>
+            <entry>Dutch (nl)</entry>
+            <entry>ISO-8859-1</entry>
+            <entry>Serbian (sr)</entry>
+            <entry>ISO-8859-5</entry>
+          </row>
+          <row>
+            <entry>Norwegian Nynorsk (nn)</entry>
+            <entry>ISO-8859-1</entry>
+            <entry>Turkish (tr)</entry>
+            <entry>ISO-8859-9</entry>
+          </row>
+          <row>
+            <entry>Norwegian (no)</entry>
+            <entry>ISO-8859-1</entry>
+            <entry>Ukrainian (uk)</entry>
+            <entry>KOI8-U</entry>
+          </row>
+          <row>
+            <entry>Portuguese (pt)</entry>
+            <entry>ISO-8859-1</entry>
+            <entry>Vietnamese (vi)</entry>
+            <entry>TCVN5712-1</entry>
+          </row>
+          <row>
+            <entry>Swedish (sv)</entry>
+            <entry>ISO-8859-1</entry>
+            <entry>Simplified Chinese (zh_CN)</entry>
+            <entry>GBK</entry>
+          </row>
+          <row>
+            <entry>Belarusian (be)</entry>
+            <entry>CP1251</entry>
+            <entry>Simplified Chinese, Singapore (zh_SG)</entry>
+            <entry>GBK</entry>
+          </row>
+          <row>
+            <entry>Bulgarian (bg)</entry>
+            <entry>CP1251</entry>
+            <entry>Traditional Chinese, Hong Kong (zh_HK)</entry>
+            <entry>BIG5HKSCS</entry>
+          </row>
+          <row>
+            <entry>Czech (cs)</entry>
+            <entry>ISO-8859-2</entry>
+            <entry>Traditional Chinese (zh_TW)</entry>
+            <entry>BIG5</entry>
+          </row>
+          <row>
+            <entry>Greek (el)</entry>
+            <entry>ISO-8859-7</entry>
+            <entry></entry>
+            <entry></entry>
+          </row>
+
+        </tbody>
+
+      </tgroup>
+
+    </table>
+
+    <note>
+      <para>使用不在列表中的语言的手册页不被支持。</para>
+    </note>
+
+  </sect2>
+
+  <sect2 id="contents-man-db" role="content">
+    <title>Man-DB 的内容</title>
+
+    <segmentedlist>
+      <segtitle>安装的程序</segtitle>
+      <segtitle>安装目录</segtitle>
+
+      <seglistitem>
+        <seg>accessdb, apropos (链接到 whatis), catman, lexgrog, man, mandb,
+        manpath, whatis 和 zsoelim</seg>
+        <seg>/usr/lib/man-db, /usr/share/doc/man-db</seg>
+      </seglistitem>
+    </segmentedlist>
+
+    <variablelist>
+      <bridgehead renderas="sect3">简述</bridgehead>
+      <?dbfo list-presentation="list"?>
+      <?dbhtml list-presentation="table"?>
+
+      <varlistentry id="accessdb">
+        <term><command>accessdb</command></term>
+        <listitem>
+          <para>以人类可读的形式转储 <command>whatis</command> 数据库的内容</para>
+          <indexterm zone="ch-system-man-db accessdb">
+            <primary sortas="b-accessdb">accessdb</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="apropos">
+        <term><command>apropos</command></term>
+        <listitem>
+          <para>搜索 <command>whatis</command> 数据库并显示包含给定字符串的系统命令的简述</para>
+          <indexterm zone="ch-system-man-db apropos">
+            <primary sortas="b-apropos">apropos</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="catman">
+        <term><command>catman</command></term>
+        <listitem>
+          <para>创建或更新预格式化的手册页</para>
+          <indexterm zone="ch-system-man-db catman">
+            <primary sortas="b-catman">catman</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="lexgrog">
+        <term><command>lexgrog</command></term>
+        <listitem>
+          <para>显示关于给定的手册页的一行摘要信息</para>
+          <indexterm zone="ch-system-man-db lexgrog">
+            <primary sortas="b-lexgrog">lexgrog</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="man">
+        <term><command>man</command></term>
+        <listitem>
+          <para>格式化并显示请求的手册页</para>
+          <indexterm zone="ch-system-man-db man">
+            <primary sortas="b-man">man</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="mandb">
+        <term><command>mandb</command></term>
+        <listitem>
+          <para>创建或更新 <command>whatis</command> 数据库</para>
+          <indexterm zone="ch-system-man-db mandb">
+            <primary sortas="b-mandb">mandb</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="manpath">
+        <term><command>manpath</command></term>
+        <listitem>
+          <para>显示 $MANPATH 或(如果 $MANPATH 未设置的话)一个基于 man.conf 中的设置和用户的环境的适合的搜索路径的(目录)内容</para>
+          <indexterm zone="ch-system-man-db manpath">
+            <primary sortas="b-manpath">manpath</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="whatis">
+        <term><command>whatis</command></term>
+        <listitem>
+          <para>搜索 <command>whatis</command> 数据库并显示包含给定的关键字作为一个独立词的系统命令的简述</para>
+          <indexterm zone="ch-system-man-db whatis">
+            <primary sortas="b-whatis">whatis</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="zsoelim">
+        <term><command>zsoelim</command></term>
+        <listitem>
+          <para>读取文件并用提及的<emphasis>文件</emphasis>的内容替换组成<emphasis>.so
+          文件</emphasis>的行</para>
+          <indexterm zone="ch-system-man-db zsoelim">
+            <primary sortas="b-zsoelim">zsoelim</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+    </variablelist>
+
+  </sect2>
+
+</sect1>

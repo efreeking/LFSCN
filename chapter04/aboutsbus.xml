@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sect1 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+  "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+  <!ENTITY % general-entities SYSTEM "../general.ent">
+  %general-entities;
+]>
+
+<sect1 id="prepare-aboutsbus">
+  <?dbhtml filename="aboutsbus.html"?>
+
+  <title>关于 SBUs</title>
+
+  <para>许多人都想预先知道编译和安装每个包所需花费的时间。
+  因为 Linux From Scratch 可以在许多不同的系统上构建，所以不可能提供准确的时间估算。最大的包 (Glibc) 在最快的系统上花费大约 20 分钟，但是在较慢的系统上花费多达 3 天的时间！
+  与其提供准确的时间，不如使用标准构建单位 (SBU) 来衡量。</para>
+
+  <para>SBU 衡量运作如下。本书中，在<xref linkend="chapter-temporary-tools"/>中要编译的第一个包是 Binutils。编译这个包所花费的时间将会称为标准构建单位或 SBU。所有其它的编译时间将会相对于这个时间的方式表示。</para>
+
+  <para>例如，考虑到一个包的编译时间是 4.5
+  SBUs。这表示如果一个系统编译并安装第一轮的 Binutils 花费了 10 分钟，它将花费
+  <emphasis>大约</emphasis> 45 分钟来构建这个作为示范的包。
+  幸运的是，大多数构建时间都比 Binutils 所需的时间短。</para>
+
+  <para>一般来讲，SBUs 不是完全准确的，因为他们取决于很多因素，包括宿主系统上 GCC 的版本。在这里提供它们仅仅是为了给出安装一个包可能花费多长时间做出大概的估计，而在某些情况下，数值可能有数十分钟的差异。</para>
+
+  <para>要查看一些特定机器的实际时间，我们推荐查看
+  LinuxFromScratch SBU 主页 <ulink url="&lfs-root;~sbu/"/>。</para>
+
+  <note><para>对于许多带有多个处理器(或多核)的现代系统来说，可以通过
+  设置环境变量或者告诉 <command>make</command> 程序有多少个处理器来执行“并发编译”来缩减一个包的编译时间。例如，Core2Duo 可以支持 2 个同时的进程:</para>
+
+  <screen><userinput>export MAKEFLAGS='-j 2'</userinput></screen>
+
+  <para>or just building with:</para>
+
+  <screen><userinput>make -j2</userinput></screen>
+
+  <para>当以这种方式使用多处理器时，在书中的 SBU 单位将会和它们通常是的差异更大。
+  分析构建进程的输出也会变得更困难，因为多条不同进程的将会交错进行，您可能会陷入构建步骤的导致的问题，需要倒退回单处理器构建来正确分析错误消息。</para>
+
+  </note>
+
+</sect1>
+

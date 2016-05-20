@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sect1 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+  "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+  <!ENTITY % general-entities SYSTEM "../general.ent">
+  %general-entities;
+]>
+
+<sect1 id="ch-system-readjusting">
+  <?dbhtml filename="readjusting.html"?>
+
+  <title>再次调整工具链</title>
+
+  <para>现在，最终的 C 库已经被安装，是时候再次调整工具链了。工具链将会被调整，以便它可以针对这些新的库链接任何新编译的程序。这是一个和<xref linkend="chapter-temporary-tools"/>开始处的<quote>调整</quote>阶段中使用的类似的过程，但是使用了相反的调整。在<xref
+  linkend="chapter-temporary-tools"/>中，工具链从宿主的
+  <filename class="directory">/{,usr/}lib</filename> 目录引向新的
+  <filename class="directory">/tools/lib</filename> 目录。现在，链条将会从同样的 <filename class="directory">/tools/lib</filename>
+  目录引向 LFS <filename class="directory">/{,usr/}lib</filename>
+  目录。</para>
+
+  <para>首先，备份 <filename class="directory">/tools</filename> 链接器，并使用我们在第 5 章制作的调整后的链接器替换。我们还将创建一个指向到它们在 <filename class="directory">/tools/$(gcc
+  -dumpmachine)/bin</filename> 中的链接:</para>
+
+<screen><userinput>mv -v /tools/bin/{ld,ld-old}
+mv -v /tools/$(gcc -dumpmachine)/bin/{ld,ld-old}
+mv -v /tools/bin/{ld-new,ld}
+ln -sv /tools/bin/ld /tools/$(gcc -dumpmachine)/bin/ld</userinput></screen>
+
+  <para>跟着，修改 GCC specs 文件以便它指向新的动态链接器。简单的删除 <quote>/tools</quote> 的所有实例应该就可以给我们留下了到动态链接器的正确路径。还有调整 specs 文件，以便 GCC 知道在哪里查找正确的头文件和 Glibc start 文件。
+  一个 <command>sed</command> 命令即可完成:</para>
+
+<screen><userinput>gcc -dumpspecs | sed -e 's@/tools@@g' \
+    -e '/\*startfile_prefix_spec:/{n;s@.*@/usr/lib/ @}' \
+    -e '/\*cpp:/{n;s@$@ -isystem /usr/include@}' &gt; \
+    `dirname $(gcc --print-libgcc-file-name)`/specs</userinput></screen>
+
+  <para>用眼睛观察一下 specs 文件，以检查是否已实际的做出了想要的更改是一个不错的主意。</para>
+
+  <para>现在，确保调整后的工具链的基本功能(编译和链接)能够如预期一样工作至为重要。为此，执行下列健全性检查:</para>
+
+<screen os="a"><userinput>echo 'main(){}' &gt; dummy.c
+cc dummy.c -v -Wl,--verbose &amp;&gt; dummy.log
+readelf -l a.out | grep ': /lib'</userinput></screen>
+
+  <para os="b">如果所有东西都工作正常，应该没有错误，而且最后命令的输出将会是(允许在动态链接器名称中的关于平台的差异):</para>
+
+<screen os="c"><computeroutput>[Requesting program interpreter: /lib/ld-linux.so.2]</computeroutput></screen>
+
+  <para>注意，<filename class="directory">/lib</filename> 现在是我们的动态链接器的前缀。</para>
+
+  <para os="d">现在确保我们已经设置好使用正确的 startfiles:</para>
+
+<screen os="e"><userinput>grep -o '/usr/lib.*/crt[1in].*succeeded' dummy.log</userinput></screen>
+
+  <para os="f">如果所有东西工作正常，也没没有错误，而最后命令的输出将会是:</para>
+
+<screen><computeroutput>/usr/lib/crt1.o succeeded
+/usr/lib/crti.o succeeded
+/usr/lib/crtn.o succeeded</computeroutput></screen>
+
+  <para os="g">检查编译器正在搜索正确的头文件:</para>
+
+<screen><userinput>grep -B1 '^ /usr/include' dummy.log</userinput></screen>
+
+  <para os="h">这个命令应该返回带下列输出的成功信息:</para>
+
+<screen><computeroutput>#include &lt;...&gt; search starts here:
+ /usr/include</computeroutput></screen>
+
+  <para os="i">下一步，检查新的链接器是否配合正确的搜索路径使用:</para>
+
+<screen os="j"><userinput>grep 'SEARCH.*/usr/lib' dummy.log |sed 's|; |\n|g'</userinput></screen>
+
+  <para os="k">如果所有东西工作正常，则应该没有错误，而最后命令的输出(允许特定平台的 target triplets)
+  将会是:</para>
+
+<screen><computeroutput>SEARCH_DIR("/tools/i686-pc-linux-gnu/lib")
+SEARCH_DIR("/usr/lib")
+SEARCH_DIR("/lib");</computeroutput></screen>
+
+  <para os="l">下一步，确保我们正在使用正确的 libc:</para>
+
+<screen os="m"><userinput>grep "/lib.*/libc.so.6 " dummy.log</userinput></screen>
+
+  <para os="n">如果所有东西工作正常，则应该没有错误，而最后命令的输出(允许在 64 位宿主上是一个 lib64 目录)将会是:</para>
+
+<screen os="o"><computeroutput>attempt to open /lib/libc.so.6 succeeded</computeroutput></screen>
+
+  <para os="p">最后，确保 GCC 正在使用正确的动态链接器:</para>
+
+<screen os="q"><userinput>grep found dummy.log</userinput></screen>
+
+  <para os="r">如果所有东西工作正常，则应该没有错误，而最后命令的输出(允许在动态链接器名称中的平台特定的差异，而在 64 位宿主上的 lib64 目录):</para>
+
+<screen os="s"><computeroutput>found ld-linux.so.2 at /lib/ld-linux.so.2</computeroutput></screen>
+
+  <para os="t">如果输出没有如上所示的出现，或者完全没有接收到，那么有地方严重出错。审查并追溯各个步骤以查出问题所在并纠正它。最可能的原因就是 specs 文件调整的某些地方出错了。在继续前必须解决所有问题。</para>
+
+  <para os="u">一旦所有东西的工作正常，清理测试文件:</para>
+
+<screen os="v"><userinput>rm -v dummy.c a.out dummy.log</userinput></screen>
+
+</sect1>

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sect1 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+  "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+  <!ENTITY % general-entities SYSTEM "../general.ent">
+  %general-entities;
+]>
+
+<sect1 id="ch-scripts-hosts">
+  <?dbhtml filename="hosts.html"?>
+
+  <title>定制 /etc/hosts 文件</title>
+
+  <indexterm zone="ch-scripts-hosts">
+    <primary sortas="e-/etc/hosts">/etc/hosts</primary>
+  </indexterm>
+
+  <indexterm zone="ch-scripts-hosts">
+    <primary sortas="d-localnet">localnet</primary>
+  <secondary>/etc/hosts</secondary></indexterm>
+
+  <indexterm zone="ch-scripts-hosts">
+    <primary sortas="d-network">network</primary>
+  <secondary>/etc/hosts</secondary></indexterm>
+
+  <para>如果一个网卡要被配置，决定 IP 地址可以使用正式域名(FQDN)和在 <filename>/etc/hosts</filename> 文件中使用别名。语法是:</para>
+
+<screen><literal>IP_地址 host.domain.org 别名</literal></screen>
+
+  <para>除非计算机在网络上可见(也就是有一个注册的域名和一个有效的分配 IP 地址块&mdash;大多数用户并不拥有这个)，确保 IP 地址是在私有网络 IP 地址范围内。有效的范围有:</para>
+
+<screen><literal>私有网络地址范围      正常 Prefix(前缀)
+10.0.0.1 - 10.255.255.254           8
+172.x.0.1 - 172.x.255.254           16
+192.168.y.1 - 192.168.y.254         24</literal></screen>
+
+  <para>x 可以是 16-31 内的任意数。y 可以是 0-255 内的任意数。</para>
+
+  <para>一个有效的私有 IP 地址可以是 192.168.1.1。这个 IP 的有效的正式域名可以是 lfs.example.org。</para>
+
+  <para>即使您没有使用网卡，仍需要一个有效的正式域名。这是某些程序正确操作所需的。</para>
+
+  <para>通过运行以下命令创建  <filename>/etc/hosts</filename> 文件:</para>
+
+<screen><userinput>cat &gt; /etc/hosts &lt;&lt; "EOF"
+<literal># Begin /etc/hosts (network card version)
+
+127.0.0.1 localhost
+<replaceable>&lt;192.168.1.1&gt;</replaceable> <replaceable>&lt;HOSTNAME.example.org&gt;</replaceable> <replaceable>[alias1] [alias2 ...]</replaceable>
+
+# End /etc/hosts (network card version)</literal>
+EOF</userinput></screen>
+
+  <para><replaceable>&lt;192.168.1.1&gt;</replaceable> 和
+  <replaceable>&lt;HOSTNAME.example.org&gt;</replaceable>
+  值需要根据特定的使用或需求而更改(如果由网络/系统管理员指派 IP 地址，那么机器将会连接到已有的网络)。可选的别名可以省略。</para>
+
+  <para>如果网卡不准备配置，通过运行以下命令创建
+  <filename>/etc/hosts</filename> 文件:</para>
+
+<screen role="nodump"><userinput>cat &gt; /etc/hosts &lt;&lt; "EOF"
+<literal># Begin /etc/hosts (no network card version)
+
+127.0.0.1 <replaceable>&lt;HOSTNAME.example.org&gt;</replaceable> <replaceable>&lt;HOSTNAME&gt;</replaceable> localhost
+
+# End /etc/hosts (no network card version)</literal>
+EOF</userinput></screen>
+
+</sect1>

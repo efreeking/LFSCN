@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sect1 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+  "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+  <!ENTITY % general-entities SYSTEM "../general.ent">
+  %general-entities;
+]>
+
+<sect1 id="ch-tools-binutils-pass1" role="wrap">
+  <?dbhtml filename="binutils-pass1.html"?>
+
+  <sect1info condition="script">
+    <productname>binutils</productname>
+    <productnumber>&binutils-version;</productnumber>
+    <address>&binutils-url;</address>
+  </sect1info>
+
+  <title>Binutils-&binutils-version; - 第 1 次</title>
+
+  <indexterm zone="ch-tools-binutils-pass1">
+    <primary sortas="a-Binutils">Binutils</primary>
+    <secondary>工具，第 1 次</secondary>
+  </indexterm>
+
+  <sect2 role="package">
+    <title/>
+
+    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"
+    href="../chapter06/binutils.xml"
+    xpointer="xpointer(/sect1/sect2[1]/para[1])"/>
+
+    <segmentedlist>
+      <segtitle>&buildtime;</segtitle>
+      <segtitle>&diskspace;</segtitle>
+
+      <seglistitem>
+        <seg>&binutils-ch5p1-sbu;</seg>
+        <seg>&binutils-ch5p1-du;</seg>
+      </seglistitem>
+    </segmentedlist>
+
+  </sect2>
+
+  <sect2 role="installation">
+    <title>交叉 Binutils 的安装</title>
+
+    <note><para>返回并重新阅读上一部分的备注。 
+    理解这些标签为重要事项的备注将可以让您稍后节省大量问题的时间。</para></note>
+
+    <para>Binutils 作为第一个要编译的包很重要，因为 Glibc 和 GCC 都在可用的链接器和汇编器上执行各种测试来判断它们自己要启用的特征。</para>
+
+    <para>Binutils 文档推荐在一个源代码目录以外的专用的构建目录中构建 Binutils:</para>
+
+<screen><userinput remap="pre">mkdir -v ../binutils-build
+cd ../binutils-build</userinput></screen>
+
+    <note>
+      <para>为了书中其它部分列出的 SBU 值有意义，需要测量从配置开始，一直到包含首次安装在内的构建这个包所花费的时间。
+      为了方便的达到这个目的，在一个 <command>time</command> 命令中封装 3 个命令，像这样:
+	  <userinput>time { ./configure ... &amp;&amp; make &amp;&amp; make install; }</userinput>.</para>
+    </note>
+
+    <note><para>在第 5 章中的近似构建 SBU 值和需要的磁盘空间不包含测试套装数据。</para></note>
+
+    <para>现在准备好 Binutils 用于编译:</para>
+
+<!-- <screen><userinput remap="configure">../binutils-&binutils-version;/configure \ -->
+<screen><userinput remap="configure">../binutils-&binutils-dir;/configure \
+    --target=$LFS_TGT --prefix=/tools \
+    --disable-nls --disable-werror</userinput></screen>
+
+    <variablelist>
+      <title>配置选项的含义:</title>
+
+      <varlistentry>
+        <term><envar>--target=$LFS_TGT</envar></term>
+        <listitem>
+          <para>因为在 <envar>LFS_TGT</envar> 变量中的机器描述和
+          <command>config.guess</command> 脚本的值稍有不同，这个开关将告诉
+          <command>configure</command> 脚本调整 Binutil 的构建系统用于构建一个交叉链接器。</para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term><parameter>--prefix=/tools</parameter></term>
+        <listitem>
+          <para>这个告诉配置脚本准备好安装
+          Binutils 程序于 <filename class="directory">/tools</filename>
+          目录中。</para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term><parameter>--disable-nls</parameter></term>
+        <listitem>
+          <para>这个禁用了如 i18n 之类的国际化功能，因为它不是临时工具所需的。</para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term><parameter>--disable-werror</parameter></term>
+        <listitem>
+          <para>这个方式了构建因有来自宿主的编译器的警告的事件而停止。</para>
+        </listitem>
+      </varlistentry>
+
+    </variablelist>
+
+    <para>继续编译包:</para>
+
+<screen><userinput remap="make">make</userinput></screen>
+
+    <para>编译现在完成了。原来我们会在现在运行测试套装，但是在这个前期阶段，测试套装框架 (Tcl, Expect 以及 DejaGNU) 还未准备就绪。此时运行测试的好处有限，因为来自这一轮编译的程序很快就会被第二轮的那些替换掉。</para>
+
+    <para>如果在 x86_64 上构建，创建一个符号链接确保工具链的健全(Sanity):</para>
+
+<screen><userinput remap="install">case $(uname -m) in
+  x86_64) mkdir -v /tools/lib &amp;&amp; ln -sv lib /tools/lib64 ;;
+esac</userinput></screen>
+
+    <para>安装软件包:</para>
+
+<screen><userinput remap="install">make install</userinput></screen>
+
+  </sect2>
+
+  <sect2 role="content">
+    <title/>
+
+    <para>这个包上的详细情况在
+    <xref linkend="contents-binutils" role="."/> 中。</para>
+
+  </sect2>
+
+</sect1>

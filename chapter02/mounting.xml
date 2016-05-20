@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sect1 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+  "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+  <!ENTITY % general-entities SYSTEM "../general.ent">
+  %general-entities;
+]>
+
+<sect1 id="space-mounting">
+  <?dbhtml filename="mounting.html"?>
+
+  <title>挂载新分区</title>
+
+  <para>现在文件系统已经创建，需要使得分区可以被访问。为此，分区需要挂载在一个选择的挂载点。出于本书的目的，假设文件系统挂载于 <filename
+  class="directory">/mnt/lfs</filename> 下，其实目录的选择全由您。</para>
+
+  <para>选择一个挂载点并通过运行以下命令指派它给 <envar>LFS</envar> 环境变量:</para>
+
+<screen role="nodump"><userinput>export LFS=/mnt/lfs</userinput></screen>
+
+  <para>下一步，创建挂载点并通过运行以下命令挂载 LFS 文件系统:</para>
+
+<screen role="nodump"><userinput>mkdir -pv $LFS
+mount -v -t ext3 /dev/<replaceable>&lt;xxx&gt;</replaceable> $LFS</userinput></screen>
+
+  <para>替换 <replaceable>&lt;xxx&gt;</replaceable> 为 LFS 分区的名称。</para>
+
+  <para>如果使用 LFS 的多个分区 (例如，一个用于 <filename
+  class="directory">/</filename> 而另一个用于 <filename
+  class="directory">/usr</filename>)，挂载它们时使用命令:</para>
+
+<screen role="nodump"><userinput>mkdir -pv $LFS
+mount -v -t ext3 /dev/<replaceable>&lt;xxx&gt;</replaceable> $LFS
+mkdir -v $LFS/usr
+mount -v -t ext3 /dev/<replaceable>&lt;yyy&gt;</replaceable> $LFS/usr</userinput></screen>
+
+  <para>替换 <replaceable>&lt;xxx&gt;</replaceable> 和
+  <replaceable>&lt;yyy&gt;</replaceable> 伟相应的分区名称。</para>
+
+  <para>确保这个新分区的挂载没有太多的权限限制
+  (譬如 <option>nosuid</option>、<option>nodev</option> 或 <option>noatime</option> 选项)。不带任何参数运行 <command>mount</command> 来查看设置了什么选项给挂载的 LFS 分区。如果设置了 <option>nosuid</option>、<option>nodev</option> 或 <option>noatime</option>，分区将需要重新挂载。</para>
+
+  <para>如果您正使用<systemitem
+  class="filesystem">交换</systemitem>分区，确保使用了 <command>swapon</command> 命令启用了:</para>
+
+<screen role="nodump"><userinput>/sbin/swapon -v /dev/<replaceable>&lt;zzz&gt;</replaceable></userinput></screen>
+
+  <para>替换 <replaceable>&lt;zzz&gt;</replaceable> 为<systemitem class="filesystem">交换</systemitem>分区的名称。</para>
+
+  <para>现在已经建立起一个工作的地方了，是时候下载软件包了。</para>
+
+</sect1>
+

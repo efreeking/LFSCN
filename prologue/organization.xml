@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sect1 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+  "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+  <!ENTITY % general-entities SYSTEM "../general.ent">
+  %general-entities;
+]>
+
+<sect1 id="pre-organization">
+  <?dbhtml filename="organization.html"?>
+
+  <title>结构</title>
+
+  <para>本书分为以下几个部分</para>
+
+  <sect2>
+    <title>第 I 部分 - 介绍</title>
+
+    <para>第 I 部分解释了一些安装 LFS 过程中需要注意的重要事项，这部分还提供了本书的一些要点信息(meta-information)。</para>
+  </sect2>
+
+  <sect2>
+    <title>第 II 部分  - 构建前准备</title>
+
+    <para>第 II 部分描述如何为构建处理做好准备&mdash;建立分区、下载软件包和编译临时工具。</para>
+  </sect2>
+
+  <sect2>
+    <title>第 III 部分  - 构建 LFS 系统</title>
+
+    <para>第 III 部分指导读者完成整个 LFS 系统的构建&mdash;
+	逐个编译和安装所有的软件包，设置引导脚本以及安装内核。
+    得到的 Linux 系统作为基础，在其上可以按需要构建其它软件来扩展系统。
+    在本书的结尾，有一个简单易用的参考列出了所有已经安装的程序、库和重要文件。</para>
+  </sect2>
+
+</sect1>

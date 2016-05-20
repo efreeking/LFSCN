@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sect1 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+  "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+  <!ENTITY % general-entities SYSTEM "../general.ent">
+  %general-entities;
+]>
+
+<sect1 id="ch-system-grub" role="wrap">
+  <?dbhtml filename="grub.html"?>
+
+  <sect1info condition="script">
+    <productname>grub</productname>
+    <productnumber>&grub-version;</productnumber>
+    <address>&grub-url;</address>
+  </sect1info>
+
+  <title>GRUB-&grub-version;</title>
+
+  <indexterm zone="ch-system-grub">
+    <primary sortas="a-Grub">GRUB</primary>
+  </indexterm>
+
+  <sect2 role="package">
+    <title/>
+
+    <para>GRUB 包包含 GRand 统一引导加载器。</para>
+
+    <segmentedlist>
+      <segtitle>&buildtime;</segtitle>
+      <segtitle>&diskspace;</segtitle>
+
+      <seglistitem>
+        <seg>&grub-ch6-sbu;</seg>
+        <seg>&grub-ch6-du;</seg>
+      </seglistitem>
+    </segmentedlist>
+
+  </sect2>
+
+  <sect2 role="installation">
+    <title>GRUB 的安装</title>
+
+    <para>准备 GRUB 编译:</para>
+
+<screen><userinput remap="configure">./configure --prefix=/usr           \
+             --sysconfdir=/etc      \
+             --disable-grub-emu-usb \
+             --disable-efiemu       \
+             --disable-werror</userinput></screen>
+
+    <para>--disable 通过禁用不是真的被 LFS 需要的功能和测试程序来最小化要构建的内容。</para>
+
+    <para>编译包:</para>
+
+<screen><userinput remap="make">make</userinput></screen>
+
+    <para>这个包不附带测试套装。</para>
+
+    <para>安装包:</para>
+
+<screen><userinput remap="install">make install</userinput></screen>
+
+  <para>使用 GRUB 来使得您的 LFS 系统可以引导，将会在 <xref linkend="ch-bootable-grub"/> 中讨论。</para>
+
+  </sect2>
+
+  <sect2 id="contents-gRUB" role="content">
+    <title>GRUB 的内容</title>
+
+    <segmentedlist>
+      <segtitle>安装的程序</segtitle>
+      <segtitle>安装目录</segtitle>
+
+      <seglistitem>
+        <seg>grub-bin2h, grub-editenv, grub-install, grub-mkconfig,
+        grub-mkdevicemap, grub-mkelfimage, grub-mkimage, grub-mkisofs,
+        grub-mkpasswd-pbkdf2, grub-mkrelpath, grub-mkrescue, grub-probe,
+        grub-reboot, grub-script-check, grub-set-default, grub-setup</seg>
+        <seg>/usr/lib/grub, /etc/grub.d, /usr/share/grub</seg>
+      </seglistitem>
+    </segmentedlist>
+
+    <variablelist>
+      <bridgehead renderas="sect3">简述</bridgehead>
+      <?dbfo list-presentation="list"?>
+      <?dbhtml list-presentation="table"?>
+
+      <varlistentry id="grub-bin2h">
+        <term><command>grub-bin2h</command></term>
+        <listitem>
+          <para>转换一个二进制文件为一个 C 头文件</para>
+          <indexterm zone="ch-system-grub grub-bin2h">
+            <primary sortas="b-grub-bin2h">grub-bin2h</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="grub-editenv">
+        <term><command>grub-editenv</command></term>
+        <listitem>
+          <para>一个编辑环境块的工具</para>
+          <indexterm zone="ch-system-grub grub-editenv">
+            <primary sortas="b-grub-editenv">grub-editenv</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="grub-install">
+        <term><command>grub-install</command></term>
+        <listitem>
+          <para>在您的驱动器上安装 GRUB</para>
+          <indexterm zone="ch-system-grub grub-install">
+            <primary sortas="b-grub-install">grub-install</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="grub-mkconfig">
+        <term><command>grub-mkconfig</command></term>
+        <listitem>
+          <para>生成一个 grub 配置文件</para>
+          <indexterm zone="ch-system-grub grub-mkconfig">
+            <primary sortas="b-grub-mkconfig">grub-mkconfig</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="grub-mkdevicemap">
+        <term><command>grub-mkdevicemap</command></term>
+        <listitem>
+          <para>自动生成一个设备映射文件</para>
+          <indexterm zone="ch-system-grub grub-mkdevicemap">
+            <primary sortas="b-grub-mkdevicemap">grub-mkdevicemap</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="grub-mkelfimage">
+        <term><command>grub-mkelfimage</command></term>
+        <listitem>
+          <para>建立一个 GRUB 的可引导镜像</para>
+          <indexterm zone="ch-system-grub grub-mkelfimage">
+            <primary sortas="b-grub-mkelfimage">grub-mkelfimage</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="grub-mkimage">
+        <term><command>grub-mkimage</command></term>
+        <listitem>
+          <para>建立一个 GRUB 的可引导镜像</para>
+          <indexterm zone="ch-system-grub grub-mkimage">
+            <primary sortas="b-grub-mkimage">grub-mkimage</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="grub-mkisofs">
+        <term><command>grub-mkisofs</command></term>
+        <listitem>
+          <para>创建一个可引导 ISO 镜像</para>
+          <indexterm zone="ch-system-grub grub-mkisofs">
+            <primary sortas="b-grub-mkisofs">grub-mkisofs</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="grub-mkpasswd-pbkdf2">
+        <term><command>grub-mkpasswd-pbkdf2</command></term>
+        <listitem>
+          <para>生成一个加密的 PBKDF2 密码用于在引导菜单中使用</para>
+          <indexterm zone="ch-system-grub grub-mkpasswd-pbkdf2">
+            <primary sortas="b-grub-mkpasswd-pbkdf2">grub-mkpasswd-pbkdf2</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="grub-mkrelpath">
+        <term><command>grub-mkrelpath</command></term>
+        <listitem>
+          <para>建立一个相对于它的根的系统路径名</para>
+          <indexterm zone="ch-system-grub grub-mkrelpath">
+            <primary sortas="b-grub-mkrelpath">grub-mkrelpath</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="grub-mkrescue">
+        <term><command>grub-mkrescue</command></term>
+        <listitem>
+          <para>建立一个适合软盘或 CDROM/DVD 的 GRUB 镜像</para>
+          <indexterm zone="ch-system-grub grub-mkrescue">
+            <primary sortas="b-grub-mkrescue">grub-mkrescue</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="grub-probe">
+        <term><command>grub-probe</command></term>
+        <listitem>
+          <para>探测一个给定路径或设备的设备信息</para>
+          <indexterm zone="ch-system-grub grub-probe">
+            <primary sortas="b-grub-probe">grub-probe</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="grub-reboot">
+        <term><command>grub-reboot</command></term>
+        <listitem>
+          <para>设置仅在下一次引导时的 GRUB 的默认引导条目</para>
+          <indexterm zone="ch-system-grub grub-reboot">
+            <primary sortas="b-grub-reboot">grub-reboot</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="grub-script-check">
+        <term><command>grub-script-check</command></term>
+        <listitem>
+          <para>检查 GRUB 配置脚本的语法错误</para>
+          <indexterm zone="ch-system-grub grub-script-check">
+            <primary sortas="b-grub-script-check">grub-script-check</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="grub-set-default">
+        <term><command>grub-set-default</command></term>
+        <listitem>
+          <para>设置 GRUB 的默认引导条目</para>
+          <indexterm zone="ch-system-grub grub-set-default">
+            <primary sortas="b-grub-set-default">grub-set-default</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="grub-setup">
+        <term><command>grub-setup</command></term>
+        <listitem>
+          <para>设置从一个设备引导的镜像</para>
+          <indexterm zone="ch-system-grub grub-setup">
+            <primary sortas="b-grub-setup">grub-setup</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+    </variablelist>
+
+  </sect2>
+
+</sect1>

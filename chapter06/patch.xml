@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sect1 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+  "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+  <!ENTITY % general-entities SYSTEM "../general.ent">
+  %general-entities;
+]>
+
+<sect1 id="ch-system-patch" role="wrap">
+  <?dbhtml filename="patch.html"?>
+
+  <sect1info condition="script">
+    <productname>patch</productname>
+    <productnumber>&patch-version;</productnumber>
+    <address>&patch-url;</address>
+  </sect1info>
+
+  <title>Patch-&patch-version;</title>
+
+  <indexterm zone="ch-system-patch">
+    <primary sortas="a-Patch">Patch</primary>
+  </indexterm>
+
+  <sect2 role="package">
+    <title/>
+
+    <para>Patch 包包含通过应用通常由 <command>diff</command> 程序创建的<quote>补丁</quote>文件来修改或创建文件的程序。</para>
+
+    <segmentedlist>
+      <segtitle>&buildtime;</segtitle>
+      <segtitle>&diskspace;</segtitle>
+
+      <seglistitem>
+        <seg>&patch-ch6-sbu;</seg>
+        <seg>&patch-ch6-du;</seg>
+      </seglistitem>
+    </segmentedlist>
+
+  </sect2>
+
+  <sect2 role="installation">
+    <title>Patch 的安装</title>
+
+    <para>应用一个补丁避免测试套装运行需要 <command>ed</command> 的测试:</para>
+
+<screen><userinput remap="pre">patch -Np1 -i ../&patch-test-patch;</userinput></screen>
+
+    <para>准备 Patch 编译:</para>
+
+<screen><userinput remap="configure">./configure --prefix=/usr</userinput></screen>
+
+    <para>编译包:</para>
+
+<screen><userinput remap="make">make</userinput></screen>
+
+    <para>要测试结果，执行:</para>
+
+<screen><userinput remap="test">make check</userinput></screen>
+
+    <para>安装包:</para>
+
+<screen><userinput remap="install">make install</userinput></screen>
+
+  </sect2>
+
+  <sect2 id="contents-patch" role="content">
+    <title>Patch 的内容</title>
+
+    <segmentedlist>
+      <segtitle>安装的程序</segtitle>
+
+      <seglistitem>
+        <seg>patch</seg>
+      </seglistitem>
+    </segmentedlist>
+
+    <variablelist>
+      <bridgehead renderas="sect3">简述</bridgehead>
+      <?dbfo list-presentation="list"?>
+      <?dbhtml list-presentation="table"?>
+
+      <varlistentry id="patch">
+        <term><command>patch</command></term>
+        <listitem>
+          <para>根据补丁文件修改文件。补丁文件一般是由 <command>diff</command> 程序创建的差异列表。通过应用这些差异到原始文件，
+          <command>patch</command> 创建补丁后的版本。</para>
+          <indexterm zone="ch-system-patch patch">
+            <primary sortas="b-patch">patch</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+    </variablelist>
+
+  </sect2>
+
+</sect1>

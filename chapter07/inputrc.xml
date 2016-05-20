@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sect1 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+  "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+   <!ENTITY % general-entities SYSTEM "../general.ent">
+  %general-entities;
+]>
+
+<sect1 id="ch-scripts-inputrc">
+  <?dbhtml filename="inputrc.html"?>
+
+  <title>创建 /etc/inputrc 文件</title>
+
+  <indexterm zone="ch-scripts-inputrc">
+    <primary sortas="e-/etc/inputrc">/etc/inputrc</primary>
+  </indexterm>
+
+  <para><filename>inputrc</filename> 文件处理特定情况的键盘映射。这个文件是 Readline 使用的启动文件&mdash;关于输入的库 &mdash;用于 Bash 和许多各种其他的 Shell。</para>
+
+  <para>大多数用户不想要用户专用的键盘映射，所以下列的命令创建了一个用于登录的每个人的全局 <filename>/etc/inputrc</filename>。如果您之后决定需要覆盖针对每个用户的默认，您可以在用户的主目录中，使用修改的映射创建一个 <filename>.inputrc</filename> 文件。</para>
+
+  <para>要获得更多关于如何编辑 <filename>inputrc</filename> 文件的信息，查看<emphasis>Readline 初始文件</emphasis>部分下的 <command>info bash</command>。
+  <command>info readline</command> 也是一个很好的信息来源。</para>
+
+  <para>下面是一个普通的全局 <filename>inputrc</filename>，附带解释各个选项用途的注释。注意，注释不能和命令在同一行(括号部分是中文解释，为了避免编码问题，不要包含到命令中)。使用下列命令创建文件:</para>
+
+<screen><userinput>cat &gt; /etc/inputrc &lt;&lt; "EOF"
+<literal># Begin /etc/inputrc
+# Modified by Chris Lynn &lt;roryo@roryo.dynup.net&gt;
+
+# Allow the command prompt to wrap to the next line(让命令提示符可以折到下一行)
+set horizontal-scroll-mode Off
+
+# Enable 8bit input(启用 8 位输入)
+set meta-flag On
+set input-meta On
+
+# Turns off 8th bit stripping(关闭第8位的剥离)
+set convert-meta Off
+
+# Keep the 8th bit for display(保持显示的第8位)
+set output-meta On
+
+# none, visible or audible
+set bell-style none
+
+# All of the following map the escape sequence of the value
+# contained in the 1st argument to the readline specific functions(下列全部映射包含在第1个参数中的转义序列为 readline 专用的函数)
+"\eOd": backward-word
+"\eOc": forward-word
+
+# for linux console
+"\e[1~": beginning-of-line
+"\e[4~": end-of-line
+"\e[5~": beginning-of-history
+"\e[6~": end-of-history
+"\e[3~": delete-char
+"\e[2~": quoted-insert
+
+# for xterm
+"\eOH": beginning-of-line
+"\eOF": end-of-line
+
+# for Konsole
+"\e[H": beginning-of-line
+"\e[F": end-of-line
+
+# End /etc/inputrc</literal>
+EOF</userinput></screen>
+
+</sect1>

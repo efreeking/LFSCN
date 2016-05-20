@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sect1 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+  "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+  <!ENTITY % general-entities SYSTEM "../general.ent">
+  %general-entities;
+]>
+
+<sect1 id="ch-finish-whatnow">
+  <?dbhtml filename="whatnow.html"?>
+
+  <title>现在做什么?</title>
+
+  <para>感谢您阅读这本 LFS 书。我们希望您会觉得本书对您有用并且已经了解了更多关于系统创建过程的知识。</para>
+
+  <para>现在，LFS 系统已经安装了，您可能想知道<quote>下一步是什么？</quote>为了回答这个问题，我们为您编制了一个资源列表。</para>
+
+  <itemizedlist>
+
+    <listitem>
+      <para>维护</para>
+
+      <para>所有软件的错误和安全通知都会定期报告，因为 LFS 系统是从源代码编译的，由您决定保持这些报告的与时俱进。有几个在线资源会跟踪这些报告，其中部分显示如下:</para>
+
+      <itemizedlist>
+
+        <listitem>
+          <para>Freshmeat.net (<ulink url="http://freshmeat.net/"/>)</para>
+
+          <para>Freshmeat 可以通知您(通过电子邮件)安装在您的系统上的包的新版本。</para>
+        </listitem>
+
+        <listitem>
+          <para><ulink url="http://www.cert.org/">CERT</ulink> (计算机紧急响应团队)</para>
+
+          <para>CERT 有一个公布涉及各种操作系统和应用程序的安全告警的邮件列表。订阅信息可以在 <ulink
+          url="http://www.us-cert.gov/cas/signup.html"/> 找到。</para>
+        </listitem>
+
+        <listitem>
+          <para>Bugtraq</para>
+
+          <para>Bugtraq 是一个完全披露计算机安全问题的邮件列表。它公布新发现的安全问题，并偶尔提供修复方法。订阅信息可以在 <ulink
+          url="http://www.securityfocus.com/archive"/> 找到。</para>
+        </listitem>
+
+      </itemizedlist>
+    </listitem>
+
+    <listitem>
+      <para>Beyond Linux From Scratch</para>
+
+      <para>Beyond Linux From Scratch 一书涵盖除了 LFS 外更大范围的软件的安装过程。BLFS 项目位于 <ulink url="&blfs-root;"/>.</para>
+    </listitem>
+
+    <listitem>
+      <para>LFS Hints</para>
+
+      <para>LFS Hints 是由 LFS 社区中的自愿者提交的教育性文档的收藏。这些技巧可以在 <ulink url="&hints-index;"/> 找到。</para>
+    </listitem>
+
+    <listitem>
+      <para>邮件列表</para>
+
+      <para>如果您需要帮助，想跟踪最新的开发，想为项目做出贡献等，有几个 LFS 邮件您可以订阅。查看<xref
+      linkend="ch-intro-maillists"/>了解更多信息。</para>
+    </listitem>
+
+    <listitem>
+      <para>The Linux Documentation Project</para>
+
+      <para>The Linux Documentation Project (Linux 文档项目 TLDP)是整合所有的 Linux 文档的问题。TLDP 提供了一大堆 HOWTOs、指南和手册页。它位于 <ulink url="http://www.tldp.org/"/>。</para>
+    </listitem>
+
+  </itemizedlist>
+
+</sect1>

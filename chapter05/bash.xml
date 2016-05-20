@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sect1 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+  "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+  <!ENTITY % general-entities SYSTEM "../general.ent">
+  %general-entities;
+]>
+
+<sect1 id="ch-tools-bash" role="wrap">
+  <?dbhtml filename="bash.html"?>
+
+  <sect1info condition="script">
+    <productname>bash</productname>
+    <productnumber>&bash-version;</productnumber>
+    <address>&bash-url;</address>
+  </sect1info>
+
+  <title>Bash-&bash-version;</title>
+
+  <indexterm zone="ch-tools-bash">
+    <primary sortas="a-Bash">Bash</primary>
+    <secondary>工具</secondary>
+  </indexterm>
+
+  <sect2 role="package">
+    <title/>
+
+    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"
+    href="../chapter06/bash.xml"
+    xpointer="xpointer(/sect1/sect2[1]/para[1])"/>
+
+    <segmentedlist>
+      <segtitle>&buildtime;</segtitle>
+      <segtitle>&diskspace;</segtitle>
+
+      <seglistitem>
+        <seg>&bash-ch5-sbu;</seg>
+        <seg>&bash-ch5-du;</seg>
+      </seglistitem>
+    </segmentedlist>
+
+  </sect2>
+
+  <sect2 role="installation">
+    <title>Bash 的安装</title>
+
+    <para>首先，应用下列补丁以修复多个已经在上游 (upstream) 设法解决的错误:</para>
+
+<screen><userinput remap="pre">patch -Np1 -i ../&bash-fixes-patch;</userinput></screen>
+
+    <para>准备 Bash 的编译:</para>
+
+<screen><userinput remap="configure">./configure --prefix=/tools --without-bash-malloc</userinput></screen>
+
+    <variablelist>
+      <title>配置选项的含义:</title>
+
+      <varlistentry>
+        <term><parameter>--without-bash-malloc</parameter></term>
+        <listitem>
+          <para>这个选项关闭了 Bash 的内存分配
+          (<function>malloc</function>) 函数的使用，这个函数已知会导致
+          段失败(segmentation faults)。通过关闭这个选项，Bash 将会使用 Glibc 的更为稳定的 <function>malloc</function> 函数。</para>
+        </listitem>
+      </varlistentry>
+
+    </variablelist>
+
+    <para>编译软件包:</para>
+
+<screen><userinput remap="make">make</userinput></screen>
+
+    <para>编译现在完成了。 如之前讨论，在本章中，对于这里的临时工具来说，运行测试套装不是强制的。无论如何都要运行 Bash 测试套装的话, 执行下列命令:</para>
+
+
+<screen><userinput remap="test">make tests</userinput></screen>
+
+    <para>安装软件包:</para>
+
+<screen><userinput remap="install">make install</userinput></screen>
+
+    <para>为那些使用 <command>sh</command> 作为 Shell 的程序建立一个链接:</para>
+
+<screen><userinput remap="install">ln -vs bash /tools/bin/sh</userinput></screen>
+
+  </sect2>
+
+  <sect2 role="content">
+    <title/>
+
+    <para>本包上的详细信息位于
+    <xref linkend="contents-bash" role="."/></para>
+
+  </sect2>
+
+</sect1>

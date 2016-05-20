@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sect1 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+  "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+  <!ENTITY % general-entities SYSTEM "../general.ent">
+  %general-entities;
+]>
+
+<sect1 id="ch-system-strippingagain">
+  <?dbhtml filename="strippingagain.html"?>
+
+  <title>再次剥离</title>
+
+  <para>如果目标用户不是一个编程者或者不计划在系统软件上进行任何调试，可以通过从二进制文件和库文件中去除调试符号来减少系统大小大约90 MB。这个除了完全不再能够调试软件外，不会导致任何其它的不便。</para>
+
+  <para>大多数使用下面所述的命令都不会遇到任何困难。但是很容易输入错误而导致新的系统不可用，所以在运行
+  <command>strip</command> 命令前，对当前状态的 LFS 系统建立一个备份是一个不错的主意。</para>
+
+  <para>在执行剥离前，特别小心确保没有准备剥离的二进制正在运行。如果不能确保用户是否使用
+  <xref linkend="ch-system-chroot" role=","/>中给出的命令进入 chroot，那么首先从
+  chroot 退出:</para>
+
+<screen role="nodump"><userinput>logout</userinput></screen>
+
+  <para>然后使用以下命令重新进入:</para>
+
+<screen role="nodump"><userinput>chroot $LFS /tools/bin/env -i \
+    HOME=/root TERM=$TERM PS1='\u:\w\$ ' \
+    PATH=/bin:/usr/bin:/sbin:/usr/sbin \
+    /tools/bin/bash --login</userinput></screen>
+
+  <para>现在二进制文件和库文件可以安全的进行剥离清理:</para>
+
+<screen><userinput>/tools/bin/find /{,usr/}{bin,lib,sbin} -type f \
+  -exec /tools/bin/strip --strip-debug '{}' ';'</userinput></screen>
+
+  <para>大量的文件将会报告有它们不能识别的文件格式。这些警告可以安全的忽略。这些警告说明那些文件是脚本而不是二进制文件。</para>
+
+  <para>如果磁盘空间非常紧张，<parameter>--strip-all</parameter> 选项可以在 <filename class="directory">/{,usr/}{bin,sbin}</filename> 中的二进制文件上再次使用来获得更多的空间。不要在库文件上使用这些选项&mdash;它们将会被破坏。</para>
+
+</sect1>

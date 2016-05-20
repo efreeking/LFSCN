@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sect1 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+  "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+  <!ENTITY % general-entities SYSTEM "../general.ent">
+  %general-entities;
+]>
+
+<sect1 id="ch-system-flex" role="wrap">
+  <?dbhtml filename="flex.html"?>
+
+  <sect1info condition="script">
+    <productname>flex</productname>
+    <productnumber>&flex-version;</productnumber>
+    <address>&flex-url;</address>
+  </sect1info>
+
+  <title>Flex-&flex-version;</title>
+
+  <indexterm zone="ch-system-flex">
+    <primary sortas="a-Flex">Flex</primary>
+  </indexterm>
+
+  <sect2 role="package">
+    <title/>
+
+    <para>Flex 包包含生成能够识别文本中的式样的程序的工具。</para>
+
+    <segmentedlist>
+      <segtitle>&buildtime;</segtitle>
+      <segtitle>&diskspace;</segtitle>
+
+      <seglistitem>
+        <seg>&flex-ch6-sbu;</seg>
+        <seg>&flex-ch6-du;</seg>
+      </seglistitem>
+    </segmentedlist>
+
+  </sect2>
+
+  <sect2 role="installation">
+    <title>Flex 的安装</title>
+
+    <para>应用一个可以修复 C++ 扫描程序生成器中的错误的补丁，该错误可能在使用 GCC-&gcc-version; 时导致扫描程序编译失败:</para>
+
+<screen><userinput remap="pre">patch -Np1 -i ../&flex-gcc-patch;</userinput></screen>
+
+    <para>准备 Flex 编译:</para>
+
+<screen><userinput remap="configure">./configure --prefix=/usr</userinput></screen>
+
+    <para>编译包:</para>
+
+<screen><userinput remap="make">make</userinput></screen>
+
+    <para>要测试结果(约 0.5 SBU)，执行:</para>
+
+<screen><userinput remap="test">make check</userinput></screen>
+
+    <para>安装包:</para>
+
+<screen><userinput remap="install">make install</userinput></screen>
+
+    <para>有一些包预期在 <filename
+    class="directory">/usr/lib</filename> 中查找
+    <filename class="libraryfile">lex</filename> 库。为此创建一个符号链接账户:</para>
+
+<screen><userinput remap="install">ln -sv libfl.a /usr/lib/libl.a</userinput></screen>
+
+    <para>一些程序还不知道 <command>flex</command> ，而且尝试运行它的前任，<command>lex</command>。要支持那些程序，创建一个名为 <filename>lex</filename> 的封装器脚本，它会以 <command>lex</command> 模拟模式调用 <filename>flex</filename>:</para>
+
+<screen><userinput remap="install">cat &gt; /usr/bin/lex &lt;&lt; "EOF"
+<literal>#!/bin/sh
+# Begin /usr/bin/lex
+
+exec /usr/bin/flex -l "$@"
+
+# End /usr/bin/lex</literal>
+EOF
+chmod -v 755 /usr/bin/lex</userinput></screen>
+
+    <para>如果需要的话，安装 <filename>flex.pdf</filename> 文档文件:</para>
+
+<screen><userinput remap="install">mkdir -v /usr/share/doc/flex-&flex-version;
+cp    -v doc/flex.pdf \
+         /usr/share/doc/flex-&flex-version;</userinput></screen>
+
+  </sect2>
+
+  <sect2 id="contents-flex" role="content">
+    <title>Flex 的内容</title>
+
+    <segmentedlist>
+      <segtitle>安装的程序</segtitle>
+      <segtitle>安装的库</segtitle>
+
+      <seglistitem>
+        <seg>flex 和 lex</seg>
+        <seg>libfl.a 和 libfl_pic.a</seg>
+      </seglistitem>
+    </segmentedlist>
+
+    <variablelist>
+      <bridgehead renderas="sect3">简述</bridgehead>
+      <?dbfo list-presentation="list"?>
+      <?dbhtml list-presentation="table"?>
+
+      <varlistentry id="flex">
+        <term><command>flex</command></term>
+        <listitem>
+          <para>一个用于生成能够识别文本中的式样的程序的工具；它有多种功能，包括指定式样查找的规则，根除了开发一个特定程序的需要</para>
+          <indexterm zone="ch-system-flex flex">
+            <primary sortas="b-flex">flex</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="lex">
+        <term><command>lex</command></term>
+        <listitem>
+          <para>一个以 <command>lex</command> 模拟模式运行 <command>flex</command> 的脚本</para>
+          <indexterm zone="ch-system-flex lex">
+            <primary sortas="b-lex">lex</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="libfl.a">
+        <term><filename class="libraryfile">libfl.a</filename></term>
+        <listitem>
+          <para><filename class="libraryfile">flex</filename> 库</para>
+          <indexterm zone="ch-system-flex libfl.a">
+            <primary sortas="c-libfl.a">libfl.a</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+    </variablelist>
+
+  </sect2>
+
+</sect1>

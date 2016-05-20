@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sect1 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+  "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+  <!ENTITY % general-entities SYSTEM "../general.ent">
+  %general-entities;
+]>
+
+<sect1 id="ch-scripts-console">
+  <?dbhtml filename="console.html"?>
+
+  <title>配置 Linux 控制台</title>
+
+  <indexterm zone="ch-scripts-console">
+    <primary sortas="d-console">console</primary>
+    <secondary>配置</secondary>
+  </indexterm>
+
+  <indexterm zone="ch-scripts-console">
+    <primary sortas="d-consolelog">consolelog</primary>
+    <secondary>配置</secondary>
+  </indexterm>
+
+  <para>本节讨论如何配置 <command>console</command>
+  和 <command>consolelog</command> 引导脚本设置键盘映射、控制台字体和控制台内核记录级别。
+  如果不使用非 ASCII 字符(如版权符号，英镑符号和欧元的符号)并且键盘是美式的话，本节的大部分可以跳过。没有配置文件，<command>console</command> 引导脚本将不会做任何操作。</para>
+
+  <para><command>console</command>  和 <command>consolelog</command>
+  脚本读取 <filename>/etc/sysconfig/console</filename> 文件的配置信息。决定使用哪个键盘映射(Keymap)和屏幕字体。各种语言专用的
+  HOWTOs 也可有助于完成本任务，参阅 <ulink
+  url="http://www.tldp.org/HOWTO/HOWTO-INDEX/other-lang.html"/>。如果仍有疑问，在 <filename class="directory">/lib/kbd</filename> 目录中查找可用的键盘映射和屏幕字体。阅读 <filename>loadkeys(1)</filename> 和 <filename>setfont(8)</filename> 手册页来决定这些程序的正确参数。</para>
+
+  <para><filename>/etc/sysconfig/console</filename> 文件应该包含这样形式的行: VARIABLE="value"。下列变量可以被识别:</para>
+
+  <variablelist>
+
+    <varlistentry>
+      <term>LOGLEVEL</term>
+      <listitem>
+        <para>这个变量指定内核消息发送给控制台作为 <command>dmesg</command> 的设置。有效的级别从“1”(无消息)到“8”。默认级别是“7”。</para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term>KEYMAP</term>
+      <listitem>
+        <para>这个变量指定用于 <command>loadkeys</command> 程序的参数，一般的是要加载的键盘映射的名称，如 <quote>es</quote>。如果这个变量不设置，引导脚本将不会运行 <command>loadkeys</command> 程序，并将使用默认的内核键盘映射。</para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term>KEYMAP_CORRECTIONS</term>
+      <listitem>
+        <para>这个(很少用到)变量指定用于 <command>loadkeys</command> 程序第二次调用的参数。这个是在如果提供的键盘映射不能完全令人满意并且需要做出小调整。如要包含欧元符号到一个通常不会包含的键盘映射中，设置这个变量为 <quote>euro2</quote>。</para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term>FONT</term>
+      <listitem>
+        <para>这个变量指定 <command>setfont</command> 程序的参数。通常，这个包含字体的名称、<quote>-m</quote> 和要加载的应用程序字符映射的名称。如为了加载 <quote>lat1-16</quote> 字体连同 <quote>8859-1</quote> 应用程序字符映射一起(因为这在美国是适用的)，
+        <!-- because of the copyright sign -->
+        设置这个变量为 <quote>lat1-16 -m 8859-1</quote>。
+        在 UTF-8 模式中，内核使用应用程序字符映射来转换键盘映射中的 8 位键代码为 UTF-8，并由此应该设置“-m”参数的实参为键盘映射中组合键代码的编码。</para>
+
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term>UNICODE</term>
+      <listitem>
+        <para>设置这个变量为 <quote>1</quote>、<quote>yes</quote> 或
+        <quote>true</quote> 以把控制台设为 UTF-8 模式。这在基于 UTF-8 的语言环境很有用，其它情况也是无害。</para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term>LEGACY_CHARSET</term>
+      <listitem>
+        <para>对于许多键盘布局，在 Kbd 应用程序中没有 Unicode 键盘的现货提供。如果这个变量被设置为可用的非 UTF-8 键盘映射的编码的话，<command>console</command> 引导脚本将匆忙中转换一个可用的键盘映射为 UTF-8。</para>
+      </listitem>
+    </varlistentry>
+
+  </variablelist>
+
+  <para>某些例子:</para>
+
+  <itemizedlist>
+
+    <listitem>
+      <para>对于一个非 Unicode 设置，一般只需要 KEYMAP 和 FONT 变量。例如对于波兰语设置，应当使用:</para>
+
+<screen role="nodump"><userinput>cat &gt; /etc/sysconfig/console &lt;&lt; "EOF"
+<literal># Begin /etc/sysconfig/console
+
+KEYMAP="pl2"
+FONT="lat2a-16 -m 8859-2"
+
+# End /etc/sysconfig/console</literal>
+EOF</userinput></screen>
+    </listitem>
+
+    <listitem>
+      <para>如上所述，有些时候需要对现有的键盘映射略为调整。下面的例子添加了 Euro 符号到德语的键盘映射:</para>
+
+<screen role="nodump"><userinput>cat &gt; /etc/sysconfig/console &lt;&lt; "EOF"
+<literal># Begin /etc/sysconfig/console
+
+KEYMAP="de-latin1"
+KEYMAP_CORRECTIONS="euro2"
+FONT="lat0-16 -m 8859-15"
+
+# End /etc/sysconfig/console</literal>
+EOF</userinput></screen>
+    </listitem>
+
+    <listitem>
+      <para>下面是用于保加利亚语的一个启用了 Unicode 的例子，其中存在现有 UTF-8 键盘映射:</para>
+
+<screen role="nodump"><userinput>cat &gt; /etc/sysconfig/console &lt;&lt; "EOF"
+<literal># Begin /etc/sysconfig/console
+
+UNICODE="1"
+KEYMAP="bg_bds-utf8"
+FONT="LatArCyrHeb-16"
+
+# End /etc/sysconfig/console</literal>
+EOF</userinput></screen>
+    </listitem>
+
+    <listitem>
+      <para>由于在是先前的示例中使用了 512-glyph 的 LatArCyrHeb-16 的字体，在 Linux 控制台上亮色不再可用，除非使用了帧缓冲(framebuffer)。如果有人想拥有亮色而不要帧缓冲,并且不使用不属于他的语言的字符，则仍可使用一个语言专用的 256-glyph 字体，说明如下:</para>
+
+<screen role="nodump"><userinput>cat &gt; /etc/sysconfig/console &lt;&lt; "EOF"
+<literal># Begin /etc/sysconfig/console
+
+UNICODE="1"
+KEYMAP="bg_bds-utf8"
+FONT="cyr-sun16"
+
+# End /etc/sysconfig/console</literal>
+EOF</userinput></screen>
+    </listitem>
+
+    <listitem>
+      <para>下面的例子说明从
+      ISO-8859-15 到 UTF-8 的键盘映射的自动转换并启用 Unicode 模式中的无效键:</para>
+
+<screen role="nodump"><userinput>cat &gt; /etc/sysconfig/console &lt;&lt; "EOF"
+<literal># Begin /etc/sysconfig/console
+
+UNICODE="1"
+KEYMAP="de-latin1"
+KEYMAP_CORRECTIONS="euro2"
+LEGACY_CHARSET="iso-8859-15"
+FONT="LatArCyrHeb-16 -m 8859-15"
+
+# End /etc/sysconfig/console</literal>
+EOF</userinput></screen>
+    </listitem>
+
+    <listitem>
+      <para>某些键盘映射有无效键(也即本身不会产生一个字符，而是在由下一个键产生的字符上放置一个重音符)或定义合成规则(譬如: 在默认的键盘映射中，<quote>按
+      Ctrl+. A E 得到 &AElig;</quote>)。
+      Linux-&linux-version; 仅在组合成一起的源字符不是多字节的时候才能正确的解释键盘映射中的无效键和合成规则。这样的缺陷不会影响用于欧洲语言的键盘映射，因为有冲音符会添加到不是重音的 ASCII 字符，或者两个 ASCII 字符组合在一起。尽管如此，在 UTF-8 模式中，这仍是一个问题，例如，对于希腊语，其中的字符有些时候需要在字母 <quote>alpha</quote> 上添加重音号。解决方案就是要么避免使用 UTF-8，要么安装在输入处理中没有这个限制的 X window 系统。</para>
+    </listitem>
+
+    <listitem>
+      <para>对于中文、日文、韩文和某些其它语言，Linux 控制台无法配置为显示需要的字符。需要这些字体的用户应该安装 X Window 系统、涵盖所需字符范围的字体和正确的输入法(如 SCIM，它支持更广泛的语言)。</para>
+    </listitem>
+
+  </itemizedlist>
+
+  <!-- Added because folks keep posting their console file with X questions
+  to blfs-support list -->
+  <note>
+    <para><filename>/etc/sysconfig/console</filename> 文件只控制 Linux 文本控制台本地化。在 X Window 系统、带有 ssh 会话或者带有串行控制台的中，无需设置正确的键盘布局和终端字体。在这样的情况下，上述内容列表中的最后两项就不再适用。</para>
+  </note>
+
+</sect1>

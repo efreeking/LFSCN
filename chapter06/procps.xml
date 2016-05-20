@@ -1,0 +1,271 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sect1 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+  "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+  <!ENTITY % general-entities SYSTEM "../general.ent">
+  %general-entities;
+]>
+
+<sect1 id="ch-system-procps" role="wrap">
+  <?dbhtml filename="procps.html"?>
+
+  <sect1info condition="script">
+    <productname>procps</productname>
+    <productnumber>&procps-version;</productnumber>
+    <address>&procps-url;</address>
+  </sect1info>
+
+  <title>Procps-&procps-version;</title>
+
+  <indexterm zone="ch-system-procps">
+    <primary sortas="a-Procps">Procps</primary>
+  </indexterm>
+
+  <sect2 role="package">
+    <title/>
+
+    <para>Procps 包包含监控进程的程序。</para>
+
+    <segmentedlist>
+      <segtitle>&buildtime;</segtitle>
+      <segtitle>&diskspace;</segtitle>
+
+      <seglistitem>
+        <seg>&procps-ch6-sbu;</seg>
+        <seg>&procps-ch6-du;</seg>
+      </seglistitem>
+    </segmentedlist>
+
+  </sect2>
+
+  <sect2 role="installation">
+    <title>Procps 的安装</title>
+
+    <para>应用一个补丁来防止在判断内核时钟节拍速率时显示错误消息:</para>
+
+<screen><userinput remap="pre">patch -Np1 -i ../&procps-hz_fixes-patch;</userinput></screen>
+
+    <para>应用一个补丁修复在 <command>watch</command> 程序中和 Unicode 相关的一个问题:</para>
+
+<screen><userinput remap="pre">patch -Np1 -i ../&procps-watch-patch;</userinput></screen>
+
+    <para>修复 Makefile 中的一个问题，它会防止 procps 使用
+    make-&make-version; 构建:</para>
+
+<screen><userinput remap="pre">sed -i -e 's@\*/module.mk@proc/module.mk ps/module.mk@' Makefile</userinput></screen>
+
+    <para>编译包:</para>
+
+<screen><userinput remap="make">make</userinput></screen>
+
+    <para>这个包不附带测试套装。</para>
+
+    <para>安装包:</para>
+
+<screen><userinput remap="install">make install</userinput></screen>
+
+  </sect2>
+
+  <sect2 id="contents-procps" role="content">
+    <title>Procps 的内容</title>
+
+    <segmentedlist>
+      <segtitle>安装的程序</segtitle>
+      <segtitle>安装的库</segtitle>
+
+      <seglistitem>
+        <seg>free, kill, pgrep, pkill, pmap, ps, pwdx, skill, slabtop, snice,
+        sysctl, tload, top, uptime, vmstat, w 和 watch</seg>
+        <seg>libproc.so</seg>
+      </seglistitem>
+    </segmentedlist>
+
+    <variablelist>
+      <bridgehead renderas="sect3">简述</bridgehead>
+      <?dbfo list-presentation="list"?>
+      <?dbhtml list-presentation="table"?>
+
+      <varlistentry id="free">
+        <term><command>free</command></term>
+        <listitem>
+          <para>报告在系统中可用和已用内存(包括物理和交换内存)的数量</para>
+          <indexterm zone="ch-system-procps free">
+            <primary sortas="b-free">free</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="kill">
+        <term><command>kill</command></term>
+        <listitem>
+          <para>发送信号给进程</para>
+          <indexterm zone="ch-system-procps kill">
+            <primary sortas="b-kill">kill</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="pgrep">
+        <term><command>pgrep</command></term>
+        <listitem>
+          <para>基于进程的名称和其它属性查询进程</para>
+          <indexterm zone="ch-system-procps pgrep">
+            <primary sortas="b-pgrep">pgrep</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="pkill">
+        <term><command>pkill</command></term>
+        <listitem>
+          <para>基于进程的名称和其它属性给进程发信号</para>
+          <indexterm zone="ch-system-procps pkill">
+            <primary sortas="b-pkill">pkill</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="pmap">
+        <term><command>pmap</command></term>
+        <listitem>
+          <para>恢复给出进程的内存映射</para>
+          <indexterm zone="ch-system-procps pmap">
+            <primary sortas="b-pmap">pmap</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="ps">
+        <term><command>ps</command></term>
+        <listitem>
+          <para>列出当前正在运行的进程</para>
+          <indexterm zone="ch-system-procps ps">
+            <primary sortas="b-ps">ps</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="pwdx">
+        <term><command>pwdx</command></term>
+        <listitem>
+          <para>报告一个进程的当前工作目录</para>
+          <indexterm zone="ch-system-procps pwdx">
+            <primary sortas="b-pwdx">pwdx</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="skill">
+        <term><command>skill</command></term>
+        <listitem>
+          <para>发送信号给匹配给定条件的进程</para>
+          <indexterm zone="ch-system-procps skill">
+            <primary sortas="b-skill">skill</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="slabtop">
+        <term><command>slabtop</command></term>
+        <listitem>
+          <para>实时显示详细的内核 slap 缓存信息</para>
+          <indexterm zone="ch-system-procps slabtop">
+            <primary sortas="b-slabtop">slabtop</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="snice">
+        <term><command>snice</command></term>
+        <listitem>
+          <para>更改匹配给定条件的进程的调度优先级</para>
+          <indexterm zone="ch-system-procps snice">
+            <primary sortas="b-snice">snice</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="sysctl">
+        <term><command>sysctl</command></term>
+        <listitem>
+          <para>在运行时修改内核参数</para>
+          <indexterm zone="ch-system-procps sysctl">
+            <primary sortas="b-sysctl">sysctl</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="tload">
+        <term><command>tload</command></term>
+        <listitem>
+          <para>打印当前系统负载平均量的图表</para>
+          <indexterm zone="ch-system-procps tload">
+            <primary sortas="b-tload">tload</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="top">
+        <term><command>top</command></term>
+        <listitem>
+          <para>显示最多的 CPU 密集型进程的一个列表；它提供一个实时发展性观察处理器活动的方法</para>
+          <indexterm zone="ch-system-procps top">
+            <primary sortas="b-top">top</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="uptime">
+        <term><command>uptime</command></term>
+        <listitem>
+          <para>报告系统已经运行多长时间、多少用户已经登录以及系统负载的平均值</para>
+          <indexterm zone="ch-system-procps uptime">
+            <primary sortas="b-uptime">uptime</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="vmstat">
+        <term><command>vmstat</command></term>
+        <listitem>
+          <para>报告虚拟内存统计信息，给出关于进程、内存、分页、块输入/输出(IO)、traps 和 CPU 活动的信息</para>
+          <indexterm zone="ch-system-procps vmstat">
+            <primary sortas="b-vmstat">vmstat</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="w">
+        <term><command>w</command></term>
+        <listitem>
+          <para>显示当前哪些用户登录了，在哪里以及从什么时候开始登录</para>
+          <indexterm zone="ch-system-procps w">
+            <primary sortas="b-w">w</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="watch">
+        <term><command>watch</command></term>
+        <listitem>
+          <para>重复的运行一个给定的命令，显示它的第一个满屏的输出；这个让用户可以随时观察输出更改</para>
+          <indexterm zone="ch-system-procps watch">
+            <primary sortas="b-watch">watch</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="libproc">
+        <term><filename class="libraryfile">libproc</filename></term>
+        <listitem>
+          <para>包含被本包中大多数程序使用的函数</para>
+          <indexterm zone="ch-system-procps libproc">
+            <primary sortas="c-libproc">libproc</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+    </variablelist>
+
+  </sect2>
+
+</sect1>

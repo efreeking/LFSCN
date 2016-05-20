@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sect1 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+  "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+  <!ENTITY % general-entities SYSTEM "../general.ent">
+  %general-entities;
+]>
+
+<sect1 id="ch-system-autoconf" role="wrap">
+  <?dbhtml filename="autoconf.html"?>
+
+  <sect1info condition="script">
+    <productname>autoconf</productname>
+    <productnumber>&autoconf-version;</productnumber>
+    <address>&autoconf-url;</address>
+  </sect1info>
+
+  <title>Autoconf-&autoconf-version;</title>
+
+  <indexterm zone="ch-system-autoconf">
+    <primary sortas="a-Autoconf">Autoconf</primary>
+  </indexterm>
+
+  <sect2 role="package">
+    <title/>
+
+    <para>Autoconf 包包含产生可以自动配置源代码的 Shell 脚本的程序。</para>
+
+    <segmentedlist>
+      <segtitle>&buildtime;</segtitle>
+      <segtitle>&diskspace;</segtitle>
+
+      <seglistitem>
+        <seg>&autoconf-ch6-sbu;</seg>
+        <seg>&autoconf-ch6-du;</seg>
+      </seglistitem>
+    </segmentedlist>
+
+  </sect2>
+
+  <sect2 role="installation">
+    <title>Autoconf 的安装</title>
+
+    <para>准备 Autoconf 编译:</para>
+
+<screen><userinput remap="configure">./configure --prefix=/usr</userinput></screen>
+
+    <para>编译包:</para>
+
+<screen><userinput remap="make">make</userinput></screen>
+
+    <para>要测试结果，执行:</para>
+
+<screen><userinput remap="test">make check</userinput></screen>
+
+    <para>这要花费长时间，大约 4.7 SBUs。跳过了 6 个使用 Automake 的测试。对于完整的全面测试，Autoconf 可以在 Automake 被安装后重新测试。</para>
+
+    <para>安装包:</para>
+
+<screen><userinput remap="install">make install</userinput></screen>
+
+  </sect2>
+
+  <sect2 id="contents-autoconf" role="content">
+    <title>Autoconf 的内容</title>
+
+    <segmentedlist>
+      <segtitle>安装的程序</segtitle>
+      <segtitle>安装的目录</segtitle>
+
+      <seglistitem>
+        <seg>autoconf, autoheader, autom4te, autoreconf, autoscan, autoupdate
+        和 ifnames</seg>
+        <seg>/usr/share/autoconf</seg>
+      </seglistitem>
+    </segmentedlist>
+
+    <variablelist>
+      <bridgehead renderas="sect3">简述</bridgehead>
+      <?dbfo list-presentation="list"?>
+      <?dbhtml list-presentation="table"?>
+
+      <varlistentry id="autoconf">
+        <term><command>autoconf</command></term>
+        <listitem>
+          <para>产生自动配置软件源代码包以适合多种类 Unix 的系统的 Shell 脚本。它产生的配置脚本是独立的&mdash;运行它们不需要 <command>autoconf</command> 程序。</para>
+          <indexterm zone="ch-system-autoconf autoconf">
+            <primary sortas="b-autoconf">autoconf</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="autoheader">
+        <term><command>autoheader</command> </term>
+        <listitem>
+          <para>一个用于创建配置所使用的 C 的
+          <emphasis>#define</emphasis> 语句的模板文件的工具 for configure to use</para>
+          <indexterm zone="ch-system-autoconf autoheader">
+            <primary sortas="b-autoheader">autoheader</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="autom4te">
+        <term><command>autom4te</command></term>
+        <listitem>
+          <para>一个用于 M4 宏处理器的封装程序</para>
+          <indexterm zone="ch-system-autoconf autom4te">
+            <primary sortas="b-autom4te">autom4te</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="autoreconf">
+        <term><command>autoreconf</command></term>
+        <listitem>
+          <para>当对 <command>autoconf</command> 和
+          <command>automake</command> 模板文件进行更改时，自动以正确的顺序运行 <command>autoconf</command>、
+          <command>autoheader</command>、<command>aclocal</command>、
+          <command>automake</command>、<command>gettextize</command> 和
+          <command>libtoolize</command> 以节省时间</para>
+          <indexterm zone="ch-system-autoconf autoreconf">
+            <primary sortas="b-autoreconf">autoreconf</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="autoscan">
+        <term><command>autoscan</command> </term>
+        <listitem>
+          <para>协助创建用于软件包的 <filename>configure.in</filename> 文件；它检查一个目录树中的源文件，
+          搜索它们的常见可移植性问题，并创建一个
+          <filename>configure.scan</filename> 文件以作为包的初步的 <filename>configure.in</filename> 文件</para>
+          <indexterm zone="ch-system-autoconf autoscan">
+            <primary sortas="b-autoscan">autoscan</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="autoupdate">
+        <term><command>autoupdate</command></term>
+        <listitem>
+          <para>修改 <filename>configure.in</filename> 文件，使得使用旧名称调用的 <command>autoconf</command> 宏使用当前的宏名称</para>
+          <indexterm zone="ch-system-autoconf autoupdate">
+            <primary sortas="b-autoupdate">autoupdate</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="ifnames">
+        <term><command>ifnames</command> </term>
+        <listitem>
+          <para>当为软件包编写 <filename>configure.in</filename> 文件时提供帮助；它打印包在 C 的预处理条件中使用的识别符。如果一个包已经被设置为具备某些可移植性，这个程序有助于判断
+          <command>configure</command> 需要检查什么内容。它还可以填写由 <command>autoscan</command> 生成的 <filename>configure.in</filename> 文件中的空隙
+          </para>
+          <indexterm zone="ch-system-autoconf ifnames">
+            <primary sortas="b-ifnames">ifnames</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+    </variablelist>
+
+  </sect2>
+
+</sect1>

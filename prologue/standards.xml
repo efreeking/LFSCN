@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sect1 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+  "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+  <!ENTITY % general-entities SYSTEM "../general.ent">
+  %general-entities;
+]>
+
+<sect1 id="pre-standards">
+  <?dbhtml filename="standards.html"?>
+
+  <title>LFS ???</title>
+
+  <!--<sect2>
+    <title/> -->
+
+     <para>LFS ????????? Linux ??????????:</para>
+
+    <itemizedlist>
+      <listitem>
+        <para><ulink url="http://pubs.opengroup.org/onlinepubs/9699919799/"> 
+        POSIX.1-2008</ulink>.</para>
+      </listitem>
+      <listitem>
+        <para><ulink url="http://www.pathname.com/fhs/pub/fhs-2.3.html">???????? (FHS)</ulink></para>
+
+      </listitem>
+      <listitem>
+        <para><ulink url="http://refspecs.freestandards.org/LSB_4.0.0/">Linux ??? (LSB) ???? 4.0</ulink></para>
+
+        <para>LSB ? 5 ??????: ???C++?????????????
+		????????,??????????LFS ???????????????</para>
+
+        <note><para>??????? LSB ????????????????????????????????????
+        ?? LFS ???????,?????????????,???????????? LSB ???????</para></note>
+
+      </listitem>
+    </itemizedlist>
+
+    <para>???????? LSB ???????? LFS ???????,?????????? LFS ?????
+    ????????????? BLFS ??????? </para> 
+
+    <variablelist>
+      <bridgehead renderas="sect3">?? LSB ?????? LFS ????</bridgehead>
+      <?dbfo list-presentation="list"?>
+      <?dbhtml list-presentation="table"?>
+
+      <varlistentry>
+        <term><emphasis>LSB ??:</emphasis></term>
+        <listitem>
+          <para>Bash, Binutils, Coreutils, Diffutils, File, Findutils, Gawk,
+                Grep, Gzip, M4, Man-DB, Ncurses, Procps, Psmisc, Sed,
+                Shadow, Tar, Util-linux, Zlib</para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term><emphasis>LSB C++:</emphasis></term>
+        <listitem>
+          <para>Gcc</para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term><emphasis>LSB ??:</emphasis></term>
+        <listitem>
+          <para>?</para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term><emphasis>LSB ?????:</emphasis></term>
+        <listitem>
+          <para>Perl</para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term><emphasis>LSB ??:</emphasis></term>
+        <listitem>
+          <para>?</para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term><emphasis>LSB ???:</emphasis></term>
+        <listitem>
+          <para>?</para>
+        </listitem>
+      </varlistentry>
+
+    </variablelist>
+
+    <variablelist> 
+      <bridgehead renderas="sect3">?? LSB ?????? BLFS ????</bridgehead>
+      <?dbfo list-presentation="list"?>
+      <?dbhtml list-presentation="table"?> 
+
+      <varlistentry>
+        <term><emphasis>LSB ??:</emphasis></term>
+        <listitem>
+          <para>Bc, Cpio, Ed, Fcrontab, Initd-tools, PAM, 
+          Sendmail (? Postfix?Exim) </para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term><emphasis>LSB C++:</emphasis></term>
+        <listitem>
+          <para>?</para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term><emphasis>LSB ??:</emphasis></term>
+        <listitem>
+          <para>ATK, Cairo, Desktop-file-utils, Freetype, Fontconfig,
+                Glib2, GTK+2, Icon-naming-utils, Libjpeg, Libpng, Libxml2,
+                MesaLib, Pango, Qt3, Qt4, Xorg</para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term><emphasis>LSB ?????:</emphasis></term>
+        <listitem>
+          <para>Python</para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term><emphasis>LSB ??:</emphasis></term>
+        <listitem>
+          <para>CUPS</para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term><emphasis>LSB ???:</emphasis></term>
+        <listitem>
+          <para>Alsa Libraries, NSPR, NSS, OpenSSL, Java</para>
+        </listitem>
+      </varlistentry>
+
+    </variablelist>
+
+    <variablelist> 
+      <bridgehead renderas="sect3">?? LSB ????,? LFS ? BLFS ?????</bridgehead>
+      <?dbfo list-presentation="list"?>
+      <?dbhtml list-presentation="table"?> 
+
+      <varlistentry>
+        <term><emphasis>LSB ??:</emphasis></term>
+        <listitem>
+          <para>At, Batch, Lsb_release
+          </para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term><emphasis>LSB C++:</emphasis></term>
+        <listitem>
+          <para>?</para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term><emphasis>LSB ??:</emphasis></term>
+        <listitem>
+          <para>?</para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term><emphasis>LSB ?????:</emphasis></term>
+        <listitem>
+          <para>?</para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term><emphasis>LSB ??:</emphasis></term>
+        <listitem>
+          <para>?</para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term><emphasis>LSB ???:</emphasis></term>
+        <listitem>
+          <para>Xdg-utils</para>
+        </listitem>
+      </varlistentry>
+
+    </variablelist>
+
+</sect1>
+

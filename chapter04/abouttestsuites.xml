@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sect1 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+  "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+  <!ENTITY % general-entities SYSTEM "../general.ent">
+  %general-entities;
+]>
+
+<sect1 id="prepare-abouttestsuites">
+  <?dbhtml filename="abouttestsuites.html"?>
+
+  <title>关于测试套装</title>
+
+  <para>许多包提供了一个测试套装。运行一个新构建的包的测试套装是一个好主意，因为它可以提供一个<quote>稳健性检查</quote>来说明每样内容都正确的变异。通过了一系列检查的测试套装通常可以保证软件包能够正常的提供开发者想要提供的功能。然而这不保证这个包完全没有错误。</para>
+
+某些软件包的测试程序是极为重要的，例如核心工具链软件包 GCC 、Binutils 、Glibc 的测试程序，这是因为这些软件包在一个良好工作的系统里的处于核心角色。GCC 和 Glibc 的测试程序需要运行很长时间，尤其在速度慢的硬件上，但我们仍然强烈建议您运行这些测试程序。
+
+
+  <para>某些测试套装比其他的更为重要。例如核心工具链包的测试套装
+  &mdash;GCC, Binutils 和
+  Glibc&mdash;是最为重要的，因为它们扮演着一个正常工作的系统的中心角色。
+  GCC 和 Glibc 的测试套装要花费相当长的时间完成，尤其在较慢的硬件上，但是还是强烈建议您运行。</para>
+ 注意
+经验显示，运行第五章中的测试程序时会有点小问题。不可避免的是，宿主系统总是对这一章的测试程序施加某些影响，常常导致无法解释的测试失败。因为第五章中编译的工具是临时的，而且在最后会被丢弃，我们不推荐中等水平的读者运行第五章中的测试程序，这些测试程序的指令是为开发和测试人员准备的，它们不是必需的。
+
+  <note>
+    <para>据经验显示，从运行Experience has shown that there is little to be gained from running
+    the test suites in <xref linkend="chapter-temporary-tools"/>中的测试套装还是有所得的。无可避免的，宿主系统总是会对本章中的测试施加某些影响，
+	常常会导致<xref linkend="chapter-temporary-tools"/>中构建的工具临时或偶尔被丢弃，我们不建议一般水平的用户运行
+    <xref linkend="chapter-temporary-tools"/>中的测试套装。运行那些测试套装的说明仅仅是为测试者和开发者的利益而提供的，它们完全是可选的。</para>
+  </note>
+
+Binutils 和 GCC 的测试程序一个常见的问题就是在伪终端(PTY)外运行，这样可能会出现大量的测试失败。可能的原因有几个，但最可能的原因是宿主系统没有正确的设置 devpts 文件系统，这个问题在第五章中有详细的讨论。
+
+某些软件包测试程序可能会给出错误的失败信息，请参考 LFS Wiki http://www.linuxfromscratch.org/lfs/build-logs/6.2/ 以确认您所遇到的测试失败是否是预期会出现的。这个站点的内容对于本书所有的测试都是正确的。
+  <para>运行 Binutils 和 GCCA 的测试套装常见的问题就是运行到了伪终端(PTY)之外。这会导致大量的失败测试。发生的原因有很多，但是最可能的原因就是宿主系统没有正确的设置
+  <systemitem class="filesystem">devpts</systemitem> 文件系统所导致。这个问题会在
+  <ulink url="&lfs-root;/lfs/faq.html#no-ptys"/> 中进行更详细的讨论。</para>
+
+  <para>某些包的测试套装将会失败，但是其原因开发者已经注意到并认为并不重要。
+  参考位于 <ulink url="&test-results;"/> 的记录来检查这些失败测试是否预期发生。
+  这个站点对本书中的所有测试都有效。</para>
+
+</sect1>

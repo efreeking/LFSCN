@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sect1 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+  "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+  <!ENTITY % general-entities SYSTEM "../general.ent">
+  %general-entities;
+]>
+
+<sect1 id="ch-system-pcre" role="wrap">
+  <?dbhtml filename="pcre.html"?>
+
+  <sect1info condition="script">
+    <productname>pcre</productname>
+    <productnumber>&pcre-version;</productnumber>
+    <address>&pcre-url;</address>
+  </sect1info>
+
+  <title>PCRE-&pcre-version;</title>
+
+  <indexterm zone="ch-system-pcre">
+    <primary sortas="a-PCRE">PCRE</primary>
+  </indexterm>
+
+  <sect2 role="package">
+    <title/>
+
+    <para>PCRE 包包含 Perl 兼容的正则表达式库。这对于使用和 Perl 5 一样的语法和语义的正则表达式式样匹配的实现很有用。</para>
+
+    <segmentedlist>
+      <segtitle>&buildtime;</segtitle>
+      <segtitle>&diskspace;</segtitle>
+
+      <seglistitem>
+        <seg>&pcre-ch6-sbu;</seg>
+        <seg>&pcre-ch6-du;</seg>
+      </seglistitem>
+    </segmentedlist>
+
+  </sect2>
+
+  <sect2 role="installation">
+    <title>PCRE 的安装</title>
+
+    <para>准备 PCRE 编译:</para>
+
+<screen><userinput remap="configure">./configure --prefix=/usr \
+            --docdir=/usr/share/doc/pcre-&pcre-version; \
+            --enable-utf8 \
+            --enable-unicode-properties \
+            --enable-pcregrep-libz \
+            --enable-pcregrep-libbz2</userinput></screen>
+
+    <variablelist>
+      <title>配置选项的含义:</title>
+
+      <varlistentry>
+        <term><parameter>--enable-utf8</parameter></term>
+        <listitem>
+          <para>这个开关包含了处理 UTF-8 字符字符串的代码在库中。</para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term><parameter>--enable-unicode-properties</parameter></term>
+        <listitem>
+          <para>这个开关启用对 Unicode 属性的支持。</para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term><parameter>--enable-pcregrep-lib*</parameter></term>
+        <listitem>
+          <para>这些开关让 PCRE 库可以读取使用 <command>gzip</command> 和 <command>bzip2</command> 压缩的文件。</para>
+        </listitem>
+      </varlistentry>
+    </variablelist>
+
+    <para>编译包:</para>
+
+<screen><userinput remap="make">make</userinput></screen>
+
+    <para>要测试结果，执行:</para>
+
+<screen><userinput remap="test">make check</userinput></screen>
+
+    <para>安装包:</para>
+
+<screen><userinput remap="install">make install</userinput></screen>
+
+    <para><command>grep</command> 二进制文件将会安装在 <filename class="directory">/bin</filename> 并针对 PCRE 库链接；跟着移动库到 <filename class="directory">/lib</filename>:</para>
+
+<screen><userinput remap="install">mv -v /usr/lib/libpcre.so.* /lib/
+ln -v -sf ../../lib/libpcre.so.0 /usr/lib/libpcre.so</userinput></screen>
+
+  </sect2>
+
+  <sect2 id="contents-pcre" role="content">
+    <title>PCRE 的内容</title>
+
+    <segmentedlist>
+      <segtitle>安装的程序</segtitle>
+      <segtitle>安装的库</segtitle>
+      <segtitle>安装目录</segtitle>
+
+      <seglistitem>
+        <seg>pcregrep, pcretest 和 pcre-config</seg>
+        <seg>libpcre.{so,a}, libpcrecpp.{so,a} 和 libpcreposix.{so,a}</seg>
+        <seg>/usr/share/doc/pcre-&pcre-version;</seg>
+      </seglistitem>
+    </segmentedlist>
+
+    <variablelist>
+      <bridgehead renderas="sect3">简述</bridgehead>
+      <?dbfo list-presentation="list"?>
+      <?dbhtml list-presentation="table"?>
+
+      <varlistentry id="pcregrep">
+        <term><command>pcregrep</command></term>
+        <listitem>
+          <para>一个能够理解 Perl 兼容正则表达式的 grep。</para>
+          <indexterm zone="ch-system-pcre pcregrep">
+            <primary sortas="b-pcre">pcregrep</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="pcretest">
+        <term><command>pcretest</command></term>
+        <listitem>
+          <para>测试一个 Perl 兼容的正则表达式。</para>
+          <indexterm zone="ch-system-pcre pcretest">
+            <primary sortas="b-pcretest">pcretest</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="pcre-config">
+        <term><command>pcre-config</command></term>
+        <listitem>
+          <para>在链接到 PCRE 库的程序的编译过程期间使用。</para>
+          <indexterm zone="ch-system-pcre pcre-config">
+            <primary sortas="b-pcre-config">pcre-config</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="libpcre">
+        <term><filename class="libraryfile">libpcre</filename></term>
+        <listitem>
+          <para>提供用于正则表达式的有用函数。</para>
+          <indexterm zone="ch-system-pcre libpcre">
+            <primary sortas="c-libpcre*">libpcre*</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="libpcrecpp">
+        <term><filename class="libraryfile">libpcrecpp</filename></term>
+        <listitem>
+          <para>提供 libpcre 库的 C++ 封装函数。</para>
+          <indexterm zone="ch-system-pcre libpcrecpp">
+            <primary sortas="c-libpcrecpp*">libpcrecpp*</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="libpcreposix">
+        <term><filename class="libraryfile">libpcreposix</filename></term>
+        <listitem>
+          <para>提供基于 POSIX 正则表达式 API 的封装函数。</para>
+          <indexterm zone="ch-system-pcre libpcreposix">
+            <primary sortas="c-libpcre*">libpcreposix*</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+    </variablelist>
+
+  </sect2>
+
+</sect1>

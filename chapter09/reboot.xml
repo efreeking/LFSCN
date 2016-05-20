@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sect1 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+  "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+  <!ENTITY % general-entities SYSTEM "../general.ent">
+  %general-entities;
+]>
+
+<sect1 id="ch-finish-reboot">
+  <?dbhtml filename="reboot.html"?>
+
+  <title>重新引导系统</title>
+
+  <para>现在，所有的软件已经被安装，是时候重新引导您的计算机了。但是，还要应该提醒您一些事情。您在本书中创建的系统是相当小的，而且可能没有您继续使用所需的功能。当您仍在我们的当前的 chroot 环境中时，通过安装来自 BLFS 书中的一些额外的软件包，您可以在您继续重新引导到您的新的 LFS 安装前处于一个更好的环境。安装一个文本模式的网络浏览器，譬如 Lynx，您就可以轻易在一个虚拟的终端中查看 BLFS 书同时在另一个终端中构建软件包。GPM 包还可以让您在您的虚拟终端中执行复制/粘贴操作。最后，如果您处于一个静态 IP 配置不能满足您的网络需求的情况下，此时安装 Dhcpcd 或 PPP 的之类的包也可能会很有用。</para>
+
+
+  <para>现在，我们要说，让我们第一次引导进我们闪着光亮的新 LFS
+  系统吧！首先从 chroot 环境退出:</para>
+
+<screen><userinput>logout</userinput></screen>
+
+  <para>然后取消挂载虚拟文件系统:</para>
+
+<screen><userinput>umount -v $LFS/dev/pts
+umount -v $LFS/dev/shm
+umount -v $LFS/dev
+umount -v $LFS/proc
+umount -v $LFS/sys</userinput></screen>
+
+  <para>卸载 LFS 文件系统本身:</para>
+
+<screen><userinput>umount -v $LFS</userinput></screen>
+
+  <para>如果创建了多个分区，那么在取消挂载主要分区前把其他的先卸载，像这样:</para>
+
+<screen role="nodump"><userinput>umount -v $LFS/usr
+umount -v $LFS/home
+umount -v $LFS</userinput></screen>
+
+  <para>现在，如下重启系统:</para>
+
+<screen role="nodump"><userinput>shutdown -r now</userinput></screen>
+
+  <para>假如 GRUB 引导加载器如之前的概述中那样安装，菜单设置为自动引导 <emphasis>LFS &version;</emphasis>。</para>
+
+  <para>当重新引导完成，LFS 系统已经准备好可以使用了，您可能需要添加更多的软件来满足您的需要。</para>
+
+</sect1>

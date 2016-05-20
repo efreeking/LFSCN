@@ -1,0 +1,361 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sect1 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+  "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+  <!ENTITY % general-entities SYSTEM "../general.ent">
+  %general-entities;
+]>
+
+<sect1 id="ch-system-kbd" role="wrap">
+  <?dbhtml filename="kbd.html"?>
+
+  <sect1info condition="script">
+    <productname>kbd</productname>
+    <productnumber>&kbd-version;</productnumber>
+    <address>&kbd-url;</address>
+  </sect1info>
+
+  <title>Kbd-&kbd-version;</title>
+
+  <indexterm zone="ch-system-kbd">
+    <primary sortas="a-Kbd">Kbd</primary>
+  </indexterm>
+
+  <sect2 role="package">
+    <title/>
+
+    <para>Kbd 包包含键盘表文件和键盘工具。</para>
+
+    <segmentedlist>
+      <segtitle>&buildtime;</segtitle>
+      <segtitle>&diskspace;</segtitle>
+
+      <seglistitem>
+        <seg>&kbd-ch6-sbu;</seg>
+        <seg>&kbd-ch6-du;</seg>
+      </seglistitem>
+    </segmentedlist>
+
+  </sect2>
+
+  <sect2 role="installation">
+    <title>Kbd 的安装</title>
+
+    <para>Backspace 和 Delete 键在 Kbd 包中的各种键盘映射(Keymap)中并不是统一的。下列不定修复这个 i386 键盘映射的问题:</para>
+
+<screen><userinput remap="pre">patch -Np1 -i ../&kbd-backspace-patch;</userinput></screen>
+
+    <para>在补丁后，Backspace 键生成代码 127 的字符，而 Delete 键生成一个众所周知的转义序列。</para>
+
+    <para>准备 Kbd 编译:</para>
+
+<screen><userinput remap="configure">./configure --prefix=/usr --datadir=/lib/kbd</userinput></screen>
+
+    <variablelist>
+      <title>配置选项的含义:</title>
+
+      <varlistentry>
+        <term><parameter>--datadir=/lib/kbd</parameter></term>
+        <listitem>
+          <para>这个选项把键盘布局数据总是放置在根分区的目录而不是默认的 <filename
+          class="directory">/usr/share/kbd</filename> 位置。</para>
+       </listitem>
+      </varlistentry>
+
+    </variablelist>
+
+    <para>编译包:</para>
+
+<screen><userinput remap="make">make</userinput></screen>
+
+    <para>这个包不附带测试套装。</para>
+
+    <para>安装包:</para>
+
+<screen><userinput remap="install">make install</userinput></screen>
+
+    <note>
+      <para>对于某些语言(如 比利时语)，Kbd 包中并未提供有用的键盘映射，其中的<quote>被</quote> 键盘映射假设是 ISO-8859-5 编码的，通常就使用 CP1251 键盘映射。这些语言的用户必须分别下载工作中的键盘映射。</para>
+    </note>
+
+    <para>在 LFS 引导脚本包中的某些脚本依赖于
+    <command>kbd_mode</command>、<command>loadkeys</command>、<command>openvt</command> 和
+    <command>setfont</command>。因为 <filename class="directory">/usr</filename> 在引导的早期阶段可能还不可用，所以那些二进制文件需要在根分区上:</para>
+
+<screen><userinput remap="install">mv -v /usr/bin/{kbd_mode,loadkeys,openvt,setfont} /bin</userinput></screen>
+
+    <para>如果需要的话，安装文档:</para>
+
+<screen><userinput remap="install">mkdir -v /usr/share/doc/kbd-&kbd-version;
+cp -R -v doc/* \
+         /usr/share/doc/kbd-&kbd-version;</userinput></screen>
+
+  </sect2>
+
+  <sect2 id="contents-kbd" role="content">
+    <title>Kbd 的内容</title>
+
+    <segmentedlist>
+      <segtitle>安装的程序</segtitle>
+      <segtitle>安装的目录</segtitle>
+
+      <seglistitem>
+        <seg>chvt, deallocvt, dumpkeys, fgconsole, getkeycodes, kbd_mode,
+        kbdrate, loadkeys, loadunimap,
+        mapscrn, openvt, psfaddtable (链接到 psfxtable), psfgettable (链接到
+        psfxtable), psfstriptable (链接到 psfxtable), psfxtable, resizecons,
+        setfont, setkeycodes, setleds, setmetamode,
+        showconsolefont, showkey, unicode_start 和 unicode_stop</seg>
+        <seg>/lib/kbd</seg>
+      </seglistitem>
+    </segmentedlist>
+
+    <variablelist>
+      <bridgehead renderas="sect3">简述</bridgehead>
+      <?dbfo list-presentation="list"?>
+      <?dbhtml list-presentation="table"?>
+
+      <varlistentry id="chvt">
+        <term><command>chvt</command></term>
+        <listitem>
+          <para>更改前台虚拟终端</para>
+          <indexterm zone="ch-system-kbd chvt">
+            <primary sortas="b-chvt">chvt</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="deallocvt">
+        <term><command>deallocvt</command></term>
+        <listitem>
+          <para>取消分配未使用的虚拟终端</para>
+          <indexterm zone="ch-system-kbd deallocvt">
+            <primary sortas="b-deallocvt">deallocvt</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="dumpkeys">
+        <term><command>dumpkeys</command></term>
+        <listitem>
+          <para>转储键盘翻译表</para>
+          <indexterm zone="ch-system-kbd dumpkeys">
+            <primary sortas="b-dumpkeys">dumpkeys</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="fgconsole">
+        <term><command>fgconsole</command></term>
+        <listitem>
+          <para>打印活动虚拟终端的编号</para>
+          <indexterm zone="ch-system-kbd fgconsole">
+            <primary sortas="b-fgconsole">fgconsole</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="getkeycodes">
+        <term><command>getkeycodes</command></term>
+        <listitem>
+          <para>打印内核的“扫描码-键码”映射表</para>
+          <indexterm zone="ch-system-kbd getkeycodes">
+            <primary sortas="b-getkeycodes">getkeycodes</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="kbd_mode">
+        <term><command>kbd_mode</command></term>
+        <listitem>
+          <para>报告或设置键盘模式</para>
+          <indexterm zone="ch-system-kbd kbd_mode">
+            <primary sortas="b-kbd_mode">kbd_mode</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="kbdrate">
+        <term><command>kbdrate</command></term>
+        <listitem>
+          <para>设置键盘重复和延时速率</para>
+          <indexterm zone="ch-system-kbd kbdrate">
+            <primary sortas="b-kbdrate">kbdrate</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="loadkeys">
+        <term><command>loadkeys</command></term>
+        <listitem>
+          <para>加载键盘翻译表</para>
+          <indexterm zone="ch-system-kbd loadkeys">
+            <primary sortas="b-loadkeys">loadkeys</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="loadunimap">
+        <term><command>loadunimap</command></term>
+        <listitem>
+          <para>加载内核的 unicode-to-font 映射表</para>
+          <indexterm zone="ch-system-kbd loadunimap">
+            <primary sortas="b-loadunimap">loadunimap</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="mapscrn">
+        <term><command>mapscrn</command></term>
+        <listitem>
+          <para>一个过时的程序，它用于加载一个用户定义的输出字符映射表到控制台驱动程序中；这个现在由 <command>setfont</command> 来完成</para>
+          <indexterm zone="ch-system-kbd mapscrn">
+            <primary sortas="b-mapscrn">mapscrn</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="openvt">
+        <term><command>openvt</command></term>
+        <listitem>
+          <para>在新的虚拟终端 (VT) 启动一个程序</para>
+          <indexterm zone="ch-system-kbd openvt">
+            <primary sortas="b-openvt">openvt</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="psfaddtable">
+        <term><command>psfaddtable</command></term>
+        <listitem>
+          <para>到 <command>psfxtable</command> 的链接</para>
+          <indexterm zone="ch-system-kbd psfaddtable">
+            <primary sortas="b-psfaddtable">psfaddtable</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="psfgettable">
+        <term><command>psfgettable</command></term>
+        <listitem>
+          <para>到 <command>psfxtable</command> 的链接</para>
+          <indexterm zone="ch-system-kbd psfgettable">
+            <primary sortas="b-psfgettable">psfgettable</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="psfstriptable">
+        <term><command>psfstriptable</command></term>
+        <listitem>
+          <para>到 <command>psfxtable</command> 的链接</para>
+          <indexterm zone="ch-system-kbd psfstriptable">
+            <primary sortas="b-psfstriptable">psfstriptable</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="psfxtable">
+        <term><command>psfxtable</command></term>
+        <listitem>
+          <para>为控制台字体处理 Unicode 字符表</para>
+          <indexterm zone="ch-system-kbd psfxtable">
+            <primary sortas="b-psfxtable">psfxtable</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="resizecons">
+        <term><command>resizecons</command></term>
+        <listitem>
+          <para>更改控制台的小的内核意思</para>
+          <indexterm zone="ch-system-kbd resizecons">
+            <primary sortas="b-resizecons">resizecons</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="setfont">
+        <term><command>setfont</command></term>
+        <listitem>
+          <para>更改控制台上的增强图形适配器(EGA) 和 视频图形数组 (VGA) 字体</para>
+          <indexterm zone="ch-system-kbd setfont">
+            <primary sortas="b-setfont">setfont</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="setkeycodes">
+        <term><command>setkeycodes</command></term>
+        <listitem>
+          <para>加载内核的“扫描码-键码”映射表条目；如果在键盘上有不常见的键这很有用</para>
+          <indexterm zone="ch-system-kbd setkeycodes">
+            <primary sortas="b-setkeycodes">setkeycodes</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="setleds">
+        <term><command>setleds</command></term>
+        <listitem>
+          <para>设置键盘标志和发光二级管 (LEDs)</para>
+          <indexterm zone="ch-system-kbd setleds">
+            <primary sortas="b-setleds">setleds</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="setmetamode">
+        <term><command>setmetamode</command></term>
+        <listitem>
+          <para>定义键盘 meta 键的处理</para>
+          <indexterm zone="ch-system-kbd setmetamode">
+            <primary sortas="b-setmetamode">setmetamode</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="showconsolefont">
+        <term><command>showconsolefont</command></term>
+        <listitem>
+          <para>显示当前 EGA/VGA 控制台屏幕字体</para>
+          <indexterm zone="ch-system-kbd showconsolefont">
+            <primary sortas="b-showconsolefont">showconsolefont</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="showkey">
+        <term><command>showkey</command></term>
+        <listitem>
+          <para>报告在键盘上按下的键的扫描码、键码和 ASCII 代码</para>
+          <indexterm zone="ch-system-kbd showkey">
+            <primary sortas="b-showkey">showkey</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="unicode_start">
+        <term><command>unicode_start</command></term>
+        <listitem>
+          <para>把键盘和控制台置于 UNICODE 模式。不使用这个程序，除非您的键盘映射文件是 ISO-8859-1 编码的。对于其它编码，这个工具产生不正确的结果。</para>
+          <indexterm zone="ch-system-kbd unicode_start">
+            <primary sortas="b-unicode_start">unicode_start</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="unicode_stop">
+        <term><command>unicode_stop</command></term>
+        <listitem>
+          <para>从 UNICODE 模式倒退键盘和控制台</para>
+          <indexterm zone="ch-system-kbd unicode_stop">
+            <primary sortas="b-unicode_stop">unicode_stop</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+    </variablelist>
+
+  </sect2>
+
+</sect1>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sect1 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+  "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+  <!ENTITY % general-entities SYSTEM "../general.ent">
+  %general-entities;
+]>
+
+<sect1 id="ch-system-revisedchroot">
+  <?dbhtml filename="revisedchroot.html"?>
+
+  <title>清理</title>
+
+  <para>从现在开始，当在退出后重新进入 chroot 环境时，使用下列修改的 chroot 命令:</para>
+
+<screen><userinput>chroot "$LFS" /usr/bin/env -i \
+    HOME=/root TERM="$TERM" PS1='\u:\w\$ ' \
+    PATH=/bin:/usr/bin:/sbin:/usr/sbin \
+    /bin/bash --login</userinput></screen>
+
+  <para>这样做的原因是因为在 <filename
+  class="directory">/tools</filename> 中的程序不再需要。由于它们不在需要了，如果需要的话，您可以删除 <filename class="directory">/tools</filename> 目录。</para>
+
+  <note>
+    <para>删除 <filename class="directory">/tools</filename> 还将会删除用于运行工具链测试的 Tcl、Expect 和 DejaGNU 的临时副本。如果您以后需要这些程序的话，只需重新编译并重新安装它们。BLFS 书中已经有这方面的说明(参见 <ulink url="&blfs-root;"/>)。</para>
+  </note>
+
+  <para>如果虚拟内核文件系统已经取消挂载(可以是手动的或者通过重启)，确保虚拟内核文件系统在重新进入 chroot 时被挂载。这个过程会在 <xref
+  linkend="ch-system-bindmount"/> 和 <xref
+  linkend="ch-system-kernfsmount"/> 中解释。</para>
+
+</sect1>

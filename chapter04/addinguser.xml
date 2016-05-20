@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sect1 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+  "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+  <!ENTITY % general-entities SYSTEM "../general.ent">
+  %general-entities;
+]>
+
+<sect1 id="ch-tools-addinguser">
+  <?dbhtml filename="addinguser.html"?>
+
+  <title>添加 LFS 用户</title>
+
+  <para>当以 <systemitem class="username">root</systemitem> 用户身份登录时，犯一个错误就可能会损害或破坏一个系统。因此，我们建议以非特权用户的身份编译本章节中的包。
+  您可以使用您自己的用户名，但是为了便于设置一个干净的工作环境，创建一个新的名为
+  <systemitem
+  class="username">lfs</systemitem> 的用户作为新组 (也可以命名为
+  <systemitem class="groupname">lfs</systemitem>) 的成员，并在安装的过程中使用这个用户。
+  以 <systemitem class="username">root</systemitem> 身份，发出下列命令添加新用户:</para>
+
+<screen><userinput>groupadd lfs
+useradd -s /bin/bash -g lfs -m -k /dev/null lfs</userinput></screen>
+
+  <variablelist>
+    <title>命令行选项的含义:</title>
+
+    <varlistentry>
+      <term><parameter>-s /bin/bash</parameter></term>
+      <listitem>
+        <para>这使得 <command>bash</command> 成为用户
+        <systemitem class="username">lfs</systemitem> 的默认 Shell。</para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term><parameter>-g lfs</parameter></term>
+      <listitem>
+        <para>这个选项添加用户 <systemitem class="username">lfs</systemitem>
+        到组 <systemitem class="groupname">lfs</systemitem>.</para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term><parameter>-m</parameter></term>
+      <listitem>
+        <para>这为 <systemitem
+        class="username">lfs</systemitem> 创建一个主目录。</para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term><parameter>-k /dev/null</parameter></term>
+      <listitem>
+        <para>这个参数通过更改输入位置为特殊的空设备，以防止从 skeleton (框架)目录(默认是 <filename class="directory">/etc/skel</filename>)复制文件。</para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term><parameter>lfs</parameter></term>
+      <listitem>
+        <para>这是创建的组合用户的实际名称。</para>
+      </listitem>
+    </varlistentry>
+
+  </variablelist>
+
+  <para>要以 <systemitem class="username">lfs</systemitem> 身份登录 (相对于以 <systemitem class="username">root</systemitem> 身份登录，切换到用户 <systemitem class="username">lfs</systemitem> 时，不需要 <systemitem class="username">lfs</systemitem> 用户有密码)，赋予 <systemitem class="username">lfs</systemitem> 一个密码:</para>
+
+<screen role="nodump"><userinput>passwd lfs</userinput></screen>
+
+  <para>通过使 <systemitem class="username">lfs</systemitem> 成为 <filename class="directory">$LFS/tools</filename> 目录的所有者，赋予 <systemitem class="username">lfs</systemitem> 的目录的完全控制权限:</para>
+
+<screen><userinput>chown -v lfs $LFS/tools</userinput></screen>
+
+  <para>如果按建议创建一个独立的工作目录，赋予用户 <systemitem class="username">lfs</systemitem> 以目录的所有权:</para>
+
+<screen><userinput>chown -v lfs $LFS/sources</userinput></screen>
+
+  <para>下一步，以用户 <systemitem class="username">lfs</systemitem> 身份登录。
+  这个可以通过虚拟控制台、通过一个显示管理器，或者使用下列替换用户命令来完成:</para>
+
+<screen role="nodump"><userinput>su - lfs</userinput></screen>
+
+  <para><quote><parameter>-</parameter></quote> 指示
+  <command>su</command> 启动一个登录 Shell 而不是一个无登录的 Shell。
+  这两种类型的 Shell 之间的差异可以在
+  <filename>bash(1)</filename> 和 <command>info bash</command> 的详细信息中找到。</para>
+
+</sect1>

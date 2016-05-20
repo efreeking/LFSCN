@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sect1 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+  "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+  <!ENTITY % general-entities SYSTEM "../general.ent">
+  %general-entities;
+]>
+
+<sect1 id="ch-system-bzip2" role="wrap">
+  <?dbhtml filename="bzip2.html"?>
+
+  <sect1info condition="script">
+    <productname>bzip2</productname>
+    <productnumber>&bzip2-version;</productnumber>
+    <address>&bzip2-url;</address>
+  </sect1info>
+
+  <title>Bzip2-&bzip2-version;</title>
+
+  <indexterm zone="ch-system-bzip2">
+    <primary sortas="a-Bzip2">Bzip2</primary>
+  </indexterm>
+
+  <sect2 role="package">
+    <title/>
+
+    <para>Bzip2 包包含压缩和解压文件的程序。使用 <command>bzip2</command> 压缩文本文件比使用传统的
+    <command>gzip</command> 产生更高的压缩比。</para>
+
+    <segmentedlist>
+      <segtitle>&buildtime;</segtitle>
+      <segtitle>&diskspace;</segtitle>
+
+      <seglistitem>
+        <seg>&bzip2-ch6-sbu;</seg>
+        <seg>&bzip2-ch6-du;</seg>
+      </seglistitem>
+    </segmentedlist>
+
+  </sect2>
+
+  <sect2 role="installation">
+    <title>Bzip2 的安装</title>
+
+    <para>应用一个补丁，它将会为该包安装文档:</para>
+
+<screen><userinput remap="pre">patch -Np1 -i ../&bzip2-docs-patch;</userinput></screen>
+
+   <para>下列命令确保符号链接的安装是相对的:</para>
+
+<screen><userinput remap="pre">sed -i 's@\(ln -s -f \)$(PREFIX)/bin/@\1@' Makefile</userinput></screen>
+
+    <para>准备 Bzip2 编译:</para>
+
+<screen><userinput remap="make">make -f Makefile-libbz2_so
+make clean</userinput></screen>
+
+    <variablelist>
+      <title>make 参数的含义:</title>
+
+      <varlistentry>
+        <term><parameter>-f Makefile-libbz2_so</parameter></term>
+        <listitem>
+          <para>这将导致 Bzip2 使用一个不同的
+          <filename>Makefile</filename> 文件构建，在这种情况下
+          <filename>Makefile-libbz2_so</filename> 文件会创建一个动态的
+          <filename class="libraryfile">libbz2.so</filename> 库并针对它链接 Bzip2 工具。</para>
+        </listitem>
+      </varlistentry>
+
+    </variablelist>
+
+    <para>编译并测试包:</para>
+
+<screen><userinput remap="make">make</userinput></screen>
+
+    <para>安装程序:</para>
+
+<screen><userinput remap="install">make PREFIX=/usr install</userinput></screen>
+
+    <para>安装共享的 <command>bzip2</command> 二进制文件到
+    <filename class="directory">/bin</filename> 目录中，建立某些必需的符号链接并清理:</para>
+
+<screen><userinput remap="install">cp -v bzip2-shared /bin/bzip2
+cp -av libbz2.so* /lib
+ln -sv ../../lib/libbz2.so.1.0 /usr/lib/libbz2.so
+rm -v /usr/bin/{bunzip2,bzcat,bzip2}
+ln -sv bzip2 /bin/bunzip2
+ln -sv bzip2 /bin/bzcat</userinput></screen>
+
+  </sect2>
+
+  <sect2 id="contents-bzip2" role="content">
+    <title>Bzip2 的内容</title>
+
+    <segmentedlist>
+      <segtitle>安装的程序</segtitle>
+      <segtitle>安装的库</segtitle>
+      <segtitle>安装的目录</segtitle>
+
+      <seglistitem>
+        <seg>bunzip2 (链接到 bzip2)、bzcat (链接到 bzip2)、bzcmp (链接到
+        bzdiff)、bzdiff、bzegrep (链接到 bzgrep)、bzfgrep (链接到 bzgrep)、
+        bzgrep、bzip2、bzip2recover、bzless (链接到 bzmore) 和 bzmore</seg>
+        <seg>libbz2.{a,so}</seg>
+        <seg>/usr/share/doc/bzip2-&bzip2-version;</seg>
+      </seglistitem>
+    </segmentedlist>
+
+    <variablelist>
+      <bridgehead renderas="sect3">简述</bridgehead>
+      <?dbfo list-presentation="list"?>
+      <?dbhtml list-presentation="table"?>
+
+      <varlistentry id="bunzip2">
+        <term><command>bunzip2</command></term>
+        <listitem>
+          <para>解压 bzip 压缩的文件</para>
+          <indexterm zone="ch-system-bzip2 bunzip2">
+            <primary sortas="b-bunzip2">bunzip2</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="bzcat">
+        <term><command>bzcat</command></term>
+        <listitem>
+          <para>解压到标准输出</para>
+          <indexterm zone="ch-system-bzip2 bzcat">
+            <primary sortas="b-bzcat">bzcat</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="bzcmp">
+        <term><command>bzcmp</command></term>
+        <listitem>
+          <para>在 bzip 压缩的文件上运行 <command>cmp</command></para>
+          <indexterm zone="ch-system-bzip2 bzcmp">
+            <primary sortas="b-bzcmp">bzcmp</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="bzdiff">
+        <term><command>bzdiff</command></term>
+        <listitem>
+          <para>在 bzip 压缩的文件上运行 <command>diff</command></para>
+          <indexterm zone="ch-system-bzip2 bzdiff">
+            <primary sortas="b-bzdiff">bzdiff</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="bzegrep">
+        <term><command>bzegrep</command></term>
+        <listitem>
+          <para>在 bzip 压缩的文件上运行 <command>egrep</command></para>
+          <indexterm zone="ch-system-bzip2 bzegrep">
+            <primary sortas="b-bzegrep">bzegrep</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="bzfgrep">
+        <term><command>bzfgrep</command></term>
+        <listitem>
+          <para>在 bzip 压缩的文件上运行 <command>fgrep</command></para>
+          <indexterm zone="ch-system-bzip2 bzfgrep">
+            <primary sortas="b-bzfgrep">bzfgrep</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="bzgrep">
+        <term><command>bzgrep</command></term>
+        <listitem>
+          <para>在 bzip 压缩的文件上运行 <command>grep</command></para>
+          <indexterm zone="ch-system-bzip2 bzgrep">
+            <primary sortas="b-bzgrep">bzgrep</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="bzip2">
+        <term><command>bzip2</command></term>
+        <listitem>
+          <para>使用 Burrows-Wheeler 块排序文本压缩算法和霍夫曼编码来压缩文件；比使用
+          <quote>Lempel-Ziv</quote> 算法的常见压缩器，如 <command>gzip</command> 这类的达到更好的压缩比</para>
+          <indexterm zone="ch-system-bzip2 bzip2">
+            <primary sortas="b-bzip2">bzip2</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="bzip2recover">
+        <term><command>bzip2recover</command></term>
+        <listitem>
+          <para>尝试从损坏的 Bzip 压缩文件恢复数据</para>
+          <indexterm zone="ch-system-bzip2 bzip2recover">
+            <primary sortas="b-bzip2recover">bzip2recover</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="bzless">
+        <term><command>bzless</command></term>
+        <listitem>
+          <para>在 bzip 压缩的文件上运行 <command>less</command></para>
+          <indexterm zone="ch-system-bzip2 bzless">
+            <primary sortas="b-bzless">bzless</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="bzmore">
+        <term><command>bzmore</command></term>
+        <listitem>
+          <para>在 bzip 压缩的文件上运行 <command>more</command></para>
+          <indexterm zone="ch-system-bzip2 bzmore">
+            <primary sortas="b-bzmore">bzmore</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="libbz2">
+        <term><filename class="libraryfile">libbz2*</filename></term>
+        <listitem>
+          <para>使用 Burrows-Wheeler 算法，实现无损的块排序数据压缩的库</para>
+          <indexterm zone="ch-system-bzip2 libbz2">
+            <primary sortas="c-libbz2*">libbz2*</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+    </variablelist>
+
+  </sect2>
+
+</sect1>

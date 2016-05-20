@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sect1 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+  "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+  <!ENTITY % general-entities SYSTEM "../general.ent">
+  %general-entities;
+]>
+
+<sect1 id="ch-tools-gcc-pass1" role="wrap">
+  <?dbhtml filename="gcc-pass1.html"?>
+
+  <sect1info condition="script">
+    <productname>gcc</productname>
+    <productnumber>&gcc-version;</productnumber>
+    <address>&gcc-url;</address>
+  </sect1info>
+
+  <title>GCC-&gcc-version; - 第 1 次</title>
+
+  <indexterm zone="ch-tools-gcc-pass1">
+    <primary sortas="a-GCC">GCC</primary>
+    <secondary>工具，第 1 次</secondary>
+  </indexterm>
+
+  <sect2 role="package">
+    <title/>
+
+    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"
+    href="../chapter06/gcc.xml"
+    xpointer="xpointer(/sect1/sect2[1]/para[1])"/>
+
+    <segmentedlist>
+      <segtitle>&buildtime;</segtitle>
+      <segtitle>&diskspace;</segtitle>
+
+      <seglistitem>
+        <seg>&gcc-ch5p1-sbu;</seg>
+        <seg>&gcc-ch5p1-du;</seg>
+      </seglistitem>
+    </segmentedlist>
+
+  </sect2>
+
+  <sect2 role="installation">
+    <title>交叉 GCC 的安装</title>
+
+    <para>GCC 现在需要 GMP、MPFR 和 MPC 包。因为这些包可能不包含在您的宿主发行版上，所以它们将会使用 GCC 构建。
+    解压每个包到 GCC 源代码目录中并重命名得到的目录，以便 GCC 构建过程可以自动使用它们:</para>
+
+<screen><userinput remap="pre">tar -jxf ../mpfr-&mpfr-version;.tar.bz2
+mv -v mpfr-&mpfr-version; mpfr
+tar -jxf ../gmp-&gmp-version;.tar.bz2
+mv -v gmp-&gmp-version; gmp
+tar -zxf ../mpc-&mpc-version;.tar.gz
+mv -v mpc-&mpc-version; mpc</userinput></screen>
+
+<para>应用一个可以让 libiberty 和 zlib 目标库的构建被禁用的补丁，因为这两个在交叉编译环境中不能正确构建:</para>
+
+<screen><userinput remap="pre">patch -Np1 -i ../&gcc-crosscompile-patch;</userinput></screen>
+
+    <para>GCC 文档建议在源目录外的一个专用构建目录中构建 GCC:</para>
+
+<screen><userinput remap="pre">mkdir -v ../gcc-build
+cd ../gcc-build</userinput></screen>
+
+    <para>Prepare GCC for compilation:</para>
+
+<screen><userinput remap="configure">../gcc-&gcc-version;/configure \
+    --target=$LFS_TGT --prefix=/tools \
+    --disable-nls --disable-shared --disable-multilib \
+    --disable-decimal-float --disable-threads \
+    --disable-libmudflap --disable-libssp \
+    --disable-libgomp --disable-libquadmath \
+    --disable-target-libiberty --disable-target-zlib \
+    --enable-languages=c --without-ppl --without-cloog</userinput></screen>
+
+    <variablelist>
+      <title>配置选项的含义:</title>
+
+      <varlistentry>
+        <term><parameter>--disable-shared</parameter></term>
+        <listitem>
+          <para>这个开关强制 GCC 静态链接它的内部库。我们这样做是为了避免宿主系统的问题。</para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term><parameter>--disable-decimal-float, --disable-threads, --disable-libmudflap, --disable-libssp, --disable-libgomp, --disable-libquadmath --disable-target-libiberty --disable-target-zlib</parameter></term>
+        <listitem>
+          <para>这些开关参数禁用了十进制浮点扩展、线程、libmudflap、libssp 以及 libgomp、libquadmath、libiberty 和 zlib 相应的支持。这些功能在构建交叉编译器时将无法编译，并且也不是交叉编译临时 libc 任务所需要的。</para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term><parameter>--disable-multilib</parameter></term>
+        <listitem>
+          <para>在 x86_64 上，LFS 还不支持多库(multilib)配置。这个开关对 x86 无害。</para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term><parameter>--enable-languages=c</parameter></term>
+        <listitem>
+          <para>这个选项确保只有 C 编译器被构建。只是现在需要的唯一语言。</para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term><parameter>--without-ppl, --without-cloog</parameter></term>
+        <listitem>
+          <para>这些开关防止 GCC 针对 PPL 和 CLooG 库构建，它们现在可能已存在于宿主系统上，但是在 chroot 环境中将不可用。</para>
+        </listitem>
+      </varlistentry>
+
+    </variablelist>
+
+    <para>通过运行一下命令编译 GCC:</para>
+
+<screen><userinput remap="make">make</userinput></screen>
+
+    <para>编译现在完成了。这时候，测试套装应该可以运行，但是正如之前提到，测试套装框架还未准备就绪。此时运行测试套装的好处非常小，因为来自第一轮的程序很快将会会被替换。</para>
+
+    <para>安装包:</para>
+
+<screen><userinput remap="install">make install</userinput></screen>
+
+    <para>使用 <parameter>--disable-shared</parameter> 表示
+    <filename>libgcc_eh.a</filename> 文件不会被创建和安装。依赖于这个库的 Glibc 包因此在它的构建系统中使用
+    <parameter>-lgcc_eh</parameter>。这个依赖关系可以通过构建到 <filename>libgcc.a</filename> 的符号链接得到满足。
+    因为文件将会最终包含正常包含在 <filename>libgcc_eh.a</filename> 的对象:</para>
+
+<screen><userinput remap="install">ln -vs libgcc.a `$LFS_TGT-gcc -print-libgcc-file-name | \
+    sed 's/libgcc/&amp;_eh/'`</userinput></screen>
+
+  </sect2>
+
+  <sect2 role="content">
+    <title/>
+
+    <para>这个包的详细信息位于
+    <xref linkend="contents-gcc" role="."/></para>
+
+  </sect2>
+
+</sect1>

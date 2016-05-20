@@ -1,0 +1,318 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sect1 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+  "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+  <!ENTITY % general-entities SYSTEM "../general.ent">
+  %general-entities;
+]>
+
+<sect1 id="ch-system-binutils" role="wrap">
+  <?dbhtml filename="binutils.html"?>
+
+  <sect1info condition="script">
+    <productname>binutils</productname>
+    <productnumber>&binutils-version;</productnumber>
+    <address>&binutils-url;</address>
+  </sect1info>
+
+  <title>Binutils-&binutils-version;</title>
+
+  <indexterm zone="ch-system-binutils">
+    <primary sortas="a-Binutils">Binutils</primary>
+  </indexterm>
+
+  <sect2 role="package">
+    <title/>
+
+    <para>Binutils 包包含一个链接器、一个汇编器，以及其它用于处理对象文件的工具。</para>
+
+    <segmentedlist>
+      <segtitle>&buildtime;</segtitle>
+      <segtitle>&diskspace;</segtitle>
+
+      <seglistitem>
+        <seg>&binutils-ch6-sbu;</seg>
+        <seg>&binutils-ch6-du;</seg>
+      </seglistitem>
+    </segmentedlist>
+
+  </sect2>
+
+  <sect2 role="installation">
+    <title>Binutils 的安装</title>
+
+    <para>通过执行一个简单的测试来检查 chroot 环境中的 PTY 是否工作正常:</para>
+
+<screen><userinput remap="test">expect -c "spawn ls"</userinput></screen>
+
+    <para>这个命令应该输出下列内容:</para>
+
+<screen><computeroutput>spawn ls</computeroutput></screen>
+
+    <para>但是，如果输出不是如此，而是包含以下的消息的话，那么就是没有为正确的 PTY 操作设置好环境。这个问题需要在运行 Binutils 和 GCC 的测试套装前解决:</para>
+
+<screen><computeroutput>The system has no more ptys.
+Ask your system administrator to create more.</computeroutput></screen>
+
+    <para>阻止过期
+    <filename>standards.info</filename> 文件的安装，因为稍后在 Autoconf 说明中，较新的版本将会被安装:</para>
+
+<screen><userinput remap="pre">rm -fv etc/standards.info
+sed -i.bak '/^INFO/s/standards.info //' etc/Makefile.in</userinput></screen>
+
+    <para>修复一些在使用 GCC-&gcc-version; 时会失败的测试</para>
+
+<screen><userinput remap="pre">sed -i "/exception_defines.h/d" ld/testsuite/ld-elf/new.cc
+sed -i "s/-fvtable-gc //" ld/testsuite/ld-selective/selective.exp</userinput></screen>
+
+    <para>Binutils 文档推荐在源代码目录外的一个专用目录中构建 Binutils:</para>
+
+<screen><userinput remap="pre">mkdir -v ../binutils-build
+cd ../binutils-build</userinput></screen>
+
+    <para>准备 Binutils 编译:</para>
+
+<!-- <screen><userinput remap="configure">../binutils-&binutils-version;/configure - -prefix=/usr \ -->
+<screen><userinput remap="configure">../binutils-&binutils-dir;/configure --prefix=/usr --enable-shared</userinput></screen>
+
+    <para>编译包:</para>
+
+<screen><userinput remap="make">make tooldir=/usr</userinput></screen>
+
+    <variablelist>
+      <title>make 参数的含义:</title>
+
+      <varlistentry>
+        <term><parameter>tooldir=/usr</parameter></term>
+        <listitem>
+          <para>通常，tooldir (可执行文件最终将位于的目录) 被设置为 <filename
+          class="directory">$(exec_prefix)/$(target_alias)</filename>。例如，x86_64 机器将会扩展其为
+          <filename class="directory">/usr/x86_64-unknown-linux-gnu</filename>。因为这是一个自定义系统，这个在
+          <filename class="directory">/usr</filename> 中目标相关(target-specific)的目录是不需要的。如果系统是用于交叉编译的(例如，在一个 Intel 及其上编译一个包，生成可以在 PowerPC 机器上运行的代码)，则使用
+          <filename class="directory">$(exec_prefix)/$(target_alias)</filename>。</para>
+        </listitem>
+      </varlistentry>
+
+    </variablelist>
+
+    <important>
+      <para>在本节中 Binutils 的测试套装被视为是紧要的。
+      任何情况下都不要跳过它。</para>
+    </important>
+
+    <para>测试结果:</para>
+
+<screen><userinput remap="test">make -k check</userinput></screen>
+
+    <para>安装包:</para>
+
+<screen><userinput remap="install">make tooldir=/usr install</userinput></screen>
+
+    <para>安装某些包所需要的 <filename class="headerfile">libiberty</filename> 头文件:</para>
+
+<!-- <screen><userinput remap="install">cp -v ../binutils-&binutils-version;/include/libiberty.h /usr/include</userinput></screen> -->
+<screen><userinput remap="install">cp -v ../binutils-&binutils-dir;/include/libiberty.h /usr/include</userinput></screen>
+
+  </sect2>
+
+
+  <sect2 id="contents-binutils" role="content">
+    <title>Binutils 的内容</title>
+
+    <segmentedlist>
+      <segtitle>安装的程序</segtitle>
+      <segtitle>安装的库</segtitle>
+      <segtitle>安装的目录</segtitle>
+
+      <seglistitem>
+        <seg>addr2line、ar、as、c++filt、gprof、ld、nm、objcopy、objdump、
+        ranlib、readelf、size、strings 和 strip</seg>
+        <seg>libiberty.a、libbfd.{a,so} 和 libopcodes.{a,so}</seg>
+        <seg>/usr/lib/ldscripts</seg>
+      </seglistitem>
+    </segmentedlist>
+
+    <variablelist>
+      <bridgehead renderas="sect3">简述</bridgehead>
+      <?dbfo list-presentation="list"?>
+      <?dbhtml list-presentation="table"?>
+
+      <varlistentry id="addr2line">
+        <term><command>addr2line</command></term>
+        <listitem>
+          <para>把程序地址转换为文件名和行号；给出一个地址和一个可执行文件的名称，它会使用可执行文件中的调试信息判断其源文件以及和地址相关的行号</para>
+          <indexterm zone="ch-system-binutils addr2line">
+            <primary sortas="b-addr2line">addr2line</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="ar">
+        <term><command>ar</command></term>
+        <listitem>
+          <para>创建、修改和提取压缩文档</para>
+          <indexterm zone="ch-system-binutils ar">
+            <primary sortas="b-ar">ar</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="as">
+        <term><command>as</command></term>
+        <listitem>
+          <para>一个汇编 <command>gcc</command> 的输出到对象文件中的汇编器</para>
+          <indexterm zone="ch-system-binutils as">
+            <primary sortas="b-as">as</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="c-filt">
+        <term><command>c++filt</command></term>
+        <listitem>
+          <para>被链接器用于 de-mangle C++ and Java symbols and to keep
+          overloaded functions from clashing</para>
+          <indexterm zone="ch-system-binutils c-filt">
+            <primary sortas="b-c++filt">c++filt</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="gprof">
+        <term><command>gprof</command></term>
+        <listitem>
+          <para>显示调用图表分析数据</para>
+          <indexterm zone="ch-system-binutils gprof">
+            <primary sortas="b-gprof">gprof</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="ld">
+        <term><command>ld</command></term>
+        <listitem>
+          <para>一个组合一些对象和存档文件到一个单一文件中，重定位它们的数据并捆绑(tie up)符号引用的链接器</para>
+          <indexterm zone="ch-system-binutils ld">
+            <primary sortas="b-ld">ld</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="nm">
+        <term><command>nm</command></term>
+        <listitem>
+          <para>列出在给出的对象文件中出现的符号</para>
+          <indexterm zone="ch-system-binutils nm">
+            <primary sortas="b-nm">nm</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="objcopy">
+        <term><command>objcopy</command></term>
+        <listitem>
+          <para>转换一种类型的对象文件为另一个类型</para>
+          <indexterm zone="ch-system-binutils objcopy">
+            <primary sortas="b-objcopy">objcopy</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="objdump">
+        <term><command>objdump</command></term>
+        <listitem>
+          <para>显示关于给出的对象文件的信息，使用选项控制要显示的特定信息；显示的信息对于工作于编译工具的编程人员来说很有用</para>
+          <indexterm zone="ch-system-binutils objdump">
+            <primary sortas="b-objdump">objdump</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="ranlib">
+        <term><command>ranlib</command></term>
+        <listitem>
+          <para>生成一个存档的内容的索引，并把它存储在存档中；索引列出由存档成员(可重定向的对象文件)定义的所有符号</para>
+          <indexterm zone="ch-system-binutils ranlib">
+            <primary sortas="b-ranlib">ranlib</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="readelf">
+        <term><command>readelf</command></term>
+        <listitem>
+          <para>显示关于 ELF 类型二进制文件的信息</para>
+          <indexterm zone="ch-system-binutils readelf">
+            <primary sortas="b-readelf">readelf</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="size">
+        <term><command>size</command></term>
+        <listitem>
+          <para>列出给出的对象的区段大小和总大小</para>
+          <indexterm zone="ch-system-binutils size">
+            <primary sortas="b-size">size</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="strings">
+        <term><command>strings</command></term>
+        <listitem>
+          <para>为每个给出的文件输出可打印的字符序列(至少有给出的长度，默认是 4)；对于对象文件，按默认它仅显示来自初始化和加载区段的字符串，而对于其它类型的文件，它会扫描整个文件</para>
+          <indexterm zone="ch-system-binutils strings">
+            <primary sortas="b-strings">strings</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="strip">
+        <term><command>strip</command></term>
+        <listitem>
+          <para>从对象文件丢弃符号</para>
+          <indexterm zone="ch-system-binutils strip">
+            <primary sortas="b-strip">strip</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="libiberty">
+        <term><filename class="libraryfile">libiberty</filename></term>
+        <listitem>
+          <para>包含被各种 GNU 程序，包括
+          <command>getopt</command>、<command>obstack</command>、
+          <command>strerror</command>、<command>strtol</command> 以及
+          <command>strtoul</command> 使用的例程</para>
+          <indexterm zone="ch-system-binutils libiberty">
+            <primary sortas="c-libiberty">libiberty</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="libbfd">
+        <term><filename class="libraryfile">libbfd</filename></term>
+        <listitem>
+          <para>二进制文件描述符库</para>
+          <indexterm zone="ch-system-binutils libbfd">
+            <primary sortas="c-libbfd">libbfd</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="libopcodes">
+        <term><filename class="libraryfile">libopcodes</filename></term>
+        <listitem>
+          <para>一个用于处理 opcodes(处理器指令的<quote>可读文本</quote>版本)的库；
+          被用于构建如 <command>objdump</command> 之类的工具。</para>
+          <indexterm zone="ch-system-binutils libopcodes">
+            <primary sortas="c-libopcodes">libopcodes</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+    </variablelist>
+
+  </sect2>
+
+</sect1>

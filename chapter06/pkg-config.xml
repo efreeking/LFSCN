@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sect1 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+  "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+  <!ENTITY % general-entities SYSTEM "../general.ent">
+  %general-entities;
+]>
+
+<sect1 id="ch-system-pkg-config" role="wrap">
+  <?dbhtml filename="pkg-config.html"?>
+
+  <sect1info condition="script">
+    <productname>pkg-config</productname>
+    <productnumber>&pkg-config-version;</productnumber>
+    <address>&pkg-config-url;</address>
+  </sect1info>
+
+  <title>Pkg-config-&pkg-config-version;</title>
+
+  <indexterm zone="ch-system-pkg-config">
+    <primary sortas="a-Pkg-config">Pkg-config</primary>
+  </indexterm>
+
+  <sect2 role="package">
+    <title/>
+
+    <para>pkg-config 包包含在 configure 和 make 文件执行时，传递包含路径/库路径到构建工具的工具。</para>
+
+    <segmentedlist>
+      <segtitle>&buildtime;</segtitle>
+      <segtitle>&diskspace;</segtitle>
+
+      <seglistitem>
+        <seg>&pkg-config-ch6-sbu;</seg>
+        <seg>&pkg-config-ch6-du;</seg>
+      </seglistitem>
+    </segmentedlist>
+
+  </sect2>
+
+  <sect2 role="installation">
+    <title>Pkg-config 的安装</title>
+
+    <note><para>Pkg-Config 将会使用 Popt 的一个包含版本来分析命令行选项。如果需要一个外置版本的 Popt，在安装 Pkg-config 前，安装使用 <ulink
+    url="&blfs-root;view/svn/general/popt.html">BLFS Popt 构建说明</ulink> 的版本。</para></note>
+
+
+    <para>修复 Pkg-config 的测试之一的一个问题:</para>
+
+<screen><userinput remap="pre">sed -i -e '/!done/a\
+        longArg = NULL;' popt/popt.c</userinput></screen>
+
+    <para>准备 Pkg-config 编译:</para>
+
+<screen><userinput remap="configure">GLIB_LIBS="-L/usr/lib -lglib-2.0" \
+  GLIB_CFLAGS="-I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include" \
+  ./configure --prefix=/usr</userinput></screen>
+
+    <para>编译包:</para>
+
+<screen><userinput remap="make">make</userinput></screen>
+
+    <para>要测试结果，执行:</para>
+
+<screen><userinput remap="test">make check</userinput></screen>
+
+    <para>安装包:</para>
+
+<screen><userinput remap="install">make install</userinput></screen>
+
+  </sect2>
+
+
+  <sect2 id="contents-pkg-config" role="content">
+    <title>Pkg-config 的内容</title>
+
+    <segmentedlist>
+      <segtitle>安装的程序</segtitle>
+
+      <seglistitem>
+        <seg>pkg-config</seg>
+      </seglistitem>
+    </segmentedlist>
+
+    <variablelist>
+      <bridgehead renderas="sect3">简述</bridgehead>
+      <?dbfo list-presentation="list"?>
+      <?dbhtml list-presentation="table"?>
+
+      <varlistentry id="pkg-config">
+        <term><command>pkg-config</command></term>
+        <listitem>
+          <para>返回选择库或包的 meta 信息。</para>
+          <indexterm zone="ch-system-pkg-config pkg-config">
+            <primary sortas="b-pkg-config">pkg-config</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+    </variablelist>
+
+  </sect2>
+
+</sect1>

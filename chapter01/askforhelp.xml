@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sect1 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+  "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+  <!ENTITY % general-entities SYSTEM "../general.ent">
+  %general-entities;
+]>
+
+<sect1 id="ch-intro-askforhelp">
+  <?dbhtml filename="askforhelp.html"?>
+
+  <title>帮助</title>
+
+  <para>如果在书中遇到任何困难或问题，请查看 <ulink url="&faq-root;#generalfaq"/> 中的 FAQ 页面。
+  问题通常已经在那里被提问到。如果您的问题未在该页上被问到，尝试查找问题的来源。
+  下面的提示给您一些诊断故障的辅助:
+  <ulink url="&hints-root;errors.txt"/>。</para>
+
+  <para>如果您在 FAQ 中找不到您的问题的解决方法，搜索 <ulink url="&lfs-root;search.html"/> 处的邮件列表。</para>
+
+  <para>我们还有一个出色的 LFS 社区，通过邮件列表和 IRC 提供辅助
+  (查看本书的<xref linkend="ch-intro-resources"/>部分)。
+  尽管如此，我们每天还是会受到许多技术支持的问题，而其中大部分可以通过
+  访问 FAQ 和搜索邮件列表轻易得到答案。
+  所以，为了让我们能够提供力所能及的协助，您需要首先自己进行某些研究。
+  那样可以让我们可以更着眼于不常见的技术支持需求。
+  如果您的搜索无法得到解决方案的话，请在您的帮助请求中包含所有相关的信息
+  (下面会提及)。</para>
+
+  <sect2>
+    <title>需要提到的内容</title>
+
+    <para>除了所遇到的问题的简单描述外，在您的帮助请求中应该包含一些必需的内容:</para>
+
+    <itemizedlist>
+      <listitem>
+        <para>您正在使用的书的版本(在本例中为 &version;)</para>
+      </listitem>
+      <listitem>
+        <para>用于创建 LFS 的宿主的发行版和版本号</para>
+      </listitem>
+      <listitem>
+        <para>来自<xref linkend='version-check'/>的输出</para>
+      </listitem>
+      <listitem>
+        <para>遇到问题的软件包或章节部分</para>
+      </listitem>
+      <listitem>
+        <para>收到的准确错误消息或故障症状描述</para>
+      </listitem>
+      <listitem>
+        <para>注意您是否完全偏离了书本内容</para>
+      </listitem>
+    </itemizedlist>
+
+    <note>
+      <para>不按本书所说去做，并<emphasis>不</emphasis>意味着我们不会协助您。毕竟，LFS 是关于个人喜好的。
+      公开对已建立过程做出的更改有助于我们评估并判断您的问题可能的原因。</para>
+    </note>
+
+  </sect2>
+
+  <sect2>
+    <title>配置脚本的问题</title>
+
+    <para>如果在运行 <command>configure</command> 时出错，检查 <filename>config.log</filename> 文件。这个文件可能包含在 <command>configure</command> 时遇到的没有输出到屏幕上的消息的错误。
+    如果您需要请求帮助的话，请包括<emphasis>相关的</emphasis>行内容。</para>
+
+  </sect2>
+
+  <sect2>
+    <title>编译问题</title>
+
+    <para>屏幕输出和各种文件的内容在判断编译问题的原因都很有用。
+    来自 <command>configure</command> 脚本和 <command>make</command> 运行的输出可能很有用。
+    不需要包含整个输出，但是应该包含足够多的相关信息。以下是包含
+    <command>make</command> 的屏幕输出的信息类型的一个示范:</para>
+
+<screen><computeroutput>gcc -DALIASPATH=\"/mnt/lfs/usr/share/locale:.\"
+-DLOCALEDIR=\"/mnt/lfs/usr/share/locale\"
+-DLIBDIR=\"/mnt/lfs/usr/lib\"
+-DINCLUDEDIR=\"/mnt/lfs/usr/include\" -DHAVE_CONFIG_H -I. -I.
+-g -O2 -c getopt1.c
+gcc -g -O2 -static -o make ar.o arscan.o commands.o dir.o
+expand.o file.o function.o getopt.o implicit.o job.o main.o
+misc.o read.o remake.o rule.o signame.o variable.o vpath.o
+default.o remote-stub.o version.o opt1.o
+-lutil job.o: In function `load_too_high':
+/lfs/tmp/make-3.79.1/job.c:1565: undefined reference
+to `getloadavg'
+collect2: ld returned 1 exit status
+make[2]: *** [make] Error 1
+make[2]: Leaving directory `/lfs/tmp/make-3.79.1'
+make[1]: *** [all-recursive] Error 1
+make[1]: Leaving directory `/lfs/tmp/make-3.79.1'
+make: *** [all-recursive-am] Error 2</computeroutput></screen>
+
+    <para>在这个例子中，很多人只会包含最底的部分:</para>
+
+<screen><computeroutput>make [2]: *** [make] Error 1</computeroutput></screen>
+
+    <para>这样没有足够的信息来正确诊断问题所在，因为它只说明了某些东西出错，而没有
+    说明<emphasis>什么</emphasis>出错。整个部分如上例中，应该都被保存，因为它包括了被执行的命令以及相关的错误消息。</para>
+
+    <para>在互联网上有一篇关于如何请求帮助的优秀文章：<ulink
+    url="http://catb.org/~esr/faqs/smart-questions.html"/>。阅读以下病按照本文档中的提示来提高获得您需要的帮助的可能性。</para>
+
+  </sect2>
+
+</sect1>

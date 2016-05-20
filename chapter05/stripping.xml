@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sect1 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+  "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+  <!ENTITY % general-entities SYSTEM "../general.ent">
+  %general-entities;
+]>
+
+<sect1 id="ch-tools-stripping">
+  <?dbhtml filename="stripping.html"?>
+
+  <title>Stripping</title>
+
+  <para>本章中的步骤是可选的，但是如果 LFS 分区非常小，了解可以去除的不需要项目还是有好处的。
+  到目前为止，构建的可执行文件和库包含大约 70 MB 的不需要的调试符号。使用以下命令去掉那些符号:</para>
+
+<screen><userinput>strip --strip-debug /tools/lib/*
+strip --strip-unneeded /tools/{,s}bin/*</userinput></screen>
+
+  <para>这些命令将跳过一些文件，报告它不能识别这些文件的格式。其中大多数是脚本而不是二进制文件。</para>
+
+  <para>小心<emphasis>不要</emphasis>在库文件上使用
+  <parameter>--strip-unneeded</parameter>。静态库可能会被破坏，而工具链包可能需要从头开始重新全部编译一次。</para>
+
+  <para>删除文档还可多节省接近 25 MB 空间:</para>
+
+<screen><userinput>rm -rf /tools/{,share}/{info,man}</userinput></screen>
+
+  <para>此时，在
+  <envar>$LFS</envar> 上，您应该至少有 850 MB 的可用空间，可以用于在下一阶段构建和安装 Glibc。如果您可以构建和安装 Glibc 的话，您也可以构建和安装其余的东西了。</para>
+
+</sect1>

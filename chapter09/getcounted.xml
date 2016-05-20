@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sect1 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+  "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+  <!ENTITY % general-entities SYSTEM "../general.ent">
+  %general-entities;
+]>
+
+<sect1 id="ch-finish-getcounted">
+  <?dbhtml filename="getcounted.html"?>
+
+  <title>计入统计中</title>
+
+  <para>现在您已经完成了本书的内容，您是否想被算入到 LFS 用户中？转向 <ulink url="&lfs-root;cgi-bin/lfscounter.cgi"/> 并输入您的名称和您使用的第一个 LFS 版本来注册成为 LFS 用户。</para>
+
+  <para>现在让我们重新引导到 LFS 中。</para>
+
+</sect1>

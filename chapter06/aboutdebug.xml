@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sect1 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+  "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+  <!ENTITY % general-entities SYSTEM "../general.ent">
+  %general-entities;
+]>
+
+<sect1 id="ch-system-aboutdebug">
+  <?dbhtml filename="aboutdebug.html"?>
+
+  <title>关于调试符号</title>
+
+  <para>大多数程序和库，按默认都是包含调试符号编译的(使用 <command>gcc</command> 的
+  <parameter>-g</parameter> 选项)。这意味着，当调试一个使用包含了调试信息编译的程序或库时，调试器不仅仅提供内存地址，还会提供例程和变量的名称。</para>
+
+  <para>尽管如此，这些调试符号的包含明显增大了程序或库的尺寸。下面是这些符号占用空间数量的一个示例:</para>
+
+  <itemizedlist>
+    <listitem>
+      <para>一个带调试符号的 <command>bash</command> 二进制文件:
+      1200 KB</para>
+    </listitem>
+    <listitem>
+      <para>一个不带调试符号的 <command>bash</command> 二进制文件:
+      480 KB</para>
+    </listitem>
+    <listitem>
+      <para>带调试符号的 Glibc 和 GCC 文件 (<filename class="directory">/lib</filename>
+      和 <filename class="directory">/usr/lib</filename>): 87 MB</para>
+    </listitem>
+    <listitem>
+      <para>不带带调试符号的 Glibc 和 GCC 文件: 16 MB</para>
+    </listitem>
+  </itemizedlist>
+
+  <para>大小根据使用的编译器和 C 库会有所不同，但是在比较带有和不带有调试符号的程序时，差异通常都是 2 到 5 倍。</para>
+
+  <para>由于大多数用户从来不会在它们的系统软件上使用调试器，可以通过删除这些符号来重新获得大量的磁盘空间。下一节显示如何从程序和库中剥离所有调试符号。</para>
+
+</sect1>

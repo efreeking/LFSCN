@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sect1 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+  "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+  <!ENTITY % general-entities SYSTEM "../general.ent">
+  %general-entities;
+]>
+
+<sect1 id="ch-scripts-profile">
+  <?dbhtml filename="profile.html"?>
+
+  <title>Bash Shell 启动文件</title>
+
+  <indexterm zone="ch-scripts-profile">
+    <primary sortas="e-/etc/profile">/etc/profile</primary>
+  </indexterm>
+
+  <para>Shell 程序 <command>/bin/bash</command> (以后就称为 <quote>Shell</quote>) 使用了一组启动文件来帮助创建运行使用的环境。每个文件都有专门的用途并且可能对登录和交互环境产生不同的影响。在 <filename
+  class="directory">/etc</filename> 目录中的文件提供了全局设置。如果在主目录中有等同的文件存在，它可以凌驾于全局设置。</para>
+
+  <para>在使用 <command>/bin/login</command> 通过读取 <filename>/etc/passwd</filename> 文件成功登录后会启动一个交互式的登录 Shell。
+  在命令行(如 <prompt>[prompt]$</prompt><command>/bin/bash</command>)启动交互式的非登录 Shell。而非交互式 Shell 则通常存在于运行一个 Shell 脚本时。它所以称为非交互，是因为它处理脚本时，在命令之间不会等待用户的输入。</para>
+
+  <para>要获取更多的信息，查看
+  <emphasis>Bash 启动文件和交互式 Shells</emphasis> 一节下的 <command>info bash</command>。</para>
+
+  <para>当 Shell 作为一个交互登录 Shell 被调用时，会读取文件 <filename>/etc/profile</filename> 和
+  <filename>~/.bash_profile</filename>。</para>
+
+  <para>以下的基本 <filename>/etc/profile</filename> 设置某些原生语言支持所需的环境变量。正确的设置它们会致使:</para>
+
+  <itemizedlist>
+    <listitem>
+      <para>程序的输出会被翻译为原生语言</para>
+    </listitem>
+    <listitem>
+      <para>正确的字符分类为字母、数字和其它类别。这是 <command>bash</command> 在非英文语言环境中正确的接受命令行中的非 ASCII 字符所需的</para>
+    </listitem>
+    <listitem>
+      <para>正确的国家字母排列顺序</para>
+    </listitem>
+    <listitem>
+      <para>适当的默认纸张大小</para>
+    </listitem>
+    <listitem>
+      <para>正确的货币、时间和日期值的格式</para>
+    </listitem>
+  </itemizedlist>
+
+  <para>替换下面的 <replaceable>&lt;ll&gt;</replaceable> 为想要的语言的两个字母代码(如 <quote>en</quote>、<quote>cn</quote>) 而
+  <replaceable>&lt;CC&gt;</replaceable> 替换为适当国家的两个字母代码(如 <quote>GB</quote>、<quote>ZH</quote>)。<replaceable>&lt;charmap&gt;</replaceable> 应该被替换为您选择的语言环境的规范字符映射。可选修饰符，如 <quote>@euro</quote> 也可以存在。</para>
+
+  <para>Glibc 支持的所有语言环境的列表可以通过下列命令获得:</para>
+
+<screen role="nodump"><userinput>locale -a</userinput></screen>
+
+  <para>字符映射有几个别名，如 <quote>ISO-8859-1</quote> 也被称为 <quote>iso8859-1</quote> 和 <quote>iso88591</quote>。某些应用程序不能正确的处理各种同义词(如需要 <quote>UTF-8</quote> 写成 <quote>UTF-8</quote> 而不是 <quote>utf8</quote>)，所以最安全的方法就是在大部分情况下都选择一个特定语言环境的规范名称。要决定规范名称，运行下列的命令，其中<replaceable>&lt;语言环境名&gt;</replaceable> 是由 <command>locale -a</command> 给出的您的首选语言环境的输出(在我们的例子中是 <quote>en_GB.iso88591</quote>)。</para>
+
+<screen role="nodump"><userinput>LC_ALL=<replaceable>&lt;语言环境名称&gt;</replaceable> locale charmap</userinput></screen>
+
+  <para>对于 <quote>en_GB.iso88591</quote> 语言环境，以上命令将会打印出:</para>
+
+<screen><computeroutput>ISO-8859-1</computeroutput></screen>
+
+  <para>这个导致 <quote>en_GB.ISO-8859-1</quote> 的最终语言环境设置。在添加语言环境到 Bash 启动文件前，使用以上的启发式命令进行测试找出语言环境是很重要的:</para>
+
+<screen role="nodump"><userinput>LC_ALL=&lt;语言环境名称&gt; locale language
+LC_ALL=&lt;语言环境名称&gt; locale charmap
+LC_ALL=&lt;语言环境名称&gt; locale int_curr_symbol
+LC_ALL=&lt;语言环境名称&gt; locale int_prefix</userinput></screen>
+
+  <para>以上命令应该显示语言名称、语言环境使用的字符编码、当地货币和区号(电话号码的拨号前缀，以便进入某个国家)。如果以上命令中的任何一个失败，并带有类似如下所显示的消息，这意味着要么在第 6 章您的语言环境没有安装好，要么是不被 Glibc 的默认安装所支持。</para>
+
+<screen><computeroutput>locale: Cannot set LC_* to default locale: No such file or directory</computeroutput></screen>
+
+  <para>如果发生这种情况，您应该使用 <command>localedef</command> 命令安装想要的语言环境，或者考虑选择不同的语言环境。
+  进一步的说明是假设从 Glibc 中没有这样的错误消息。</para>
+
+  <!-- FIXME: the xlib example will became obsolete real soon -->
+  <para>某些 LFS 以外的包还缺乏对您选择的语言环境的支持。其中一个例子就是 X 库(X Window 系统的一部分)，如果语言环境不是精确的匹配它的内部文件中的字符映射名称之一，它就会输出下列错误消息:</para>
+
+<screen><computeroutput>Warning: locale not supported by Xlib, locale set to C</computeroutput></screen>
+
+  <para>在很多情况下，Xlib 预期字符映射将会以带规范短线的大写表示法列出。例如，是“ISO-8859-1”而不是“iso88591”。还可以通过删除语言环境规范的字符映射部分来查找适当的规范。这个可以通过在两种语言环境中运行 <command>locale charmap</command> 命令检查。
+  例如，一个必须把“de_DE.ISO-8859-15@euro”改为“de_DE@euro”以便让 Xlib 能够识别这个语言环境。</para>
+
+  <para>其它包还可能会在语言环境名称不符合它们的预期而功能异常(但是可能没有必要显示错误消息)。在那样的情况下，研究一下其它 Linux 发行版如何支持您的语言环境可能会提供某些有用的信息。</para>
+
+  <para>一旦确定了正确的语言环境设置，创建 <filename>/etc/profile</filename> 文件:</para>
+
+<screen><userinput>cat &gt; /etc/profile &lt;&lt; "EOF"
+<literal># Begin /etc/profile
+
+export LANG=<replaceable>&lt;ll&gt;_&lt;CC&gt;.&lt;charmap&gt;&lt;@modifiers&gt;</replaceable>
+
+# End /etc/profile</literal>
+EOF</userinput></screen>
+
+  <para><quote>C</quote> (默认) 和 <quote>en_US</quote> (美国英语用户的推荐值)语言环境是不同的。<quote>C</quote>
+  使用 US-ASCII 7 位字符集，并把带高位设置的字节视为无效字符。这就是为什么，例如 <command>ls</command> 命令会在语言环境中把它们替代为问号。还有尝试从 Mutt 或 Pine 发送带这些字符的邮件的话，会导致发送 non-RFC-conforming
+  消息(在发出的邮件中的字符集被指定为 <quote>unknown
+  8-bit</quote>)。所以您只可以在您明确您永远不需要 8 位的字符的情况下使用 <quote>C</quote> 语言环境。</para>
+
+  <para>基于 UTF-8 的语言环境还不能被许多程序很好的支持。
+  在文档制作时，工作还在进行中，如果可以的话，修复这些问题，查看
+  <ulink url="&blfs-root;view/svn/introduction/locale-issues.html"/>。</para>
+
+</sect1>

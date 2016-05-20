@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sect1 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+  "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+  <!ENTITY % general-entities SYSTEM "../general.ent">
+  %general-entities;
+]>
+
+<sect1 id="materials-introduction">
+  <?dbhtml filename="introduction.html"?>
+
+  <title>介绍</title>
+
+  <para>本章节包含了构建一个基本的 Linux 系统所需要下载的包的列表。
+  列出的版本号对应于已知可以正常工作的版本，并且本书是基于使用这个版本的。
+  我们强烈建议是针对新版本的使用的，因为用于一个版本的构建命令未必能够用于新的版本。
+  最新的包版本也可以有需要解决的问题。这些周边的工作会在本书的开发版中发展变化并稳定下来。</para>
+
+  <para>下载位置可能不是总是可以访问的。如果从本书发布以来，下载的位置发生了变化，Google (<ulink url="http://www.google.com/"/>) 为大多数包提供了一个有用的搜索引擎。如果这样搜索不成功，尝试在
+  <ulink url="&lfs-root;lfs/packages.html#packages"/>中讨论的备选下载方式。</para>
+
+  <para>下载的包和补丁需要存储在一个在整个构建过程中都可以方便访问的地方。
+  还需要一个工作目录来解压和构建源代码。
+  <filename class="directory">$LFS/sources</filename> 既可以用作存储源代码压缩包和补丁的位置，也可以作为工作目录。
+  通过使用这个目录，必需的元素都将位于 LFS 分区并在构建过程中的所有步骤中都可访问。</para>
+
+  <para>要创建这个目录，在开始下载前，以
+  <systemitem class="username">root</systemitem> 的用户身份执行以下命令:</para>
+
+<screen role="nodump"><userinput>mkdir -v $LFS/sources</userinput></screen>
+
+  <para>使得这个目录可写并且 sticky。<quote>Sticky</quote>(粘性)
+  的意思是，即使多个用户拥有一个目录的写入权限，但是只有文件的所有者可以删除具 sticky 属性的目录中的文件。
+  下列命令将启用写入和 sticky 模式:</para>
+
+<screen role="nodump"><userinput>chmod -v a+wt $LFS/sources</userinput></screen>
+
+  <para>下载所有包和补丁的一个简单的办法就是使用
+  <ulink url="../wget-list">wget-list</ulink> 作为 <command>wget</command> 的输入。例如:</para>
+
+  <screen role="nodump"><userinput>wget -i wget-list -P $LFS/sources</userinput></screen> 
+
+</sect1>

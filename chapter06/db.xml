@@ -1,0 +1,277 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sect1 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+  "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+  <!ENTITY % general-entities SYSTEM "../general.ent">
+  %general-entities;
+]>
+
+<sect1 id="ch-system-db" role="wrap">
+  <?dbhtml filename="db.html"?>
+
+  <sect1info condition="script">
+    <productname>db</productname>
+    <productnumber>&db-version;</productnumber>
+    <address>&db-url;</address>
+  </sect1info>
+
+  <title>Berkeley DB-&db-version;</title>
+
+  <indexterm zone="ch-system-db">
+    <primary sortas="a-Berkeley-DB">Berkeley DB</primary>
+  </indexterm>
+
+  <sect2 role="package">
+    <title/>
+
+    <para>Berkeley DB 包包含用于许多用于数据库相关功能的其它应用程序所使用的程序和工具。</para>
+
+    <segmentedlist>
+      <segtitle>&buildtime;</segtitle>
+      <segtitle>&diskspace;</segtitle>
+
+      <seglistitem>
+        <seg>&db-ch6-sbu;</seg>
+        <seg>&db-ch6-du;</seg>
+      </seglistitem>
+    </segmentedlist>
+
+    <tip>
+      <title>其它安装的可能性</title>
+
+      <para>如果您需要构建 RPC 服务器或者额外的语言绑定，在 BLFS 书中有构建该包的说明。额外的语言绑定将需要安装额外的包。查看 <ulink url="&blfs-root;view/svn/server/databases.html#db"/> 的建议安装说明。</para>
+
+      <para>还有，GDBM <emphasis>可以</emphasis>代替 Berkeley
+      DB 来满足 Man-DB。但是由于 Berkeley DB 被认为是 LFS 构建的一个核心部分，它将不会列为 BLFS 书中任何包的依赖关系。同样的，很多时候，我们使用已安装的 Berkeley DB 测试 LFS 而不是使用 GDBM。如果您完全明白使用 GDBM 的风险和好处，而仍然无论如何都要使用它，查阅位于 <ulink
+      url="&blfs-root;view/svn/general/gdbm.html"/> 的 BLFS 说明。</para>
+
+    </tip>
+
+  </sect2>
+
+  <sect2 role="installation">
+    <title>Berkeley DB 的安装</title>
+
+    <para>应用一个 upstream 补丁以便复制(replication)客户端可以打开一个序列(sequence):</para>
+
+<screen><userinput remap="pre">patch -Np1 -i ../&db-fixes-patch;</userinput></screen>
+
+    <para>准备 Berkeley DB 编译:</para>
+
+<screen><userinput remap="configure">cd build_unix
+../dist/configure --prefix=/usr --enable-compat185 --enable-cxx</userinput></screen>
+
+    <variablelist>
+      <title>配置选项的含义:</title>
+
+      <varlistentry>
+        <term><parameter>--enable-compat185</parameter></term>
+        <listitem>
+          <para>这个选项启用构建 Berkeley DB 1.85 兼容性 API。</para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term><parameter>--enable-cxx</parameter></term>
+        <listitem>
+          <para>这个选项启用构建 C++ API 库。</para>
+        </listitem>
+      </varlistentry>
+
+    </variablelist>
+
+    <para>编译包:</para>
+
+<screen><userinput remap="make">make</userinput></screen>
+
+    <para>不可能有意义的测试包，因为那样会牵涉到构建 Tcl 绑定。Tcl 绑定现在不可能正确构建的，因为 Tcl 是针对
+    <filename class="directory">/tools</filename> 中的 Glibc 链接的，而不是针对
+    <filename class="directory">/usr</filename> 中的 Glibc。</para>
+
+    <para>安装包:</para>
+
+<screen><userinput remap="install">make docdir=/usr/share/doc/db-&db-version; install</userinput></screen>
+
+    <variablelist>
+      <title>make 参数的含义:</title>
+
+      <varlistentry>
+        <term><parameter>docdir=...</parameter></term>
+        <listitem>
+          <para>这个变量指定文档的正确位置。</para>
+        </listitem>
+      </varlistentry>
+
+    </variablelist>
+
+    <para>修复已安装文档的所有者关系:</para>
+
+<screen><userinput remap="install">chown -Rv root:root /usr/share/doc/db-&db-version;</userinput></screen>
+
+  </sect2>
+
+  <sect2 id="contents-db" role="content">
+    <title>Berkeley DB 的内容</title>
+
+    <segmentedlist>
+      <segtitle>安装的程序</segtitle>
+      <segtitle>安装的库</segtitle>
+
+      <seglistitem>
+        <seg>db_archive, db_checkpoint, db_codegen, db_deadlock, db_dump,
+        db_hotbackup, db_load, db_printlog, db_recover, db_stat, db_upgrade 和
+        db_verify</seg>
+        <seg>libdb.{a,so}and libdb_cxx.{a,so}</seg>
+      </seglistitem>
+    </segmentedlist>
+
+    <variablelist>
+      <bridgehead renderas="sect3">简述</bridgehead>
+      <?dbfo list-presentation="list"?>
+      <?dbhtml list-presentation="table"?>
+
+      <varlistentry id="db_archive">
+        <term><command>db_archive</command></term>
+        <listitem>
+          <para>打印不再处于使用中的记录文件的路径名</para>
+          <indexterm zone="ch-system-db db_archive">
+            <primary sortas="b-db_archive">db_archive</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="db_checkpoint">
+        <term><command>db_checkpoint</command></term>
+        <listitem>
+          <para>一个用于监控和检查点数据库记录的后台程序</para>
+          <indexterm zone="ch-system-db db_checkpoint">
+            <primary sortas="b-db_checkpoint">db_checkpoint</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="db_codegen">
+        <term><command>db_codegen</command></term>
+        <listitem>
+          <para>生成用于创建和配置 Berkeley DB 数据库环境和基于一个简单的描述语言的数据库，并把它写入一个或多个输出文件的应用程序代码</para>
+          <indexterm zone="ch-system-db db_codegen">
+            <primary sortas="b-db_codegen">db_codegen</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="db_deadlock">
+        <term><command>db_deadlock</command></term>
+        <listitem>
+          <para>一个用于当检测到死锁时放弃锁定请求的后台程序</para>
+          <indexterm zone="ch-system-db db_deadlock">
+            <primary sortas="b-db_deadlock">db_deadlock</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="db_dump">
+        <term><command>db_dump</command></term>
+        <listitem>
+          <para>转换数据库文件为一个可以被 <command>db_load</command> 读取的纯文本文件格式</para>
+          <indexterm zone="ch-system-db db_dump">
+            <primary sortas="b-db_dump">db_dump</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="db_hotbackup">
+        <term><command>db_hotbackup</command></term>
+        <listitem>
+          <para>创建 Berkeley DB 数据库的<quote>热备份</quote>或<quote>热失效备援(failover)</quote></para>
+          <indexterm zone="ch-system-db db_hotbackup">
+            <primary sortas="b-db_hotbackup">db_hotbackup</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="db_load">
+        <term><command>db_load</command></term>
+        <listitem>
+          <para>用于从纯文本文件创建数据库文件</para>
+          <indexterm zone="ch-system-db db_load">
+            <primary sortas="b-db_load">db_load</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="db_printlog">
+        <term><command>db_printlog</command></term>
+        <listitem>
+          <para>转换数据库记录文件为人类可读的文本</para>
+          <indexterm zone="ch-system-db db_printlog">
+            <primary sortas="b-db_printlog">db_printlog</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="db_recover">
+        <term><command>db_recover</command></term>
+        <listitem>
+          <para>用于在一次失败后，恢复数据库为一个符合的状态</para>
+          <indexterm zone="ch-system-db db_recover">
+            <primary sortas="b-db_recover">db_recover</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="db_stat">
+        <term><command>db_stat</command></term>
+        <listitem>
+          <para>显示 Berkeley 数据库的统计信息</para>
+          <indexterm zone="ch-system-db db_stat">
+            <primary sortas="b-db_stat">db_stat</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="db_upgrade">
+        <term><command>db_upgrade</command></term>
+        <listitem>
+          <para>用于升级数据库文件为较新版本的 Berkeley DB</para>
+          <indexterm zone="ch-system-db db_upgrade">
+            <primary sortas="b-db_upgrade">db_upgrade</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="db_verify">
+        <term><command>db_verify</command></term>
+        <listitem>
+          <para>用于在数据库文件上运行一致性检查</para>
+          <indexterm zone="ch-system-db db_verify">
+            <primary sortas="b-db_verify">db_verify</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+
+      <varlistentry id="libdb">
+        <term><filename class="libraryfile">libdb.{so,a}</filename></term>
+        <listitem>
+          <para>包含从 C 程序操纵数据库文件的函数</para>
+          <indexterm zone="ch-system-db libdb">
+            <primary sortas="c-libdb">libdb</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="libdb_cxx">
+        <term><filename class="libraryfile">libdb_cxx.{so,a}</filename></term>
+        <listitem>
+          <para>包含从 C++ 程序操纵数据库文件的函数</para>
+          <indexterm zone="ch-system-db libdb_cxx">
+            <primary sortas="c-libdb_cxx">libdb_cxx</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+    </variablelist>
+
+  </sect2>
+
+</sect1>

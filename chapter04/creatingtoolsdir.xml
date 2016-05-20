@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sect1 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+  "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+  <!ENTITY % general-entities SYSTEM "../general.ent">
+  %general-entities;
+]>
+
+<sect1 id="ch-tools-creatingtoolsdir">
+  <?dbhtml filename="creatingtoolsdir.html"?>
+
+  <title>创建 $LFS/tools 目录</title>
+
+  <para>在<xref linkend="chapter-temporary-tools"/>中编译的所有程序将会安装在 <filename class="directory">$LFS/tools</filename>
+  下以保持它们和在<xref
+  linkend="chapter-building-system"/>中编译的程序隔离开来。在这里编译的程序是临时工具，不会作为最终 LFS 系统的一部分。在这些程序保留在单独的目录中，它们就可以很方便的在使用后丢弃。
+  这也防止了这些程序结束于(Ending up)宿主的产出目录中(这个在<xref
+  linkend="chapter-temporary-tools"/>中很容易偶然发生)。</para>
+
+  <para>通过以
+  <systemitem class="username">root</systemitem> 身份运行下列命令创建所需的目录:</para>
+
+<screen><userinput>mkdir -v $LFS/tools</userinput></screen>
+
+  <para>下一步就是在宿主系统中创建一个 <filename class="symlink">/tools</filename>
+  符号链接。这将指向在 LFS 分区上新创建的分区。
+  也是以 <systemitem
+  class="username">root</systemitem> 身份运行以下命令:</para>
+
+<screen><userinput>ln -sv $LFS/tools /</userinput></screen>
+
+  <note>
+    <para>上述命令是正确的。<command>ln</command> 命令有一点语法变化。所以
+    在您觉得它是一个错误而要报告之前，请先查阅
+    <command>info coreutils ln</command> 和 <filename>ln(1)</filename>
+    确认一下。</para>
+  </note>
+
+  <para>创建的符号链接使得工具链被编译以便它总是引用到 <filename class="directory">/tools</filename>，这意味着编译器、汇编器和链接器既可以在第 5 章节中工作
+  (当我们还在使用来自宿主的某些工具)，也可以工作于下一章节(当我们 <quote>chrooted</quote> 到 LFS 分区时)。</para>
+
+</sect1>

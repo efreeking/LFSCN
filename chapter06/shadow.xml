@@ -1,0 +1,513 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sect1 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+  "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+  <!ENTITY % general-entities SYSTEM "../general.ent">
+  %general-entities;
+]>
+
+<sect1 id="ch-system-shadow" role="wrap">
+  <?dbhtml filename="shadow.html"?>
+
+  <sect1info condition="script">
+    <productname>shadow</productname>
+    <productnumber>&shadow-version;</productnumber>
+    <address>&shadow-url;</address>
+  </sect1info>
+
+  <title>Shadow-&shadow-version;</title>
+
+  <indexterm zone="ch-system-shadow">
+    <primary sortas="a-Shadow">Shadow</primary>
+  </indexterm>
+
+  <sect2 role="package">
+    <title/>
+
+    <para>Shadow 包包含以安全的方式处理密码的程序。</para>
+
+    <segmentedlist>
+      <segtitle>&buildtime;</segtitle>
+      <segtitle>&diskspace;</segtitle>
+
+      <seglistitem>
+        <seg>&shadow-ch6-sbu;</seg>
+        <seg>&shadow-ch6-du;</seg>
+      </seglistitem>
+    </segmentedlist>
+
+  </sect2>
+
+  <sect2 role="installation">
+    <title>Shadow 的安装</title>
+
+    <note>
+      <para>如果您意欲强制“强密码”的使用，参考
+      <ulink url="&blfs-root;view/svn/postlfs/cracklib.html"/> 在构建 Shadow 前安装 CrackLib。然后添加
+      <parameter>--with-libcrack</parameter> 到下面的 <command>configure</command> 程序。</para>
+    </note>
+
+    <para>禁止 <command>groups</command> 程序和它的手册页的安装，因为 Coreutils 提供了一个更好的版本:</para>
+
+<screen><userinput remap="pre">sed -i 's/groups$(EXEEXT) //' src/Makefile.in
+find man -name Makefile.in -exec sed -i 's/groups\.1 / /' {} \;</userinput></screen>
+
+    <para>修复一个俄语手册页安装的问题:</para>
+
+<screen><userinput remap="pre">sed -i 's/man_MANS = $(man_nopam) /man_MANS = /' man/ru/Makefile.in</userinput></screen>
+
+    <para id="shadow-login_defs">不是使用默认的
+    <emphasis>crypt</emphasis> 方式，而是使用更安全的
+    <emphasis>SHA-512</emphasis> 的密码加密方式，该方式也允许密码超过 8 字符长。它还需要更改 Shadow 按默认使用的用户邮箱的旧的  <filename class="directory">/var/spool/mail</filename> 位置为当前使用的 <filename
+    class="directory">/var/mail</filename> 位置:</para>
+
+<screen><userinput remap="configure">sed -i -e 's@#ENCRYPT_METHOD DES@ENCRYPT_METHOD SHA512@' \
+       -e 's@/var/spool/mail@/var/mail@' etc/login.defs</userinput></screen>
+
+    <note>
+      <para>如果您选择构建 Shadow 带 Cracklib 支持，运行下列命令:</para>
+
+<screen role="nodump"><userinput>sed -i 's@DICTPATH.*@DICTPATH\t/lib/cracklib/pw_dict@' \
+    etc/login.defs</userinput></screen>
+    </note>
+
+    <para>准备 Shadow 编译:</para>
+
+<screen><userinput remap="configure">./configure --sysconfdir=/etc</userinput></screen>
+
+    <para>编译包:</para>
+
+<screen><userinput remap="make">make</userinput></screen>
+
+    <para>这个包不附带测试套装。</para>
+
+    <para>安装包:</para>
+
+<screen><userinput remap="install">make install</userinput></screen>
+
+    <para>移动一个放错位置的程序到它的正确位置:</para>
+
+<screen><userinput remap="install">mv -v /usr/bin/passwd /bin</userinput></screen>
+
+    <!-- <para>Move Shadow's libraries to more appropriate locations:</para>
+
+<screen><userinput remap="install">mv -v /lib/libshadow.*a /usr/lib
+rm -v /lib/libshadow.so
+ln -sfv ../../lib/libshadow.so.0 /usr/lib/libshadow.so</userinput></screen> -->
+
+  </sect2>
+
+  <sect2 id="conf-shadow" role="configuration">
+    <title>配置 Shadow</title>
+
+    <indexterm zone="conf-shadow">
+      <primary sortas="a-Shadow">Shadow</primary>
+      <secondary>configuring</secondary>
+    </indexterm>
+
+    <para>这个包包含添加、修改及删除用户和组；设置和更改它们的密码；以及执行其它管理性任务的工具。对于什么是 <emphasis>password shadowing</emphasis>
+    的含义的完整阐述，请参阅解压的源代码树中的 <filename>doc/HOWTO</filename> 文件。如果使用 Shadow 支持，记住需要验证密码的程序(显示管理器、FTP 程序、pop3 后台程序等)都必须是兼容 Shadow 的。也就是说，它们也需要可以使用
+    shadowed 的密码。</para>
+
+    <para>要启用 shadowed 密码，运行下列命令:</para>
+
+<screen><userinput>pwconv</userinput></screen>
+
+    <para>要启用 shadowed 组密码，运行:</para>
+
+<screen><userinput>grpconv</userinput></screen>
+
+    <para>Shadow 的 stock 配置用于 <command>useradd</command>
+    工具有一些需要解释的附加说明。首先，<command>useradd</command> 工具的默认操作是创建用户和一个和用户同名的组。按默认用户 ID (UID) 和组 ID (GID) 编号从 1000 开始。这意味着如果您不传递参数给 <command>useradd</command>，每个用户都将会是系统上一个独特组的成员，您需要传递 <parameter>-g</parameter> 参数给
+    <command>useradd</command>。默认的参数存储在
+    <filename>/etc/default/useradd</filename> 文件。您可能需要修改该文件中的两个参数以适合您的特殊需要。</para>
+
+    <variablelist>
+      <title><filename>/etc/default/useradd</filename> 参数解释</title>
+
+      <varlistentry>
+        <term><parameter>GROUP=1000</parameter></term>
+        <listitem>
+          <para>这个参数设置在 /etc/group 文件中使用的组编号的开始。您可以修改它为您想要的任何内容。注意，<command>useradd</command> 将永远不会重复使用一个 UID 或 GID。如果使用在该参数中识别的编号，那么它将会使用这个之后的下一个可用的编号。还要注意，如果在您首次使用不带 <parameter>-g</parameter> 参数的 <command>useradd</command> 时，系统上没有一个组 1000，那么您将会获得一个显示在终端上的消息，说:
+          <computeroutput>useradd: unknown GID 1000</computeroutput>。您可以无需理会这条消息，而将使用组编号 1000。</para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term><parameter>CREATE_MAIL_SPOOL=yes</parameter></term>
+        <listitem>
+          <para>这个参数使 <command>useradd</command> 为新创建的用户创建一个邮箱文件。<command>useradd</command>
+          将会建立这个文件的组关系为
+          <systemitem class="groupname">mail</systemitem> 组，带 0660 权限。如果您更希望这些邮箱文件不是使用 <command>useradd</command> 创建，执行下列命令:</para>
+
+<screen><userinput>sed -i 's/yes/no/' /etc/default/useradd</userinput></screen>
+        </listitem>
+      </varlistentry>
+
+    </variablelist>
+
+
+  </sect2>
+
+  <sect2 role="configuration">
+    <title>设置 root 密码</title>
+
+    <para>通过运行命令选择一个作为用户 <emphasis>root</emphasis> 的密码并设置它:</para>
+
+<screen role="nodump"><userinput>passwd root</userinput></screen>
+
+  </sect2>
+
+  <sect2 id="contents-shadow" role="content">
+    <title>Shadow 的内容</title>
+
+    <segmentedlist>
+      <segtitle>安装的程序</segtitle>
+      <segtitle>安装的目录</segtitle>
+
+      <seglistitem>
+        <seg>chage, chfn, chgpasswd, chpasswd, chsh, expiry, faillog, gpasswd,
+        groupadd, groupdel, groupmems, groupmod, grpck, grpconv, grpunconv,
+        lastlog, login, logoutd, newgrp, newusers, nologin, passwd, pwck,
+        pwconv, pwunconv, sg (链接到 newgrp), su, useradd, userdel, usermod,
+        vigr (链接到 vipw) 和 vipw</seg>
+        <seg>/etc/default</seg>
+      </seglistitem>
+    </segmentedlist>
+
+    <variablelist>
+      <bridgehead renderas="sect3">简述</bridgehead>
+      <?dbfo list-presentation="list"?>
+      <?dbhtml list-presentation="table"?>
+
+      <varlistentry id="chage">
+        <term><command>chage</command></term>
+        <listitem>
+          <para>用于更改要求密码更改的最大天数</para>
+          <indexterm zone="ch-system-shadow chage">
+            <primary sortas="b-chage">chage</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="chfn">
+        <term><command>chfn</command></term>
+        <listitem>
+          <para>用于更改一个用户的全称和其它信息</para>
+          <indexterm zone="ch-system-shadow chfn">
+            <primary sortas="b-chfn">chfn</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="chgpasswd">
+        <term><command>chgpasswd</command></term>
+        <listitem>
+          <para>用于以批量模式更新组密码</para>
+          <indexterm zone="ch-system-shadow chgpasswd">
+            <primary sortas="b-chgpasswd">chgpasswd</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="chpasswd">
+        <term><command>chpasswd</command></term>
+        <listitem>
+          <para>用于以批量模式更新用户密码</para>
+          <indexterm zone="ch-system-shadow chpasswd">
+            <primary sortas="b-chpasswd">chpasswd</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="chsh">
+        <term><command>chsh</command></term>
+        <listitem>
+          <para>用于更改一个用户的默认登录 Shell</para>
+          <indexterm zone="ch-system-shadow chsh">
+            <primary sortas="b-chsh">chsh</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="expiry">
+        <term><command>expiry</command></term>
+        <listitem>
+          <para>检查并强制当前密码的有效期策略</para>
+          <indexterm zone="ch-system-shadow expiry">
+            <primary sortas="b-expiry">expiry</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="faillog">
+        <term><command>faillog</command></term>
+        <listitem>
+          <para>是用于检查登录失败的记录，设置账户被屏蔽的最大失败次数，或者复位失败次数</para>
+          <indexterm zone="ch-system-shadow faillog">
+            <primary sortas="b-faillog">faillog</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="gpasswd">
+        <term><command>gpasswd</command></term>
+        <listitem>
+          <para>是用于添加和删除成员及管理员到组</para>
+          <indexterm zone="ch-system-shadow gpasswd">
+            <primary sortas="b-gpasswd">gpasswd</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="groupadd">
+        <term><command>groupadd</command></term>
+        <listitem>
+          <para>使用给定的名称创建一个组</para>
+          <indexterm zone="ch-system-shadow groupadd">
+            <primary sortas="b-groupadd">groupadd</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="groupdel">
+        <term><command>groupdel</command></term>
+        <listitem>
+          <para>删除给定名称的组</para>
+          <indexterm zone="ch-system-shadow groupdel">
+            <primary sortas="b-groupdel">groupdel</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="groupmems">
+        <term><command>groupmems</command></term>
+        <listitem>
+          <para>让用户可以无需具有超级用户权限即可管理其自己的组成员关系列表。</para>
+          <indexterm zone="ch-system-shadow groupmems">
+            <primary sortas="b-groupmems">groupmems</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="groupmod">
+        <term><command>groupmod</command></term>
+        <listitem>
+          <para>用于修改给定组的名称或 GID</para>
+          <indexterm zone="ch-system-shadow groupmod">
+            <primary sortas="b-groupmod">groupmod</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="grpck">
+        <term><command>grpck</command></term>
+        <listitem>
+          <para>验证组文件
+          <filename>/etc/group</filename> 和
+          <filename>/etc/gshadow</filename> 的完整性</para>
+          <indexterm zone="ch-system-shadow grpck">
+            <primary sortas="b-grpck">grpck</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="grpconv">
+        <term><command>grpconv</command></term>
+        <listitem>
+          <para>从正常的组文件创建或更新 shadow 组文件</para>
+          <indexterm zone="ch-system-shadow grpconv">
+            <primary sortas="b-grpconv">grpconv</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="grpunconv">
+        <term><command>grpunconv</command></term>
+        <listitem>
+          <para>更新 <filename>/etc/group</filename> 自
+          <filename>/etc/gshadow</filename> 然后删除后者</para>
+          <indexterm zone="ch-system-shadow grpunconv">
+            <primary sortas="b-grpunconv">grpunconv</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="lastlog">
+        <term><command>lastlog</command></term>
+        <listitem>
+          <para>报告所有用户或一个给定用户的最近的登录</para>
+          <indexterm zone="ch-system-shadow lastlog">
+            <primary sortas="b-lastlog">lastlog</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="login">
+        <term><command>login</command></term>
+        <listitem>
+          <para>被系统用来让用户签到</para>
+          <indexterm zone="ch-system-shadow login">
+            <primary sortas="b-login">login</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="logoutd">
+        <term><command>logoutd</command></term>
+        <listitem>
+          <para>是一个用于强制登录时间和端口的后台程序</para>
+          <indexterm zone="ch-system-shadow logoutd">
+            <primary sortas="b-logoutd">logoutd</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="newgrp">
+        <term><command>newgrp</command></term>
+        <listitem>
+          <para>是用于在登录会话期间更改当前的 GID</para>
+          <indexterm zone="ch-system-shadow newgrp">
+            <primary sortas="b-newgrp">newgrp</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="newusers">
+        <term><command>newusers</command></term>
+        <listitem>
+          <para>是用于创建或更新一整系列的用户账户</para>
+          <indexterm zone="ch-system-shadow newusers">
+            <primary sortas="b-newusers">newusers</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="nologin">
+        <term><command>nologin</command></term>
+        <listitem>
+          <para>显示一个账户不可用的消息。计划用于作为被禁用的账户的默认 Shell</para>
+          <indexterm zone="ch-system-shadow nologin">
+            <primary sortas="b-nologin">nologin</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="passwd">
+        <term><command>passwd</command></term>
+        <listitem>
+          <para>用于更改一个用户或组账户的密码</para>
+          <indexterm zone="ch-system-shadow passwd">
+            <primary sortas="b-passwd">passwd</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="pwck">
+        <term><command>pwck</command></term>
+        <listitem>
+          <para>验证密码文件
+          <filename>/etc/passwd</filename> 和
+          <filename>/etc/shadow</filename> 的完整性</para>
+          <indexterm zone="ch-system-shadow pwck">
+            <primary sortas="b-pwck">pwck</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="pwconv">
+        <term><command>pwconv</command></term>
+        <listitem>
+          <para>从正常的密码文件创建或更新 shadow 密码文件</para>
+          <indexterm zone="ch-system-shadow pwconv">
+            <primary sortas="b-pwconv">pwconv</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="pwunconv">
+        <term><command>pwunconv</command></term>
+        <listitem>
+          <para>更新 <filename>/etc/passwd</filename> 自
+          <filename>/etc/shadow</filename> 然后删除后者</para>
+          <indexterm zone="ch-system-shadow pwunconv">
+            <primary sortas="b-pwunconv">pwunconv</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="sg">
+        <term><command>sg</command></term>
+        <listitem>
+          <para>在用户的 GID 被设置为给定组的同时执行一个给定的命令</para>
+          <indexterm zone="ch-system-shadow sg">
+            <primary sortas="b-sg">sg</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="su">
+        <term><command>su</command></term>
+        <listitem>
+          <para>使用替代的用户和组 ID 运行一个 Shell</para>
+          <indexterm zone="ch-system-shadow su">
+            <primary sortas="b-su">su</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="useradd">
+        <term><command>useradd</command></term>
+        <listitem>
+          <para>使用给定的名称创建一个新用户，或者更新默认的新建用户的信息</para>
+          <indexterm zone="ch-system-shadow useradd">
+            <primary sortas="b-useradd">useradd</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="userdel">
+        <term><command>userdel</command></term>
+        <listitem>
+          <para>删除给定的用户账户</para>
+          <indexterm zone="ch-system-shadow userdel">
+            <primary sortas="b-userdel">userdel</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="usermod">
+        <term><command>usermod</command></term>
+        <listitem>
+          <para>用于修改给定的用户的登录名称、用户识别 (UID)、Shell、初始组、主目录等</para>
+          <indexterm zone="ch-system-shadow usermod">
+            <primary sortas="b-usermod">usermod</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="vigr">
+        <term><command>vigr</command></term>
+        <listitem>
+          <para>编辑 <filename>/etc/group</filename> 或
+          <filename>/etc/gshadow</filename> 文件</para>
+          <indexterm zone="ch-system-shadow vigr">
+            <primary sortas="b-vigr">vigr</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="vipw">
+        <term><command>vipw</command></term>
+        <listitem>
+          <para>编辑 <filename>/etc/passwd</filename> 或
+          <filename>/etc/shadow</filename> 文件</para>
+          <indexterm zone="ch-system-shadow vipw">
+            <primary sortas="b-vipw">vipw</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+    </variablelist>
+
+  </sect2>
+
+</sect1>

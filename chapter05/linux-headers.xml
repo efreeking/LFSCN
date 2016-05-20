@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sect1 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+  "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+  <!ENTITY % general-entities SYSTEM "../general.ent">
+  %general-entities;
+]>
+
+<sect1 id="ch-tools-linux-headers" role="wrap">
+  <?dbhtml filename="linux-headers.html"?>
+
+  <sect1info condition="script">
+    <productname>linux</productname>
+    <productnumber>&linux-version;</productnumber>
+    <address>&linux-url;</address>
+  </sect1info>
+
+  <title>Linux-&linux-version; API 头文件</title>
+
+  <indexterm zone="ch-tools-linux-headers">
+    <primary sortas="a-Linux">Linux</primary>
+    <secondary>工具，API 头文件</secondary>
+  </indexterm>
+
+  <sect2 role="package">
+    <title/>
+
+    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"
+    href="../chapter06/linux-headers.xml"
+    xpointer="xpointer(/sect1/sect2[1]/para[1])"/>
+
+    <segmentedlist>
+      <segtitle>&buildtime;</segtitle>
+      <segtitle>&diskspace;</segtitle>
+
+      <seglistitem>
+        <seg>&linux-headers-ch5-sbu;</seg>
+        <seg>&linux-headers-ch5-du;</seg>
+      </seglistitem>
+    </segmentedlist>
+
+  </sect2>
+
+  <sect2 role="installation">
+    <title>Linux API 头文件的安装</title>
+
+    <para>Linux 内核需要公开应用程序编程接口
+    (API) 给系统的 C 库(在 LFS 中的 Glibc)使用。这一步是通过解密随 Linux 内核源代码包 (tarball) 而来的各种 C 头文件的方式来实现的。</para>
+
+    <para>确保没有失效文件和依赖从上一次活动留下:</para>
+
+<screen><userinput remap="install">make mrproper</userinput></screen>
+
+    <para>现在测试并从源代码提取用户可见的内核头文件。因为解压过程会从目标目录中删除任何已有的内容，所以把它们放到一个作为中介的本地目录并复制到需要的地方。</para>
+
+<screen><userinput remap="install">make headers_check
+make INSTALL_HDR_PATH=dest headers_install
+cp -rv dest/include/* /tools/include</userinput></screen>
+
+  </sect2>
+
+  <sect2 role="content">
+    <title/>
+
+    <para>本包上的详细信息位于
+    <xref linkend="contents-linux-headers" role="."/></para>
+
+  </sect2>
+
+</sect1>

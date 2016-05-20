@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sect1 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+  "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+  <!ENTITY % general-entities SYSTEM "../general.ent">
+  %general-entities;
+]>
+
+<sect1 id="ch-system-module-init-tools" role="wrap">
+  <?dbhtml filename="module-init-tools.html"?>
+
+  <sect1info condition="script">
+    <productname>module-init-tools</productname>
+    <productnumber>&module-init-tools-version;</productnumber>
+    <address>&module-init-tools-url;</address>
+  </sect1info>
+
+  <title>Module-Init-Tools-&module-init-tools-version;</title>
+
+  <indexterm zone="ch-system-module-init-tools">
+    <primary sortas="a-Module-Init-Tools">Module-Init-Tools</primary>
+  </indexterm>
+
+  <sect2 role="package">
+    <title/>
+
+    <para>Module-Init-Tools 包包含处理不小于 2.5.47 版本的 Linux 内核中的内核模块的程序。</para>
+
+    <segmentedlist>
+      <segtitle>&buildtime;</segtitle>
+      <segtitle>&diskspace;</segtitle>
+
+      <seglistitem>
+        <seg>&module-init-tools-ch6-sbu;</seg>
+        <seg>&module-init-tools-ch6-du;</seg>
+      </seglistitem>
+    </segmentedlist>
+
+  </sect2>
+
+  <sect2 role="installation">
+    <title>Module-Init-Tools 的安装</title>
+
+    <para>为了避免在不需要的时候重新生成手册页，首先重写指向另一个手册页的文件:</para>
+
+<screen><userinput remap="pre">echo '.so man5/modprobe.conf.5' > modprobe.d.5</userinput></screen>
+
+    <para>本包的测试套装是朝其维护人员的需要的方向发展的。命令 <command>make check</command> 会构建一个特殊封装的 modprobe 版本，其对正常操作毫无用处。要运行这个命令(约 0.2 SBU)，执行下列命令(注意在重新编译用于正常使用前，需要
+    <command>make clean</command> 命令来清理源代码树):</para>
+
+<screen><userinput remap="test">./configure
+make check
+./tests/runtests
+make clean</userinput></screen>
+
+    <para>准备 Module-Init-Tools 编译:</para>
+
+<screen><userinput remap="configure">./configure --prefix=/ --enable-zlib-dynamic --mandir=/usr/share/man</userinput></screen>
+
+    <para>编译包:</para>
+
+<screen><userinput remap="make">make</userinput></screen>
+
+    <para>安装包:</para>
+
+<screen><userinput remap="install">make INSTALL=install install</userinput></screen>
+
+    <variablelist>
+      <title>make 参数的含义:</title>
+      <varlistentry>
+        <term><parameter>INSTALL=install</parameter></term>
+        <listitem>
+          <para>一般来讲，<command>make install</command> 在二进制文件已经存在的情况下不会再次安装。这个选项通过调用 <command>install</command> 代替默认的封装程序脚本来改变这种行为。</para>
+        </listitem>
+      </varlistentry>
+    </variablelist>
+
+  </sect2>
+
+  <sect2 id="contents-module-init-tools" role="content">
+    <title>Module-Init-Tools 的内容</title>
+
+    <segmentedlist>
+      <segtitle>安装的程序</segtitle>
+
+      <seglistitem>
+        <seg>depmod, insmod, insmod.static, lsmod, modinfo, modprobe 和 rmmod</seg>
+      </seglistitem>
+    </segmentedlist>
+
+    <variablelist>
+      <bridgehead renderas="sect3">简述</bridgehead>
+      <?dbfo list-presentation="list"?>
+      <?dbhtml list-presentation="table"?>
+
+      <varlistentry id="depmod">
+        <term><command>depmod</command></term>
+        <listitem>
+          <para>基于它在已有的模块集合中找到的符号创建一个依赖关系文件；这个依赖关系文件用于
+          <command>modprobe</command> 来自动加载需要的模块</para>
+          <indexterm zone="ch-system-module-init-tools depmod">
+            <primary sortas="b-depmod">depmod</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="insmod">
+        <term><command>insmod</command></term>
+        <listitem>
+          <para>在正在运行的内核中安装一个可加载模块</para>
+          <indexterm zone="ch-system-module-init-tools insmod">
+            <primary sortas="b-insmod">insmod</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="insmod.static">
+        <term><command>insmod.static</command></term>
+        <listitem>
+          <para><command>insmod</command> 的一个静态编译版本</para>
+          <indexterm zone="ch-system-module-init-tools insmod.static">
+            <primary sortas="b-insmod.static">insmod.static</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="lsmod">
+        <term><command>lsmod</command></term>
+        <listitem>
+          <para>列出当前已加载的模块</para>
+          <indexterm zone="ch-system-module-init-tools lsmod">
+            <primary sortas="b-lsmod">lsmod</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="modinfo">
+        <term><command>modinfo</command></term>
+        <listitem>
+          <para>检查和一个内核模块关联的对象文件并显示任何它可以收集的内容</para>
+          <indexterm zone="ch-system-module-init-tools modinfo">
+            <primary sortas="b-modinfo">modinfo</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="modprobe">
+        <term><command>modprobe</command></term>
+        <listitem>
+          <para>使用一个由 <command>depmod</command> 创建的依赖关系文件，自动加载有关的模块</para>
+          <indexterm zone="ch-system-module-init-tools modprobe">
+            <primary sortas="b-modprobe">modprobe</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="rmmod">
+        <term><command>rmmod</command></term>
+        <listitem>
+          <para>从正在运行中的内核卸载模块</para>
+          <indexterm zone="ch-system-module-init-tools rmmod">
+            <primary sortas="b-rmmod">rmmod</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+    </variablelist>
+
+  </sect2>
+
+</sect1>

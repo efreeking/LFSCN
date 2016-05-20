@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sect1 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+  "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+  <!ENTITY % general-entities SYSTEM "../general.ent">
+  %general-entities;
+]>
+
+<sect1 id="ch-tools-tcl" role="wrap">
+  <?dbhtml filename="tcl.html"?>
+
+  <sect1info condition="script">
+    <productname>tcl</productname>
+    <productnumber>&tcl-version;</productnumber>
+    <address>&tcl-url;</address>
+  </sect1info>
+
+  <title>Tcl-&tcl-version;</title>
+
+  <indexterm zone="ch-tools-tcl">
+    <primary sortas="a-Tcl">Tcl</primary>
+  </indexterm>
+
+  <sect2 role="package">
+    <title/>
+
+    <para>Tcl 包包含 Tool Command Language (工具命令语言)。</para>
+
+    <segmentedlist>
+      <segtitle>&buildtime;</segtitle>
+      <segtitle>&diskspace;</segtitle>
+
+      <seglistitem>
+        <seg>&tcl-ch5-sbu;</seg>
+        <seg>&tcl-ch5-du;</seg>
+      </seglistitem>
+    </segmentedlist>
+
+  </sect2>
+
+  <sect2 role="installation">
+    <title>Tcl 的安装</title>
+
+    <para>安装这个包和跟着的两个(Expect 和 DejaGNU)是为了支持 GCC 和 Binutils 的测试套装的运行。安装三个包为了测试目的可能有点过分，为了确定最重要的工具能够正常的工作，虽然不是必须，但是非常值得鼓励。即使测试套装不是在本章中运行
+    (它们不是强制的)，三个包是运行<xref linkend="chapter-building-system"/>中的测试套装所需的。</para>
+
+    <para>准备 Tcl 编译:</para>
+
+<screen><userinput remap="configure">cd unix
+./configure --prefix=/tools</userinput></screen>
+
+    <para>构建软件包:</para>
+
+<screen><userinput remap="make">make</userinput></screen>
+
+    <para>编译现在完成了。如先前讨论，运行测试套装对于本章中这里的临时工具来说不是强制的。任何时候要运行 Tcl 测试套装，发出下列命令:</para>
+
+<screen><userinput remap="test">TZ=UTC make test</userinput></screen>
+
+    <para>Tcl 测试套装在某些不能完全理解的宿主条件下可能会失败。因此，在这里测试套装的失败并不奇怪，而且并不重要。
+    <parameter>TZ=UTC</parameter> 参数设置时区为协调世界时 (UTC)，也就是所谓的格林威尔标准时 (GMT)，但是仅用于测试套装运行期间。这个确保了时钟测试的正确使用。
+    关于 <envar>TZ</envar> 环境变量的详细说明在<xref linkend="chapter-bootscripts"/>中提供。</para>
+
+    <para>安装软件包:</para>
+
+<screen><userinput remap="install">make install</userinput></screen>
+
+    <para>使安装的库可写，以便稍后可以删除调试符号:</para>
+
+<screen><userinput remap="install">chmod -v u+w /tools/lib/libtcl8.5.so</userinput></screen>
+
+    <para>安装 Tcl 的头文件。下一个包 - Expect，需要它们来构建。</para>
+
+<screen><userinput remap="install">make install-private-headers</userinput></screen>
+
+    <para>现在建立一个必需的符号链接:</para>
+
+<screen><userinput remap="install">ln -sv tclsh8.5 /tools/bin/tclsh</userinput></screen>
+
+  </sect2>
+
+  <sect2 id="contents-tcl" role="content">
+    <title>Tcl 的内容</title>
+
+    <segmentedlist>
+      <segtitle>安装的程序</segtitle>
+      <segtitle>安装的库</segtitle>
+
+      <seglistitem>
+        <seg>tclsh (链接到 tclsh8.5) 和 tclsh8.5</seg>
+        <seg>libtcl8.5.so, libtclstub8.5.a</seg>
+      </seglistitem>
+    </segmentedlist>
+
+    <variablelist>
+      <bridgehead renderas="sect3">简述</bridgehead>
+      <?dbfo list-presentation="list"?>
+      <?dbhtml list-presentation="table"?>
+
+      <varlistentry id="tclsh8.5">
+        <term><command>tclsh8.5</command></term>
+        <listitem>
+          <para>Tcl 命令外壳</para>
+          <indexterm zone="ch-tools-tcl tclsh8.5">
+            <primary sortas="b-tclsh8.5">tclsh8.5</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="tclsh">
+        <term><command>tclsh</command></term>
+        <listitem>
+          <para>到 tclsh8.5 的链接</para>
+          <indexterm zone="ch-tools-tcl tclsh">
+            <primary sortas="b-tclsh">tclsh</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="libtcl8.5.so">
+        <term><filename class="libraryfile">libtcl8.5.so</filename></term>
+        <listitem>
+          <para>Tcl 库</para>
+          <indexterm zone="ch-tools-tcl libtcl8.5.so">
+            <primary sortas="c-libtcl8.5.so">libtcl8.5.so</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="libtclstub8.5.a">
+        <term><filename class="libraryfile">libtclstub8.5.a</filename></term>
+        <listitem>
+          <para>Tcl Stub 库</para>
+          <indexterm zone="ch-tools-tcl libtclstub8.5.a">
+            <primary sortas="c-libtclstub8.5.a">libtclstub8.5.a</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+    </variablelist>
+
+  </sect2>
+
+</sect1>

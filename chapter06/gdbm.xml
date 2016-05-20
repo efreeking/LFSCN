@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sect1 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+  "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+  <!ENTITY % general-entities SYSTEM "../general.ent">
+  %general-entities;
+]>
+
+<sect1 id="ch-system-gdbm" role="wrap">
+  <?dbhtml filename="gdbm.html"?>
+
+  <sect1info condition="script">
+    <productname>gdbm</productname>
+    <productnumber>&gdbm-version;</productnumber>
+    <address>&gdbm-url;</address>
+  </sect1info>
+
+  <title>GDBM-&gdbm-version;</title>
+
+  <indexterm zone="ch-system-gdbm">
+    <primary sortas="a-Gdbm">GDBM</primary>
+  </indexterm>
+
+  <sect2 role="package">
+    <title/>
+
+    <para>GDBM 包包含 GNU 数据库管理器。这是一个在单一的文件中存储“键名/数据”对的磁盘文件格式的数据库。任何被存储的记录的实际数据是使用一个唯一键进行索引，这可以比以文本文件格式存储时更节省检索时间。</para>
+
+    <segmentedlist>
+      <segtitle>&buildtime;</segtitle>
+      <segtitle>&diskspace;</segtitle>
+
+      <seglistitem>
+        <seg>&gdbm-ch6-sbu;</seg>
+        <seg>&gdbm-ch6-du;</seg>
+      </seglistitem>
+    </segmentedlist>
+
+  </sect2>
+
+  <sect2 role="installation">
+    <title>GDBM 的安装</title>
+
+    <para>准备 GDBM 编译:</para>
+
+<screen><userinput remap="configure">./configure --prefix=/usr --enable-libgdbm-compat</userinput></screen>
+
+    <variablelist>
+      <title>配置选项的含义:</title>
+
+      <varlistentry>
+        <term><envar>--enable-libgdbm-compat</envar></term>
+        <listitem>
+          <para>这个开关让 libgdbm 兼容的库被构建，因为 LFS 以外的某些包可能需要它提供的较旧的 DBM 例程</para>
+        </listitem>
+      </varlistentry>
+    </variablelist>
+
+    <para>编译包:</para>
+
+<screen><userinput remap="make">make</userinput></screen>
+
+    <para>要测试结果，执行:</para>
+
+<screen><userinput remap="test">make check</userinput></screen>
+
+    <para>安装包:</para>
+
+<screen><userinput remap="install">make install</userinput></screen>
+
+  </sect2>
+
+  <sect2 id="contents-gdbm" role="content">
+    <title>GDBM 的内容</title>
+
+    <segmentedlist>
+      <segtitle>安装的库</segtitle>
+
+      <seglistitem>
+        <seg>libgdbm.{so,a} 和 libgdbm_compat.{so,a}</seg>
+      </seglistitem>
+    </segmentedlist>
+
+    <variablelist>
+      <bridgehead renderas="sect3">简述</bridgehead>
+      <?dbfo list-presentation="list"?>
+      <?dbhtml list-presentation="table"?>
+
+      <varlistentry id="libgdbm">
+        <term><filename class="libraryfile">libgdbm</filename></term>
+        <listitem>
+          <para>包含操作一个散列数据库的函数</para>
+          <indexterm zone="ch-system-gdbm libgdbm">
+            <primary sortas="c-libgdbm">libgdbm</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+    </variablelist>
+
+  </sect2>
+
+</sect1>

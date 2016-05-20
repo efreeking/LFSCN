@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sect1 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+  "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+  <!ENTITY % general-entities SYSTEM "../general.ent">
+  %general-entities;
+]>
+
+<sect1 id="ch-tools-settingenviron">
+  <?dbhtml filename="settingenvironment.html"?>
+
+  <title>设置环境</title>
+
+  <para>通过创建两个 <command>bash</command> shell 的启动文件设置一个好的工作环境。
+  在以用户 <systemitem class="username">lfs</systemitem> 身份登录同时，发出下列命令创建一个新的 <filename>.bash_profile</filename>:</para>
+
+<screen><userinput>cat &gt; ~/.bash_profile &lt;&lt; "EOF"
+<literal>exec env -i HOME=$HOME TERM=$TERM PS1='\u:\w\$ ' /bin/bash</literal>
+EOF</userinput></screen>
+
+  <para>当以用户 <systemitem class="username">lfs</systemitem> 身份登录时，初始的 Shell 通常是一个<emphasis>登录</emphasis> Shell，它先读取宿主系统的 <filename>/etc/profile</filename>(可能包含某些设置和环境变量)然后读取 <filename>.bash_profile</filename>。
+  在 <filename>.bash_profile</filename> 文件中的 <command>exec env -i.../bin/bash</command> 命令使用一个完全空白的环境替换了正在运行的 Shell，除了 <envar>HOME</envar>、<envar>TERM</envar> 及 <envar>PS1</envar> 变量。这个确保了不会有来自宿主系统的不想要的或者具有潜在危险的环境变量泄露到构建环境中。在这里使用的技术达到确保一个干净环境的目标。</para>
+
+  <para>Shell 的新实例是一个<emphasis>非登录</emphasis> Shell，它不会读取
+  <filename>/etc/profile</filename> 或
+  <filename>.bash_profile</filename> 文件，而是读取
+  <filename>.bashrc</filename>。现在创建 <filename>.bashrc</filename> 文件:</para>
+
+<screen><userinput>cat &gt; ~/.bashrc &lt;&lt; "EOF"
+<literal>set +h
+umask 022
+LFS=/mnt/lfs
+LC_ALL=POSIX
+LFS_TGT=$(uname -m)-lfs-linux-gnu
+PATH=/tools/bin:/bin:/usr/bin
+export LFS LC_ALL LFS_TGT PATH</literal>
+EOF</userinput></screen>
+
+  <para><command>set +h</command> 命令关闭了
+  <command>bash</command> 的 hash 功能。Hashing 原来是一个有用的特征&mdash;<command>bash</command> 使用一个 Hash 表来记住可执行文件的完整路径，避免搜索 <envar>PATH</envar> 的时间和再次查找同样的可执行文件。然而，新的工具应该即安装即使用。
+  通过关闭 Hash 功能，Shell 将总是在程序将要运行时搜索 <envar>PATH</envar>。
+  这样，新编译的工具一可以使用，Shell 将可以在 <filename class="directory">$LFS/tools</filename> 中找到，而不需记住在不同地方的同一程序的之前的版本。</para>
+
+  <para>设置用户文件创建权限掩码 (umask) 为 022 确保新创建的文件和目录只可以对它们的所有者可写入，对任何人则只可以读取和执行(假设
+  <function>open(2)</function> 系统调用所使用的默认模式，新文件将会以权限 644 模式告终，而目录则以 755 模式).</para>
+
+  <para><envar>LFS</envar> 变量应该设置为选择的挂载点。</para>
+
+  <para><envar>LC_ALL</envar> 变量控制某些程序的本地化，使得它们的消息按照指定国家的习惯。
+  如果宿主系统使用一个 2.2.4 之前版本的 Glibc，让
+  <envar>LC_ALL</envar> 设置为 <quote>POSIX</quote> 或
+  <quote>C</quote> (在本章节期间) 以外的值可能会在您退出 chroot 环境并希望之后返回时出问题。设置 <envar>LC_ALL</envar> 为
+  <quote>POSIX</quote> 或 <quote>C</quote> (两者等价)确保所有东西在 chroot 环境中都可以如预期那样工作。</para>
+
+  <para><envar>LFS_TGT</envar> 变量设置一个非默认而是兼容的机器描述，
+  在构建我们的跨编译器和链接器时以及在跨编译我们的临时工具链时使用。更多信息在
+  <xref linkend="ch-tools-toolchaintechnotes" role=""/> 中包含。</para>
+
+  <para>通过放置 <filename class="directory">/tools/bin</filename> 在标准的 <envar>PATH</envar> 前面，所有在<xref
+  linkend="chapter-temporary-tools"/>中安装的程序都会在它们安装后立即被 Shell 选取。这样和关闭 Hash 组合使用，限制了当宿主系统具有和第 5 章节环境中有的同样的程序时，错误使用了宿主系统的旧程序的风险。</para>
+
+  <para>最后，为了让环境完全为构建临时根据准备好，
+  source (导入)刚创建的用户配置档:</para>
+
+<screen><userinput>source ~/.bash_profile</userinput></screen>
+
+</sect1>

@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sect1 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+  "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+  <!ENTITY % general-entities SYSTEM "../general.ent">
+  %general-entities;
+]>
+
+<sect1 id="ch-system-texinfo" role="wrap">
+  <?dbhtml filename="texinfo.html"?>
+
+  <sect1info condition="script">
+    <productname>texinfo</productname>
+    <productnumber>&texinfo-version;</productnumber>
+    <address>&texinfo-url;</address>
+  </sect1info>
+
+  <title>Texinfo-&texinfo-version;</title>
+
+  <indexterm zone="ch-system-texinfo">
+    <primary sortas="a-Texinfo">Texinfo</primary>
+  </indexterm>
+
+  <sect2 role="package">
+    <title/>
+
+    <para>Texinfo 包包含读取、编写和转换信息页(info)的程序。</para>
+
+    <segmentedlist>
+      <segtitle>&buildtime;</segtitle>
+      <segtitle>&diskspace;</segtitle>
+
+      <seglistitem>
+        <seg>&texinfo-ch6-sbu;</seg>
+        <seg>&texinfo-ch6-du;</seg>
+      </seglistitem>
+    </segmentedlist>
+
+  </sect2>
+
+  <sect2 role="installation">
+    <title>Texinfo 的安装</title>
+
+    <para>准备 Texinfo 编译:</para>
+
+<screen><userinput remap="configure">./configure --prefix=/usr</userinput></screen>
+
+    <para>编译包:</para>
+
+<screen><userinput remap="make">make</userinput></screen>
+
+    <para>要测试结果，执行:</para>
+
+<screen><userinput remap="test">make check</userinput></screen>
+
+    <para>安装包:</para>
+
+<screen><userinput remap="install">make install</userinput></screen>
+
+    <para>可以选择安装属于 Tex 安装中的组件:</para>
+    <!-- FIXME: doesn't the TeX installation in BLFS overwrite files there? -->
+
+<screen><userinput remap="install">make TEXMF=/usr/share/texmf install-tex</userinput></screen>
+
+    <variablelist>
+      <title>make 参数的含义:</title>
+
+      <varlistentry>
+        <term><parameter>TEXMF=/usr/share/texmf</parameter></term>
+        <listitem>
+          <para><envar>TEXMF</envar> makefile 变量保存着 TeX 树的根目录的位置(例如之后要安装 TeX 包的话)。</para>
+        </listitem>
+      </varlistentry>
+
+    </variablelist>
+
+    <para>信息文档(Info 文档)系统使用一个纯文本文件来保存它的菜单项的列表。文件位于 <filename>/usr/share/info/dir</filename>。遗憾的是，由于各种包的 Makefiles 中的偶然出现的问题，有时候可能无法和安装在系统上的信息页进行同步。如果 <filename>/usr/share/info/dir</filename> 文件在任何时候需要重建，下列的可选命令将可以完成任务:</para>
+
+<screen role="nodump"><userinput>cd /usr/share/info
+rm -v dir
+for f in *
+do install-info $f dir 2&gt;/dev/null
+done</userinput></screen>
+
+  </sect2>
+
+  <sect2 id="contents-texinfo" role="content">
+    <title>Texinfo 的内容</title>
+
+    <segmentedlist>
+      <segtitle>安装的程序</segtitle>
+      <segtitle>安装的目录</segtitle>
+
+      <seglistitem>
+        <seg>info, infokey, install-info, makeinfo, pdftexi2dvi, texi2dvi, texi2pdf 和
+        texindex</seg>
+        <seg>/usr/share/texinfo</seg>
+      </seglistitem>
+    </segmentedlist>
+
+    <variablelist>
+      <bridgehead renderas="sect3">简述</bridgehead>
+      <?dbfo list-presentation="list"?>
+      <?dbhtml list-presentation="table"?>
+
+      <varlistentry id="info">
+        <term><command>info</command></term>
+        <listitem>
+          <para>用于读取类似于手册页的 info (信息)页，但是可以更深入而不仅仅是解释所有可用的命令行选项。例如，比较 <command>man bison</command> 和
+          <command>info bison</command> 的区别。</para>
+          <indexterm zone="ch-system-texinfo info">
+            <primary sortas="b-info">info</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="infokey">
+        <term><command>infokey</command></term>
+        <listitem>
+          <para>编译一个包含 Info 定制的源代码文件为二进制格式</para>
+          <indexterm zone="ch-system-texinfo infokey">
+            <primary sortas="b-infokey">infokey</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="install-info">
+        <term><command>install-info</command></term>
+        <listitem>
+          <para>用于安装信息页；它更新
+          <command>info</command> 索引文件的内容</para>
+          <indexterm zone="ch-system-texinfo install-info">
+            <primary sortas="b-install-info">install-info</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="makeinfo">
+        <term><command>makeinfo</command></term>
+        <listitem>
+          <para>翻译给定的 Texinfo 源文档为信息页、纯文本或 HTML</para>
+          <indexterm zone="ch-system-texinfo makeinfo">
+            <primary sortas="b-makeinfo">makeinfo</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="pdftexi2dvi">
+        <term><command>pdftexi2dvi</command></term>
+        <listitem>
+          <para>用于格式化给定的 Textinfo 文档为可移植文档格式 (PDF) 文件</para>
+          <indexterm zone="ch-system-texinfo pdftexi2dvi">
+            <primary sortas="b-pdftexi2dvi">pdftexi2dvi</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="texi2dvi">
+        <term><command>texi2dvi</command></term>
+        <listitem>
+          <para>用于格式化给定的 Texinfo 文档为一个可以打印的设备无关文件</para>
+          <indexterm zone="ch-system-texinfo texi2dvi">
+            <primary sortas="b-texi2dvi">texi2dvi</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="texi2pdf">
+        <term><command>texi2pdf</command></term>
+        <listitem>
+          <para>用于格式化给定的 Textinfo 文档为可移植文档格式 (PDF) 文件</para>
+          <indexterm zone="ch-system-texinfo texi2pdf">
+            <primary sortas="b-texi2pdf">texi2pdf</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="texindex">
+        <term><command>texindex</command></term>
+        <listitem>
+          <para>用于排列 Texinfo 索引文件</para>
+          <indexterm zone="ch-system-texinfo texindex">
+            <primary sortas="b-texindex">texindex</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+    </variablelist>
+
+  </sect2>
+
+</sect1>

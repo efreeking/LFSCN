@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sect1 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+  "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+  <!ENTITY % general-entities SYSTEM "../general.ent">
+  %general-entities;
+]>
+
+<sect1 id="space-creatingpartition">
+  <?dbhtml filename="creatingpartition.html"?>
+
+  <title>创建一个新分区</title>
+
+  <para>和大多数其它操作系统一样，LFS 通常是安装在一个专用的分区上。
+  我们建议构建 LFS 系统的方法是使用一个可用的空分区，或者如何您有足够的未分区空间的话，创建一个。</para>
+
+<!--
+
+  <para>It is possible to install an LFS system (in fact even multiple LFS
+  systems) on a partition already occupied by another
+  operating system and the different systems will co-exist peacefully. The
+  document <ulink url="&hints-root;lfs_next_to_existing_systems.txt"/>
+  contains notes on how to implement this. This document was last updated
+  in 2004. It has not been updated since and it has not been tested with
+  recent versions of this LFS book. The document is more than likely not
+  usable as-is and you will need to account for changes made to the LFS
+  procedures since it was written. This is only recommended for expert LFS
+  users.</para>
+
+-->
+
+  <para>最小的系统需要大于 1.3 GB 的分区。这样才足够存储所有的源代码压缩包和编译软件包。
+  但是，如果 LFS 系统是打算作为主要 Linux 系统的话，可能需要安装额外的软件，这部分需要额外 2-3 GB 的空间。LFS 系统本身并不占用这么大的空间。这个需求的大部分是用来提供足够的可用临时存储空间。
+  编译包会要求大量的磁盘空间，这部分空间只有在包安装后才能收回。</para>
+
+  <para>由于并不是总是有足够的可用内存 (RAM) 可以用于编译过程，
+  所以使用一个小的磁盘分区作为<systemitem class="filesystem">交换</systemitem>空间是一个不错的主意。这个空间是内核用于存储不常使用的数据以留下更多的可用内存
+  给活动进程。LFS 系统可以和宿主系统使用同一个<systemitem class="filesystem">交换</systemitem> 分区，在这种情况下，就不需要创建了一个交换分区了。</para>
+
+  <para>启动一个磁盘分区程序，譬如 <command>cfdisk</command> 或 <command>fdisk</command>,
+  使用将要创建新分区的硬盘名称作为命令行选项&mdash;例如
+  <filename class="devicefile">/dev/hda</filename> 表示主要的 Integrated
+  Drive Electronics (IDE) 磁盘。创建一个 Linux 原生分区和一个<systemitem class="filesystem">交换</systemitem>分区(如果需要的话)。如果您还不知道如何使用程序，请参考 <filename>cfdisk(8)</filename> 或 <filename>fdisk(8)</filename>。</para>
+
+  <para>记住新分区的名称(如 <filename class="devicefile">hda5</filename>)。
+  本书称其为 LFS 分区。还要记住<systemitem
+  class="filesystem">交换</systemitem>分区的名称。这些名称将是后面的 <filename>/etc/fstab</filename> 文件所需的。</para>
+
+  <sect2>
+  <title>其它分区的问题</title>
+
+  <para>对系统分区的建议的请求通常会提交到 LFS 邮件列表。
+  这是一个非常主观的话题。大多数发行版的默认是使用整个硬盘而分出一个小的交换分区。
+  由于各种原因，这样并不是 LFS 的最好选择。它减少了灵活性，使得跨多发行版或多 LFS 构建版本进行数据的共享变得更困难，建立备份花费更多时间，并且可能由于文件系统结构的低效率分配而浪费磁盘空间。</para>
+
+    <sect3>
+    <title>根分区</title>
+   
+    <para>一个 10 G 的根 LFS 分区(不要和
+    <filename class="directory">/root</filename> 目录混淆)对大多系统来说是不错的折衷方案。
+	它提供了足够的空间来构建 LFS 和大部分的 BLFS，但是相当小，不足以创建多个分区方便试验。</para> </sect3>
+   
+    <sect3>
+    <title>交换分区</title>
+   
+    <para>大多数发行版自动创建一个交换分区。通常交换分区的建议大小大约是物理内存的 2 倍，然而这是很少需要到这么多的。
+	如果磁盘空间有限，可以让交换分区保持为 2 GB 并监控交换磁盘的数量。</para>
+   
+    <para>交换从来不是好事。通常您仅需监听磁盘活动和观察系统如何响应命令来知道系统是否进行交换。
+    交换的第一个反应应该是检查不合理的命令，譬如尝试编辑一个 5 GB 的文件。如果交换变得频繁，最好的解决方法就是为您的系统购买更多内存。</para>
+	</sect3>
+   
+    <sect3>
+    <title>恰当的分区</title>
+   
+    <para>有很多其他的分区不是必须的，但是在设计磁盘布局时应该考虑。
+    下面的列表并不详尽，但是可以作为指导。</para>
+   
+    <itemizedlist>
+      
+      <listitem><para>/boot &ndash; 极度推荐。使用这个分区来存储内核和其他引导信息。
+      要尽量减少大磁盘的潜在引导问题，把这个作为您的第一个磁盘上的第一个物理分区。
+      100 MB 大小的分区相当充足了。</para></listitem>
+      
+      <listitem><para>/home &ndash; 极度推荐。跨多个发行版或 LFS 构建共享您的 Home 目录
+      和用户定制。大小通常相当大，并取决于可用的磁盘空间。</para></listitem>
+      
+      <listitem><para>/usr &ndash; 独立的 /usr 分区通常是用于为瘦客户端或无盘工作站提供服务器的情况。通常不是 LFS 必需的。5 GB 的大小可以处理大多数的安装。</para></listitem>
+      
+      <listitem><para>/opt &ndash; 这个目录主要对 BLFS 很有用，其中多个
+      大软件包，如 Gnome 或 KDE 可以无需在 /usr 层中嵌入文件而实现安装。
+      如果使用的话，一般 5-10 GB 足够了。</para>
+      </listitem>
+      
+      <listitem><para>/tmp &ndash; 独立的 /tmp 目录很少见，但是如果配置
+      瘦客户端的话则很有用。如果使用这个分区的话，通常不超过 2 GB。</para></listitem>
+      
+      <listitem><para>/usr/src &ndash; 这个分区对于提供位置来存储 BLFS 源代码文件和跨 LFS 构建版共享它们来说很有用。
+      它也可以用于作为构建 BLFS 包的位置。
+      一个 30-50 GB 的合理大分区可以提供大量的空间。</para></listitem>
+   
+    </itemizedlist>
+   
+    <para>任何您想在引导时自动加载的独立分区都需要在 <filename>/etc/fstab</filename> 中指定。
+    关于如何指定分区的详细说明将会在<xref linkend="ch-bootable-fstab"/>中讨论。</para>
+   
+    </sect3>
+  </sect2>
+</sect1>
