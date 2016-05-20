@@ -46,7 +46,7 @@
       <varlistentry>
         <term><emphasis>LSB 核心:</emphasis></term>
         <listitem>
-          <para>Bash, Binutils, Coreutils, Diffutils, File, Findutils, Gawk,
+          <para>Bash, Bc, Binutils, Coreutils, Diffutils, File, Findutils, Gawk,
                 Grep, Gzip, M4, Man-DB, Ncurses, Procps, Psmisc, Sed,
                 Shadow, Tar, Util-linux, Zlib</para>
         </listitem>
@@ -97,7 +97,7 @@
       <varlistentry>
         <term><emphasis>LSB 核心:</emphasis></term>
         <listitem>
-          <para>At, Batch (At 的一部分), Bc, Cpio, Ed, Fcrontab, Initd-tools,
+          <para>At, Batch (At 的一部分), Cpio, Ed, Fcrontab, Initd-tools,
           Lsb_release, PAM, Sendmail (或 Postfix 或 Exim) </para>
         </listitem>
       </varlistentry>
@@ -114,7 +114,7 @@
         <listitem>
           <para>ATK, Cairo, Desktop-file-utils, Freetype, Fontconfig,
                 Glib2, GTK+2, Icon-naming-utils, Libjpeg, Libpng, Libxml2,
-                MesaLib, Pango, Qt3, Qt4, Xorg</para>
+                MesaLib, Pango, Qt4, Xorg</para>
         </listitem>
       </varlistentry>
 
@@ -163,7 +163,7 @@
       <varlistentry>
         <term><emphasis>LSB 桌面:</emphasis></term>
         <listitem>
-          <para>无</para>
+          <para>Qt3</para>
         </listitem>
       </varlistentry>
 

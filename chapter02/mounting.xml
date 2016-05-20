@@ -20,7 +20,7 @@
   <para>下一步，创建挂载点并通过运行以下命令挂载 LFS 文件系统:</para>
 
 <screen role="nodump"><userinput>mkdir -pv $LFS
-mount -v -t ext3 /dev/<replaceable>&lt;xxx&gt;</replaceable> $LFS</userinput></screen>
+mount -v -t ext4 /dev/<replaceable>&lt;xxx&gt;</replaceable> $LFS</userinput></screen>
 
   <para>替换 <replaceable>&lt;xxx&gt;</replaceable> 为 LFS 分区的名称。</para>
 
@@ -29,9 +29,9 @@ mount -v -t ext3 /dev/<replaceable>&lt;xxx&gt;</replaceable> $LFS</userinput></s
   class="directory">/usr</filename>)，挂载它们时使用命令:</para>
 
 <screen role="nodump"><userinput>mkdir -pv $LFS
-mount -v -t ext3 /dev/<replaceable>&lt;xxx&gt;</replaceable> $LFS
+mount -v -t ext4 /dev/<replaceable>&lt;xxx&gt;</replaceable> $LFS
 mkdir -v $LFS/usr
-mount -v -t ext3 /dev/<replaceable>&lt;yyy&gt;</replaceable> $LFS/usr</userinput></screen>
+mount -v -t ext4 /dev/<replaceable>&lt;yyy&gt;</replaceable> $LFS/usr</userinput></screen>
 
   <para>替换 <replaceable>&lt;xxx&gt;</replaceable> 和
   <replaceable>&lt;yyy&gt;</replaceable> 为相应的分区名称。</para>

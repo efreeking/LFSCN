@@ -40,6 +40,10 @@
   <sect2 role="installation">
     <title>Automake 的安装</title>
 
+    <para>修复一个间歇性测试失败:</para>
+
+<screen><userinput remap="pre">patch -Np1 -i ../&automake-test-patch;</userinput></screen>
+
     <para>准备 Automake 编译:</para>
 
 <screen><userinput remap="configure">./configure --prefix=/usr --docdir=/usr/share/doc/automake-&automake-version;</userinput></screen>
@@ -48,7 +52,7 @@
 
 <screen><userinput remap="make">make</userinput></screen>
 
-    <note><para>测试花费非常长的时间: 超过 30 SBUs。不建议运行测试。</para></note>
+    <note><para>测试花费非常长的时间: 超过 30 SBUs。</para></note>
 
     <para>要测试结果，执行:</para>
 
@@ -71,7 +75,7 @@
       <seglistitem>
         <seg>acinstall, aclocal, aclocal-&am-minor-version;, automake,
         automake-&am-minor-version;, compile, config.guess, config.sub,
-        depcomp, elisp-comp, install-sh, mdate-sh, missing, mkinstalldirs,
+        depcomp, install-sh, mdate-sh, missing, mkinstalldirs,
         py-compile, symlink-tree 和 ylwrap</seg>
         <seg>/usr/share/aclocal-&am-minor-version;, /usr/share/automake-&am-minor-version;,
         /usr/share/doc/automake-&automake-version;</seg>
@@ -175,16 +179,6 @@
         </listitem>
       </varlistentry>
 
-      <varlistentry id="elisp-comp">
-        <term><command>elisp-comp</command></term>
-        <listitem>
-          <para>字节编译 Emacs Lisp 代码</para>
-          <indexterm zone="ch-system-automake elisp-comp">
-            <primary sortas="b-elisp-comp">elisp-comp</primary>
-          </indexterm>
-        </listitem>
-      </varlistentry>
-
       <varlistentry id="install-sh">
         <term><command>install-sh</command></term>
         <listitem>
@@ -231,16 +225,6 @@
           <para>编译一个 Python 程序</para>
           <indexterm zone="ch-system-automake py-compile">
             <primary sortas="b-py-compile">py-compile</primary>
-          </indexterm>
-        </listitem>
-      </varlistentry>
-
-      <varlistentry id="symlink-tree">
-        <term><command>symlink-tree</command></term>
-        <listitem>
-          <para>一个创建一个目录树的符号链接树的脚本</para>
-          <indexterm zone="ch-system-automake symlink-tree">
-            <primary sortas="b-symlink-tree">symlink-tree</primary>
           </indexterm>
         </listitem>
       </varlistentry>

@@ -34,7 +34,7 @@ Binutils 和 GCC 的测试程序一个常见的问题就是在伪终端(PTY)外�
 某些软件包测试程序可能会给出错误的失败信息，请参考 LFS Wiki http://www.linuxfromscratch.org/lfs/build-logs/6.2/ 以确认您所遇到的测试失败是否是预期会出现的。这个站点的内容对于本书所有的测试都是正确的。
   <para>运行 Binutils 和 GCCA 的测试套装常见的问题就是运行到了伪终端(PTY)之外。这会导致大量的失败测试。发生的原因有很多，但是最可能的原因就是宿主系统没有正确的设置
   <systemitem class="filesystem">devpts</systemitem> 文件系统所导致。这个问题会在
-  <ulink url="&lfs-root;/lfs/faq.html#no-ptys"/> 中进行更详细的讨论。</para>
+  <ulink url="&lfs-root;lfs/faq.html#no-ptys"/> 中进行更详细的讨论。</para>
 
   <para>某些包的测试套装将会失败，但是其原因开发者已经注意到并认为并不重要。
   参考位于 <ulink url="&test-results;"/> 的记录来检查这些失败测试是否预期发生。

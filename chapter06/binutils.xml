@@ -59,9 +59,10 @@ Ask your system administrator to create more.</computeroutput></screen>
 <screen><userinput remap="pre">rm -fv etc/standards.info
 sed -i.bak '/^INFO/s/standards.info //' etc/Makefile.in</userinput></screen>
 
-    <para>修复某些测试套件以便所有的测试能够通过:</para>
+    <para>修复某些阻碍文档使用 Texinfo-&texinfo-version; 构建的语法错误:</para>
 
-<screen><userinput remap="pre">patch -Np1 -i ../&binutils-testsuite-fixes-patch;</userinput></screen>
+<screen><userinput remap="pre">sed -i -e 's/@colophon/@@colophon/' \
+       -e 's/doc@cygnus.com/doc@@cygnus.com/' bfd/doc/bfd.texinfo</userinput></screen>
 
     <para>Binutils 文档推荐在源代码目录外的一个专用目录中构建 Binutils:</para>
 
@@ -71,12 +72,6 @@ cd ../binutils-build</userinput></screen>
     <para>准备 Binutils 编译:</para>
 
 <screen><userinput remap="configure">../binutils-&binutils-version;/configure --prefix=/usr --enable-shared</userinput></screen>
-
-    <note><para>有一个可选的参数用于 <command>configure</command>，
-    <option>--enable-lto</option>，它可以用于允许
-    <command>ar</command>, <command>nm</command> 以及 <command>ranlib</command>
-    命令接收一个 <option>--plugin</option> 参数。这用于让 <command>gcc</command> 可以在指定的情况下进行"链接时间优化"。
-    在 LFS 或 BLFS 中当前没有包使用这个功能。</para></note>
 
     <para>编译包:</para>
 

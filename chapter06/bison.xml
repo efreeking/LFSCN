@@ -43,12 +43,12 @@
     <para>准备 Bison 编译:</para>
 
 <screen><userinput remap="configure">./configure --prefix=/usr</userinput></screen>
-
+<!--
     <para>如果在 $PATH 中还没有 <command>bison</command> 程序，配置系统会导致 Bison 没有错误消息的国际化支持进行构建。
     下列附加的处理将会纠正这个问题:</para>
 
 <screen><userinput remap="configure">echo '#define YYENABLE_NLS 1' &gt;&gt; lib/config.h</userinput></screen>
-
+-->
     <para>编译包:</para>
 
 <screen><userinput remap="make">make</userinput></screen>

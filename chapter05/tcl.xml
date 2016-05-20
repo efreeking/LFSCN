@@ -43,6 +43,10 @@
     <para>安装这个包和跟着的三个(Expect、DejaGNU 和 Check)是为了支持 GCC 和 Binutils 以及其它包的测试套装的运行。安装四个包为了测试目的可能有点过分，为了确定最重要的工具能够正常的工作，虽然不是必须，但是非常值得鼓励。即使测试套装不是在本章中运行
     (它们不是强制的)，这些包是运行<xref linkend="chapter-building-system"/>中的测试套装所需的。</para>
 
+    <para>首先增加在 regression 测试中某些正则表达式所需的空间的数量。</para>
+
+<screen><userinput remap="pre">sed -i s/500/5000/ generic/regc_nfa.c</userinput></screen>
+
     <para>准备 Tcl 编译:</para>
 
 <screen><userinput remap="configure">cd unix
@@ -86,8 +90,8 @@
       <segtitle>安装的库</segtitle>
 
       <seglistitem>
-        <seg>tclsh (链接到 tclsh8.5) 和 tclsh8.5</seg>
-        <seg>libtcl8.5.so, libtclstub8.5.a</seg>
+        <seg>tclsh (链接到 tclsh&tcl-major-version;) 和 tclsh&tcl-major-version;</seg>
+        <seg>libtcl&tcl-major-version;.so, libtclstub&tcl-major-version;.a</seg>
       </seglistitem>
     </segmentedlist>
 
@@ -96,12 +100,12 @@
       <?dbfo list-presentation="list"?>
       <?dbhtml list-presentation="table"?>
 
-      <varlistentry id="tclsh8.5">
-        <term><command>tclsh8.5</command></term>
+      <varlistentry id="tclsh&tcl-major-version;">
+        <term><command>tclsh&tcl-major-version;</command></term>
         <listitem>
           <para>Tcl 命令外壳</para>
-          <indexterm zone="ch-tools-tcl tclsh8.5">
-            <primary sortas="b-tclsh8.5">tclsh8.5</primary>
+          <indexterm zone="ch-tools-tcl tclsh&tcl-major-version;">
+            <primary sortas="b-tclsh&tcl-major-version;">tclsh&tcl-major-version;</primary>
           </indexterm>
         </listitem>
       </varlistentry>
@@ -109,29 +113,29 @@
       <varlistentry id="tclsh">
         <term><command>tclsh</command></term>
         <listitem>
-          <para>到 tclsh8.5 的链接</para>
+          <para>到 tclsh&tcl-major-version; 的链接</para>
           <indexterm zone="ch-tools-tcl tclsh">
             <primary sortas="b-tclsh">tclsh</primary>
           </indexterm>
         </listitem>
       </varlistentry>
 
-      <varlistentry id="libtcl8.5.so">
-        <term><filename class="libraryfile">libtcl8.5.so</filename></term>
+      <varlistentry id="libtcl&tcl-major-version;.so">
+        <term><filename class="libraryfile">libtcl&tcl-major-version;.so</filename></term>
         <listitem>
           <para>Tcl 库</para>
-          <indexterm zone="ch-tools-tcl libtcl8.5.so">
-            <primary sortas="c-libtcl8.5.so">libtcl8.5.so</primary>
+          <indexterm zone="ch-tools-tcl libtcl&tcl-major-version;.so">
+            <primary sortas="c-libtcl&tcl-major-version;.so">libtcl&tcl-major-version;.so</primary>
           </indexterm>
         </listitem>
       </varlistentry>
 
-      <varlistentry id="libtclstub8.5.a">
-        <term><filename class="libraryfile">libtclstub8.5.a</filename></term>
+      <varlistentry id="libtclstub&tcl-major-version;.a">
+        <term><filename class="libraryfile">libtclstub&tcl-major-version;.a</filename></term>
         <listitem>
           <para>Tcl Stub 库</para>
-          <indexterm zone="ch-tools-tcl libtclstub8.5.a">
-            <primary sortas="c-libtclstub8.5.a">libtclstub8.5.a</primary>
+          <indexterm zone="ch-tools-tcl libtclstub&tcl-major-version;.a">
+            <primary sortas="c-libtclstub&tcl-major-version;.a">libtclstub&tcl-major-version;.a</primary>
           </indexterm>
         </listitem>
       </varlistentry>

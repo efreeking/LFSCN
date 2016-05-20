@@ -54,8 +54,8 @@
 
       <seglistitem>
         <seg>checkfs, cleanfs, console, functions, halt, ifdown,
-        ifup, localnet, modules, mountfs, mountkernfs, network, rc, reboot,
-        sendsignals, setclock, static, swap, sysctl, sysklogd, template,
+        ifup, localnet, modules, mountfs, mountvirtfs, network, rc, reboot,
+        sendsignals, setclock, ipv4-static, swap, sysctl, sysklogd, template,
         udev 和 udev_retry</seg>
         <seg>/etc/rc.d, /etc/init.d (符号链接), /etc/sysconfig, 
         /lib/services, /lib/lsb (符号链接)</seg>
@@ -173,13 +173,13 @@
         </listitem>
       </varlistentry>
 
-      <varlistentry id="mountkernfs-bootscripts">
-        <term><command>mountkernfs</command></term>
+      <varlistentry id="mountvirtfs-bootscripts">
+        <term><command>mountvirtfs</command></term>
         <listitem>
           <para>挂载虚拟内核文件系统，譬如 <systemitem
           class="filesystem">proc</systemitem></para>
-          <indexterm zone="ch-scripts-bootscripts mountkernfs-bootscripts">
-            <primary sortas="d-mountkernfs">mountkernfs</primary>
+          <indexterm zone="ch-scripts-bootscripts mountvirtfs-bootscripts">
+            <primary sortas="d-mountvirtfs">mountvirtfs</primary>
           </indexterm>
         </listitem>
       </varlistentry>
@@ -234,12 +234,12 @@
         </listitem>
       </varlistentry>
 
-      <varlistentry id="static-bootscripts">
-        <term><command>static</command></term>
+      <varlistentry id="ipv4-static-bootscripts">
+        <term><command>ipv4-static</command></term>
         <listitem>
           <para>提供指派一个静态互联网协议(IP)地址给网络接口所需要的功能</para>
-          <indexterm zone="ch-scripts-bootscripts static-bootscripts">
-            <primary sortas="d-static">static</primary>
+          <indexterm zone="ch-scripts-bootscripts ipv4-static-bootscripts">
+            <primary sortas="d-ipv4-static">ipv4-static</primary>
           </indexterm>
         </listitem>
       </varlistentry>

@@ -54,25 +54,24 @@
     非现存的 svgalib 来提供视频模式文件 - 用于正常使用
     <command>setfont</command> 恰当的设置控制台大小)连同它的手册页。</para>
 
-<screen><userinput remap="pre">sed -i 's/\(RESIZECONS_PROGS=\)yes/\1no/g' configure &amp;&amp;
-sed -i 's/resizecons.8 //' man/man8/Makefile.in &amp;&amp;</userinput></screen>
+<screen><userinput remap="pre">sed -i 's/\(RESIZECONS_PROGS=\)yes/\1no/g' configure
+sed -i 's/resizecons.8 //' man/man8/Makefile.in</userinput></screen>
 
     <para>准备 Kbd 编译:</para>
 
-<screen><userinput remap="configure">./configure --prefix=/usr --datadir=/lib/kbd \
-  --disable-vlock</userinput></screen>
+<screen><userinput remap="configure">./configure --prefix=/usr --disable-vlock</userinput></screen>
 
     <variablelist>
       <title>配置选项的含义:</title>
-
+<!--
       <varlistentry>
-        <term><parameter>--datadir=/lib/kbd</parameter></term>
+        <term><parameter>- -datadir=/lib/kbd</parameter></term>
         <listitem>
           <para>这个选项把键盘布局数据总是放置在根分区的目录而不是默认的 <filename
           class="directory">/usr/share/kbd</filename> 位置。</para>
        </listitem>
       </varlistentry>
-
+-->
       <varlistentry>
         <term><parameter>--disable-vlock</parameter></term>
         <listitem>
@@ -95,18 +94,17 @@ sed -i 's/resizecons.8 //' man/man8/Makefile.in &amp;&amp;</userinput></screen>
     <note>
       <para>对于某些语言(如 比利时语)，Kbd 包中并未提供有用的键盘映射，其中的<quote>被</quote> 键盘映射假设是 ISO-8859-5 编码的，通常就使用 CP1251 键盘映射。这些语言的用户必须分别下载工作中的键盘映射。</para>
     </note>
-
+<!--
     <para>在 LFS 引导脚本包中的某些脚本依赖于
     <command>kbd_mode</command>、<command>loadkeys</command>、<command>openvt</command> 和
     <command>setfont</command>。因为 <filename class="directory">/usr</filename> 在引导的早期阶段可能还不可用，所以那些二进制文件需要在根分区上:</para>
 
 <screen><userinput remap="install">mv -v /usr/bin/{kbd_mode,loadkeys,openvt,setfont} /bin</userinput></screen>
-
+-->
     <para>如果需要的话，安装文档:</para>
 
-<screen><userinput remap="install">mkdir -v /usr/share/doc/kbd-&kbd-version;
-cp -R -v doc/* \
-         /usr/share/doc/kbd-&kbd-version;</userinput></screen>
+<screen><userinput remap="install">mkdir -v       /usr/share/doc/kbd-&kbd-version;
+cp -R -v doc/* /usr/share/doc/kbd-&kbd-version;</userinput></screen>
 
   </sect2>
 
@@ -124,7 +122,8 @@ cp -R -v doc/* \
         psfxtable), psfstriptable (链接到 psfxtable), psfxtable, <!--resizecons,-->
         setfont, setkeycodes, setleds, setmetamode,
         showconsolefont, showkey, unicode_start 和 unicode_stop</seg>
-        <seg>/lib/kbd</seg>
+        <seg>/usr/share/consolefonts, /usr/share/consoletrans, /usr/share/keymaps,
+        /usr/share/unimaps</seg>
       </seglistitem>
     </segmentedlist>
 

@@ -94,10 +94,6 @@ done</userinput></screen>
 
 <screen><userinput remap="pre">sed -i '/k prot/agcc_cv_libc_provides_ssp=yes' gcc/configure</userinput></screen>
 
-    <para>不要构建 .info 文件。它们在这里不需要，并且会被当前版本的 <command>makeinfo</command> 打断。</para>
-
-<screen><userinput remap="pre">sed -i 's/BUILD_INFO=info/BUILD_INFO=/' gcc/configure</userinput></screen>
-
     <para>GCC 文档建议在源目录外的一个专用构建目录中构建 GCC:</para>
 
 <screen><userinput remap="pre">mkdir -v ../gcc-build
@@ -105,24 +101,28 @@ cd ../gcc-build</userinput></screen>
 
     <para>准备好 GCC 进行编译:</para>
 
-<screen><userinput remap="configure">../gcc-&gcc-version;/configure         \
-    --target=$LFS_TGT          \
-    --prefix=/tools            \
-    --with-sysroot=$LFS        \
-    --with-newlib              \
-    --without-headers          \
-    --with-local-prefix=/tools \
-    --with-native-system-header-dir=/tools/include \
-    --disable-nls              \
-    --disable-shared           \
-    --disable-multilib         \
-    --disable-decimal-float    \
-    --disable-threads          \
-    --disable-libmudflap       \
-    --disable-libssp           \
-    --disable-libgomp          \
-    --disable-libquadmath      \
-    --enable-languages=c       \
+<screen><userinput remap="configure">../gcc-&gcc-version;/configure                               \
+    --target=$LFS_TGT                                \
+    --prefix=/tools                                  \
+    --with-sysroot=$LFS                              \
+    --with-newlib                                    \
+    --without-headers                                \
+    --with-local-prefix=/tools                       \
+    --with-native-system-header-dir=/tools/include   \
+    --disable-nls                                    \
+    --disable-shared                                 \
+    --disable-multilib                               \
+    --disable-decimal-float                          \
+    --disable-threads                                \
+    --disable-libatomic                              \
+    --disable-libgomp                                \
+    --disable-libitm                                 \
+    --disable-libmudflap                             \
+    --disable-libquadmath                            \
+    --disable-libsanitizer                           \
+    --disable-libssp                                 \
+    --disable-libstdc++-v3                           \
+    --enable-languages=c,c++                         \
     --with-mpfr-include=$(pwd)/../gcc-&gcc-version;/mpfr/src \
     --with-mpfr-lib=$(pwd)/mpfr/src/.libs</userinput></screen>
 
@@ -173,9 +173,13 @@ cd ../gcc-build</userinput></screen>
       </varlistentry>
 
       <varlistentry>
-        <term><parameter>--disable-decimal-float, --disable-threads, --disable-libmudflap, --disable-libssp, --disable-libgomp, --disable-libquadmath</parameter></term>
+        <term><parameter>--disable-decimal-float, --disable-threads,
+        --disable-libatomic, --disable-libgomp, --disable-libitm,
+        --disable-libmudflap, --disable-libquadmath, --disable-libsanitizer,
+        --disable-libssp, --disable-libstdc++-v3</parameter></term>
         <listitem>
-          <para>这些开关参数相应的禁用了十进制浮点扩展、线程、libmudflap、libssp 以及 libgomp 及 libquadmath 的支持。这些功能在构建交叉编译器时将无法编译，并且也不是交叉编译临时 libc 任务所需要的。</para>
+          <para>这些开关参数相应的禁用了十进制浮点扩展, 线程, libatomic, libgomp, libitm, libmudflap,
+          libquadmath, libsanitizer, libssp 以及 C++ 标准库的支持。这些功能在构建交叉编译器时将无法编译，并且也不是交叉编译临时 libc 任务所需要的。</para>
         </listitem>
       </varlistentry>
 
@@ -187,9 +191,9 @@ cd ../gcc-build</userinput></screen>
       </varlistentry>
 
       <varlistentry>
-        <term><parameter>--enable-languages=c</parameter></term>
+        <term><parameter>--enable-languages=c,c++</parameter></term>
         <listitem>
-          <para>这个选项确保只有 C 编译器被构建。只是现在需要的唯一语言。</para>
+          <para>这个选项确保只有 C 和 C++ 编译器被构建。这些是现在仅需的语言。</para>
         </listitem>
       </varlistentry>
 

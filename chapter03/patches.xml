@@ -18,18 +18,18 @@
   <variablelist role="materials">
 
     <varlistentry>
-      <term>Bash Upstream Fixes (上游修复)补丁 - <token>&bash-fixes-patch-size;</token>:</term>
+      <term>Automake Test Fix Patch(测试修复补丁) - <token>&automake-test-patch-size;</token>:</term>
       <listitem>
-        <para>下载: <ulink url="&patches-root;&bash-fixes-patch;"/></para>
-        <para>MD5 和: <literal>&bash-fixes-patch-md5;</literal></para>
+        <para>下载: <ulink url="&patches-root;&automake-test-patch;"/></para>
+        <para>MD5 和: <literal>&automake-test-patch-md5;</literal></para>
       </listitem>
     </varlistentry>
 
     <varlistentry>
-      <term>Binutils Test Suite (测试套件)补丁 - <token>&binutils-testsuite-fixes-patch-size;</token>:</term>
+      <term>Bash Upstream Fixes (上游修复)补丁 - <token>&bash-fixes-patch-size;</token>:</term>
       <listitem>
-        <para>下载: <ulink url="&patches-root;&binutils-testsuite-fixes-patch;"/></para>
-        <para>MD5 和: <literal>&binutils-testsuite-fixes-patch-md5;</literal></para>
+        <para>下载: <ulink url="&patches-root;&bash-fixes-patch;"/></para>
+        <para>MD5 和: <literal>&bash-fixes-patch-md5;</literal></para>
       </listitem>
     </varlistentry>
 
@@ -49,25 +49,8 @@
       </listitem>
     </varlistentry>
 
-<!--
     <varlistentry>
-      <term>Coreutils Test Fixes 补丁 - <token>&coreutils-test-patch-size;</token>:</term>
-      <listitem>
-        <para>下载: <ulink url="&patches-root;&coreutils-test-patch;"/></para>
-        <para>MD5 和: <literal>&coreutils-test-patch-md5;</literal></para>
-      </listitem>
-    </varlistentry>
--->
 
-    <varlistentry>
-      <term>Flex Regression Tests 补丁 - <token>&flex-bison-patch-size;</token>:</term>
-      <listitem>
-        <para>下载: <ulink url="&patches-root;&flex-bison-patch;"/></para>
-        <para>MD5 和: <literal>&flex-bison-patch-md5;</literal></para>
-      </listitem>
-    </varlistentry>
-
-    <varlistentry>
       <term>Kbd Backspace/Delete Fix 补丁 - <token>&kbd-backspace-patch-size;</token>:</term>
       <listitem>
         <para>下载: <ulink url="&patches-root;&kbd-backspace-patch;"/></para>
@@ -91,23 +74,13 @@
       </listitem>
     </varlistentry>
 
-    <!--
     <varlistentry>
-      <term>Procps HZ Errors 补丁 - <token>&procps-hz_fixes-patch-size;</token>:</term>
+      <term>Tar Manpage Patch (手册页补丁) - <token>&tar-manpage-patch-size;</token>:</term>
       <listitem>
-        <para>下载: <ulink url="&patches-root;&procps-hz_fixes-patch;"/></para>
-        <para>MD5 和: <literal>&procps-hz_fixes-patch-md5;</literal></para>
+        <para>下载: <ulink url="&patches-root;&tar-manpage-patch;"/></para>
+        <para>MD5 和: <literal>&tar-manpage-patch-md5;</literal></para>
       </listitem>
     </varlistentry>
-
-    <varlistentry>
-      <term>Procps Watch 补丁 - <token>&procps-watch-patch-size;</token>:</term>
-      <listitem>
-        <para>下载: <ulink url="&patches-root;&procps-watch-patch;"/></para>
-        <para>MD5 和: <literal>&procps-watch-patch-md5;</literal></para>
-      </listitem>
-    </varlistentry>
-    -->
 
     <varlistentry>
       <term>Readline Upstream Fixes 补丁 - <token>&readline-fixes-patch-size;</token>:</term>
@@ -117,13 +90,13 @@
       </listitem>
     </varlistentry>
 
-    <!--<varlistentry>
-      <term>Zlib fPIC 补丁 - <token>&zlib-fpic-patch-size;</token>:</term>
+    <varlistentry>
+      <term>Texinfo 测试补丁 - <token>&texinfo-test-patch-size;</token>:</term>
       <listitem>
-        <para>下载: <ulink url="&patches-root;&zlib-fpic-patch;"/></para>
-        <para>MD5 和: <literal>&zlib-fpic-patch-md5;</literal></para>
+        <para>下载: <ulink url="&patches-root;&texinfo-test-patch;"/></para>
+        <para>MD5 和: <literal>&texinfo-test-patch-md5;</literal></para>
       </listitem>
-    </varlistentry>-->
+    </varlistentry>
 
   </variablelist>
 

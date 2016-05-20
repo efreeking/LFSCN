@@ -42,6 +42,15 @@
     </varlistentry>
 
     <varlistentry>
+      <term>Bc (&bc-version;) - <token>&bc-size;</token>:</term>
+      <listitem>
+        <para>主页: <ulink url="&bc-home;"/></para>
+        <para>下载: <ulink url="&bc-url;"/></para>
+        <para>MD5 和: <literal>&bc-md5;</literal></para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
       <term>Binutils (&binutils-version;) - <token>&binutils-size;</token>:</term>
       <listitem>
         <para>主页: <ulink url="&binutils-home;"/></para>

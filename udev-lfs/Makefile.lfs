@@ -4,7 +4,7 @@
 # vim: tabstop=3
 
 SHELL=/bin/bash
-SYSTEMD_VERSION=202
+SYSTEMD_VERSION=206
 VERSION=$(SYSTEMD_VERSION)-1
 
 ifeq ($(V),)
@@ -41,7 +41,8 @@ DEF = -include cfg.h                    \
       -D_FILE_OFFSET_BITS=64            \
       -DHAVE_FIRMWARE
 
-INCLUDE = -I src/libudev -I src/shared -I src -I src/login -I src/systemd
+INCLUDE = -I src/libudev -I src/shared -I src -I src/login -I src/systemd \
+          -I src/core    -I udev-lfs-206-1
 
 LIBUDEV_SRCS = libudev-device-private.c \
                libudev-device.c         \
@@ -97,6 +98,7 @@ UDEVD_SRCS = udev-ctrl.c             \
              udev-builtin.c          \
              udev-builtin-blkid.c    \
              udev-builtin-firmware.c \
+             udev-builtin-keyboard.c \
              udev-builtin-path_id.c  \
              udev-builtin-hwdb.c     \
              udev-builtin-kmod.c     \
@@ -124,6 +126,7 @@ UDEV_ADMIN_SRCS = udevadm.c               \
                   udev-watch.c            \
                   udev-builtin.c          \
                   udev-builtin-blkid.c    \
+                  udev-builtin-keyboard.c \
                   udev-builtin-firmware.c \
                   udev-builtin-path_id.c  \
                   udev-builtin-hwdb.c     \
@@ -177,32 +180,32 @@ udev: common                     \
       build/libudev.pc
 
 cfg.h: udev-lfs-$(VERSION)/cfg.h
-	sed  -e 's/LFS-VERSION/$(SYSTEMD_VERSION)/' \
+  sed  -e 's/LFS-VERSION/$(SYSTEMD_VERSION)/' \
         -e 's/SECURE_GETENV/$(SECURE_GETENV)/' \
         udev-lfs-$(VERSION)/cfg.h > ./cfg.h
-	@mkdir -p build
+  @mkdir -p build
 
 common: cfg.h 
-	@touch common
+  @touch common
 
 build/%o: %c common
-	@echo CC $<
-	$(VB)gcc -c $(WARN) $(OPTIONS2) $(INCLUDE) $(DEF) -o $@ $<
+  @echo CC $<
+  $(VB)gcc -c $(WARN) $(OPTIONS2) $(INCLUDE) $(DEF) -o $@ $<
 
 # Sources from src/libudev use -fvisibility=hidden
 build/%o: src/libudev/%c common
-	@echo CC $<
-	$(VB)gcc -c $(WARN) $(OPTIONS) $(INCLUDE) $(DEF) -o $@ $<
+  @echo CC $<
+  $(VB)gcc -c $(WARN) $(OPTIONS) $(INCLUDE) $(DEF) -o $@ $<
 
 # Sources from src/shared use -fvisibility=hidden
 build/%o: src/shared/%c common
-	@echo CC $<
-	$(VB)gcc -c $(WARN) $(OPTIONS) $(INCLUDE) $(DEF) -o $@ $<
+  @echo CC $<
+  $(VB)gcc -c $(WARN) $(OPTIONS) $(INCLUDE) $(DEF) -o $@ $<
 
 # Build the dynamic library
 build/$(LIBUDEV_REAL_NAME): $(LIBUDEV_OBJS) build/$(COMMON_LIB)
-	@echo LINK $@
-	$(VB)gcc -shared -fPIC -DPIC             \
+  @echo LINK $@
+  $(VB)gcc -shared -fPIC -DPIC             \
       $(LIBUDEV_OBJS)                       \
       build/$(COMMON_LIB)                   \
       -Wl,--no-whole-archive -ldl -lrt -O2  \
@@ -212,116 +215,116 @@ build/$(LIBUDEV_REAL_NAME): $(LIBUDEV_OBJS) build/$(COMMON_LIB)
       -Wl,-soname,$(LIBUDEV_LINK_NAME)      \
       -o build/$(LIBUDEV_REAL_NAME)
 
-	ln -sfn $(LIBUDEV_REAL_NAME) build/$(LIBUDEV_LINK_NAME)
-	ln -sfn $(LIBUDEV_REAL_NAME) build/$(LIBUDEV_SONAME)
+  ln -sfn $(LIBUDEV_REAL_NAME) build/$(LIBUDEV_LINK_NAME)
+  ln -sfn $(LIBUDEV_REAL_NAME) build/$(LIBUDEV_SONAME)
 
       #-Wl,--whole-archive                   \
       #-Wl,--version-script=./src/libudev/libudev.sym \
 
 # Build the static library for internal use
 build/$(COMMON_LIB): $(COMMON_OBJS) $(LIBUDEV_OBJS) $(UDEVD_OBJS)
-	@echo AR $@
-	$(VB)ar rcs build/$(COMMON_LIB) $(COMMON_OBJS) $(LIBUDEV_OBJS)
+  @echo AR $@
+  $(VB)ar rcs build/$(COMMON_LIB) $(COMMON_OBJS) $(LIBUDEV_OBJS)
 
 build/udevd: build/$(COMMON_LIB) build/udevd.o
-	@echo LINK $@
-	$(VB)gcc build/udevd.o $(UDEVD_OBJS) -o $@ $(LDFLAGS2) \
+  @echo LINK $@
+  $(VB)gcc build/udevd.o $(UDEVD_OBJS) -o $@ $(LDFLAGS2) \
       build/udev-local.a build/$(COMMON_LIB)
-	$(VB)strip --strip-unneeded $@
+  $(VB)strip --strip-unneeded $@
 
 build/udevadm: $(UDEV_ADMIN_OBJS) build/$(COMMON_LIB)
-	@echo LINK $@
-	$(VB)gcc $(UDEV_ADMIN_OBJS) -o $@ $(LDFLAGS2) build/$(COMMON_LIB)
-	$(VB)strip --strip-unneeded $@
+  @echo LINK $@
+  $(VB)gcc $(UDEV_ADMIN_OBJS) -o $@ $(LDFLAGS2) build/$(COMMON_LIB)
+  $(VB)strip --strip-unneeded $@
 
 build/accelerometer: build/accelerometer.o build/$(COMMON_LIB)
-	@echo LINK $@
-	$(VB)gcc build/accelerometer.o -o $@ \
+  @echo LINK $@
+  $(VB)gcc build/accelerometer.o -o $@ \
       build/udev-local.a build/$(COMMON_LIB) $(LDFLAGS1) -lm
-	$(VB)strip --strip-unneeded $@
+  $(VB)strip --strip-unneeded $@
 
 build/scsi_id: build/scsi_id.o build/scsi_serial.o build/$(COMMON_LIB)
-	@echo LINK $@
-	$(VB)gcc build/scsi_id.o build/scsi_serial.o -o $@ \
+  @echo LINK $@
+  $(VB)gcc build/scsi_id.o build/scsi_serial.o -o $@ \
       build/udev-local.a build/$(COMMON_LIB) $(LDFLAGS1)
-	$(VB)strip --strip-unneeded $@
+  $(VB)strip --strip-unneeded $@
 
 build/ata_id: build/ata_id.o build/$(COMMON_LIB)
-	@echo LINK $@
-	$(VB)gcc build/ata_id.o -o $@ build/udev-local.a build/$(COMMON_LIB) $(LDFLAGS1)
-	$(VB)strip --strip-unneeded $@
+  @echo LINK $@
+  $(VB)gcc build/ata_id.o -o $@ build/udev-local.a build/$(COMMON_LIB) $(LDFLAGS1)
+  $(VB)strip --strip-unneeded $@
 
 build/cdrom_id: build/cdrom_id.o build/$(COMMON_LIB)
-	@echo LINK $@
-	$(VB)gcc build/cdrom_id.o -o $@ build/udev-local.a build/$(COMMON_LIB) $(LDFLAGS1)
-	$(VB)strip --strip-unneeded $@
+  @echo LINK $@
+  $(VB)gcc build/cdrom_id.o -o $@ build/udev-local.a build/$(COMMON_LIB) $(LDFLAGS1)
+  $(VB)strip --strip-unneeded $@
 
 build/v4l_id: build/v4l_id.o build/$(COMMON_LIB)
-	@echo LINK $@
-	$(VB)gcc build/v4l_id.o -o $@ build/udev-local.a build/$(COMMON_LIB) $(LDFLAGS1)
-	$(VB)strip --strip-unneeded $@
+  @echo LINK $@
+  $(VB)gcc build/v4l_id.o -o $@ build/udev-local.a build/$(COMMON_LIB) $(LDFLAGS1)
+  $(VB)strip --strip-unneeded $@
 
 build/mtd_probe: build/mtd_probe.o build/probe_smartmedia.o build/$(COMMON_LIB)
-	@echo LINK $@
-	$(VB)gcc build/mtd_probe.o build/probe_smartmedia.o -o $@ \
+  @echo LINK $@
+  $(VB)gcc build/mtd_probe.o build/probe_smartmedia.o -o $@ \
       build/udev-local.a build/$(COMMON_LIB) $(LDFLAGS1)
-	$(VB)strip --strip-unneeded $@
+  $(VB)strip --strip-unneeded $@
 
 build/collect: build/collect.o build/$(COMMON_LIB)
-	@echo LINK $@
-	$(VB)gcc build/collect.o -o $@ build/udev-local.a build/$(COMMON_LIB) $(LDFLAGS1)
-	$(VB)strip --strip-unneeded $@
+  @echo LINK $@
+  $(VB)gcc build/collect.o -o $@ build/udev-local.a build/$(COMMON_LIB) $(LDFLAGS1)
+  $(VB)strip --strip-unneeded $@
 
 build/%pc: %pc.in common
-	@echo GEN $@
-	@$(SED_PROCESS)
+  @echo GEN $@
+  @$(SED_PROCESS)
 
 install: udev
-	@mkdir -pv $(DESTDIR)/lib/udev/devices/pts   $(DESTDIR)/lib/udev/rules.d \
+  @mkdir -pv $(DESTDIR)/lib/udev/devices/pts   $(DESTDIR)/lib/udev/rules.d \
               $(DESTDIR){,/usr}/lib/firmware    $(DESTDIR)/sbin             \
               $(DESTDIR)/usr/lib/pkgconfig      $(DESTDIR)/etc/udev/rules.d \
               $(DESTDIR)/usr/share/man/man{7,8} $(DESTDIR)/usr/include      \
               $(DESTDIR)/usr/share/doc/udev-$(SYSTEMD_VERSION)/lfs          \
-              $(DESTDIR)/usr/share/gtk-doc/html/udev
+              $(DESTDIR)/usr/share/gtk-doc/html/libudev
 
    # Copy executables
-	@cp -v build/udevadm                  $(DESTDIR)/sbin
-	@cp -v build/{udevd,accelerometer,ata_id,cdrom_id,collect,mtd_probe,scsi_id,v4l_id} \
+  @cp -v build/udevadm                  $(DESTDIR)/sbin
+  @cp -v build/{udevd,accelerometer,ata_id,cdrom_id,collect,mtd_probe,scsi_id,v4l_id} \
                                          $(DESTDIR)/lib/udev
-	@cp -v udev-lfs-$(VERSION)/write*     $(DESTDIR)/lib/udev
-	@cp -v udev-lfs-$(VERSION)/*functions $(DESTDIR)/lib/udev
+  @cp -v udev-lfs-$(VERSION)/write*     $(DESTDIR)/lib/udev
+  @cp -v udev-lfs-$(VERSION)/*functions $(DESTDIR)/lib/udev
 
    # Copy and set up library and associated files
-	@cp -v build/{lib,}udev.pc            $(DESTDIR)/usr/lib/pkgconfig
-	@cp -v build/$(LIBUDEV_REAL_NAME)     $(DESTDIR)/lib
+  @cp -v build/{lib,}udev.pc            $(DESTDIR)/usr/lib/pkgconfig
+  @cp -v build/$(LIBUDEV_REAL_NAME)     $(DESTDIR)/lib
 
-	ln -svfn ../../lib/$(LIBUDEV_REAL_NAME) $(DESTDIR)/usr/lib/$(LIBUDEV_SONAME)
-	ln -svfn $(LIBUDEV_REAL_NAME)           $(DESTDIR)/lib/$(LIBUDEV_LINK_NAME)
+  ln -svfn ../../lib/$(LIBUDEV_REAL_NAME) $(DESTDIR)/usr/lib/$(LIBUDEV_SONAME)
+  ln -svfn $(LIBUDEV_REAL_NAME)           $(DESTDIR)/lib/$(LIBUDEV_LINK_NAME)
 
    # Copy the libudev header
-	@cp -v src/libudev/libudev.h          $(DESTDIR)/usr/include
+  @cp -v src/libudev/libudev.h          $(DESTDIR)/usr/include
 
    # Create null device and copy rules
-	@cp -v rules/*                        $(DESTDIR)/lib/udev/rules.d
-	@rm -v                                $(DESTDIR)/lib/udev/rules.d/99*
-	@cp -v udev-lfs-$(VERSION)/*.rules    $(DESTDIR)/etc/udev/rules.d
+  @cp -v rules/*                        $(DESTDIR)/lib/udev/rules.d
+  @rm -v                                $(DESTDIR)/lib/udev/rules.d/99*
+  @cp -v udev-lfs-$(VERSION)/*.rules    $(DESTDIR)/etc/udev/rules.d
 
    # Set up hardware DB
-	@mkdir -pv $(DESTDIR)/lib/udev/hwdb.d
-	@cp hwdb/* $(DESTDIR)/lib/udev/hwdb.d
-   #	@build/udevadm hwdb --update
+  @mkdir -pv $(DESTDIR)/lib/udev/hwdb.d
+  @cp hwdb/* $(DESTDIR)/lib/udev/hwdb.d
+   #  @build/udevadm hwdb --update
 
    # Copy documentation
-	@cp -v udev-lfs-$(VERSION)/udev.7     $(DESTDIR)/usr/share/man/man7
-	@cp -v udev-lfs-$(VERSION)/udevadm.8  $(DESTDIR)/usr/share/man/man8
-	@cp -v udev-lfs-$(VERSION)/udevd.8    $(DESTDIR)/usr/share/man/man8
-	@cp -v udev-lfs-$(VERSION)/README     $(DESTDIR)/usr/share/doc/udev-$(SYSTEMD_VERSION)/lfs
-	@cp -v udev-lfs-$(VERSION)/*.txt      $(DESTDIR)/usr/share/doc/udev-$(SYSTEMD_VERSION)/lfs
-	@cp -v docs/libudev/*.{txt,types}     $(DESTDIR)/usr/share/doc/udev-$(SYSTEMD_VERSION)
-	@cp -v docs/libudev/html/*            $(DESTDIR)/usr/share/gtk-doc/html/udev
+  @cp -v udev-lfs-$(VERSION)/udev.7     $(DESTDIR)/usr/share/man/man7
+  @cp -v udev-lfs-$(VERSION)/udevadm.8  $(DESTDIR)/usr/share/man/man8
+  @cp -v udev-lfs-$(VERSION)/udevd.8    $(DESTDIR)/usr/share/man/man8
+  @cp -v udev-lfs-$(VERSION)/README     $(DESTDIR)/usr/share/doc/udev-$(SYSTEMD_VERSION)/lfs
+  @cp -v udev-lfs-$(VERSION)/*.txt      $(DESTDIR)/usr/share/doc/udev-$(SYSTEMD_VERSION)/lfs
+  @cp -v docs/libudev/*.{txt,types}     $(DESTDIR)/usr/share/doc/udev-$(SYSTEMD_VERSION)
+  @cp -v docs/libudev/html/*            $(DESTDIR)/usr/share/gtk-doc/html/libudev
 
    # Copy misc
-	@cp -v udev-lfs-$(VERSION)/init-net-rules.sh  $(DESTDIR)/lib/udev
+  @cp -v udev-lfs-$(VERSION)/init-net-rules.sh  $(DESTDIR)/lib/udev
 
 include udev-lfs-$(VERSION)/makefile-incl.gudev
 include udev-lfs-$(VERSION)/makefile-incl.gir
@@ -331,17 +334,17 @@ all        : udev keymap gudev gir-data
 install-all: install install-keymap install-gudev install-gir-data
 
 clean:
-	rm -rf build
-	rm -f  cfg.h
-	rm -f  common
-	rm -f  src/gudev/gudevmarshal.h
-	rm -f  src/gudev/gudevmarshal.c
-	rm -f  src/gudev/gudevenumtypes.h
-	rm -f  src/gudev/gudevenumtypes.c
-	rm -f  src/udev/keymap/keys.txt
-	rm -f  src/udev/keymap/keys-from-name.gperf
-	rm -f  src/udev/keymap/keys-from-name.h
-	rm -f  src/udev/keymap/keys-to-name.h
+  rm -rf build
+  rm -f  cfg.h
+  rm -f  common
+  rm -f  src/gudev/gudevmarshal.h
+  rm -f  src/gudev/gudevmarshal.c
+  rm -f  src/gudev/gudevenumtypes.h
+  rm -f  src/gudev/gudevenumtypes.c
+  rm -f  src/udev/keymap/keys.txt
+  rm -f  src/udev/keymap/keys-from-name.gperf
+  rm -f  src/udev/keymap/keys-from-name.h
+  rm -f  src/udev/keymap/keys-to-name.h
 
 .PHONY: clean 
 

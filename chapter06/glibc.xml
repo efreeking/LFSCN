@@ -48,6 +48,11 @@
 
     <para>Glibc 构建系统是自包含的并且可以完美安装，即使编译器的 specs 文件和链接器仍指向 <filename class="directory">/tools</filename>。在 Glibc 安装前，specs 和链接器不能进行调整，因为 Glibc 的 autoconf 测试将会给出错误的结果，从而阻碍了达到干净构建的目标。</para>
 
+    <para>需要倒退一个上游更改:</para>
+
+<screen><userinput remap="pre">sed -i -e 's/static __m128i/inline &amp;/' sysdeps/x86_64/multiarch/strstr.c</userinput></screen>
+
+
     <para>Glibc 文档推荐在源代码目录外一个专用的构建目录中构建 Glibc:</para>
 
 <screen><userinput remap="pre">mkdir -v ../glibc-build
@@ -55,10 +60,10 @@ cd ../glibc-build</userinput></screen>
 
     <para>准备 Glibc 编译:</para>
 
-<screen><userinput remap="configure">../glibc-&glibc-version;/configure  \
+<screen><userinput remap="configure">../glibc-&glibc-version;/configure    \
     --prefix=/usr          \
     --disable-profile      \
-    --enable-kernel=2.6.25 \
+    --enable-kernel=&min-kernel; \
     --libexecdir=/usr/lib/glibc</userinput></screen>
 
     <variablelist>
@@ -67,9 +72,8 @@ cd ../glibc-build</userinput></screen>
       <varlistentry>
         <term><parameter>--libexecdir=/usr/lib/glibc</parameter></term>
         <listitem>
-          <para>这个更改了 <command>pt_chown</command>
-          程序的位置，从它的默认位置 <filename
-          class="directory">/usr/libexec</filename> 更改为 <filename
+          <para>这个更改了某些辅助文件的位置，从 <filename
+          class="directory">/usr/libexec</filename> 的默认位置更改为 <filename
           class="directory">/usr/lib/glibc</filename>。</para>
         </listitem>
       </varlistentry>
@@ -115,6 +119,10 @@ grep Error glibc-check-log</userinput></screen>
         修改 make 的 check 命令以设置一个 TIMEOUTFACTOR 被报告有助于
         消除这些错误(如 <command>TIMEOUTFACTOR=16
         make -k check</command>)。</para>
+      </listitem>
+
+      <listitem>
+        <para>posix/tst-getaddrinfo4 由于在测试运行时没有网络连接，所以将总是失败的。</para>
       </listitem>
 
       <listitem>
@@ -349,7 +357,7 @@ mkdir /etc/ld.so.conf.d</userinput></screen>
       <seglistitem>
         <seg>catchsegv, gencat, getconf, getent, iconv, iconvconfig, ldconfig, 
         ldd, lddlibc4, locale, localedef, makedb, mtrace, nscd, pcprofiledump,
-        pldd, pt_chown, rpcgen, sln, sotruss, sprof, tzselect, xtrace,
+        pldd, rpcgen, sln, sotruss, sprof, tzselect, xtrace,
         zdump 和 zic</seg>
         <seg>ld.so, libBrokenLocale.{a,so}, libSegFault.so, libanl.{a,so}, 
         libbsd-compat.a, libc.{a,so}, libc_nonshared.a, libcidn.so, 
@@ -534,7 +542,7 @@ mkdir /etc/ld.so.conf.d</userinput></screen>
           </indexterm>
         </listitem>
       </varlistentry>
-
+<!--
       <varlistentry id="pt_chown">
         <term><command>pt_chown</command></term>
         <listitem>
@@ -544,7 +552,7 @@ mkdir /etc/ld.so.conf.d</userinput></screen>
           </indexterm>
         </listitem>
       </varlistentry>
-
+-->
       <varlistentry id="rpcgen">
         <term><command>rpcgen</command></term>
         <listitem>

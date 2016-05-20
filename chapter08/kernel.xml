@@ -52,9 +52,11 @@
 
     <para>通过一个菜单驱动的界面来配置内核。对于内核配置的全面的信息，查看 <ulink
     url="&hints-root;kernel-configuration.txt"/>、BLFS 有某些 LFS 以外的包的特定内核配置需求相关的信息可以在 <ulink
-    url="&blfs-root;view/svn/longindex.html#kernel-config-index"/>。</para>
+    url="&blfs-root;view/svn/longindex.html#kernel-config-index"/>。关于配置和构建内核的额外信息，可以在 <ulink url="http://www.kroah.com/lkn/"/> 找到</para>
 
-    <note><para>由于在 <application>udev</application> 中最近的更改，确保选择:</para>
+    <note><para>设置内核配置的一个好地方就是运行 <command>make defconfig</command>。这将会设置基础配置为一个顾及您的当前系统结构的好状态。</para>
+
+    <para>由于在 <application>udev</application> 中最近的更改，确保选择:</para>
 
     <screen role="nodump">Device Drivers  ---&gt;
   Generic Driver Options  ---&gt;
@@ -175,7 +177,7 @@ EOF</userinput></screen>
 
       <seglistitem>
         <seg>config-&linux-version;, 
-        vmlinux-&linux-version;-lfs-&version;-&linux-version; 和
+        vmlinux-&linux-version;-lfs-&version;; 和
         System.map-&linux-version;</seg>
         <seg>/lib/modules, /usr/share/doc/linux-&linux-version;</seg>
       </seglistitem>
@@ -197,7 +199,7 @@ EOF</userinput></screen>
       </varlistentry>
 
       <varlistentry id="lfskernel">
-        <term><filename>vmlinux-&linux-version;-lfs-&version;</filename></term>
+        <term><filename>vmlinuz-&linux-version;-lfs-&version;</filename></term>
         <listitem>
           <para>Linux 系统的引擎。当打开计算机时，内核是操作系统首先被加载的部分。
           它检测和初始化计算机的硬件的所有组件，然后使得这些组件可以作为文件树以用于软件，并把一个单 CPU 转为具有多任务处理能力的机器，可以同时运行多个程序</para>

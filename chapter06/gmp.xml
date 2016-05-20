@@ -76,7 +76,7 @@
 
 <screen><userinput remap="test">make check 2>&amp;1 | tee gmp-check-log</userinput></screen>
 
-    <para>确保在测试套装中的所有 184 个测试全部通过。
+    <para>确保在测试套装中的所有 185 个测试全部通过。
     通过执行下列命令检查结果:</para>
 
 <screen><userinput remap="test">awk '/tests passed/{total+=$2} ; END{print total}' gmp-check-log</userinput></screen>
@@ -101,7 +101,7 @@ cp    -v doc/{isa_abi_headache,configuration} doc/*.html \
       <segtitle>安装的目录</segtitle>
 
       <seglistitem>
-        <seg>libgmp.{a,so}、libgmpxx.{a,so} 和 libmp.{a,so}</seg>
+        <seg>libgmp.{a,so} 和 libgmpxx.{a,so}</seg>
         <seg>/usr/share/doc/gmp-&gmp-version;</seg>
       </seglistitem>
     </segmentedlist>
@@ -127,16 +127,6 @@ cp    -v doc/{isa_abi_headache,configuration} doc/*.html \
           <para>包含 C++ 精度数学函数。</para>
           <indexterm zone="ch-system-gmp libgmpxx">
             <primary sortas="c-libgmpxx">libgmpxx</primary>
-          </indexterm>
-        </listitem>
-      </varlistentry>
-
-      <varlistentry id="libmp">
-        <term><filename class="libraryfile">libmp</filename></term>
-        <listitem>
-          <para>包含 Berkeley MP 数学函数。</para>
-          <indexterm zone="ch-system-gmp libmp">
-            <primary sortas="c-libmp">libmp</primary>
           </indexterm>
         </listitem>
       </varlistentry>

@@ -99,7 +99,7 @@ ln -sv kmod /bin/lsmod</userinput></screen>
       <segtitle>安装的库</segtitle>
 
       <seglistitem>
-        <seg>depmod (链接到 kmod), insmod (链接到 kmod), kmod, kmod-nolib,
+        <seg>depmod (链接到 kmod), insmod (链接到 kmod), kmod,
         lsmod (链接到 kmod), modinfo (链接到 kmod), modprobe (链接到 kmod),
         和 rmmod (链接到 kmod)</seg>
         <seg>/lib/kmod.so</seg>

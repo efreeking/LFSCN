@@ -53,7 +53,7 @@
       <varlistentry>
         <term><parameter>--with-internal-glib</parameter></term>
         <listitem>
-          <para>这将会让 pkg-config 使用它的内置版本的 glib
+          <para>这将会让 pkg-config 使用其内置版本的 Glib
           因为外置版本在 LFS 中不可用。</para>
         </listitem>
       </varlistentry>

@@ -77,7 +77,19 @@ mkdir -pv /var/lib/hwclock</userinput></screen>
 
 <screen><userinput remap="make">make</userinput></screen>
 
-    <para>这个包没有附带测试套装。</para>
+    <para>如果需要的话，以非 root 用户身份运行测试套装:</para>
+ 
+    <warning><para>以 root 用户身份运行测试套装可能会对您的系统造成损害。
+    要运行它，用于 kernel 的内核 CONFIG_SCSI_DEBUG 选项必须可以在当前运行中的系统中可用。
+    CONFIG_SCSI_DEBUG 选项必须构建为一个模块。把它构建到内核中将会阻碍引导。
+    要完整的涵盖，其它 BLFS 包必须安装。
+    如果需要的话，这个测试可以在重新引导到完整的 LFS 系统并运行下列命令后运行:</para>
+
+    <screen role="nodump"><userinput>bash tests/run.sh --srcdir=$PWD --builddir=$PWD</userinput></screen> 
+    </warning>
+
+    <screen><userinput remap="test">chown -Rv nobody .
+su nobody -s /bin/bash -c "PATH=$PATH make check"</userinput></screen>
 
     <para>安装包:</para>
 
@@ -104,7 +116,7 @@ mkdir -pv /var/lib/hwclock</userinput></screen>
         pg, pivot_root, prlimit, raw, readprofile, rename, renice, resizepart,
         rev, rtcwake, script, scriptreplay, setarch, setsid, setterm, sfdisk,
         swaplabel, swapoff (link to swapon), swapon, switch_root, tailf,
-        taskset, tunelp, ul, umount, unshare, utmpdump, uuidd, uuidgen, wall,
+        taskset, ul, umount, unshare, utmpdump, uuidd, uuidgen, wall,
         wdctl, whereis, wipefs, and x86_64</seg>
 
         <seg>libblkid.{a,so}, libmount.{a,so}, libuuid.{a,so}</seg>
@@ -916,16 +928,6 @@ mkdir -pv /var/lib/hwclock</userinput></screen>
           <para>检索或设置一个进程的 CPU 亲和度(affinity)</para>
           <indexterm zone="ch-system-util-linux taskset">
             <primary sortas="b-taskset">taskset</primary>
-          </indexterm>
-        </listitem>
-      </varlistentry>
-
-      <varlistentry id="tunelp">
-        <term><command>tunelp</command></term>
-        <listitem>
-          <para>调整行式打印机的参数</para>
-          <indexterm zone="ch-system-util-linux tunelp">
-            <primary sortas="b-tunelp">tunelp</primary>
           </indexterm>
         </listitem>
       </varlistentry>

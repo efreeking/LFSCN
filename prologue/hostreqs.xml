@@ -47,11 +47,11 @@
     </listitem>
 
     <listitem>
-      <para><emphasis role="strong">Gawk-3.1.5</emphasis> (/usr/bin/awk 应该是到 gawk 的链接)</para>
+      <para><emphasis role="strong">Gawk-4.0.1</emphasis> (/usr/bin/awk 应该是到 gawk 的链接)</para>
     </listitem>
 
     <listitem>
-      <para><emphasis role="strong">Gcc-4.1.2</emphasis> (不建议超过 &gcc-version; 的版本，因为它们未经测试)</para>
+      <para><emphasis role="strong">GCC-4.1.2</emphasis> 包括 C++ 编译器，<command>g++</command> (不建议使用大于 &gcc-version; 的版本，因为它们还未经测试)</para>
     </listitem>
 
     <listitem>
@@ -67,12 +67,11 @@
     </listitem>
 
     <listitem>
-      <para><emphasis role="strong">Linux Kernel-2.6.25</emphasis>
-      (已经使用 GCC-4.1.2 或以上的版本编译)</para>
+      <para><emphasis role="strong">Linux Kernel-&min-kernel;</emphasis></para>
 
       <para>内核版本要求的原因是，我们在第 6 章中构建 <application>glibc</application> 时，在开发者的建议指定的版本。这也是 udev 所要求的。</para>
 
-      <para>如果宿主内核是比 2.6.25 版本要早，或者它不是使用 GCC-4.1.2 (或之后)的编译器编译的话，您将需要替换内核为符合规范的版本。这个您有两种办法解决。第一，查看您的 Linux 供应商是否提供了 2.6.25 或之后版本的内核包。如果有的话，您可以安装它。如果您的供应商没有提供一个可以接受的内核包，或者您不愿意安装它，您可以自己编译一个内核。编译内核和配置引导加载程序(假设宿主使用 GRUB)的说明位于<xref linkend="chapter-bootable"/>。</para>
+      <para>如果宿主内核是比 &min-kernel; 版本要早，您将需要替换内核为一个更加新的版本。这个您有两种办法解决。第一，查看您的 Linux 供应商是否提供了 &min-kernel; 或之后版本的内核包。如果有的话，您可以安装它。如果您的供应商没有提供一个可以接受的内核包，或者您不愿意安装它，您可以自己编译一个内核。编译内核和配置引导加载程序(假设宿主使用 GRUB)的说明位于<xref linkend="chapter-bootable"/>。</para>
 
     </listitem>
 
@@ -137,6 +136,7 @@ if [ -e /usr/bin/awk ];
   then echo "/usr/bin/awk -&gt; `readlink -f /usr/bin/awk`"; 
   else echo "awk not found"; fi
 gcc --version | head -n1
+g++ --version | head -n1
 ldd --version | head -n1 | cut -d"," -f1
 grep --version | head -n1
 gzip --version | head -n1
@@ -150,10 +150,10 @@ tar --version | head -n1
 echo "Texinfo: `makeinfo --version | head -n1`"
 xz --version | head -n1
 
-echo 'main(){}' &gt; dummy.c &amp;&amp; gcc -o dummy dummy.c
+echo 'main(){}' &gt; dummy.c &amp;&amp; g++ -o dummy dummy.c
 if [ -x dummy ]
-  then echo "gcc compilation OK";
-  else echo "gcc compilation failed"; fi
+  then echo "g++ compilation OK";
+  else echo "g++ compilation failed"; fi
 rm -f dummy.c dummy</literal>
 EOF
 

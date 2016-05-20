@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sect1 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+  "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+  <!ENTITY % general-entities SYSTEM "../general.ent">
+  %general-entities;
+]>
+
+<sect1 id="ch-tools-adjusting">
+  <?dbhtml filename="adjusting.html"?>
+
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE sect1 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+  "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+  <!ENTITY % general-entities SYSTEM "../general.ent">
+  %general-entities;
+]>
+
+<sect1 id="ch-system-adjusting">
+  <?dbhtml filename="adjusting.html"?>
+
+  <title>调整工具链</title>
+
+  <para>现在，最终的 C 库已经安装，是时候调整工具链以便它将可以针对这些新的库链接任何编译的程序。</para>
+
+  <para>首先，备份 <filename class="directory">/tools</filename> 链接器，并使用我们在第 5 章制作的调整的链接器替换它。我们还要在
+   <filename class="directory">/tools/$(gcc
+  -dumpmachine)/bin</filename> 中创建一个指向它的副本的链接:</para>
+
+<screen><userinput>mv -v /tools/bin/{ld,ld-old}
+mv -v /tools/$(gcc -dumpmachine)/bin/{ld,ld-old}
+mv -v /tools/bin/{ld-new,ld}
+ln -sv /tools/bin/ld /tools/$(gcc -dumpmachine)/bin/ld</userinput></screen>
+
+  <para>下一步，修改 GCC 规范文件以便它指向新的动态链接器。简单的删除 <quote>/tools</quote> 的所有实例应该就可以给我们留下正确的路径，用于动态链接器。还有调整规范文件，以便 GCC 知道在何处查找正确的头文件和 Glibc 启动文件。
+  可以使用一个 <command>sed</command> 命令达到这个效果:</para>
+
+<screen><userinput>gcc -dumpspecs | sed -e 's@/tools@@g'                   \
+    -e '/\*startfile_prefix_spec:/{n;s@.*@/usr/lib/ @}' \
+    -e '/\*cpp:/{n;s@$@ -isystem /usr/include@}' &gt;      \
+    `dirname $(gcc --print-libgcc-file-name)`/specs</userinput></screen>
+
+  <para>目视规范文件以验证实际做出目标更改是一个不错的主意。</para>
+
+  <para>当务之急是确保调整的工具链的基本功能(编译和链接)能够如预期的工作。
+  为此，执行下列完整性检查:</para>
+
+<screen os="a"><userinput>echo 'main(){}' &gt; dummy.c
+cc dummy.c -v -Wl,--verbose &amp;&gt; dummy.log
+readelf -l a.out | grep ': /lib'</userinput></screen>
+
+  <para os="b">如果所有东西都正确工作，应该就没有错误，而最后的命令输出应该是(允许在动态链接器的名称中由于平台的不同而有所差异):</para>
+
+<screen os="c"><computeroutput>[Requesting program interpreter: /lib/ld-linux.so.2]</computeroutput></screen>
+
+  <para>注意 <filename class="directory">/lib</filename> 现在是我们的动态链接器的前缀。</para>
+
+  <para os="d">现在，确保我们设置了使用正确的启动文件:</para>
+
+<screen os="e"><userinput>grep -o '/usr/lib.*/crt[1in].*succeeded' dummy.log</userinput></screen>
+
+  <para os="f">如果一切正常，应该就没有错误，而最后的命令输出将会是:</para>
+
+<screen><computeroutput>/usr/lib/crt1.o succeeded
+/usr/lib/crti.o succeeded
+/usr/lib/crtn.o succeeded</computeroutput></screen>
+
+  <para os="g">验证编译器正在搜索正确的头文件:</para>
+
+<screen><userinput>grep -B1 '^ /usr/include' dummy.log</userinput></screen>
+
+  <para os="h">这个命令应该成功返回下列输出:</para>
+
+<screen><computeroutput>#include &lt;...&gt; search starts here:
+ /usr/include</computeroutput></screen>
+
+  <para os="i">下一步，验证新的链接器是使用了正确的搜索路径:</para>
+
+<screen os="j"><userinput>grep 'SEARCH.*/usr/lib' dummy.log |sed 's|; |\n|g'</userinput></screen>
+
+  <para os="k">如果一切正常，应该就没有错误，而最后的命令输出将会是:</para>
+
+<screen><computeroutput>SEARCH_DIR("/usr/lib")
+SEARCH_DIR("/lib");</computeroutput></screen>
+
+  <para os="l">下一步确保我们正在使用正确的 libc:</para>
+
+<screen os="m"><userinput>grep "/lib.*/libc.so.6 " dummy.log</userinput></screen>
+
+  <para os="n">如果一切正常，应该没有错误，而最后的命令输出(在 64 位主机上允许是 lib64 目录)将会是:</para>
+
+<screen os="o"><computeroutput>attempt to open /lib/libc.so.6 succeeded</computeroutput></screen>
+
+  <para os="p">最后，确保 GCC 正在使用正确的动态链接器:</para>
+
+<screen os="q"><userinput>grep found dummy.log</userinput></screen>
+
+  <para os="r">如果一切正常，应该没有错误，而最后的命令输出将会是(允许动态链接器名称在平台上的差异以及 64 位主机上允许 lib64 目录):</para>
+
+<screen os="s"><computeroutput>found ld-linux.so.2 at /lib/ld-linux.so.2</computeroutput></screen>
+
+  <para os="t">如果输出没有如上所示，或者完全没有收到输出，那么应该是有严重错误。 调查并回溯步骤找出问题出在何处并纠正它。最困难的原因就是某些地方由于 specs (规范)文件调整出错了。
+  在继续前，需要解决任何出现的问题。</para>
+
+  <para os="u">一旦一切正常，清理测试文件:</para>
+
+<screen os="v"><userinput>rm -v dummy.c a.out dummy.log</userinput></screen>
+
+</sect1>

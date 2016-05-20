@@ -68,7 +68,7 @@
 
       <seglistitem>
         <seg>file</seg>
-        <seg>libmagic.{a,so}</seg>
+        <seg>libmagic.so</seg>
       </seglistitem>
     </segmentedlist>
 
@@ -89,7 +89,7 @@
       </varlistentry>
 
       <varlistentry id="libmagic">
-        <term><filename class="libraryfile">libmagic</filename></term>
+        <term><filename class="libraryfile">libmagic.so</filename></term>
         <listitem>
           <para>包含 magic number (幻数)识别的例程，被
           <command>file</command> 程序使用</para>

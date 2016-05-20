@@ -40,19 +40,6 @@
   <sect2 role="installation">
     <title>GCC 的安装</title>
 
-    <para>应用一个 <command>sed</command> 替换禁止
-    <filename class="libraryfile">libiberty.a</filename> 的安装。将会使用由 Binutils 提供的
-    <filename class="libraryfile">libiberty.a</filename> 版本:</para>
-
-<screen><userinput remap="pre">sed -i 's/install_to_$(INSTALL_DEST) //' libiberty/Makefile.in</userinput></screen>
-
-    <para>再次说明，不构建 .info 文件。它们会被当前版本的 <command>makeinfo</command> 打断。</para>
-
-    <screen><userinput remap="pre">sed -i 's/BUILD_INFO=info/BUILD_INFO=/' gcc/configure</userinput></screen>
-
-
-
-
     <para>如同在<xref linkend="ch-tools-gcc-pass2"/>中的一样，应用下列
     <command>sed</command> 以强制构建过程使用
     <option>-fomit-frame-pointer</option> 编译器标志，以确保统一的编译器构建:</para> 
@@ -61,9 +48,15 @@
   i?86) sed -i 's/^T_CFLAGS =$/&amp; -fomit-frame-pointer/' gcc/Makefile.in ;;
 esac</userinput></screen>
 
-    <para>还有修复在 check 的 Makefiles 之一中的一个错误:</para>
+    <para>变通处理一个问题，以便 GCC 不会安装
+    <filename class="libraryfile">libiberty.a</filename>，它已经由 Binutils 提供了:</para>
 
-<screen><userinput remap="pre">sed -i -e /autogen/d -e /check.sh/d fixincludes/Makefile.in</userinput></screen>
+<screen><userinput remap="pre">sed -i 's/install_to_$(INSTALL_DEST) //' libiberty/Makefile.in</userinput></screen>
+
+    <para>还要修复一个检查 Makefiles 之一的错误，并禁止在 g++ libmudflap 测试套件中的一个测试:</para>
+
+<screen><userinput remap="pre">sed -i -e /autogen/d -e /check.sh/d fixincludes/Makefile.in 
+mv -v libmudflap/testsuite/libmudflap.c++/pass41-frag.cxx{,.disable}</userinput></screen>
 
     <para>GCC 文档推荐在源代码目录外的一个专用构建目录中构建 GCC:</para>
 
@@ -72,15 +65,16 @@ cd ../gcc-build</userinput></screen>
 
     <para>准备 GCC 编译:</para>
 
-<screen><userinput remap="configure">../gcc-&gcc-version;/configure --prefix=/usr            \
-                       --libexecdir=/usr/lib    \
-                       --enable-shared          \
-                       --enable-threads=posix   \
-                       --enable-__cxa_atexit    \
-                       --enable-clocale=gnu     \
-                       --enable-languages=c,c++ \
-                       --disable-multilib       \
-                       --disable-bootstrap      \
+<screen><userinput remap="configure">../gcc-&gcc-version;/configure --prefix=/usr               \
+                       --libexecdir=/usr/lib       \
+                       --enable-shared             \
+                       --enable-threads=posix      \
+                       --enable-__cxa_atexit       \
+                       --enable-clocale=gnu        \
+                       --enable-languages=c,c++    \
+                       --disable-multilib          \
+                       --disable-bootstrap         \
+                       --disable-install-libiberty \
                        --with-system-zlib</userinput></screen>
 
     <para>注意，对于其它语言，有一些不可用的先决条件。参阅 BLFS 书中关于如何构建所有 GCC 支持的语言的说明。</para>
@@ -89,21 +83,19 @@ cd ../gcc-build</userinput></screen>
       <title>新配置选项的含义:</title>
 
       <varlistentry>
+        <term><parameter>--disable-install-libiberty</parameter></term>
+        <listitem>
+          <para>这个避免了 GCC 安装它自己的 libiberty 拷贝，它已经由 Binutils-&binutils-version; 提供。</para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
         <term><parameter>--with-system-zlib</parameter></term>
         <listitem>
           <para>这个开关告诉 GCC 了解系统已安装的 Zlib 库的口碑，而不是它自己的内部拷贝。</para>
         </listitem>
       </varlistentry>
     </variablelist>
- 
-   <note>
-      <para>有一个用于 <command>configure</command> 的可选参数，
-      <option>--enable-lto</option>，可以用于让
-      <command>gcc</command> 在指定的情况下可以进行"链接时间优化"。在 LFS 或 BLFS 中当前没有包使用这个功能。</para>
-
-      <para>要使用这个功能，它也必须在
-      <application>binutils</application> 中启用它。</para>
-    </note>
 
     <para>编译包:</para>
 
@@ -195,8 +187,8 @@ cd ../gcc-build</userinput></screen>
     xpointer="xpointer(//*[@os='h'])"/>
 
 <screen><computeroutput>#include &lt;...&gt; search starts here:
- /usr/local/include
  /usr/lib/gcc/i686-pc-linux-gnu/&gcc-version;/include
+ /usr/local/include
  /usr/lib/gcc/i686-pc-linux-gnu/&gcc-version;/include-fixed
  /usr/include</computeroutput></screen>
 
@@ -295,9 +287,10 @@ mv -v /usr/lib/*gdb.py /usr/share/gdb/auto-load/usr/lib</userinput></screen>
 
       <seglistitem>
         <seg>c++, cc (链接到 gcc), cpp, g++, gcc,
-        gcc-ar, gcc-nm, gcc-ranlib, gccbug 和 gcov</seg>
+        gcc-ar, gcc-nm, gcc-ranlib 和 gcov</seg>
 
-        <seg>libgcc.a, libgcc_eh.a, libgcc_s.so, libgcov.a, libgomp.{a,so},
+        <seg>libasan.{a,so}, libatomic.{a,so}, libgcc.a, libgcc_eh.a, 
+        libgcc_s.so, libgcov.a, libgomp.{a,so}, libitm.{a,so},
         liblto_plugin.so, libmudflap.{a,so}, libmudflapth.{a,so},
         libquadmath.{a,so}, libssp.{a,so},
         libssp_nonshared.a, libstdc++.{a,so} 和 libsupc++.a</seg>
@@ -391,16 +384,6 @@ mv -v /usr/lib/*gdb.py /usr/share/gdb/auto-load/usr/lib</userinput></screen>
           本程序仅用于添加"链接时间优化"而对于使用默认构建选项不是很有用。</para>
           <indexterm zone="ch-system-gcc gcc-ranlib">
             <primary sortas="b-gcc-ranlib">gc-ranlib</primary>
-          </indexterm>
-        </listitem>
-      </varlistentry>
-
-      <varlistentry id="gccbug">
-        <term><command>gccbug</command></term>
-        <listitem>
-          <para>一个用于帮助创建有用的错误报告的 Shell 脚本</para>
-          <indexterm zone="ch-system-gcc gccbug">
-            <primary sortas="b-gccbug">gccbug</primary>
           </indexterm>
         </listitem>
       </varlistentry>

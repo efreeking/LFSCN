@@ -33,6 +33,13 @@
       </listitem>
 
       <listitem>
+        <para>Bc</para>
+
+        <para>这个包提供了一个任意精度的数字处理语言。
+        它满足了当构建 Linux 内核时所需的要求。</para>
+      </listitem>
+
+      <listitem>
         <para>Binutils</para>
 
         <para>这个包包含了一个链接器、汇编器和其它处理对象文件的工具。在这个包中的程序是编译 LFS 系统中和之外的大部分包所需的。</para>

@@ -26,6 +26,6 @@ strip --strip-unneeded /tools/{,s}bin/*</userinput></screen>
 <screen><userinput>rm -rf /tools/{,share}/{info,man,doc}</userinput></screen>
 
   <para>此时，在
-  <envar>$LFS</envar> 上，您应该至少有 850 MB 的可用空间，可以用于在下一阶段构建和安装 Glibc。如果您可以构建和安装 Glibc 的话，您也可以构建和安装其余的东西了。</para>
+  <envar>$LFS</envar> 上，您应该至少有 3 GB 的可用空间，可以用于在下一阶段构建和安装 Glibc。如果您可以构建和安装 Glibc 和 Gcc 的话，您也可以构建和安装其余的东西了。</para>
 
 </sect1>

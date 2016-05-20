@@ -49,8 +49,10 @@
 sed -i /ARPD/d Makefile
 sed -i 's/arpd.8//' man/man8/Makefile</userinput></screen>
 
+<!-- Save as comments for now
     <para>删除导致编译失败的编译器标志:</para>
 <screen><userinput remap="pre">sed -i 's/-Werror//' Makefile</userinput></screen>
+-->
 
     <para>编译包:</para>
 

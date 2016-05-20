@@ -43,6 +43,11 @@
   <sect2 role="installation">
     <title>Binutils 安装</title>
 
+    <para>修复一些阻碍文档使用 Texinfo-&texinfo-version; 构建的语法错误:</para>
+
+<screen><userinput remap="pre">sed -i -e 's/@colophon/@@colophon/' \
+       -e 's/doc@cygnus.com/doc@@cygnus.com/' bfd/doc/bfd.texinfo</userinput></screen>
+
     <para>再次创建一个独立的构建目录:</para>
 
 <screen><userinput remap="pre">mkdir -v ../binutils-build
@@ -50,13 +55,14 @@ cd ../binutils-build</userinput></screen>
 
     <para>准备好编译的 Binutils:</para>
 
-<screen><userinput remap="configure">CC=$LFS_TGT-gcc            \
-AR=$LFS_TGT-ar             \
-RANLIB=$LFS_TGT-ranlib     \
-../binutils-&binutils-version;/configure \
-    --prefix=/tools        \
-    --disable-nls          \
-    --with-lib-path=/tools/lib</userinput></screen>
+<screen><userinput remap="configure">CC=$LFS_TGT-gcc                \
+AR=$LFS_TGT-ar                 \
+RANLIB=$LFS_TGT-ranlib         \
+../binutils-&binutils-version;/configure   \
+    --prefix=/tools            \
+    --disable-nls              \
+    --with-lib-path=/tools/lib \
+    --with-sysroot</userinput></screen>
 
     <variablelist>
       <title>新配置选项的含义:</title>
@@ -73,6 +79,14 @@ RANLIB=$LFS_TGT-ranlib     \
         <listitem>
           <para>这个告诉 configure 脚本指定在 Binutils 编译期间库的搜索路径，致使
           <filename class="directory">/tools/lib</filename> 被传递给链接器。这样防止链接器搜索宿主上的库目录。</para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term><parameter>--with-sysroot</parameter></term>
+        <listitem>
+          <para>sysroot 功能启用链接器查找共享对象，这是被明确包含在链接器的命令行中的其它共享对象所需的。
+          没有这个的话，某些包可能在某些主机上无法成功构建。</para>
         </listitem>
       </varlistentry>
 

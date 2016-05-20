@@ -10,20 +10,40 @@
 
   <title>在分区上创建一个文件系统</title>
 
-  <para>现在，空白分区已经设置，可以创建文件系统了。
-  在 Linux 世界中最常用的系统就是第2代扩展文件系统(<systemitem class="filesystem">ext2</systemitem>)，但是对于较新的高容量硬盘，日志文件系统变得越来越受欢迎。
-  第3代扩展文件系统 (<systemitem
-  class="filesystem">ext3</systemitem>) 是最广泛使用的对 <systemitem class="filesystem">ext2</systemitem> 的增强，它添加了日志功能并和 E2fsprogs 等工具兼容。
-  我们将创建一个 <systemitem class="filesystem">ext3</systemitem> 文件系统。
-  创建其它文件系统的说明可以在
-  <ulink url="&blfs-root;view/svn/postlfs/filesystems.html"/>中找到。</para>
+  <para>现在，空白分区已经设置，可以创建文件系统了。LFS 可以使用能够被 Linux 内核识别的任何文件系统，但是最常见的类型是 ext3 和 ext4。文件系统的选择可以符合的，而且是根据文件的属性和分区的大小。例如：</para>
 
-  <para>要在 LFS 分区上创建一个 <systemitem class="filesystem">ext3</systemitem> 文件系统，运行以下命令:</para>
+  <variablelist>
+    <varlistentry>
+      <term>ext2</term>
+      <listitem><para>适用于非频繁更新的小分区，譬如 /boot。</para></listitem>
+    </varlistentry>
+    <varlistentry>
+      <term>ext3</term>
+      <listitem><para>是对 ext2 的升级，包含了有助于在不安全关机情况下恢复分区状态的日志功能。
+      它通常用作常规用途的文件系统。
+      </para>
+      </listitem>
+    </varlistentry>
+    <varlistentry>
+      <term>ext4</term>
+      <listitem><para>是分区类型的 ext 文件系统族的最新版本。它提供了多种新功能，
+      包括纳秒级时间标志，非常大文件(16 TB)的创建和使用，以及速度提高。</para>
+      </listitem>
+    </varlistentry>
+  </variablelist>
 
-<screen role="nodump"><userinput>mke2fs -jv /dev/<replaceable>&lt;xxx&gt;</replaceable></userinput></screen>
+  <para>其它文件系统，包括 FAT32, NTFS, ReiserFS, JFS 及 XFS 对于特定用途很实用。
+  更多关于这些文件系统的信息可以在
+  <ulink url="http://en.wikipedia.org/wiki/Comparison_of_file_systems"/> 找到。</para>
+ 
+  <para>LFS 假定根文件系统 (/) 是 ext4 类型的。要在 LFS 分区上创建一个 <systemitem class="filesystem">ext4</systemitem> 文件系统，运行下列命令:</para>
+
+<screen role="nodump"><userinput>mkfs -v -t ext4 /dev/<replaceable>&lt;xxx&gt;</replaceable></userinput></screen>
+
+<!--
 
   <para>替换 <replaceable>&lt;xxx&gt;</replaceable> 为 LFS 分区的名称
-  (在我们先前的例子中是 <filename class="devicefile">hda5</filename>)。</para>
+  (在我们先前的例子中是 <filename class="devicefile">sda5</filename>)。</para>
 
   <note>
     <para>某些宿主发行版使用它们的文件系统创建工具 (E2fsprogs) 中的自定义功能。
@@ -51,7 +71,7 @@ make #注意，我们故意不在这里‘make install’！
 cd /tmp
 rm -rfv e2fsprogs-&e2fsprogs-version;</userinput></screen>
   </note>
-
+-->
   <para>如果您正在使用已有的<systemitem class="filesystem">交换</systemitem>分区，就不需要格式化它。如果创建新的<systemitem class="filesystem">交换</systemitem>分区的话，将需要使用这个命令初始化它:</para>
 
 <screen role="nodump"><userinput>mkswap /dev/<replaceable>&lt;yyy&gt;</replaceable></userinput></screen>

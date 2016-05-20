@@ -125,6 +125,42 @@
         </seglistitem>
       </segmentedlist>
 
+<!-- Begin Bc dependency info -->
+  <bridgehead renderas="sect2" id="bc-dep">Bc</bridgehead>
+
+      <segmentedlist>
+        <segtitle>&dependencies;</segtitle>
+
+        <seglistitem>
+          <seg>Bash, Binutils, Bison, Coreutils, GCC, Glibc,
+          Grep, Make 和 Readline</seg>
+        </seglistitem>
+      </segmentedlist>
+
+      <segmentedlist>
+        <segtitle>&testsuites;</segtitle>
+
+        <seglistitem>
+          <seg>Gawk</seg>
+        </seglistitem>
+      </segmentedlist>
+
+      <segmentedlist>
+        <segtitle>&before;</segtitle>
+
+        <seglistitem>
+          <seg>Linux Kernel</seg>
+        </seglistitem>
+      </segmentedlist>
+
+      <segmentedlist>
+        <segtitle>&external;</segtitle>
+
+        <seglistitem>
+          <seg>无</seg>
+        </seglistitem>
+      </segmentedlist>
+
 <!-- Begin Binutils dependency info -->
   <bridgehead renderas="sect2" id="binutils-dep">Binutils</bridgehead>
 
@@ -133,7 +169,7 @@
 
         <seglistitem>
          <seg>Bash, Binutils, Coreutils, Diffutils, File, Gawk, GCC, Glibc, Grep,
-         Make, Perl, Sed, Texinfo and Zlib</seg>
+         Make, Perl, Sed, Texinfo 和 Zlib</seg>
         </seglistitem>
       </segmentedlist>
 
@@ -141,7 +177,7 @@
         <segtitle>&testsuites;</segtitle>
 
         <seglistitem>
-          <seg>DejaGNU and Expect</seg>
+          <seg>DejaGNU 和 Expect</seg>
         </seglistitem>
       </segmentedlist>
 
@@ -177,7 +213,7 @@
         <segtitle>&testsuites;</segtitle>
 
         <seglistitem>
-          <seg>Diffutils and Findutils</seg>
+          <seg>Diffutils, Findutils 和 Flex</seg>
         </seglistitem>
       </segmentedlist>
 
@@ -185,7 +221,7 @@
         <segtitle>&before;</segtitle>
 
         <seglistitem>
-          <seg>Flex, Kbd 和 Tar</seg>
+          <seg>Kbd 和 Tar</seg>
         </seglistitem>
       </segmentedlist>
 
@@ -193,7 +229,7 @@
         <segtitle>&external;</segtitle>
 
         <seglistitem>
-          <seg>Doxygen (test suite)</seg>
+          <seg>Doxygen (测试套件)</seg>
         </seglistitem>
       </segmentedlist>
 
@@ -205,7 +241,7 @@
 
         <seglistitem>
          <seg>Bash, Binutils, Coreutils, Diffutils, GCC, Glibc, Make,
-         and Patch</seg>
+         和 Patch</seg>
         </seglistitem>
       </segmentedlist>
 
@@ -233,7 +269,42 @@
         </seglistitem>
       </segmentedlist>
 
-<!-- Begin Coreutils dependency info -->
+<!-- Begin Check dependency info -->
+  <bridgehead renderas="sect2" id="check-dep">Check</bridgehead>
+
+      <segmentedlist>
+        <segtitle>&dependencies;</segtitle>
+
+        <seglistitem>
+         <seg>GCC, Grep, Make, Sed 和 Texinfo</seg>
+        </seglistitem>
+      </segmentedlist>
+
+      <segmentedlist>
+        <segtitle>&testsuites;</segtitle>
+
+        <seglistitem>
+          <seg>None</seg>
+        </seglistitem>
+      </segmentedlist>
+
+      <segmentedlist>
+        <segtitle>&before;</segtitle>
+
+        <seglistitem>
+          <seg>None</seg>
+        </seglistitem>
+      </segmentedlist>
+
+      <segmentedlist>
+        <segtitle>&external;</segtitle>
+
+        <seglistitem>
+          <seg>None</seg>
+        </seglistitem>
+      </segmentedlist>
+
+ <!-- Begin Coreutils dependency info -->
   <bridgehead renderas="sect2" id="coreutils-dep">Coreutils</bridgehead>
 
       <segmentedlist>
@@ -265,7 +336,7 @@
         <segtitle>&external;</segtitle>
 
         <seglistitem>
-          <seg>Perl Expect and IO:Tty modules (for test suite)</seg>
+          <seg>Perl Expect 和 IO:Tty modules (for 测试套件)</seg>
         </seglistitem>
       </segmentedlist>
 
@@ -284,7 +355,7 @@
         <segtitle>&testsuites;</segtitle>
 
         <seglistitem>
-          <seg>无测试套装可用</seg>
+          <seg></seg>
         </seglistitem>
       </segmentedlist>
 
@@ -500,7 +571,7 @@
         <segtitle>&testsuites;</segtitle>
 
         <seglistitem>
-          <seg>Bison and Gawk</seg>
+          <seg>Bison (抑制) 和 Gawk</seg>
         </seglistitem>
       </segmentedlist>
 
@@ -565,7 +636,7 @@
         <seglistitem>
          <seg>Bash, Binutils, Coreutils, Diffutils, Findutils, Gawk, GCC,
          Gettext, Glibc, GMP, Grep, M4, Make, MPC, MPFR, Patch, Perl, Sed, Tar,
-         and Texinfo</seg>
+         和 Texinfo</seg>
         </seglistitem>
       </segmentedlist>
 
@@ -573,7 +644,7 @@
         <segtitle>&testsuites;</segtitle>
 
         <seglistitem>
-          <seg>DejaGNU and Expect</seg>
+          <seg>DejaGNU 和 Expect</seg>
         </seglistitem>
       </segmentedlist>
 
@@ -710,7 +781,7 @@
 
         <seglistitem>
          <seg>Bash, Binutils, Coreutils, Diffutils, Gawk, GCC, Glibc, Grep, M4, Make,
-         Sed and Texinfo</seg>
+         Sed 和 Texinfo</seg>
         </seglistitem>
       </segmentedlist>
 
@@ -798,7 +869,7 @@
         <segtitle>&before;</segtitle>
 
         <seglistitem>
-          <seg>Man-DB and Perl</seg>
+          <seg>Man-DB 和 Perl</seg>
         </seglistitem>
       </segmentedlist>
 
@@ -961,7 +1032,7 @@
 
         <seglistitem>
          <seg>Bash, Bison, Coreutils, Flex, GCC, Glibc, Make,
-         and Linux API Headers</seg>
+         和 Linux API Headers</seg>
         </seglistitem>
       </segmentedlist>
 
@@ -1077,7 +1148,7 @@
         <segtitle>&testsuites;</segtitle>
 
         <seglistitem>
-          <seg>无测试套件可用</seg>
+          <seg>Check</seg>
         </seglistitem>
       </segmentedlist>
 
@@ -1176,7 +1247,7 @@
         <segtitle>&dependencies;</segtitle>
 
         <seglistitem>
-         <seg>Bash, Binutils, Coreutils, Diffutils, Findutils, GCC, Glibc, Grep,
+         <seg>Bash, Bc, Binutils, Coreutils, Diffutils, Findutils, GCC, Glibc, Grep,
          Gzip, Kmod, Make, Ncurses, Perl 和 Sed</seg>
         </seglistitem>
       </segmentedlist>
@@ -1229,7 +1300,7 @@
         <segtitle>&before;</segtitle>
 
         <seglistitem>
-          <seg>Autoconf and Bison</seg>
+          <seg>Autoconf 和 Bison</seg>
         </seglistitem>
       </segmentedlist>
 
@@ -1257,7 +1328,7 @@
         <segtitle>&testsuites;</segtitle>
 
         <seglistitem>
-          <seg>Perl and Procps-ng</seg>
+          <seg>Perl 和 Procps-ng</seg>
         </seglistitem>
       </segmentedlist>
 
@@ -1293,7 +1364,7 @@
         <segtitle>&testsuites;</segtitle>
 
         <seglistitem>
-          <seg>Not run. Requires Man-DB test suite package</seg>
+          <seg>Not run. Requires Man-DB 测试套件 package</seg>
         </seglistitem>
       </segmentedlist>
 
@@ -1356,7 +1427,7 @@
 
         <seglistitem>
          <seg>Bash, Binutils, Coreutils, Diffutils, Gawk, GCC, Glibc, Grep, GMP,
-         Make, MPFR, Sed and Texinfo</seg>
+         Make, MPFR, Sed 和 Texinfo</seg>
         </seglistitem>
       </segmentedlist>
 
@@ -1392,7 +1463,7 @@
 
         <seglistitem>
          <seg>Bash, Binutils, Coreutils, Diffutils, Gawk, GCC, Glibc, Grep, GMP,
-         Make, Sed and Texinfo</seg>
+         Make, Sed 和 Texinfo</seg>
         </seglistitem>
       </segmentedlist>
 
@@ -1436,7 +1507,7 @@
         <segtitle>&testsuites;</segtitle>
 
         <seglistitem>
-          <seg>无测试套件可用</seg>
+          <seg>Diffutils</seg>
         </seglistitem>
       </segmentedlist>
 
@@ -1508,7 +1579,7 @@
         <segtitle>&testsuites;</segtitle>
 
         <seglistitem>
-          <seg>Iana-Etc and Procps-ng</seg>
+          <seg>Iana-Etc 和 Procps-ng</seg>
         </seglistitem>
       </segmentedlist>
 
@@ -1579,7 +1650,7 @@
         <segtitle>&testsuites;</segtitle>
 
         <seglistitem>
-          <seg>Diffutils and Sed</seg>
+          <seg>Diffutils 和 Sed</seg>
         </seglistitem>
       </segmentedlist>
 
@@ -1642,7 +1713,7 @@
 
         <seglistitem>
          <seg>Bash, Binutils, Coreutils, GCC, Gettext, Glibc, Grep, Make, Ncurses,
-         and Sed</seg>
+         和 Sed</seg>
         </seglistitem>
       </segmentedlist>
 
@@ -1722,7 +1793,7 @@
         <segtitle>&testsuites;</segtitle>
 
         <seglistitem>
-          <seg>Diffutils and Gawk</seg>
+          <seg>Diffutils 和 Gawk</seg>
         </seglistitem>
       </segmentedlist>
 

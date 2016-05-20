@@ -72,18 +72,12 @@
 <screen><userinput remap="make">make</userinput></screen>
 
     <para>测试套件需要针对 LFS 进行某些自定义的修改。
-    <command>which</command> 命令不可用，
-    <command>pmap</command> 测试在两个测试中不匹配新行符号，
-    而 <command>slabtop</command> 测试可能返回超过
-    999,999 个对象。要运行测试套件，运行下列命令:</para>
+    删除当脚本不使用 tty 设备时失败的测试。  
+    要运行测试套件，运行下列命令:</para>
 
-<screen><userinput remap="test">pushd testsuite
-  sed -i -e 's|exec which sleep|exec echo /tools/bin/sleep|' \
-         -e 's|999999|&amp;9|'                       config/unix.exp
-  sed -i -e 's|pmap_initname\\\$|pmap_initname|' pmap.test/pmap.exp
-  make site.exp
-  DEJAGNU=global-conf.exp runtest
-popd</userinput></screen>
+<screen><userinput remap="test">sed -i -r 's|(pmap_initname)\\\$|\1|' testsuite/pmap.test/pmap.exp
+
+make check</userinput></screen>
 
     <para>安装包:</para>
 
@@ -93,7 +87,7 @@ popd</userinput></screen>
 <filename class="directory">/usr</filename> 没有被装载时可以找到的位置。</para>
 
 <screen><userinput remap="install">mv -v /usr/lib/libprocps.so.* /lib
-ln -sfv ../../lib/libprocps.so.1.1.0 /usr/lib/libprocps.so</userinput></screen>
+ln -sfv ../../lib/libprocps.so.1.1.2 /usr/lib/libprocps.so</userinput></screen>
 
   </sect2>
 

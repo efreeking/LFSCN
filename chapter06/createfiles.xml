@@ -43,11 +43,12 @@ ln -sv /tools/lib/libstdc++.so{,.6} /usr/lib
 sed 's/tools/usr/' /tools/lib/libstdc++.la > /usr/lib/libstdc++.la
 ln -sv bash /bin/sh</userinput></screen>
 
-  <para>一个正规的 Linux 系统在文件
-  <filename>/etc/mtab</filename> 中维护者挂载文件系统的列表。通常这个文件将会在您挂载新的文件系统的时候创建。
-  由于我们不会在我们的 chroot 环境内挂载任何文件系统，所以创建一个空白文件给那些需要 <filename>/etc/mtab</filename> 存在的实用工具:</para>
+  <para>历史上，Linux 系统在文件
+  <filename>/etc/mtab</filename> 中维护一个挂载文件系统的列表。
+现在的内核在内部维护这个列表，并通过 <filename class="directory">/proc</filename> 文件系统向用户展现。
+为了满足希望 <filename>/etc/mtab</filename> 存在的实用工具的要求，创建下列符号链接:</para>
 
-<screen><userinput>touch /etc/mtab</userinput></screen>
+<screen><userinput>ln -sv /proc/self/mounts /etc/mtab</userinput></screen>
 
   <para>为了让用户 <systemitem class="username">root</systemitem> 可以登录，而且名称 <quote>root</quote> 能够被识别，必须在
   <filename>/etc/passwd</filename> 和 <filename>/etc/group</filename> 文件中有相应的条目。</para>

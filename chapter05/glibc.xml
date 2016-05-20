@@ -51,6 +51,10 @@
   su -c 'cp -v sunrpc/rpc/*.h /usr/include/rpc'
 fi</userinput></screen>
 
+    <para>一个上游更改需要倒退:</para>
+
+<screen><userinput remap="pre">sed -i -e 's/static __m128i/inline &amp;/' sysdeps/x86_64/multiarch/strstr.c</userinput></screen>
+
     <para>Glibc 文档推荐在源代码目录外，在一个专用的构建目录中构建 Glibc:</para>
 
 <screen><userinput remap="pre">mkdir -v ../glibc-build
@@ -69,14 +73,14 @@ esac</userinput></screen>
     <para>下一步，准备好 Glibc 用于编译:</para>
 
 <screen><userinput remap="configure">../glibc-&glibc-version;/configure                             \
-      --prefix=/tools                                 \
-      --host=$LFS_TGT                                 \
+      --prefix=/tools                               \
+      --host=$LFS_TGT                               \
       --build=$(../glibc-&glibc-version;/scripts/config.guess) \
-      --disable-profile                               \
-      --enable-kernel=2.6.25                          \
-      --with-headers=/tools/include                   \
-      libc_cv_forced_unwind=yes                       \
-      libc_cv_ctors_header=yes                        \
+      --disable-profile                             \
+      --enable-kernel=&min-kernel;                        \
+      --with-headers=/tools/include                 \
+      libc_cv_forced_unwind=yes                     \
+      libc_cv_ctors_header=yes                      \
       libc_cv_c_cleanup=yes</userinput></screen>
 
     <variablelist>
@@ -99,9 +103,9 @@ esac</userinput></screen>
       </varlistentry>
 
       <varlistentry>
-        <term><parameter>--enable-kernel=2.6.25</parameter></term>
+        <term><parameter>--enable-kernel=&min-kernel;</parameter></term>
         <listitem>
-          <para>这个告诉 Glibc 编译带支持 2.6.25 和之后的 Linux 内核的库。对于较旧的内核的变通方法就是不启用这个选项。</para>
+          <para>这个告诉 Glibc 编译带支持 &min-kernel; 和之后的 Linux 内核的库。对于较旧的内核的变通方法就是不启用这个选项。</para>
         </listitem>
       </varlistentry>
 
@@ -197,7 +201,7 @@ readelf -l a.out | grep ': /tools'</userinput></screen>
 
   </caution>
 
-  <note><para>在下一节中构建 Binutils 将会作为对工具栏是否正确构建的一个额外检查。
+  <note><para>在跟着下一之后的章节中构建 Binutils 将会作为对工具链是否正确构建的一个额外检查。
   如果 Binutils 无法构建，这表示先前的 Binutils, GCC 或 Glibc
   安装的某些地方出错了。</para></note>
 

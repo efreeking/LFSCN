@@ -48,6 +48,11 @@
 
     <para>Binutils 作为第一个要编译的包很重要，因为 Glibc 和 GCC 都在可用的链接器和汇编器上执行各种测试来判断它们自己要启用的特征。</para>
 
+    <para>修复了一些阻碍文档使用 Texinfo-&texinfo-version; 构建的语法错误:</para>
+
+<screen><userinput remap="pre">sed -i -e 's/@colophon/@@colophon/' \
+       -e 's/doc@cygnus.com/doc@@cygnus.com/' bfd/doc/bfd.texinfo</userinput></screen>
+
     <para>Binutils 文档推荐在一个源代码目录以外的专用的构建目录中构建 Binutils:</para>
 
 <screen><userinput remap="pre">mkdir -v ../binutils-build
@@ -63,7 +68,7 @@ cd ../binutils-build</userinput></screen>
 
     <para>现在准备好 Binutils 用于编译:</para>
 
-    <screen><userinput remap="configure">../binutils-&binutils-version;/configure     \
+<screen><userinput remap="configure">../binutils-&binutils-version;/configure   \
     --prefix=/tools            \
     --with-sysroot=$LFS        \
     --with-lib-path=/tools/lib \
