@@ -46,37 +46,124 @@
     <para>GCC 现在需要 GMP、MPFR 和 MPC 包。因为这些包可能不包含在您的宿主发行版上，所以它们将会使用 GCC 构建。
     解压每个包到 GCC 源代码目录中并重命名得到的目录，以便 GCC 构建过程可以自动使用它们:</para>
 
-<screen><userinput remap="pre">tar -jxf ../mpfr-&mpfr-version;.tar.bz2
+    <note><para>关于本章，经常有误解。过程和较早前所解释的其它章节一样(<xref
+    linkend='buildinstr'/>)。首先从源代码目录提取 gcc tarball，
+    然后切换到创建的目录中。之后只需按照下面的指令继续。</para></note>
+
+<screen><userinput remap="pre">tar -Jxf ../mpfr-&mpfr-version;.tar.xz
 mv -v mpfr-&mpfr-version; mpfr
-tar -jxf ../gmp-&gmp-version;.tar.bz2
+tar -Jxf ../gmp-&gmp-version;.tar.xz
 mv -v gmp-&gmp-version; gmp
 tar -zxf ../mpc-&mpc-version;.tar.gz
 mv -v mpc-&mpc-version; mpc</userinput></screen>
 
-<para>应用一个可以让 libiberty 和 zlib 目标库的构建被禁用的补丁，因为这两个在交叉编译环境中不能正确构建:</para>
+    <para>下列命令将会更改 GCC 的默认动态链接器的位置为使用安装在 <filename
+    class="directory">/tools</filename> 中的那个。
+    它还会从 GCC 的包含搜索路径中删除 <filename
+    class="directory">/usr/include</filename> 。
+    发出:</para>
 
-<screen><userinput remap="pre">patch -Np1 -i ../&gcc-crosscompile-patch;</userinput></screen>
+<screen><userinput remap="pre">for file in \
+ $(find gcc/config -name linux64.h -o -name linux.h -o -name sysv4.h)
+do
+  cp -uv $file{,.orig}
+  sed -e 's@/lib\(64\)\?\(32\)\?/ld@/tools&amp;@g' \
+      -e 's@/usr@/tools@g' $file.orig &gt; $file
+  echo '
+#undef STANDARD_STARTFILE_PREFIX_1
+#undef STANDARD_STARTFILE_PREFIX_2
+#define STANDARD_STARTFILE_PREFIX_1 "/tools/lib/"
+#define STANDARD_STARTFILE_PREFIX_2 ""' &gt;&gt; $file
+  touch $file.orig
+done</userinput></screen>
+
+    <para>在上述的情况中，似乎很难跟得上，让我们打断一下。
+    首先，我们查找在 <filename
+    class="directory">gcc/config</filename> 目录下所有名为
+    <filename>linux.h</filename>, <filename>linux64.h</filename> 或
+    <filename>sysv4.h</filename> 的文件。对于每个找到的文件，我们复制它为一个同名但是带上 <quote>.orig</quote> 后缀的文件。
+    然后第一个 sed 语句把 <quote>/tools</quote> 前缀到每个
+    <quote>/lib/ld</quote>, <quote>/lib64/ld</quote> 或
+    <quote>/lib32/ld</quote> 出现的位置，而第二个 sed 语句则替换 <quote>/usr</quote> 的硬编码实例。
+    下一步，我们添加我们用于更改默认 startfile 前缀的定义语句到文件的结尾。
+    注意，在 <quote>/tools/lib/</quote> 中尾随的 <quote>/</quote> 是必需的。
+    最后，我们使用 <command>touch</command> 来更新复制文件的时间标志。
+    当结合 <command>cp -u</command> 使用时，这个就可以防止在命令不经意的运行两次时对原始文件的意外更改。</para>
+
+    <para>GCC 不会正确的检测栈保护，它导致了 Glibc-&glibc-version; 构建的问题，所以通过发出下列命令来修复:</para>
+
+<screen><userinput remap="pre">sed -i '/k prot/agcc_cv_libc_provides_ssp=yes' gcc/configure</userinput></screen>
+
+    <para>不要构建 .info 文件。它们在这里不需要，并且会被当前版本的 <command>makeinfo</command> 打断。</para>
+
+<screen><userinput remap="pre">sed -i 's/BUILD_INFO=info/BUILD_INFO=/' gcc/configure</userinput></screen>
 
     <para>GCC 文档建议在源目录外的一个专用构建目录中构建 GCC:</para>
 
 <screen><userinput remap="pre">mkdir -v ../gcc-build
 cd ../gcc-build</userinput></screen>
 
-    <para>Prepare GCC for compilation:</para>
+    <para>准备好 GCC 进行编译:</para>
 
-<screen><userinput remap="configure">../gcc-&gcc-version;/configure \
-    --target=$LFS_TGT --prefix=/tools \
-    --disable-nls --disable-shared --disable-multilib \
-    --disable-decimal-float --disable-threads \
-    --disable-libmudflap --disable-libssp \
-    --disable-libgomp --disable-libquadmath \
-    --disable-target-libiberty --disable-target-zlib \
-    --enable-languages=c --without-ppl --without-cloog \
+<screen><userinput remap="configure">../gcc-&gcc-version;/configure         \
+    --target=$LFS_TGT          \
+    --prefix=/tools            \
+    --with-sysroot=$LFS        \
+    --with-newlib              \
+    --without-headers          \
+    --with-local-prefix=/tools \
+    --with-native-system-header-dir=/tools/include \
+    --disable-nls              \
+    --disable-shared           \
+    --disable-multilib         \
+    --disable-decimal-float    \
+    --disable-threads          \
+    --disable-libmudflap       \
+    --disable-libssp           \
+    --disable-libgomp          \
+    --disable-libquadmath      \
+    --enable-languages=c       \
     --with-mpfr-include=$(pwd)/../gcc-&gcc-version;/mpfr/src \
     --with-mpfr-lib=$(pwd)/mpfr/src/.libs</userinput></screen>
 
     <variablelist>
       <title>配置选项的含义:</title>
+
+      <varlistentry>
+        <term><parameter>--with-newlib</parameter></term>
+        <listitem>
+          <para>由于能够运作的 C 库文件还未可用，所以这个确保 inhibit_libc 常量在构建 libgcc 时被定义。
+          这个防止了任何需要 libc 支持的代码的编译。</para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term><parameter>--without-headers</parameter></term>
+        <listitem>
+          <para>当创建一个完整的交叉编译器时，GCC 需要一个和目标系统兼容的标准头文件。
+          对于我们的目标来说，这些头文件不是必需的。这个开关防止 GCC 查找它们。</para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term><parameter>--with-local-prefix=/tools</parameter></term>
+        <listitem>
+          <para>本地前缀是 GCC 将会在系统中搜索本地已安装的包含文件的位置。默认是 <filename>/usr/local</filename>。
+          设置这个为 <filename>/tools</filename> 有助于保持
+          <filename>/usr/local</filename> 的宿主位置在这个 GCC 的搜索路径之外。</para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term><parameter>--with-native-system-header-dir=/tools/include</parameter></term>
+        <listitem>
+          <para>按默认，GCC 搜索 <filename>/usr/include</filename> 查找系统头文件。
+          结合 sysroot 开关，这个将会正常的翻译为
+          <filename>$LFS/usr/include</filename>。
+          尽管如此，在下两个部分中安装的头文件将会转到 <filename>$LFS/tools/include</filename>。
+          这个开关参数确保 gcc 将会正确的查找它们。在 GCC 的第二次通过时，这同一个开关参数将确保没有头文件会从宿主系统中找到。</para>
+        </listitem>
+      </varlistentry>
 
       <varlistentry>
         <term><parameter>--disable-shared</parameter></term>
@@ -86,9 +173,9 @@ cd ../gcc-build</userinput></screen>
       </varlistentry>
 
       <varlistentry>
-        <term><parameter>--disable-decimal-float, --disable-threads, --disable-libmudflap, --disable-libssp, --disable-libgomp, --disable-libquadmath --disable-target-libiberty --disable-target-zlib</parameter></term>
+        <term><parameter>--disable-decimal-float, --disable-threads, --disable-libmudflap, --disable-libssp, --disable-libgomp, --disable-libquadmath</parameter></term>
         <listitem>
-          <para>这些开关参数禁用了十进制浮点扩展、线程、libmudflap、libssp 以及 libgomp、libquadmath、libiberty 和 zlib 相应的支持。这些功能在构建交叉编译器时将无法编译，并且也不是交叉编译临时 libc 任务所需要的。</para>
+          <para>这些开关参数相应的禁用了十进制浮点扩展、线程、libmudflap、libssp 以及 libgomp 及 libquadmath 的支持。这些功能在构建交叉编译器时将无法编译，并且也不是交叉编译临时 libc 任务所需要的。</para>
         </listitem>
       </varlistentry>
 
@@ -103,13 +190,6 @@ cd ../gcc-build</userinput></screen>
         <term><parameter>--enable-languages=c</parameter></term>
         <listitem>
           <para>这个选项确保只有 C 编译器被构建。只是现在需要的唯一语言。</para>
-        </listitem>
-      </varlistentry>
-
-      <varlistentry>
-        <term><parameter>--without-ppl, --without-cloog</parameter></term>
-        <listitem>
-          <para>这些开关防止 GCC 针对 PPL 和 CLooG 库构建，它们现在可能已存在于宿主系统上，但是在 chroot 环境中将不可用。</para>
         </listitem>
       </varlistentry>
 
@@ -130,8 +210,7 @@ cd ../gcc-build</userinput></screen>
     <parameter>-lgcc_eh</parameter>。这个依赖关系可以通过构建到 <filename>libgcc.a</filename> 的符号链接得到满足。
     因为文件将会最终包含正常包含在 <filename>libgcc_eh.a</filename> 的对象:</para>
 
-<screen><userinput remap="install">ln -vs libgcc.a `$LFS_TGT-gcc -print-libgcc-file-name | \
-    sed 's/libgcc/&amp;_eh/'`</userinput></screen>
+<screen><userinput remap="install">ln -sv libgcc.a `$LFS_TGT-gcc -print-libgcc-file-name | sed 's/libgcc/&amp;_eh/'`</userinput></screen>
 
   </sect2>
 

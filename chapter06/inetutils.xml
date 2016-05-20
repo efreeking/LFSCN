@@ -40,9 +40,19 @@
   <sect2 role="installation">
     <title>Inetutils 的安装</title>
 
-<screen><userinput remap="configure">./configure --prefix=/usr --libexecdir=/usr/sbin \
-    --localstatedir=/var --disable-ifconfig \
-    --disable-logger --disable-syslogd --disable-whois \
+    <para>修复一个本包和 Glibc-&glibc-version; 之间的不兼容</para>
+
+<screen><userinput remap="pre">sed -i -e '/gets is a/d' lib/stdio.in.h</userinput></screen>
+
+    <para>准备 Inetutils 进行编译:</para>
+
+<screen><userinput remap="configure">./configure --prefix=/usr  \
+    --libexecdir=/usr/sbin \
+    --localstatedir=/var   \
+    --disable-ifconfig     \
+    --disable-logger       \
+    --disable-syslogd      \
+    --disable-whois        \
     --disable-servers</userinput></screen>
 
     <variablelist>
@@ -101,15 +111,15 @@
 
     <para>安装包:</para>
 
-<screen><userinput remap="install">make install
+<screen><userinput remap="install">make install</userinput></screen>
+<!-- The html file generation is broken as of texinfo-5.0
 make -C doc html
 make -C doc install-html docdir=/usr/share/doc/inetutils-&inetutils-version;</userinput></screen>
+-->
+    <para>移动某些程序以便它们在 <filename
+    class='directory'>/usr</filename> 不可访问时可供使用:</para>
 
-    <para>移动某些程序到它们的兼容 FHS 的位置:</para>
-
-<screen><userinput remap="install">mv -v /usr/bin/{hostname,ping,ping6} /bin
-mv -v /usr/bin/traceroute /sbin</userinput></screen>
-
+<screen><userinput remap="install">mv -v /usr/bin/{hostname,ping,ping6,traceroute} /bin</userinput></screen>
   </sect2>
 
   <sect2 id="contents-inetutils" role="content">

@@ -48,11 +48,11 @@
 
 <screen><userinput remap="make">make</userinput></screen>
 
+    <note><para>测试花费非常长的时间: 超过 30 SBUs。不建议运行测试。</para></note>
+
     <para>要测试结果，执行:</para>
 
 <screen><userinput remap="test">make check</userinput></screen>
-
-    <para>这个要花费长时间，大约 10 SBUs。</para>
 
     <para>安装包:</para>
 
@@ -69,11 +69,11 @@
       <segtitle>安装目录</segtitle>
 
       <seglistitem>
-        <seg>acinstall, aclocal, aclocal-&automake-version;, automake,
-        automake-&automake-version;, compile, config.guess, config.sub,
+        <seg>acinstall, aclocal, aclocal-&am-minor-version;, automake,
+        automake-&am-minor-version;, compile, config.guess, config.sub,
         depcomp, elisp-comp, install-sh, mdate-sh, missing, mkinstalldirs,
         py-compile, symlink-tree 和 ylwrap</seg>
-        <seg>/usr/share/aclocal-1.11, /usr/share/automake-1.11,
+        <seg>/usr/share/aclocal-&am-minor-version;, /usr/share/automake-&am-minor-version;,
         /usr/share/doc/automake-&automake-version;</seg>
       </seglistitem>
     </segmentedlist>
@@ -104,11 +104,11 @@
       </varlistentry>
 
       <varlistentry id="aclocalversion">
-        <term><command>aclocal-&automake-version;</command></term>
+        <term><command>aclocal-&am-minor-version;</command></term>
         <listitem>
           <para>到 <command>aclocal</command> 的硬链接</para>
           <indexterm zone="ch-system-automake aclocalversion">
-            <primary sortas="b-aclocal-&automake-version;">aclocal-&automake-version;</primary>
+            <primary sortas="b-aclocal-&am-minor-version;">aclocal-&am-minor-version;</primary>
           </indexterm>
         </listitem>
       </varlistentry>
@@ -126,11 +126,11 @@
       </varlistentry>
 
       <varlistentry id="automake-version">
-        <term><command>automake-&automake-version;</command></term>
+        <term><command>automake-&am-minor-version;</command></term>
         <listitem>
           <para>到 <command>automake</command> 的硬链接</para>
           <indexterm zone="ch-system-automake automake-version">
-            <primary sortas="b-automake-&automake-version;">automake-&automake-version;</primary>
+            <primary sortas="b-automake-&am-minor-version;">automake-&am-minor-version;</primary>
           </indexterm>
         </listitem>
       </varlistentry>

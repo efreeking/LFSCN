@@ -40,15 +40,20 @@
   <sect2 role="installation">
     <title>GRUB 的安装</title>
 
+    <para>修复这个包和 Glibc-&glibc-version; 之间的不兼容:</para>
+
+<screen><userinput remap="pre">sed -i -e '/gets is a/d' grub-core/gnulib/stdio.in.h</userinput></screen>
+
     <para>准备 GRUB 编译:</para>
 
-<screen><userinput remap="configure">./configure --prefix=/usr           \
-             --sysconfdir=/etc      \
-             --disable-grub-emu-usb \
-             --disable-efiemu       \
-             --disable-werror</userinput></screen>
+<screen><userinput remap="configure">./configure --prefix=/usr          \
+            --sysconfdir=/etc      \
+            --disable-grub-emu-usb \
+            --disable-efiemu       \
+            --disable-werror</userinput></screen>
 
-    <para>--disable 通过禁用不是真的被 LFS 需要的功能和测试程序来最小化要构建的内容。</para>
+    <para>--disable-werror 选项使构建能够在带有由最近的 flex 版本引入的警告情况下完成。
+    其他 --disable 开关符通过禁用了 LFS 不需要的功能和测试程序来最小化构建的内容。</para>
 
     <para>编译包:</para>
 
@@ -72,11 +77,15 @@
       <segtitle>安装目录</segtitle>
 
       <seglistitem>
-        <seg>grub-bin2h, grub-editenv, grub-install, grub-mkconfig,
-        grub-mkdevicemap, grub-mkelfimage, grub-mkimage, grub-mkisofs,
-        grub-mkpasswd-pbkdf2, grub-mkrelpath, grub-mkrescue, grub-probe,
-        grub-reboot, grub-script-check, grub-set-default, grub-setup</seg>
-        <seg>/usr/lib/grub, /etc/grub.d, /usr/share/grub</seg>
+
+       <seg>                      grub-bios-setup, grub-editenv,     grub-fstest,
+            grub-install,         grub-kbdcomp,    grub-menulst2cfg, grub-mkconfig,
+                                  grub-mkimage,    grub-mklayout,    grub-mknetdir,
+            grub-mkpasswd-pbkdf2, grub-mkrelpath,  grub-mkrescue,    grub-mkstandalone,
+            grub-ofpathname,      grub-probe,      grub-reboot,      grub-script-check,
+            grub-set-default,                      grub-sparc64-setup </seg>
+
+        <seg>/usr/lib/grub, /etc/grub.d, /usr/share/grub, /boot/grub</seg>
       </seglistitem>
     </segmentedlist>
 
@@ -85,12 +94,12 @@
       <?dbfo list-presentation="list"?>
       <?dbhtml list-presentation="table"?>
 
-      <varlistentry id="grub-bin2h">
-        <term><command>grub-bin2h</command></term>
+      <varlistentry id="grub-bios-setup">
+        <term><command>grub-bios-setup</command></term>
         <listitem>
-          <para>转换一个二进制文件为一个 C 头文件</para>
-          <indexterm zone="ch-system-grub grub-bin2h">
-            <primary sortas="b-grub-bin2h">grub-bin2h</primary>
+          <para>是一个用于 grub-install 的助手程序</para>
+          <indexterm zone="ch-system-grub grub-bios-setup">
+            <primary sortas="b-grub-bios-setup">grub-bios-setup</primary>
           </indexterm>
         </listitem>
       </varlistentry>
@@ -105,12 +114,43 @@
         </listitem>
       </varlistentry>
 
-      <varlistentry id="grub-install">
+       <varlistentry id="grub-fstest">
+        <term><command>grub-fstest</command></term>
+        <listitem>
+          <para>调试文件系统驱动程序的工具</para>
+          <indexterm zone="ch-system-grub grub-fstest">
+            <primary sortas="b-grub-fstest">grub-fstest</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+     <varlistentry id="grub-install">
         <term><command>grub-install</command></term>
         <listitem>
           <para>在您的驱动器上安装 GRUB</para>
           <indexterm zone="ch-system-grub grub-install">
             <primary sortas="b-grub-install">grub-install</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="grub-kbdcomp">
+        <term><command>grub-kbdcomp</command></term>
+        <listitem>
+          <para>转换一个 xkb 布局为一个能够被 GRUB 识别的布局的脚本</para>
+          <indexterm zone="ch-system-grub grub-kbdcomp">
+            <primary sortas="b-grub-kbdcomp">grub-kbdcomp</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="grub-menulst2cfg">
+        <term><command>grub-menulst2cfg</command></term>
+        <listitem>
+          <para>转换一个 GRUB Legacy <filename>menu.lst</filename>
+          为一个能够用于 GRUB 2 的 <filename>grub.cfg</filename></para>
+          <indexterm zone="ch-system-grub grub-menulst2cfg">
+            <primary sortas="b-grub-menulst2cfg">grub-menulst2cfg</primary>
           </indexterm>
         </listitem>
       </varlistentry>
@@ -125,26 +165,6 @@
         </listitem>
       </varlistentry>
 
-      <varlistentry id="grub-mkdevicemap">
-        <term><command>grub-mkdevicemap</command></term>
-        <listitem>
-          <para>自动生成一个设备映射文件</para>
-          <indexterm zone="ch-system-grub grub-mkdevicemap">
-            <primary sortas="b-grub-mkdevicemap">grub-mkdevicemap</primary>
-          </indexterm>
-        </listitem>
-      </varlistentry>
-
-      <varlistentry id="grub-mkelfimage">
-        <term><command>grub-mkelfimage</command></term>
-        <listitem>
-          <para>建立一个 GRUB 的可引导镜像</para>
-          <indexterm zone="ch-system-grub grub-mkelfimage">
-            <primary sortas="b-grub-mkelfimage">grub-mkelfimage</primary>
-          </indexterm>
-        </listitem>
-      </varlistentry>
-
       <varlistentry id="grub-mkimage">
         <term><command>grub-mkimage</command></term>
         <listitem>
@@ -155,12 +175,22 @@
         </listitem>
       </varlistentry>
 
-      <varlistentry id="grub-mkisofs">
-        <term><command>grub-mkisofs</command></term>
+      <varlistentry id="grub-mklayout">
+        <term><command>grub-mklayout</command></term>
         <listitem>
-          <para>创建一个可引导 ISO 镜像</para>
-          <indexterm zone="ch-system-grub grub-mkisofs">
-            <primary sortas="b-grub-mkisofs">grub-mkisofs</primary>
+          <para>生成一个 GRUB 键盘布局文件</para>
+          <indexterm zone="ch-system-grub grub-mklayout">
+            <primary sortas="b-grub-mklayout">grub-mklayout</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="grub-mknetdir">
+        <term><command>grub-mknetdir</command></term>
+        <listitem>
+          <para>准备一个 GRUB 网络引导目录</para>
+          <indexterm zone="ch-system-grub grub-mknetdir">
+            <primary sortas="b-grub-mknetdir">grub-mknetdir</primary>
           </indexterm>
         </listitem>
       </varlistentry>
@@ -191,6 +221,26 @@
           <para>建立一个适合软盘或 CDROM/DVD 的 GRUB 镜像</para>
           <indexterm zone="ch-system-grub grub-mkrescue">
             <primary sortas="b-grub-mkrescue">grub-mkrescue</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="grub-mkstandalone">
+        <term><command>grub-mkstandalone</command></term>
+        <listitem>
+          <para>生成一个独立的镜像</para>
+          <indexterm zone="ch-system-grub grub-mkstandalone">
+            <primary sortas="b-grub-mkstandalone">grub-mkstandalone</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="grub-ofpathname">
+        <term><command>grub-ofpathname</command></term>
+        <listitem>
+          <para>是一个打印 GRUB 设备的路径的助手程序</para>
+          <indexterm zone="ch-system-grub grub-ofpathname">
+            <primary sortas="b-grub-ofpathname">grub-ofpathname</primary>
           </indexterm>
         </listitem>
       </varlistentry>
@@ -235,12 +285,12 @@
         </listitem>
       </varlistentry>
 
-      <varlistentry id="grub-setup">
-        <term><command>grub-setup</command></term>
+      <varlistentry id="grub-sparc64-setup">
+        <term><command>grub-sparc64-setup</command></term>
         <listitem>
-          <para>设置从一个设备引导的镜像</para>
-          <indexterm zone="ch-system-grub grub-setup">
-            <primary sortas="b-grub-setup">grub-setup</primary>
+          <para>是一个用于 grub-setup 的助手程序</para>
+          <indexterm zone="ch-system-grub grub-sparc64-setup">
+            <primary sortas="b-grub-sparc64-setup">grub-setup</primary>
           </indexterm>
         </listitem>
       </varlistentry>

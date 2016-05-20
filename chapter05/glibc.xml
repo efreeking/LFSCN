@@ -43,13 +43,13 @@
   <sect2 role="installation">
     <title>Glibc 的安装</title>
 
-    <para>修复一个防止 Glibc 使用 GCC-&gcc-version; 构建的错误:</para>
+    <para>在某些情况下，特别是 LFS 7.1，rpc 头文件未正确安装。
+    测试会查看他们是否已经在宿主系统中安装，如果没安装的话则会安装它们:</para>
 
-    <screen><userinput remap="pre">patch -Np1 -i ../&glibc-gcc_fix-patch;</userinput></screen>
-
-    <para>还要处理一个头文件检查(它会由于此时不完整的构建环境而失败):</para>
-
-    <screen><userinput remap="pre">patch -Np1 -i ../&glibc-cpuid-patch;</userinput></screen>
+<screen><userinput remap="pre">if [ ! -r /usr/include/rpc/types.h ]; then
+  su -c 'mkdir -p /usr/include/rpc'
+  su -c 'cp -v sunrpc/rpc/*.h /usr/include/rpc'
+fi</userinput></screen>
 
     <para>Glibc 文档推荐在源代码目录外，在一个专用的构建目录中构建 Glibc:</para>
 
@@ -68,11 +68,16 @@ esac</userinput></screen>
 
     <para>下一步，准备好 Glibc 用于编译:</para>
 
-<screen><userinput remap="configure">../glibc-&glibc-version;/configure --prefix=/tools \
-    --host=$LFS_TGT --build=$(../glibc-&glibc-version;/scripts/config.guess) \
-    --disable-profile --enable-add-ons \
-    --enable-kernel=2.6.25 --with-headers=/tools/include \
-    libc_cv_forced_unwind=yes libc_cv_c_cleanup=yes</userinput></screen>
+<screen><userinput remap="configure">../glibc-&glibc-version;/configure                             \
+      --prefix=/tools                                 \
+      --host=$LFS_TGT                                 \
+      --build=$(../glibc-&glibc-version;/scripts/config.guess) \
+      --disable-profile                               \
+      --enable-kernel=2.6.25                          \
+      --with-headers=/tools/include                   \
+      libc_cv_forced_unwind=yes                       \
+      libc_cv_ctors_header=yes                        \
+      libc_cv_c_cleanup=yes</userinput></screen>
 
     <variablelist>
       <title>配置选项的含义:</title>
@@ -90,13 +95,6 @@ esac</userinput></screen>
         <term><parameter>--disable-profile</parameter></term>
         <listitem>
           <para>这个不带分析 (profiling) 信息构建库。如果需要临时工具上的分析，则省略这个选项。</para>
-        </listitem>
-      </varlistentry>
-
-      <varlistentry>
-        <term><parameter>--enable-add-ons</parameter></term>
-        <listitem>
-          <para>这个告诉 Glibc 使用 NPTL 附加件作为它的线程库。</para>
         </listitem>
       </varlistentry>
 
@@ -134,6 +132,15 @@ esac</userinput></screen>
         </listitem>
       </varlistentry>
 
+      <varlistentry>
+        <term><parameter>libc_cv_ctors_header=yes</parameter></term>
+        <listitem>
+          <para>Simlarly, we pass libc_cv_ctors_header=yes through to the
+          <command>configure</command> script so that the test is skipped and
+          gcc constructor support is configured.</para>
+        </listitem>
+      </varlistentry>
+
     </variablelist>
 
     <para>在这个阶段，可能会出现下列警告:</para>
@@ -167,6 +174,32 @@ esac</userinput></screen>
     <para>安装软件包:</para>
 
 <screen><userinput remap="install">make install</userinput></screen>
+
+  <caution>
+    <para>此时此刻，无可避免要停止并确保新工具链的基本功能(编译和链接)如预期工作。要执行完整性检查，运行下列命令:</para>
+
+<screen><userinput>echo 'main(){}' &gt; dummy.c
+$LFS_TGT-gcc dummy.c
+readelf -l a.out | grep ': /tools'</userinput></screen>
+
+    <para>如果所有事情正常工作，那么应该没有错误，而最后的命令的输出将会是这种形式的:</para>
+
+<screen><computeroutput>[Requesting program interpreter: /tools/lib/ld-linux.so.2]</computeroutput></screen>
+
+    <para>注意，<filename class="directory">/tools/lib</filename>, 或
+    <filename class="directory">/tools/lib64</filename>(对于 64 位机器)作为动态链接器的前缀出现。</para>
+
+    <para>如果输出不是如上所示，或者完全没有输出，那么可能有某些地方出错了。审查并重新跟踪各步骤找出问题所在并纠正它。这个问题必须在继续前解决。</para>
+
+    <para>一旦万事俱备，则清除测试文件:</para>
+
+<screen><userinput>rm -v dummy.c a.out</userinput></screen>
+
+  </caution>
+
+  <note><para>在下一节中构建 Binutils 将会作为对工具栏是否正确构建的一个额外检查。
+  如果 Binutils 无法构建，这表示先前的 Binutils, GCC 或 Glibc
+  安装的某些地方出错了。</para></note>
 
   </sect2>
 

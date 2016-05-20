@@ -40,10 +40,6 @@
   <sect2 role="installation">
     <title>Patch 的安装</title>
 
-    <para>应用一个补丁避免测试套装运行需要 <command>ed</command> 的测试:</para>
-
-<screen><userinput remap="pre">patch -Np1 -i ../&patch-test-patch;</userinput></screen>
-
     <para>准备 Patch 编译:</para>
 
 <screen><userinput remap="configure">./configure --prefix=/usr</userinput></screen>

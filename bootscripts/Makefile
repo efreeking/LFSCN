@@ -24,15 +24,14 @@ create-dirs:
 	install -d -m ${DIRMODE}  ${LIBDIR}
 	install -d -m ${DIRMODE}  ${MAN8}
 	install -d -m ${DIRMODE}  ${SBIN}
-	ln -svf       services    ${DESTDIR}/lib/lsb
-	ln -sf        rc.d/init.d ${EXTDIR}/init.d
+	ln -sfn       services    ${DESTDIR}/lib/lsb
+	ln -sfn       rc.d/init.d ${EXTDIR}/init.d
 
 files: create-dirs 
 	install -m ${MODE} lfs/init.d/checkfs       ${EXTDIR}/rc.d/init.d/
 	install -m ${MODE} lfs/init.d/cleanfs       ${EXTDIR}/rc.d/init.d/
 	install -m ${MODE} lfs/init.d/halt          ${EXTDIR}/rc.d/init.d/
 	install -m ${MODE} lfs/init.d/console       ${EXTDIR}/rc.d/init.d/
-	install -m ${MODE} lfs/init.d/consolelog    ${EXTDIR}/rc.d/init.d/
 	install -m ${CONFMODE} lfs/init.d/functions ${EXTDIR}/rc.d/init.d/
 	install -m ${MODE} lfs/init.d/localnet      ${EXTDIR}/rc.d/init.d/
 	install -m ${MODE} lfs/init.d/modules       ${EXTDIR}/rc.d/init.d/
@@ -52,7 +51,7 @@ files: create-dirs
 	install -m ${MODE} lfs/sbin/ifup            ${SBIN}
 	install -m ${MODE} lfs/sbin/ifdown          ${SBIN}
 	install -m ${MODE} lfs/sbin/ifup.8          ${MAN8}
-	ln -sf ifup.8                               ${MAN8}/ifdown.8
+	ln -sf  ifup.8                              ${MAN8}/ifdown.8
 	install -m ${MODE} lfs/lib/services/ipv4-static-route  ${LIBDIR}
 	install -m ${MODE} lfs/lib/services/ipv4-static        ${LIBDIR}
 	install -m ${CONFMODE} lfs/lib/services/init-functions ${LIBDIR}
@@ -65,9 +64,6 @@ files: create-dirs
 	if [ ! -f ${EXTDIR}/sysconfig/udev_retry  ]; then \
           install -m ${CONFMODE} lfs/sysconfig/udev_retry  ${EXTDIR}/sysconfig/ ;\
         fi
-	if [ ! -f ${EXTDIR}/sysconfig/rc          ]; then \
-          install -m ${CONFMODE} lfs/sysconfig/rc          ${EXTDIR}/sysconfig/ ;\
-        fi
 	if [ ! -f ${EXTDIR}/sysconfig/rc.site     ]; then \
           install -m ${CONFMODE} lfs/sysconfig/rc.site     ${EXTDIR}/sysconfig/ ;\
         fi
@@ -76,7 +72,6 @@ links: rcS rc0 rc1 rc2 rc3 rc4 rc5 rc6
 
 rcS: files
 	ln -sf ../init.d/mountvirtfs ${EXTDIR}/rc.d/rcS.d/S00mountvirtfs
-	ln -sf ../init.d/consolelog  ${EXTDIR}/rc.d/rcS.d/S02consolelog
 	ln -sf ../init.d/modules     ${EXTDIR}/rc.d/rcS.d/S05modules
 	ln -sf ../init.d/localnet    ${EXTDIR}/rc.d/rcS.d/S08localnet
 	ln -sf ../init.d/udev        ${EXTDIR}/rc.d/rcS.d/S10udev
@@ -92,8 +87,8 @@ rc0: files
 	ln -sf ../init.d/network     ${EXTDIR}/rc.d/rc0.d/K80network
 	ln -sf ../init.d/sysklogd    ${EXTDIR}/rc.d/rc0.d/K90sysklogd
 	ln -sf ../init.d/sendsignals ${EXTDIR}/rc.d/rc0.d/S60sendsignals
+	ln -sf ../init.d/swap        ${EXTDIR}/rc.d/rc0.d/S65swap
 	ln -sf ../init.d/mountfs     ${EXTDIR}/rc.d/rc0.d/S70mountfs
-	ln -sf ../init.d/swap        ${EXTDIR}/rc.d/rc0.d/S80swap
 	ln -sf ../init.d/localnet    ${EXTDIR}/rc.d/rc0.d/S90localnet
 	ln -sf ../init.d/halt        ${EXTDIR}/rc.d/rc0.d/S99halt
 
@@ -121,8 +116,8 @@ rc6: files
 	ln -sf ../init.d/network     ${EXTDIR}/rc.d/rc6.d/K80network
 	ln -sf ../init.d/sysklogd    ${EXTDIR}/rc.d/rc6.d/K90sysklogd
 	ln -sf ../init.d/sendsignals ${EXTDIR}/rc.d/rc6.d/S60sendsignals
+	ln -sf ../init.d/swap        ${EXTDIR}/rc.d/rc6.d/S65swap
 	ln -sf ../init.d/mountfs     ${EXTDIR}/rc.d/rc6.d/S70mountfs
-	ln -sf ../init.d/swap        ${EXTDIR}/rc.d/rc6.d/S80swap
 	ln -sf ../init.d/localnet    ${EXTDIR}/rc.d/rc6.d/S90localnet
 	ln -sf ../init.d/reboot      ${EXTDIR}/rc.d/rc6.d/S99reboot
 

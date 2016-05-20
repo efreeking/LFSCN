@@ -34,10 +34,10 @@ mkdir -v $LFS/usr
 mount -v -t ext3 /dev/<replaceable>&lt;yyy&gt;</replaceable> $LFS/usr</userinput></screen>
 
   <para>替换 <replaceable>&lt;xxx&gt;</replaceable> 和
-  <replaceable>&lt;yyy&gt;</replaceable> 伟相应的分区名称。</para>
+  <replaceable>&lt;yyy&gt;</replaceable> 为相应的分区名称。</para>
 
   <para>确保这个新分区的挂载没有太多的权限限制
-  (譬如 <option>nosuid</option>、<option>nodev</option> 或 <option>noatime</option> 选项)。不带任何参数运行 <command>mount</command> 来查看设置了什么选项给挂载的 LFS 分区。如果设置了 <option>nosuid</option>、<option>nodev</option> 或 <option>noatime</option>，分区将需要重新挂载。</para>
+  (譬如 <option>nosuid</option> 或 <option>nodev</option> 选项)。不带任何参数运行 <command>mount</command> 来查看设置了什么选项给挂载的 LFS 分区。如果设置了 <option>nosuid</option>、<option>nodev</option> 或 <option>noatime</option>，分区将需要重新挂载。</para>
 
   <para>如果您正使用<systemitem
   class="filesystem">交换</systemitem>分区，确保使用了 <command>swapon</command> 命令启用了:</para>

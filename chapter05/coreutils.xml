@@ -71,12 +71,12 @@
     <para>安装软件包:</para>
 
 <screen><userinput remap="install">make install</userinput></screen>
-
+<!--
     <para>上述命令拒绝安装 <filename>su</filename>，因为程序不能以非特权用户的身份安装 setuid 的 root。使用不同的名称手动安装它，我们可以在最终系统中，以非特权用户身份使用它运行测试，而且我们可以在我们的 PATH 中首先保留一个来自我们宿主的可能有用的 <command>su</command>。
     使用以下命令安装:</para>
 
 <screen><userinput remap="install">cp -v src/su /tools/bin/su-tools</userinput></screen>
-
+-->
   </sect2>
 
   <sect2 role="content">

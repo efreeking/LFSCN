@@ -43,6 +43,7 @@ WCOL=$((${COL} - 2))
 SET_COL="\\033[${COL}G"      # at the $COL char
 SET_WCOL="\\033[${WCOL}G"    # at the $WCOL char
 CURS_UP="\\033[1A\\033[0G"   # Up one line, at the 0'th char
+CURS_ZERO="\\033[0G"
 
 ## Set color commands, used via echo
 # Please consult `man console_codes for more information
@@ -59,6 +60,16 @@ WARNING="\\033[1;33m"        # Warnings are yellow
 FAILURE="\\033[1;31m"        # Failures are red
 INFO="\\033[1;36m"           # Information is light cyan
 BRACKET="\\033[1;34m"        # Brackets are blue
+
+# Use a colored prefix
+BMPREFIX="     "
+SUCCESS_PREFIX="${SUCCESS}  *  ${NORMAL}"
+FAILURE_PREFIX="${FAILURE}*****${NORMAL}"
+WARNING_PREFIX="${WARNING} *** ${NORMAL}"
+
+SUCCESS_SUFFIX="${BRACKET}[${SUCCESS}  OK  ${BRACKET}]${NORMAL}"
+FAILURE_SUFFIX="${BRACKET}[${FAILURE} FAIL ${BRACKET}]${NORMAL}"
+WARNING_SUFFIX="${BRACKET}[${WARNING} WARN ${BRACKET}]${NORMAL}"
 
 BOOTLOG=/run/var/bootlog
 KILLDELAY=3
@@ -147,7 +158,7 @@ start_daemon()
 
             0)
                 # Program is already running correctly, this is a 
-                # succesful start.
+                # successful start.
                 return 0
                 ;;
 
@@ -171,7 +182,6 @@ start_daemon()
     fi
 
     # Do the start!
-
     nice -n "${nice}" "${@}"
 }
 
@@ -334,10 +344,6 @@ killproc()
                         sleep 1
                         # Check again, and fail if still running
                         kill -0 "${pid}" 2> /dev/null && return 1
-                    else
-                        # just check one last time and if still alive, fail
-                        sleep 1
-                        kill -0 "${pid}" 2> /dev/null && return 1
                     fi
                 fi
             done
@@ -447,7 +453,7 @@ pidofproc()
         kill -0 ${pid} 2> /dev/null
 
         if [ "${?}" -eq "0" ]; then
-            lpids="${pids}${pid} "
+            lpids="${lpids}${pid} "
         else
             exitstatus="1"
         fi
@@ -470,34 +476,41 @@ pidofproc()
 # Inputs: -p pidfile, use the specified pidfile instead of pidof               #
 #         pathname, path to the specified program                              #
 #                                                                              #
-# Note: Output to stdout.  Not logged.                                         #
-#                                                                              #
 # Return values:                                                               #
 #       0 - Status printed                                                     #
 #       1 - Input error. The daemon to check was not specified.                #
 ################################################################################
 statusproc()
 {
+   local pidfile
+   local pidlist
+
    if [ "${#}" = "0" ]; then
-      echo "Usage: statusproc {program}"
+      echo "Usage: statusproc [-p pidfle] {program}"
       exit 1
    fi
 
-    local pidfile
-    local pidlist
+   # Process arguments
+   while true; do
+       case "${1}" in
 
-    # Process arguments
-    while true; do
-      case "${1}" in
+           -p)
+               pidfile="${2}"
+               shift 2
+               ;;
 
-          -p)
-              pidfile="${2}"
-              shift 2
-              ;;
-      esac
+           *)
+               if [ -n "${2}" ]; then
+                   echo "Too many arguments"
+                   return 1
+               else
+                   break
+               fi
+               ;;
+       esac
    done
 
-   if [ -z "${pidfile}" ]; then
+   if [ -n "${pidfile}" ]; then
       pidlist=`pidofproc -p "${pidfile}" $@`
    else
       pidlist=`pidofproc $@`
@@ -509,18 +522,18 @@ statusproc()
    base="${1##*/}"
 
    if [ -n "${pidlist}" ]; then
-      echo -e "${INFO}${base} is running with Process" \
+      /bin/echo -e "${INFO}${base} is running with Process" \
          "ID(s) ${pidlist}.${NORMAL}"
    else
       if [ -n "${base}" -a -e "/var/run/${base}.pid" ]; then
-         echo -e "${WARNING}${1} is not running but" \
+         /bin/echo -e "${WARNING}${1} is not running but" \
             "/var/run/${base}.pid exists.${NORMAL}"
       else
-         if [ -z "${pidlist}" -a -n "${pidfile}" ]; then
-            echo -e "${WARNING}${1} is not running" \
+         if [ -n "${pidfile}" -a -e "${pidfile}" ]; then
+            /bin/echo -e "${WARNING}${1} is not running" \
                "but ${pidfile} exists.${NORMAL}"
          else
-            echo -e "${INFO}${1} is not running.${NORMAL}"
+            /bin/echo -e "${INFO}${1} is not running.${NORMAL}"
          fi
       fi
    fi
@@ -553,20 +566,25 @@ timespec()
 ################################################################################
 log_success_msg()
 {
-    echo -n -e "${@}"
-    echo -e "${SET_COL}${BRACKET}[${SUCCESS}  OK  ${BRACKET}]${NORMAL}"
+    /bin/echo -n -e "${BMPREFIX}${@}"
+    /bin/echo -e "${CURS_ZERO}${SUCCESS_PREFIX}${SET_COL}${SUCCESS_SUFFIX}"
+
+    # Strip non-printable characters from log file
+    logmessage=`echo "${@}" | sed 's/\\\033[^a-zA-Z]*.//g'`
 
     timespec
-    echo -e "${STAMP} ${@} OK" >> ${BOOTLOG}
+    /bin/echo -e "${STAMP} ${logmessage} OK" >> ${BOOTLOG}
+    
     return 0
 }
 
 log_success_msg2()
 {
-    echo -n -e "${@}"
-    echo -e "${SET_COL}${BRACKET}[${SUCCESS}  OK  ${BRACKET}]${NORMAL}"
+    /bin/echo -n -e "${BMPREFIX}${@}"
+    /bin/echo -e "${CURS_ZERO}${SUCCESS_PREFIX}${SET_COL}${SUCCESS_SUFFIX}"
 
     echo " OK" >> ${BOOTLOG}
+    
     return 0
 }
 
@@ -583,20 +601,25 @@ log_success_msg2()
 ################################################################################
 log_failure_msg()
 {
-    echo -n -e "${@}"
-    echo -e "${SET_COL}${BRACKET}[${FAILURE} FAIL ${BRACKET}]${NORMAL}"
+    /bin/echo -n -e "${BMPREFIX}${@}"
+    /bin/echo -e "${CURS_ZERO}${FAILURE_PREFIX}${SET_COL}${FAILURE_SUFFIX}"
+
+    # Strip non-printable characters from log file
 
     timespec
-    echo -e "${STAMP} ${@} FAIL" >> ${BOOTLOG}
+    logmessage=`echo "${@}" | sed 's/\\\033[^a-zA-Z]*.//g'`
+    /bin/echo -e "${STAMP} ${logmessage} FAIL" >> ${BOOTLOG}
+    
     return 0
 }
 
 log_failure_msg2()
 {
-    echo -n -e "${@}"
-    echo -e "${SET_COL}${BRACKET}[${FAILURE} FAIL ${BRACKET}]${NORMAL}"
+    /bin/echo -n -e "${BMPREFIX}${@}"
+    /bin/echo -e "${CURS_ZERO}${FAILURE_PREFIX}${SET_COL}${FAILURE_SUFFIX}"
 
     echo "FAIL" >> ${BOOTLOG}
+    
     return 0
 }
 
@@ -611,11 +634,14 @@ log_failure_msg2()
 ################################################################################
 log_warning_msg()
 {
-    echo -n -e "${@}"
-    echo -e "${SET_COL}${BRACKET}[${WARNING} WARN ${BRACKET}]${NORMAL}"
+    /bin/echo -n -e "${BMPREFIX}${@}"
+    /bin/echo -e "${CURS_ZERO}${WARNING_PREFIX}${SET_COL}${WARNING_SUFFIX}"
 
+    # Strip non-printable characters from log file
+    logmessage=`echo "${@}" | sed 's/\\\033[^a-zA-Z]*.//g'`
     timespec
-    echo -e "${STAMP} ${@} WARN" >> ${BOOTLOG}
+    /bin/echo -e "${STAMP} ${logmessage} WARN" >> ${BOOTLOG}
+    
     return 0
 }
 
@@ -630,18 +656,24 @@ log_warning_msg()
 ################################################################################
 log_info_msg()
 {
-    echo -n -e "${@}"
+    /bin/echo -n -e "${BMPREFIX}${@}"
 
+    # Strip non-printable characters from log file
+    logmessage=`echo "${@}" | sed 's/\\\033[^a-zA-Z]*.//g'`
     timespec
-    echo -n -e "${STAMP} ${@}" >> ${BOOTLOG}
+    /bin/echo -n -e "${STAMP} ${logmessage}" >> ${BOOTLOG}
+    
     return 0
 }
 
 log_info_msg2()
 {
-    echo -n -e "${@}"
+    /bin/echo -n -e "${@}"
 
-    echo -n -e "${@}" >> ${BOOTLOG}
+    # Strip non-printable characters from log file
+    logmessage=`echo "${@}" | sed 's/\\\033[^a-zA-Z]*.//g'`
+    /bin/echo -n -e "${logmessage}" >> ${BOOTLOG}
+    
     return 0
 }
 
@@ -740,6 +772,18 @@ wait_for_user()
    # Wait for the user by default
    [ "${HEADLESS=0}" = "0" ] && read ENTER
    return 0
+}
+
+################################################################################
+# is_true()                                                                    #
+#                                                                              #
+# Purpose: Utility to test if a variable is true | yes | 1                     #
+#                                                                              #
+################################################################################
+is_true()
+{
+   [ "$1" = "1" ] || [ "$1" = "yes" ] || [ "$1" = "true" ] ||  [ "$1" = "y" ] ||
+   [ "$1" = "t" ]
 }
 
 # End /lib/lsb/init-functions

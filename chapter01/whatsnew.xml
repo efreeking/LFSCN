@@ -12,9 +12,9 @@
 
   <para>下面是本书上一次发行以来，已作出更新的软件包的列表。</para>
 
-  <note><para>某种程度上，本书的这个版本中做出的主要更改是添加了新的顶级目录 /run。
+  <!--<note><para>某种程度上，本书的这个版本中做出的主要更改是添加了新的顶级目录 /run。
   这个目录是以 tmpfs 加载并用于如 udev 的程序来存储运行时的信息。目录 /var/run 和 /var/lock 也链接到这个目录。
-  引导脚本被更新以适应这种更改。</para></note>
+  引导脚本被更新以适应这种更改。</para></note>-->
 
   <!--
     Every package in the book is listed in the "Upgraded to:" section.
@@ -31,36 +31,39 @@
     <!--<listitem>
       <para>Autoconf &autoconf-version;</para>
     </listitem> -->
-    <!--<listitem>
+    <listitem>
       <para>Automake &automake-version;</para>
-    </listitem> -->
+    </listitem>
     <!--<listitem>
       <para>Bash &bash-version;</para>
     </listitem>-->
     <!--<listitem>
       <para>Berkeley DB &db-version;</para>
     </listitem> -->
-    <!--<listitem>
+    <listitem>
       <para>Binutils &binutils-version;</para>
-    </listitem>-->
-    <!--<listitem>
+    </listitem>
+    <listitem>
       <para>Bison &bison-version;</para>
-    </listitem>-->
+    </listitem>
     <!--<listitem>
       <para>Bzip2 &bzip2-version;</para>
     </listitem>-->
-    <!--<listitem>
+    <listitem>
+      <para>Check &check-version;</para>
+    </listitem>
+    <listitem>
       <para>Coreutils &coreutils-version;</para>
-    </listitem>-->
+    </listitem>
     <!--<listitem>
       <para>DejaGNU &dejagnu-version;</para>
     </listitem>-->
     <!--<listitem>
       <para>Diffutils &diffutils-version;</para>
     </listitem>-->
-    <!--<listitem>
+    <listitem>
       <para>E2fsprogs &e2fsprogs-version;</para>
-    </listitem>-->
+    </listitem>
     <!--<listitem>
       <para>Expect &expect-version;</para>
     </listitem>-->
@@ -73,30 +76,30 @@
     <!--<listitem>
       <para>Flex &flex-version;</para>
     </listitem>-->
-    <!--<listitem>
+    <listitem>
       <para>Gawk &gawk-version;</para>
-    </listitem>-->
-    <!--<listitem>
+    </listitem>
+    <listitem>
       <para>GCC &gcc-version;</para>
-    </listitem>-->
+    </listitem>
     <!--<listitem>
       <para>GDBM &gdbm-version;</para>
     </listitem>-->
-    <!--<listitem>
+    <listitem>
       <para>Gettext &gettext-version;</para>
-    </listitem>-->
-    <!--<listitem>
+    </listitem>
+    <listitem>
       <para>Glibc &glibc-version;</para>
-    </listitem>-->
-    <!--<listitem>
+    </listitem>
+    <listitem>
       <para>GMP &gmp-version;</para>
-    </listitem>-->
+    </listitem>
     <!--<listitem>
       <para>Grep &grep-version;</para>
     </listitem>-->
-    <!--<listitem>
+    <listitem>
       <para>Groff &groff-version;</para>
-    </listitem>-->
+    </listitem>
     <!--<listitem>
       <para>GRUB &grub-version;</para>
     </listitem>-->
@@ -109,72 +112,72 @@
     <!--<listitem>
       <para>Inetutils &inetutils-version;</para>
     </listitem>-->
-    <!--<listitem>
+    <listitem>
       <para>IPRoute2 &iproute2-version;</para>
-    </listitem>-->
-    <!--<listitem>
+    </listitem>
+    <listitem>
       <para>Kbd &kbd-version;</para>
-    </listitem>-->
-    <!--<listitem>
+    </listitem>
+    <listitem>
+      <para>Kmod &kmod-version;</para>
+    </listitem>
+    <listitem>
       <para>Less &less-version;</para>
-    </listitem>-->
+    </listitem>
     <!--<listitem>
       <para>LFS-Bootscripts &lfs-bootscripts-version;</para>
     </listitem>-->
-    <!--<listitem>
+    <listitem>
       <para>Libpipeline &libpipeline-version;</para>
-    </listitem>-->
+    </listitem>
     <!--<listitem>
       <para>Libtool &libtool-version;</para>
     </listitem>-->
-    <!--<listitem>
+    <listitem>
       <para>Linux &linux-version;</para>
-    </listitem>-->
+    </listitem>
     <!--<listitem>
       <para>M4 &m4-version;</para>
     </listitem>-->
     <!--<listitem>
       <para>Make &make-version;</para>
     </listitem>-->
-    <!--<listitem>
+    <listitem>
       <para>Man-DB &man-db-version;</para>
-    </listitem>-->
-    <!--<listitem>
+    </listitem>
+    <listitem>
       <para>Man-pages &man-pages-version;</para>
-    </listitem>-->
-    <!--<listitem>
-      <para>Mktemp &mktemp-version;</para>
-    </listitem>-->
-    <!--<listitem>
-      <para>Module-Init-Tools &module-init-tools-version;</para>
-    </listitem>-->
-    <!--<listitem>
+    </listitem>
+    <listitem>
       <para>MPC &mpc-version;</para>
-    </listitem>-->
+    </listitem>
     <!--<listitem>
       <para>MPFR &mpfr-version;</para>
     </listitem>-->
     <!--<listitem>
       <para>Ncurses &ncurses-version;</para>
     </listitem>-->
-    <!--<listitem>
+    <listitem>
       <para>Patch &patch-version;</para>
-    </listitem>-->
+    </listitem>
     <!--<listitem>
       <para>Perl &perl-version;</para>
     </listitem>-->
-    <!--<listitem>
-      <para>Procps &procps-version;</para>
-    </listitem>-->
-    <!--<listitem>
+    <listitem>
+      <para>Pkg-config &pkgconfig-version;</para>
+    </listitem>
+    <listitem>
+      <para>Procps-ng &procps-ng-version;</para>
+    </listitem>
+    <listitem>
       <para>Psmisc &psmisc-version;</para>
-    </listitem>-->
+    </listitem>
     <!--<listitem>
       <para>Readline &readline-version;</para>
     </listitem>-->
-    <!--<listitem>
+    <listitem>
       <para>Sed &sed-version;</para>
-    </listitem>-->
+    </listitem>
     <!--<listitem>
       <para>Shadow &shadow-version;</para>
     </listitem>-->
@@ -187,21 +190,24 @@
     <!--<listitem>
       <para>Tar &tar-version;</para>
     </listitem>-->
-    <!--<listitem>
+    <listitem>
       <para>TCL &tcl-version;</para>
-    </listitem>-->
-    <!--<listitem>
+    </listitem>
+    <listitem>
       <para>Texinfo &texinfo-version;</para>
-    </listitem>-->
-    <!--<listitem>
-      <para>Udev &udev-version;</para>
-    </listitem>-->
+    </listitem>
+    <listitem>
+      <para>Tzdata &tzdata-version;</para>
+    </listitem>
+    <listitem>
+      <para>Udev &systemd-version; (extracted from systemd-&systemd-version;)</para>
+    </listitem>
     <!--<listitem>
       <para>&udev-config;</para>
     </listitem>-->
-    <!--<listitem>
+    <listitem>
       <para>Util-Linux &util-linux-version;</para>
-    </listitem>-->
+    </listitem>
     <!--<listitem>
       <para>Vim &vim-version;</para>
     </listitem>-->
@@ -222,22 +228,94 @@
 
   </itemizedlist>-->
 
-  <!--<itemizedlist>
+  <itemizedlist>
     <title>Added:</title>
 
     <listitem>
-      <para>PLACEHOLDER</para>
+      <para>&bash-fixes-patch;</para>
     </listitem>
 
-  </itemizedlist>-->
+    <listitem>
+      <para>&binutils-testsuite-fixes-patch;</para>
+    </listitem>
 
-  <!--<itemizedlist>
+    <listitem>
+      <para>&coreutils-i18n-patch;</para>
+    </listitem>
+<!--
+    <listitem>
+      <para>&coreutils-test-patch;</para>
+    </listitem>
+-->
+    <listitem>
+      <para>&kbd-backspace-patch;</para>
+    </listitem>
+
+    <listitem>
+      <para>&make-fixes-patch;</para>
+    </listitem>
+
+  </itemizedlist>
+
+  <itemizedlist>
     <title>Removed:</title>
 
     <listitem>
-      <para>PLACEHOLDER</para>
+      <para>bash-4.2-fixes-8.patch</para>
     </listitem>
 
-  </itemizedlist>-->
+    <listitem>
+      <para>binutils-2.22-build_fix-1.patch</para>
+    </listitem>
+
+    <listitem>
+      <para>coreutils-8.19-i18n-1.patch</para>
+    </listitem>
+
+    <listitem>
+      <para>gcc-4.7.1-startfiles_fix-1.patch</para>
+    </listitem>
+
+    <listitem>
+      <para>glibc-2.16.0-fix_test_installation-1.patch</para>
+    </listitem>
+
+    <listitem>
+      <para>glibc-2.16.0-res_query_fix-1.patch</para>
+    </listitem>
+
+    <listitem>
+      <para>kbd-1.15.3-backspace-1.patch</para>
+    </listitem>
+
+    <listitem>
+      <para>kbd-1.15.3-upstream_fixes-1.patch</para>
+    </listitem>
+
+    <listitem>
+      <para>kmod-9-testsuite-1.patch</para>
+    </listitem>
+
+    <listitem>
+      <para>make-3.82-upstream_fixes-2.patch</para>
+    </listitem>
+
+    <listitem>
+      <para>patch-2.6.1-test_fix-1.patch</para>
+    </listitem>
+
+    <listitem>
+      <para>procps-3.2.8-fix_HZ_errors-1.patch</para>
+    </listitem>
+
+    <listitem>
+      <para>procps-3.2.8-watch_unicode-1.patch</para>
+    </listitem>
+
+    <listitem>
+      <para>sed-4.2.1-testsuite_fixes-1.patch</para>
+    </listitem>
+
+  </itemizedlist>
 
 </sect1>

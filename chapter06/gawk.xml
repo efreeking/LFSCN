@@ -59,8 +59,7 @@
     <para>如果需要的话，安装文档:</para>
 
 <screen><userinput remap="install">mkdir -v /usr/share/doc/gawk-&gawk-version;
-cp    -v doc/{awkforai.txt,*.{eps,pdf,jpg}} \
-         /usr/share/doc/gawk-&gawk-version;</userinput></screen>
+cp    -v doc/{awkforai.txt,*.{eps,pdf,jpg}} /usr/share/doc/gawk-&gawk-version;</userinput></screen>
 
   </sect2>
 
@@ -72,7 +71,8 @@ cp    -v doc/{awkforai.txt,*.{eps,pdf,jpg}} \
       <segtitle>安装目录</segtitle>
 
       <seglistitem>
-        <seg>awk (链接到 gawk), gawk, gawk-&gawk-version;, grcat, igawk, pgawk,
+        <seg>awk (链接到 gawk), dgawk, gawk, gawk-&gawk-version;, grcat,
+        pgawk, igawk, pgawk,
         pgawk-&gawk-version; 和 pwcat</seg>
         <seg>/usr/lib/awk, /usr/share/awk</seg>
       </seglistitem>
@@ -89,6 +89,16 @@ cp    -v doc/{awkforai.txt,*.{eps,pdf,jpg}} \
           <para>到 <command>gawk</command> 的链接</para>
           <indexterm zone="ch-system-gawk awk">
             <primary sortas="b-awk">awk</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="dgawk">
+        <term><command>dgawk</command></term>
+        <listitem>
+          <para>一个 awk 调试器</para>
+          <indexterm zone="ch-system-gawk dgawk">
+            <primary sortas="b-dgawk">dgawk</primary>
           </indexterm>
         </listitem>
       </varlistentry>

@@ -66,7 +66,7 @@
 
     <para>使安装的库可写，以便稍后可以删除调试符号:</para>
 
-<screen><userinput remap="install">chmod -v u+w /tools/lib/libtcl8.5.so</userinput></screen>
+<screen><userinput remap="install">chmod -v u+w /tools/lib/libtcl&tcl-major-version;.so</userinput></screen>
 
     <para>安装 Tcl 的头文件。下一个包 - Expect，需要它们来构建。</para>
 
@@ -74,7 +74,7 @@
 
     <para>现在建立一个必需的符号链接:</para>
 
-<screen><userinput remap="install">ln -sv tclsh8.5 /tools/bin/tclsh</userinput></screen>
+<screen><userinput remap="install">ln -sv tclsh&tcl-major-version; /tools/bin/tclsh</userinput></screen>
 
   </sect2>
 

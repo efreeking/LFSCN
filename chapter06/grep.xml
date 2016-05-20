@@ -40,10 +40,6 @@
   <sect2 role="installation">
     <title>Grep 的安装</title>
 
-    <para>首先，使用一个测试脚本修复一个小问题:</para>
-
-<screen><userinput remap="pre">sed -i 's/cp/#&amp;/' tests/unibyte-bracket-expr</userinput></screen>
-
     <para>准备 Grep 编译:</para>
 
 <screen><userinput remap="configure">./configure --prefix=/usr --bindir=/bin</userinput></screen>

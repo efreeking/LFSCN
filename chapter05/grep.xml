@@ -45,19 +45,7 @@
 
     <para>准备 Grep 编译:</para>
 
-<screen><userinput remap="configure">./configure --prefix=/tools \
-    --disable-perl-regexp</userinput></screen>
-
-    <variablelist>
-      <title>配置开关参数的含义:</title>
-
-      <varlistentry>
-        <term><parameter>--disable-perl-regexp</parameter></term>
-        <listitem>
-          <para>这个确保 <command>grep</command> 程序不会针对可能存在于宿主但一旦我们进入 <command>chroot</command> 环境就不可用的 Perl Compatible Regular Expression (PCRE) 库进行链接。</para>
-        </listitem>
-      </varlistentry>
-    </variablelist>
+<screen><userinput remap="configure">./configure --prefix=/tools</userinput></screen>
 
     <para>编译软件包:</para>
 

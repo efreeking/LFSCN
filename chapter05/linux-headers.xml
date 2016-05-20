@@ -48,13 +48,13 @@
 
     <para>确保没有失效文件和依赖从上一次活动留下:</para>
 
-<screen><userinput remap="install">make mrproper</userinput></screen>
+<screen><userinput remap="pre">make mrproper</userinput></screen>
 
     <para>现在测试并从源代码提取用户可见的内核头文件。因为解压过程会从目标目录中删除任何已有的内容，所以把它们放到一个作为中介的本地目录并复制到需要的地方。</para>
 
-<screen><userinput remap="install">make headers_check
-make INSTALL_HDR_PATH=dest headers_install
-cp -rv dest/include/* /tools/include</userinput></screen>
+<screen><userinput remap="make">make headers_check
+make INSTALL_HDR_PATH=dest headers_install</userinput>
+<userinput remap="install">cp -rv dest/include/* /tools/include</userinput></screen>
 
   </sect2>
 

@@ -47,14 +47,9 @@
 <screen role="nodump"><userinput><parameter>ABI=32</parameter> ./configure ...</userinput></screen></para>
     </note>
 
-    <para>首先，修复一个在 upstream 网页中说明的的小错误:</para>
-
-<screen><userinput remap="pre">sed -i 's/np + dn, qn/&amp; - dn/' mpn/generic/dcpi1_bdiv_q.c</userinput></screen>
-
-
     <para>准备 GMP 编译:</para>
 
-<screen><userinput remap="configure">./configure --prefix=/usr --enable-cxx --enable-mpbsd</userinput></screen>
+<screen><userinput remap="configure">./configure --prefix=/usr --enable-cxx</userinput></screen>
 
     <variablelist>
       <title>新配置选项的含义:</title>
@@ -63,13 +58,6 @@
         <term><parameter>--enable-cxx</parameter></term>
         <listitem>
           <para>这个参数启用 C++ 支持</para>
-        </listitem>
-      </varlistentry>
-
-      <varlistentry>
-        <term><parameter>--enable-mpbsd</parameter></term>
-        <listitem>
-          <para>这个构建兼容 Berkeley MP 的库</para>
         </listitem>
       </varlistentry>
 
@@ -88,7 +76,7 @@
 
 <screen><userinput remap="test">make check 2>&amp;1 | tee gmp-check-log</userinput></screen>
 
-    <para>确保在测试套装中的所有 162 个测试全部通过。
+    <para>确保在测试套装中的所有 184 个测试全部通过。
     通过执行下列命令检查结果:</para>
 
 <screen><userinput remap="test">awk '/tests passed/{total+=$2} ; END{print total}' gmp-check-log</userinput></screen>

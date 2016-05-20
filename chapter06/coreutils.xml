@@ -39,13 +39,11 @@
 
   <sect2 role="installation">
     <title>Coreutils 的安装</title>
+<!--
+    <para>修复了一些测试失败:</para>
 
-    <para>这个包中 <command>uname</command> 程序的一个已知的问题就是 <parameter>-p</parameter> 开关总是返回 <computeroutput>unknown</computeroutput> 的结果。下列的补丁可以修复 Intel 结构的这个行为:</para>
-
-<screen><userinput remap="pre">case `uname -m` in
- i?86 | x86_64) patch -Np1 -i ../&coreutils-uname-patch; ;;
-esac</userinput></screen>
-
+<screen><userinput remap="pre">patch -Np1 -i ../&coreutils-test-patch;</userinput></screen>
+-->
     <para>POSIX 要求来自 Coreutils 的程序即使在多字节语言环境中也能够正确的识别字符的边界。
     下列的补丁可以修复这个不兼容和其它的与国际化相关的问题:</para>
 
@@ -57,8 +55,10 @@ esac</userinput></screen>
 
     <para>现在准备 Coreutils 编译:</para>
 
-<screen><userinput remap="configure">./configure --prefix=/usr \
-    --enable-no-install-program=kill,uptime</userinput></screen>
+<screen><userinput remap="configure">FORCE_UNSAFE_CONFIGURE=1 ./configure \
+            --prefix=/usr         \
+            --libexecdir=/usr/lib \
+            --enable-no-install-program=kill,uptime</userinput></screen>
 
     <variablelist>
       <title>配置选项的含义:</title>
@@ -91,9 +91,10 @@ esac</userinput></screen>
 
 <screen><userinput remap="test">chown -Rv nobody . </userinput></screen>
 
-    <para>现在运行测试:</para>
+    <para>现在运行测试。确保在 <userinput>su</userinput> 环境中的 PATH 包含 /tools/bin。</para>
 
-<screen><userinput remap="test">su-tools nobody -s /bin/bash -c "make RUN_EXPENSIVE_TESTS=yes check"</userinput></screen>
+<screen><userinput remap="test">su nobody -s /bin/bash \
+          -c "PATH=$PATH make RUN_EXPENSIVE_TESTS=yes check"</userinput></screen>
 
     <para>清除临时组:</para>
 
@@ -107,7 +108,7 @@ esac</userinput></screen>
 
 <screen><userinput remap="install">mv -v /usr/bin/{cat,chgrp,chmod,chown,cp,date,dd,df,echo} /bin
 mv -v /usr/bin/{false,ln,ls,mkdir,mknod,mv,pwd,rm} /bin
-mv -v /usr/bin/{rmdir,stty,sync,true,uname} /bin
+mv -v /usr/bin/{rmdir,stty,sync,true,uname,test,[} /bin
 mv -v /usr/bin/chroot /usr/sbin
 mv -v /usr/share/man/man1/chroot.1 /usr/share/man/man8/chroot.8
 sed -i s/\"1\"/\"8\"/1 /usr/share/man/man8/chroot.8</userinput></screen>
@@ -130,18 +131,18 @@ sed -i s/\"1\"/\"8\"/1 /usr/share/man/man8/chroot.8</userinput></screen>
       <segtitle>安装的目录</segtitle>
 
       <seglistitem>
-        <seg>base64, basename, cat, chcon, chgrp, chmod, chown, chroot, cksum,
+         <seg>[, base64, basename, cat, chcon, chgrp, chmod, chown, chroot, cksum,
         comm, cp, csplit, cut, date, dd, df, dir, dircolors, dirname, du, echo,
         env, expand, expr, factor, false, fmt, fold, groups, head, hostid,
         id, install, join, link, ln, logname, ls, md5sum, mkdir, mkfifo, mknod,
         mktemp, mv, nice, nl, nohup, nproc, od, paste, pathchk, pinky, pr,
-        printenv, printf, ptx, pwd, readlink, rm, rmdir, runcon, seq, sha1sum,
-        sha224sum, sha256sum, sha384sum, sha512sum, shred, shuf, sleep, sort,
-        split, stat, stdbuf, stty, sum, sync, tac, tail, tee, test, timeout,
-        touch, tr, true, truncate, tsort, tty, uname, unexpand, uniq, unlink,
-        users, vdir, wc, who, whoami 和 yes</seg>
+        printenv, printf, ptx, pwd, readlink, realpath, rm, rmdir, runcon, seq,
+        sha1sum, sha224sum, sha256sum, sha384sum, sha512sum, shred, shuf, sleep,
+        sort, split, stat, stdbuf, stty, sum, sync, tac, tail, tee, test,
+        timeout, touch, tr, true, truncate, tsort, tty, uname, unexpand, uniq,
+        unlink, users, vdir, wc, who, whoami, and yes</seg>
         <seg>libstdbuf.so</seg>
-        <seg>/usr/lib/coreutils</seg>
+        <seg>/usr/libexec/coreutils</seg>
       </seglistitem>
     </segmentedlist>
 
@@ -732,6 +733,16 @@ sed -i s/\"1\"/\"8\"/1 /usr/share/man/man8/chroot.8</userinput></screen>
         </listitem>
       </varlistentry>
 
+      <varlistentry id="realpath">
+        <term><command>realpath</command></term>
+        <listitem>
+          <para>打印解释的路径</para>
+          <indexterm zone="ch-system-coreutils realpath">
+            <primary sortas="b-realpath">realpath</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
       <varlistentry id="rm">
         <term><command>rm</command></term>
         <listitem>
@@ -1134,11 +1145,11 @@ sed -i s/\"1\"/\"8\"/1 /usr/share/man/man8/chroot.8</userinput></screen>
       </varlistentry>
 
       <varlistentry id="libstdbuf">
-        <term><filename class="libraryfile">libstdbuf</filename></term>
+        <term><filename class="libraryfile">libstdbuf.so</filename></term>
         <listitem>
           <para>用于 <command>stdbuf</command> 的库</para>
           <indexterm zone="ch-system-coreutils libstdbuf">
-            <primary sortas="c-libstdbuf">libstdbuf</primary>
+            <primary sortas="c-libstdbuf">libstdbuf.so</primary>
           </indexterm>
         </listitem>
       </varlistentry>

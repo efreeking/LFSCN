@@ -21,7 +21,7 @@
   class="directory">/dev</filename> 下创建的大量的设备节点(有些时候是成千上万个节点)，而无论相应的硬件设备实际上是否存在。这通常是通过一个 <command>MAKEDEV</command> 脚本来完成的，它包含大量对 <command>mknod</command> 程序的调用，并带上可能存在于世界上的每个可能的设备的有关主要和次要设备号。</para>
 
   <para>使用 Udev 方式，只有那些通过内核获取设备节点检测到的设备会被创建。因为这些设备节点将会在每次系统引导时都将会创建，所以它们将会存储在一个 <systemitem
-  class="filesystem">tmpfs</systemitem> 文件系统上(整个驻留在系统内存中的一个虚拟文件系统)。设备节点不想要太多的空间，所以使用的内存微不足道。</para>
+  class="filesystem">devtmpfs</systemitem> 文件系统上(整个驻留在系统内存中的一个虚拟文件系统)。设备节点不想要太多的空间，所以使用的内存微不足道。</para>
 
   <sect2>
     <title>历史</title>
@@ -45,23 +45,53 @@
       <title>Sysfs</title>
 
       <para>上面简单的提到 <systemitem class="filesystem">sysfs</systemitem> 文件系统。有人可能想知道 <systemitem
-      class="filesystem">sysfs</systemitem> 如何知道存在系统的设备以及对它们应该用怎样的设备编号。已经直接编译到内核中的驱动程序在内核检测到的时候，使用 <systemitem class="filesystem">sysfs</systemitem> 注册它们的对象。对于编译为模块的驱动程序，这个注册会在模块加载的时候发生。一旦 <systemitem
+      class="filesystem">sysfs</systemitem> 如何知道存在系统的设备以及对它们应该用怎样的设备编号。已经直接编译到内核中的驱动程序在内核检测到的时候，使用 <systemitem class="filesystem">sysfs</systemitem> (devtmpfs 内在)注册它们的对象。对于编译为模块的驱动程序，这个注册会在模块加载的时候发生。一旦 <systemitem
       class="filesystem">sysfs</systemitem> 文件系统被挂载(在 <filename
-      class="directory">/sys</filename> 上)，内建驱动程序注册到 <systemitem class="filesystem">sysfs</systemitem> 的数据就可用于用户空间进程和 <command>udevd</command> 来进行设备节点创建。</para>
+      class="directory">/sys</filename> 上)，内建驱动程序注册到 <systemitem class="filesystem">sysfs</systemitem> 的数据就可用于用户空间进程和给 <command>udevd</command> 进行处理(包括对设备节点的修改)。</para>
 
     </sect3>
 
     <sect3>
+      <title>设备节点创建</title>
+
+      <para>设备文件是由内核使用 <systemitem class="filesystem">devtmpfs</systemitem> 文件系统创建的。
+      任何希望注册一个设备节点的驱动程序将会通过 <systemitem
+      class="filesystem">devtmpfs</systemitem> (经由驱动程序核心) 这样做。
+      当一个 <systemitem class="filesystem">devtmpfs</systemitem> 实例被装载在 <filename class="directory">/dev</filename> 上时，
+      设备节点最初将会使用一个固定的名称，权限和属主创建。</para>
+
+      <para>稍后，内核将会发送一个 uevent 给 <command>udevd</command>。
+      根据在 <filename class="directory">/etc/udev/rules.d</filename>, 
+      <filename class="directory">/lib/udev/rules.d</filename> 及 <filename class="directory">/run/udev/rules.d</filename> 目录中的文件中所指定的规则，
+      <command>udevd</command> 将会创建额外的符号链接指向设备节点，或者为那些对象更改其权限、属主或分组，或修改内部
+      <command>udevd</command> 数据库条目(名称)。</para>
+
+      <para>在这三个目录中的规则将会以和 LFS-Bootscripts 包中类似的方式编号，并会合并到一起。
+      如果 <command>udevd</command> 不能找到设备创建的规则，它将会保留权限和属主关系为
+      <systemitem class="filesystem">devtmpfs</systemitem> 最初使用的情况。</para> </sect3>
+
+    <sect3>
       <title>Udev 引导脚本</title>
 
-      <para><command>/etc/rc.d/init.d/udev</command> 初始化脚本在 Linux 引导时负责创建设备节点。脚本从 <command>/sbin/hotplug</command> 的默认设置中取消设置
-      uevent(Udev 事件) handler(处理程序)。这样就完成了，因为内核不再需要调用到一个外部二进制。而是 <command>udevd</command> 将会在一个 netlink 套接字上监听内核引起的 uevent。跟着，引导脚本复制存在于 <filename
-      class="directory">/lib/udev/devices</filename> 的任何静态设备节点带 <filename
-      class="directory">/dev</filename>。这是必须的，因为在引导系统的早期阶段，在动态设备处理进程可用之前就需要某些设备、目录和符号链接，或者 <command>udevd</command> 本身也需要。在 <filename
-      class="directory">/lib/udev/devices</filename> 中创建静态设备节点也为不被动态设备处理架构支持的设备的提供了一个简单的变通办法。引导脚本之后启动 Udev 后台程序 <command>udevd</command>，它将会对任何它接收的 uevent 进行。最后，引导脚本强制内核重放已经注册的任何设备的 uevents，然后等待 <command>udevd</command> 处理它们。</para>
+      <para>第一个 LFS 引导脚本，<filename>/etc/init.d/mountvirtfs</filename> 将会复制位于
+      <filename class="directory">/lib/udev/devices</filename> 的任意设备到
+      <filename class="directory">/dev</filename>。这是必需的，因为在引导系统的早期阶段，在动态设备处理进程可用之前，需要某些设备、目录和符号链接，或者是 <command>udevd</command> 自身需要。
+      在 <filename class="directory">/lib/udev/devices</filename> 中创建静态设备节点也为不被动态设备处理结构所支持的设备提供了一种简单的变通方案。</para>
 
-      <para><command>/etc/rc.d/init.d/udev_retry</command> 初始化脚本负责重新触发子系统(其规则依赖于在 <command>mountfs</command> 脚本运行 前还未挂载的文件系统上(尤其是 /usr 和 /var 可能导致这样的问题))的事件。这个脚本在 <command>mountfs</command> 脚本后运行，所以那些规则(如果重新触发)应该会在第二次时成功。这是从 <filename>/etc/sysconfig/udev_retry</filename> 文件配置的；在该文件中除注释外的任何词组都会被认为是在重试期间要重新触发的子系统的名称。(要查找一个设备的子系统，使用
-      <command>udevadm info --attribute-walk</command>。)</para>
+      <para><filename>/etc/rc.d/init.d/udev</filename> 初始脚本启动
+      <command>udevd</command>，触发任何已经由内核创建的 "coldplug" 设备，并等待任何规则来完成。
+      脚本还从 <filename>/sbin/hotplug </filename> 的默认中取消设置(unset)了 uevent 句柄。
+      这样做是因为内核不再需要调用一个外部二进制。
+      相反，<command>udevd</command> 将会在一个 netlink 套接字上监听内核引起的 uevents。</para>
+
+      <para><command>/etc/rc.d/init.d/udev_retry</command> 初始脚本照顾那些其规则可能依赖于在 <command>mountfs</command>
+      脚本运行前还未装载的文件系统的子系统的重新触发事件(特别是, <filename class="directory">/usr</filename>
+      和 <filename class="directory">/var</filename> 可能会导致这个)。
+      这个脚本在 <command>mountfs</command> 脚本之后运行，以便那些规则(如果被重新触发)应该可以在第二次成功。
+      它是从 <filename>/etc/sysconfig/udev_retry</filename> 文件配置的;在这个文件中的任何词组，除了注释外都会被视为在重试时要触发的子系统的名称。
+      要查找一个设备的子系统名称，使用
+      <command>udevadm info --attribute-walk &lt;device&gt;</command> 其中
+      &lt;device&gt; 是在 /dev 或 /sys 中的一个绝对路径，譬如 /dev/sr0 或 /sys/class/rtc。</para>
 
     </sect3>
 
@@ -123,12 +153,16 @@
     <sect3>
       <title>一个内核模块没有自动加载，而 Udev 也不打算加载它</title>
 
-      <para>如果<quote>wrapper</quote>模块仅仅增强了由某些其它的模块提供的功能(如 <emphasis>snd-pcm-oss</emphasis> 通过使得声卡可以用于 OSS 应用程序来增强 <emphasis>snd-pcm</emphasis> 的功能)，配置 <command>modprobe</command> 在 Udev 加载封装模块后加载封装程序(wrapper)。要这样做，添加一<quote>install</quote>行到任何的
+      <para>如果<quote>wrapper</quote>模块仅仅增强了由某些其它的模块提供的功能(如 <emphasis>snd-pcm-oss</emphasis> 通过使得声卡可以用于 OSS 应用程序来增强 <emphasis>snd-pcm</emphasis> 的功能)，配置 <command>modprobe</command> 在 Udev 加载封装模块后加载封装程序(wrapper)。要这样做，添加一 <quote>softdep</quote> 行到任何的
       <filename>/etc/modprobe.d/<replaceable>&lt;filename&gt;</replaceable>.conf</filename>
-      文件。例如:</para>
+      文件中。例如:</para>
 
-<screen role="nodump"><literal>install snd-pcm /sbin/modprobe -i snd-pcm ; \
-    /sbin/modprobe snd-pcm-oss ; true</literal></screen>
+<screen role="nodump"><literal>softdep snd-pcm post: snd-pcm-oss</literal></screen>
+
+      <para>注意 <quote>softdep</quote> 命令也允许
+      <literal>pre:</literal> 依赖关系，或者
+      <literal>pre:</literal> 和 <literal>post:</literal> 的混合。
+      参阅 <filename>modprobe.d(5)</filename> 手册页了解更多关于 <quote>softdep</quote> 语法和功能的信息。</para>
 
       <para>如果问题中的模块不是一个封装程序，而是本身有用，配置 <command>modules</command> 引导脚本在系统引导时加载这个模块。要这样做，添加模块的名称到
       <filename>/etc/sysconfig/modules</filename> 文本上单独的一行。
@@ -200,13 +234,13 @@
         <para><systemitem class="filesystem">sysfs</systemitem> 文件系统
         <ulink url="http://www.kernel.org/pub/linux/kernel/people/mochel/doc/papers/ols-2005/mochel.pdf"/></para>
       </listitem>
-
+<!--  No longer available
       <listitem>
         <para>Pointers to further reading
         <ulink url="http://www.kernel.org/pub/linux/utils/kernel/hotplug/udev.html"/>
         </para>
       </listitem>
-
+-->
     </itemizedlist>
 
   </sect2>

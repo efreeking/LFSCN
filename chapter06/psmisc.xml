@@ -54,21 +54,9 @@
 
 <screen><userinput remap="install">make install</userinput></screen>
 
-<!--
-    <para>按默认, Psmisc's <command>pidof</command> program is not
-    installed. This usually is not a problem because it is installed later
-    in the Sysvinit package, which provides a better
-    <command>pidof</command> program. If Sysvinit will not be used for a
-    particular system, complete the  的安装Psmisc by first moving
-    the <command>killall</command> to the correct location, as specified by the
-    FHS, then create a sym链接到 it:</para>
-
-<screen><userinput remap="install">mv /usr/bin/killall /bin
-ln -sv killall /bin/pidof</userinput></screen>
--->
     <para>最后，移动 <command>killall</command> 和 <command>fuser</command> 程序到由 FHS 指定的位置:</para>
 
-<screen><userinput remap="install">mv -v /usr/bin/fuser /bin
+<screen><userinput remap="install">mv -v /usr/bin/fuser   /bin
 mv -v /usr/bin/killall /bin</userinput></screen>
 
   </sect2>

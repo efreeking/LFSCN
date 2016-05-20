@@ -10,9 +10,7 @@
 
   <title>LFS 目标架构</title>
 
-<para>LFS 主要的目标架构是 32 位 Intel CPU。如果您之前还未构建过 LFS 系统，您应该以此目标开始。32 位架构是受最广泛支持的 Linux 系统，并且与开源和专有软件最兼容。</para>
-
-<para>另一方面，在本书中的说明已知，通过某些修改，可用于 Power PC 和 64 位的 AMD/Intel CPU。要构建一个能够利用这些 CPU 之一的系统，主要的前提条件，除了跟着几页上的外，还有一个现有的 Linux 系统，譬如早期的 LFS、Ubuntu、Red Hat/Fedora、SuSE 或者以您拥有的架构为目标的其它发行版。还要注意，32 位发行版还可以安装并作为 64 位 AMD/Intel 计算机上的主机系统。</para>
+<para>LFS 的主要目标架构是 AMD/Intel x86 (32 位)和 x86_64 (64 位) CPUs。另一方面，在本书中的指令也已知是可以通过某些修改用于 Power PC CPU。要构建一个能够利用这些 CPU 之一的系统，主要的前提条件，除了跟着几页上的外，还有一个现有的 Linux 系统，譬如早期的 LFS、Ubuntu、Red Hat/Fedora、SuSE 或者以您拥有的架构为目标的其它发行版。还要注意，32 位发行版还可以安装并作为 64 位 AMD/Intel 计算机上的主机系统。</para>
 
 <para>需要在这里加以说明某些关于 64 位系统的其它方面的事实。和 32 位系统比较，可执行程序的尺寸略大而执行速度只是稍微快一点。例如，在基于 Core2Duo CPU 的系统上的 LFS-6.5 的测试构建版中，测出下列的统计数据:</para>
 
@@ -25,8 +23,9 @@
 <para>默认 64 位构建得到的 LFS 的成果可以被视为一个“纯”64 位系统。也就是说，它只支持 64 位的可执行文件。构建一个“multi-lib”(多库)系统需要对许多应用程序进行两次编译，一次用于 32 位系统，一次用于 64 位系统。这在 LFS 中不是直接被支持的，因为它干扰了提供一个简单易用的基础 Linux 系统所需说明的教育目标。您可以参考 <ulink url="http://trac.cross-lfs.org/">Cross Linux From Scratch</ulink>
 (CLFS)项目获得这些高级的主题。</para>
 
-<para>有一个关于 64 位系统的最后的评论。有某些包当前不能在“纯”64 位系统中构建或者需要特殊的构建指令。通常这些包有一些嵌入的 32 位专用的汇编语言指令，它们在 64 位系统上构建时会失败。这个包括某些来自 <ulink url="http://www.linuxfromscratch.org/blfs/view/svn/">Beyond Linux From Scratch
-(BLFS)</ulink> 的 Xorg 的驱动程序。这些问题大部分都可以变通解决，但是可能需要某些特殊的过程或补丁。</para>
+<para>有一个关于 64 位系统的最后的评论。有某些较旧的包当前不能在“纯”64 位系统中构建或者需要特殊的构建指令。通常这些包有一些嵌入的 32 位专用的汇编语言指令，它们在 64 位系统上构建时会失败。 这个包括某些在 
+<ulink url="http://xorg.freedesktop.org/releases/individual/driver/">
+http://xorg.freedesktop.org/releases/individual/driver/</ulink> 上用于某些旧式视频卡的 Xorg 驱动程序。这些问题大部分都可以变通解决，但是可能需要某些特殊的过程或补丁。</para>
 
 </sect1>
 

@@ -20,4 +20,15 @@
 
 <screen><userinput>echo &version; &gt; /etc/lfs-release</userinput></screen>
 
+  <para>创建一个遵循 Linux Standards Base (LSB) 的文件来显示您的新系统的状态是一个不错的主意。要创建这个文件，运行:</para>
+
+<screen><userinput>cat &gt; /etc/lsb-release &lt;&lt; "EOF"
+DISTRIB_ID="Linux From Scratch"
+DISTRIB_RELEASE="&version;"
+DISTRIB_CODENAME="&lt;your name here&gt;"
+DISTRIB_DESCRIPTION="Linux From Scratch"
+EOF</userinput></screen>
+
+  <para>确保对字段 'DISTRIB_CODENAME' 进行多多少少的定制来使得系统成为您的唯一。</para>
+
 </sect1>

@@ -37,10 +37,11 @@
     ID_REVISION 的组合)。<quote>按路径</quote>模式将会使用 ID_PATH 值。</para>
 
     <para>如果默认模式不适合您的情况，那么可以对
-    <filename>/lib/udev/rules.d/75-cd-aliases-generator.rules</filename> 文件进行下列修改，如下(其中 <replaceable>模式</replaceable> 是<quote>by-id</quote>(按 ID)或<quote>by-path</quote>(按路径)之一):</para>
+    <filename>/etc/udev/rules.d/83-cdrom-symlinks.rules</filename> 文件进行下列修改，如下(其中 <replaceable>模式</replaceable> 是<quote>by-id</quote>(按 ID)或<quote>by-path</quote>(按路径)之一):</para>
 
-<screen role="nodump"><userinput>sed -i -e 's/"write_cd_rules"/"write_cd_rules <replaceable>模式</replaceable>"/' \
-    /lib/udev/rules.d/75-cd-aliases-generator.rules</userinput></screen>
+<screen role="nodump"><userinput>sed -i -e 's/"write_cd_rules"/"write_cd_rules <replaceable>mode</replaceable>"/' \
+    /etc/udev/rules.d/83-cdrom-symlinks.rules</userinput></screen>
+
 
     <para>注意，此时并不需要创建规则文件或符号链接，因为您已经绑定挂载了宿主的 <filename class="directory">/dev</filename> 目录到 LFS 系统，并且我们假设符号链接已存在于宿主上。规则和符号链接将会在您首次引导您的 LFS 系统时创建。</para>
 

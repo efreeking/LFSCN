@@ -46,25 +46,24 @@
 
 <screen><userinput remap="pre">sed -i 's/install_to_$(INSTALL_DEST) //' libiberty/Makefile.in</userinput></screen>
 
+    <para>再次说明，不构建 .info 文件。它们会被当前版本的 <command>makeinfo</command> 打断。</para>
+
+    <screen><userinput remap="pre">sed -i 's/BUILD_INFO=info/BUILD_INFO=/' gcc/configure</userinput></screen>
+
+
+
+
     <para>如同在<xref linkend="ch-tools-gcc-pass2"/>中的一样，应用下列
     <command>sed</command> 以强制构建过程使用
     <option>-fomit-frame-pointer</option> 编译器标志，以确保统一的编译器构建:</para> 
 
 <screen><userinput remap="pre">case `uname -m` in
-  i?86) sed -i 's/^T_CFLAGS =$/&amp; -fomit-frame-pointer/' \
-        gcc/Makefile.in ;;
+  i?86) sed -i 's/^T_CFLAGS =$/&amp; -fomit-frame-pointer/' gcc/Makefile.in ;;
 esac</userinput></screen>
 
-    <para><command>fixincludes</command> 脚本已知是会偶尔的错误的尝试
-    &quot;修复&quot;到此为止已安装的系统头文件。
-    由于已经知道到此为止的头文件都是不需要修复的，所以执行下列命令，防止
-    <command>fixincludes</command> 脚本运行:</para>
+    <para>还有修复在 check 的 Makefiles 之一中的一个错误:</para>
 
-<screen><userinput remap="pre">sed -i 's@\./fixinc\.sh@-c true@' gcc/Makefile.in</userinput></screen>
-
-    <para>最后，应用一个补丁纠正在 glibc-2.14 和之后的版本中做出的语言环境更改的测试代码。</para>
-
-<screen><userinput remap="pre">patch -Np1 -i ../gcc-4.6.1-locale-1.patch</userinput></screen>
+<screen><userinput remap="pre">sed -i -e /autogen/d -e /check.sh/d fixincludes/Makefile.in</userinput></screen>
 
     <para>GCC 文档推荐在源代码目录外的一个专用构建目录中构建 GCC:</para>
 
@@ -73,16 +72,21 @@ cd ../gcc-build</userinput></screen>
 
     <para>准备 GCC 编译:</para>
 
-<screen><userinput remap="configure">../gcc-&gcc-version;/configure --prefix=/usr \
-    --libexecdir=/usr/lib --enable-shared \
-    --enable-threads=posix --enable-__cxa_atexit \
-    --enable-clocale=gnu --enable-languages=c,c++ \
-    --disable-multilib --disable-bootstrap --with-system-zlib</userinput></screen>
+<screen><userinput remap="configure">../gcc-&gcc-version;/configure --prefix=/usr            \
+                       --libexecdir=/usr/lib    \
+                       --enable-shared          \
+                       --enable-threads=posix   \
+                       --enable-__cxa_atexit    \
+                       --enable-clocale=gnu     \
+                       --enable-languages=c,c++ \
+                       --disable-multilib       \
+                       --disable-bootstrap      \
+                       --with-system-zlib</userinput></screen>
 
     <para>注意，对于其它语言，有一些不可用的先决条件。参阅 BLFS 书中关于如何构建所有 GCC 支持的语言的说明。</para>
 
     <variablelist>
-      <title>The meaning of the new configure option:</title>
+      <title>新配置选项的含义:</title>
 
       <varlistentry>
         <term><parameter>--with-system-zlib</parameter></term>
@@ -91,6 +95,15 @@ cd ../gcc-build</userinput></screen>
         </listitem>
       </varlistentry>
     </variablelist>
+ 
+   <note>
+      <para>有一个用于 <command>configure</command> 的可选参数，
+      <option>--enable-lto</option>，可以用于让
+      <command>gcc</command> 在指定的情况下可以进行"链接时间优化"。在 LFS 或 BLFS 中当前没有包使用这个功能。</para>
+
+      <para>要使用这个功能，它也必须在
+      <application>binutils</application> 中启用它。</para>
+    </note>
 
     <para>编译包:</para>
 
@@ -102,7 +115,7 @@ cd ../gcc-build</userinput></screen>
 
    <para>在 GCC 测试套装中的一组测试已知是极耗堆栈的，所以在运行测试前增加栈的大小:</para>
 
-<screen><userinput remap="test">ulimit -s 16384</userinput></screen>
+<screen><userinput remap="test">ulimit -s 32768</userinput></screen>
 
     <para>测试结果, 但是不在任何错误处停止:</para>
 
@@ -140,27 +153,27 @@ cd ../gcc-build</userinput></screen>
     我们通过执行在本章前期所作的一样的健全性测试:</para>
 
     <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"
-    href="readjusting.xml"
+    href="adjusting.xml"
     xpointer="xpointer(//*[@os='a'])"/>
 
     <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"
-    href="readjusting.xml"
+    href="adjusting.xml"
     xpointer="xpointer(//*[@os='b'])"/>
 
     <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"
-    href="readjusting.xml"
+    href="adjusting.xml"
     xpointer="xpointer(//*[@os='c'])"/>
 
     <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"
-    href="readjusting.xml"
+    href="adjusting.xml"
     xpointer="xpointer(//*[@os='d'])"/>
 
     <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"
-    href="readjusting.xml"
+    href="adjusting.xml"
     xpointer="xpointer(//*[@os='e'])"/>
 
     <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"
-    href="readjusting.xml"
+    href="adjusting.xml"
     xpointer="xpointer(//*[@os='f'])"/>
 
 <screen><computeroutput>/usr/lib/gcc/i686-pc-linux-gnu/&gcc-version;/../../../crt1.o succeeded
@@ -172,13 +185,13 @@ cd ../gcc-build</userinput></screen>
   <filename>crt*.o</filename> 文件。</para>
 
     <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"
-    href="readjusting.xml"
+    href="adjusting.xml"
     xpointer="xpointer(//*[@os='g'])"/>
 
 <screen><userinput>grep -B4 '^ /usr/include' dummy.log</userinput></screen>
 
     <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"
-    href="readjusting.xml"
+    href="adjusting.xml"
     xpointer="xpointer(//*[@os='h'])"/>
 
 <screen><computeroutput>#include &lt;...&gt; search starts here:
@@ -194,15 +207,15 @@ cd ../gcc-build</userinput></screen>
     <filename class="directory">include-fixed</filename> 目录中，因此这些目录需要准备到位。</para></note>
 
     <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"
-    href="readjusting.xml"
+    href="adjusting.xml"
     xpointer="xpointer(//*[@os='i'])"/>
 
     <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"
-    href="readjusting.xml"
+    href="adjusting.xml"
     xpointer="xpointer(//*[@os='j'])"/>
 
     <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"
-    href="readjusting.xml"
+    href="adjusting.xml"
     xpointer="xpointer(//*[@os='k'])"/>
 
 <screen><computeroutput>SEARCH_DIR("/usr/i686-pc-linux-gnu/lib")
@@ -222,48 +235,53 @@ SEARCH_DIR("/lib")
 SEARCH_DIR("/usr/lib");</computeroutput></screen>
 
     <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"
-    href="readjusting.xml"
+    href="adjusting.xml"
     xpointer="xpointer(//*[@os='l'])"/>
 
     <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"
-    href="readjusting.xml"
+    href="adjusting.xml"
     xpointer="xpointer(//*[@os='m'])"/>
 
     <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"
-    href="readjusting.xml"
+    href="adjusting.xml"
     xpointer="xpointer(//*[@os='n'])"/>
 
     <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"
-    href="readjusting.xml"
+    href="adjusting.xml"
     xpointer="xpointer(//*[@os='o'])"/>
 
     <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"
-    href="readjusting.xml"
+    href="adjusting.xml"
     xpointer="xpointer(//*[@os='p'])"/>
 
     <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"
-    href="readjusting.xml"
+    href="adjusting.xml"
     xpointer="xpointer(//*[@os='q'])"/>
 
     <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"
-    href="readjusting.xml"
+    href="adjusting.xml"
     xpointer="xpointer(//*[@os='r'])"/>
 
     <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"
-    href="readjusting.xml"
+    href="adjusting.xml"
     xpointer="xpointer(//*[@os='s'])"/>
 
     <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"
-    href="readjusting.xml"
+    href="adjusting.xml"
     xpointer="xpointer(//*[@os='t'])"/>
 
     <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"
-    href="readjusting.xml"
+    href="adjusting.xml"
     xpointer="xpointer(//*[@os='u'])"/>
 
     <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"
-    href="readjusting.xml"
+    href="adjusting.xml"
     xpointer="xpointer(//*[@os='v'])"/>
+
+    <para>最后，移动一个错误放置的文件:</para>
+
+<screen><userinput remap="install">mkdir -pv /usr/share/gdb/auto-load/usr/lib
+mv -v /usr/lib/*gdb.py /usr/share/gdb/auto-load/usr/lib</userinput></screen>
 
   </sect2>
 
@@ -276,11 +294,15 @@ SEARCH_DIR("/usr/lib");</computeroutput></screen>
       <segtitle>安装目录</segtitle>
 
       <seglistitem>
-        <seg>c++、cc (链接到 gcc)、cpp、g++、gcc、gccbug 和 gcov</seg>
-        <seg>libgcc.a、libgcc_eh.a、libgcc_s.so、libgcov.a、libgomp.{a,so}、
-        libmudflap.{a,so}、libmudflapth.{a,so}、libssp.{a,so}、
-        libssp_nonshared.a、libstdc++.{a,so} 和 libsupc++.a</seg>
-        <seg>/usr/include/c++、/usr/lib/gcc、/usr/share/gcc-&gcc-version;</seg>
+        <seg>c++, cc (链接到 gcc), cpp, g++, gcc,
+        gcc-ar, gcc-nm, gcc-ranlib, gccbug 和 gcov</seg>
+
+        <seg>libgcc.a, libgcc_eh.a, libgcc_s.so, libgcov.a, libgomp.{a,so},
+        liblto_plugin.so, libmudflap.{a,so}, libmudflapth.{a,so},
+        libquadmath.{a,so}, libssp.{a,so},
+        libssp_nonshared.a, libstdc++.{a,so} 和 libsupc++.a</seg>
+
+        <seg>/usr/include/c++, /usr/lib/gcc, /usr/share/gcc-&gcc-version;</seg>
       </seglistitem>
     </segmentedlist>
 
@@ -340,6 +362,39 @@ SEARCH_DIR("/usr/lib");</computeroutput></screen>
         </listitem>
       </varlistentry>
 
+      <varlistentry id="gcc-ar">
+        <term><command>gcc-ar</command></term>
+        <listitem>
+          <para>一个添加一个插件到命令行的 <command>ar</command> 的封装。
+          本程序仅用于添加"链接时间优化"而对于使用默认构建选项不是很有用。</para>
+          <indexterm zone="ch-system-gcc gcc-ar">
+            <primary sortas="b-gcc-ar">gc-ar</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="gcc-nm">
+        <term><command>gcc-nm</command></term>
+        <listitem>
+          <para>一个添加插件到命令行的 <command>nm</command> 的封装。
+          本程序仅用于添加"链接时间优化"而对于使用默认构建选项不是很有用。</para>
+          <indexterm zone="ch-system-gcc gcc-nm">
+            <primary sortas="b-gcc-nm">gc-nm</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="gcc-ranlib">
+        <term><command>gcc-ranlib</command></term>
+        <listitem>
+          <para>一个添加插件到命令行的 <command>ranlib</command> 的封装。
+          本程序仅用于添加"链接时间优化"而对于使用默认构建选项不是很有用。</para>
+          <indexterm zone="ch-system-gcc gcc-ranlib">
+            <primary sortas="b-gcc-ranlib">gc-ranlib</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
       <varlistentry id="gccbug">
         <term><command>gccbug</command></term>
         <listitem>
@@ -390,12 +445,32 @@ SEARCH_DIR("/usr/lib");</computeroutput></screen>
         </listitem>
       </varlistentry>
 
+      <varlistentry id="liblto_plugin">
+        <term><filename class="libraryfile">liblto_plugin</filename></term>
+        <listitem>
+          <para>GCC 的链接时间优化 (LTO) 插件，让 GCC 执行跨编译单元的优化。</para>
+          <indexterm zone="ch-system-gcc liblto_plugin">
+            <primary sortas="c-liblto_plugin*">liblto_plugin*</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
       <varlistentry id="libmudflap">
         <term><filename class="libraryfile">libmudflap</filename></term>
         <listitem>
           <para>包含支持 GCC 的边界检查功能的例程</para>
           <indexterm zone="ch-system-gcc libmudflap">
             <primary sortas="c-libmudflap*">libmudflap*</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="libquadmath">
+        <term><filename class="libraryfile">libquadmath</filename></term>
+        <listitem>
+          <para>GCC 四精度数学库 API</para>
+          <indexterm zone="ch-system-gcc libquadmath">
+            <primary sortas="c-libquadmath*">libquadmath*</primary>
           </indexterm>
         </listitem>
       </varlistentry>

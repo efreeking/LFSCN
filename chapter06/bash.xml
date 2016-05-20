@@ -46,9 +46,11 @@
 
     <para>准备 Bash 编译:</para>
 
-<screen><userinput remap="configure">./configure --prefix=/usr --bindir=/bin \
-    --htmldir=/usr/share/doc/bash-&bash-version; --without-bash-malloc \
-    --with-installed-readline</userinput></screen>
+<screen><userinput remap="configure">./configure --prefix=/usr                     \
+            --bindir=/bin                     \
+            --htmldir=/usr/share/doc/bash-&bash-version; \
+            --without-bash-malloc             \
+            --with-installed-readline</userinput></screen>
 
     <variablelist>
       <title>配置选项的含义:</title>
@@ -82,7 +84,7 @@
     <para>现在，以 <systemitem
     class="username">nobody</systemitem> 用户身份运行测试:</para>
 
-<screen><userinput remap="test">su-tools nobody -s /bin/bash -c "make tests"</userinput></screen>
+<screen><userinput remap="test">su nobody -s /bin/bash -c "PATH=$PATH make tests"</userinput></screen>
 
     <para>安装包:</para>
 

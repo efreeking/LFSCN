@@ -78,10 +78,11 @@ EOF</userinput></screen>
   <filename class="directory">/etc/rc.d/rcsysinit.d</filename> 目录中所有带 S 开头的脚本，紧接着是在 <filename
   class="directory">/etc/rc.d/rc?.d</filename> 目录中所有以一个 S 开头的脚本，其中问号是有 initdefault 值指定。</para>
 
-  <para>为了方便，<command>rc</command> 脚本读取 <filename class="directory">/lib/lsb/init-functions</filename> 中的函数的库。这个库也读取一个可选的配置文件 <filename>/etc/sysconfig/init_params</filename>。在后续部分之中描述的任何系统配置文件的参数都可以放置在这个文件中，以整合所有的系统参数在这样的一个文件中。</para>
+  <para>为了方便，<command>rc</command> 脚本读取 <filename class="directory">/lib/lsb/init-functions</filename> 中的函数的库。这个库也读取一个可选的配置文件 <filename>/etc/sysconfig/rc.site</filename>。在后续部分之中描述的任何系统配置文件的参数都可以放置在这个文件中，以整合所有的系统参数在这样的一个文件中。</para>
 
   <para>为了调试的方便，函数脚本还会记录所有的输出到 <filename>/run/var/bootlog</filename>。因为 <filename
-  class="directory">/run</filename> 目录是一个 tmpfs，这个文件在每次引导间不会保留。</para>
+  class="directory">/run</filename> 目录是一个 tmpfs，这个文件在每次引导间不会保留，尽管如此，在引导过程结束时，它会被附加到更固定的文件
+  <filename>/var/log/boot.log</filename>。</para>
 
   </sect2>
 

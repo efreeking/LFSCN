@@ -40,26 +40,9 @@
   <sect2 role="installation">
     <title>Zlib 的安装</title>
 
-    <para>首先，修复在包的头文件中的输入错误:</para>
-
-<screen><userinput remap="pre">sed -i 's/ifdef _LARGEFILE64_SOURCE/ifndef _LARGEFILE64_SOURCE/' zlib.h</userinput></screen>
-
     <para>准备 Zlib 编译:</para>
 
-<screen><userinput remap="configure">CFLAGS='-mstackrealign -fPIC -O3' ./configure --prefix=/usr</userinput></screen>
-
-    <variablelist>
-      <title>新的配置环境变量的含义:</title>
-
-      <varlistentry>
-        <term><envar>CFLAGS='-mstackrealign -fPIC -O3'</envar></term>
-        <listitem>
-          <para>设置 CFLAGS 凌驾于包中的默认优化，以防止某些运行时的错误。注意 -mstackrealign 可能导致在非 Intel 架构系统上的构建失败。</para>
-        </listitem>
-      </varlistentry>
-    </variablelist>
-
-
+<screen><userinput remap="configure">./configure --prefix=/usr</userinput></screen>
 
     <para>编译包:</para>
 

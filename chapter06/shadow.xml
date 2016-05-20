@@ -51,10 +51,6 @@
 <screen><userinput remap="pre">sed -i 's/groups$(EXEEXT) //' src/Makefile.in
 find man -name Makefile.in -exec sed -i 's/groups\.1 / /' {} \;</userinput></screen>
 
-    <para>修复一个俄语手册页安装的问题:</para>
-
-<screen><userinput remap="pre">sed -i 's/man_MANS = $(man_nopam) /man_MANS = /' man/ru/Makefile.in</userinput></screen>
-
     <para id="shadow-login_defs">不是使用默认的
     <emphasis>crypt</emphasis> 方式，而是使用更安全的
     <emphasis>SHA-512</emphasis> 的密码加密方式，该方式也允许密码超过 8 字符长。它还需要更改 Shadow 按默认使用的用户邮箱的旧的  <filename class="directory">/var/spool/mail</filename> 位置为当前使用的 <filename

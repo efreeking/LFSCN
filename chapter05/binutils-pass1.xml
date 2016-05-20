@@ -55,7 +55,7 @@ cd ../binutils-build</userinput></screen>
 
     <note>
       <para>为了书中其它部分列出的 SBU 值有意义，需要测量从配置开始，一直到包含首次安装在内的构建这个包所花费的时间。
-      为了方便的达到这个目的，在一个 <command>time</command> 命令中封装 3 个命令，像这样:
+      为了方便的达到这个目的，把 3 个命令封装在一个 <command>time</command> 命令中，像这样:
 	  <userinput>time { ./configure ... &amp;&amp; make &amp;&amp; make install; }</userinput>.</para>
     </note>
 
@@ -63,13 +63,40 @@ cd ../binutils-build</userinput></screen>
 
     <para>现在准备好 Binutils 用于编译:</para>
 
-<!-- <screen><userinput remap="configure">../binutils-&binutils-version;/configure \ -->
-<screen><userinput remap="configure">../binutils-&binutils-dir;/configure \
-    --target=$LFS_TGT --prefix=/tools \
-    --disable-nls --disable-werror</userinput></screen>
+    <screen><userinput remap="configure">../binutils-&binutils-version;/configure     \
+    --prefix=/tools            \
+    --with-sysroot=$LFS        \
+    --with-lib-path=/tools/lib \
+    --target=$LFS_TGT          \
+    --disable-nls              \
+    --disable-werror</userinput></screen>
 
     <variablelist>
       <title>配置选项的含义:</title>
+
+      <varlistentry>
+        <term><parameter>--prefix=/tools</parameter></term>
+        <listitem>
+          <para>这个告诉配置脚本准备安装
+          Binutils 程序到 <filename class="directory">/tools</filename>
+          目录中。</para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term><parameter>--with-sysroot=$LFS</parameter></term>
+        <listitem>
+          <para>用于交叉编译，这个告诉构建系统在需要的时候
+          在 $LFS 中查找目标系统库。</para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term><parameter>--with-lib-path=/tools/lib</parameter></term>
+        <listitem>
+          <para>这个指定链接器应该配置使用的库文件路径。</para>
+        </listitem>
+      </varlistentry>
 
       <varlistentry>
         <term><envar>--target=$LFS_TGT</envar></term>
@@ -77,15 +104,6 @@ cd ../binutils-build</userinput></screen>
           <para>因为在 <envar>LFS_TGT</envar> 变量中的机器描述和
           <command>config.guess</command> 脚本的值稍有不同，这个开关将告诉
           <command>configure</command> 脚本调整 Binutil 的构建系统用于构建一个交叉链接器。</para>
-        </listitem>
-      </varlistentry>
-
-      <varlistentry>
-        <term><parameter>--prefix=/tools</parameter></term>
-        <listitem>
-          <para>这个告诉配置脚本准备好安装
-          Binutils 程序于 <filename class="directory">/tools</filename>
-          目录中。</para>
         </listitem>
       </varlistentry>
 

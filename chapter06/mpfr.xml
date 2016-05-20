@@ -42,8 +42,9 @@
 
     <para>准备 MPFR 编译:</para>
 
-<screen><userinput remap="configure">./configure --prefix=/usr --enable-thread-safe \
-  --docdir=/usr/share/doc/mpfr-&mpfr-version;</userinput></screen>
+<screen><userinput remap="configure">./configure  --prefix=/usr        \
+             --enable-thread-safe \
+             --docdir=/usr/share/doc/mpfr-&mpfr-version;</userinput></screen>
 
     <para>编译包:</para>
 
@@ -64,8 +65,8 @@
 
     <para>安装文档:</para>
 
-<screen><userinput remap="install">make html
-make install-html</userinput></screen>
+<screen><userinput remap="make">make html
+</userinput><userinput remap="install">make install-html</userinput></screen>
 
   </sect2>
 

@@ -56,7 +56,7 @@
     <para>要完全控制 Perl 设置的方式，您可以从下列命令删除
     <quote>-des</quote> 选项并手动选取这个包构建的方式。另外，也可以一字不差的使用如下的命令来使用 Perl 自动检测的默认设置:</para>
 
-<screen><userinput remap="configure">sh Configure -des -Dprefix=/usr \
+<screen><userinput remap="configure">sh Configure -des -Dprefix=/usr                 \
                   -Dvendorprefix=/usr           \
                   -Dman1dir=/usr/share/man/man1 \
                   -Dman3dir=/usr/share/man/man3 \
@@ -104,7 +104,7 @@
 
     <para>要测试结果 (大约 2.5 SBU)，执行:</para>
 
-<screen><userinput remap="test">make test</userinput></screen>
+<screen><userinput remap="test">make -k test</userinput></screen>
 
     <para>安装包:</para>
 
@@ -122,12 +122,12 @@
 
       <seglistitem>
         <seg>a2p, c2ph, config_data, corelist, cpan, cpan2dist, cpanp,
-        cpanp-run-perl, dprofpp, enc2xs, find2perl, h2ph, h2xs,
-        instmodsh, libnetcfg, perl, perl&perl-version; (链接到 perl),
+        cpanp-run-perl, enc2xs, find2perl, h2ph, h2xs,
+        instmodsh, json_pp, libnetcfg, perl, perl&perl-version; (链接到 perl),
         perlbug, perldoc, perlivp, perlthanks (链接到 perlbug), piconv, pl2pm,
         pod2html, pod2latex, pod2man, pod2text, pod2usage, podchecker,
         podselect, prove, psed (链接到 s2p), pstruct (链接到 c2ph), ptar,
-        ptardiff, s2p, shasum, splain 和 xsubpp</seg>
+        ptardiff, ptargrep, s2p, shasum, splain, xsubpp 和 zipdetails</seg>
         <seg>有好几百个，无法在这里一一列出</seg>
         <seg>/usr/lib/perl5</seg>
       </seglistitem>
@@ -219,16 +219,6 @@
         </listitem>
       </varlistentry>
 
-      <varlistentry id="dprofpp">
-        <term><command>dprofpp</command></term>
-        <listitem>
-          <para>显示 Perl profile 数据</para>
-          <indexterm zone="ch-system-perl dprofpp">
-            <primary sortas="b-dprofpp">dprofpp</primary>
-          </indexterm>
-        </listitem>
-      </varlistentry>
-
       <varlistentry id="enc2xs">
         <term><command>enc2xs</command></term>
         <listitem>
@@ -275,6 +265,16 @@
           <para>检查已安装的 Perl 模块的 Shell 脚本，甚至可以从一个已安装的模块创建一个 tarball</para>
           <indexterm zone="ch-system-perl instmodsh">
             <primary sortas="b-instmodsh">instmodsh</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="json_pp">
+        <term><command>json_pp</command></term>
+        <listitem>
+          <para>在特定输入和输出格式之间转换数据</para>
+          <indexterm zone="ch-system-perl json_pp">
+            <primary sortas="b-json_pp">json_pp</primary>
           </indexterm>
         </listitem>
       </varlistentry>
@@ -495,6 +495,16 @@
         </listitem>
       </varlistentry>
 
+      <varlistentry id="ptargrep">
+        <term><command>ptargrep</command></term>
+        <listitem>
+          <para>一个应用式样来匹配一个 tar 存档中的文件的内容的 Perl 程序</para>
+          <indexterm zone="ch-system-perl ptargrep">
+            <primary sortas="b-ptargrep">ptargrep</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
       <varlistentry id="s2p">
         <term><command>s2p</command></term>
         <listitem>
@@ -531,6 +541,16 @@
           <para>转换 Perl XS 代码为 C 代码</para>
           <indexterm zone="ch-system-perl xsubpp">
             <primary sortas="b-xsubpp">xsubpp</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="zipdetails">
+        <term><command>zipdetails</command></term>
+        <listitem>
+          <para>显示有关一个 Zip 文件的内部结构的详细信息</para>
+          <indexterm zone="ch-system-perl zipdetails">
+            <primary sortas="b-zipdetails">zipdetails</primary>
           </indexterm>
         </listitem>
       </varlistentry>

@@ -53,7 +53,7 @@
       <segtitle>安装的目录</segtitle>
 
       <seglistitem>
-        <seg>checkfs, cleanfs, console, consolelog, functions, halt, ifdown,
+        <seg>checkfs, cleanfs, console, functions, halt, ifdown,
         ifup, localnet, modules, mountfs, mountkernfs, network, rc, reboot,
         sendsignals, setclock, static, swap, sysctl, sysklogd, template,
         udev 和 udev_retry</seg>
@@ -98,16 +98,6 @@
           <para>为需要的键盘布局加载正确的键映射表；它还设置屏幕字体</para>
           <indexterm zone="ch-scripts-bootscripts console-bootscripts">
             <primary sortas="d-console">console</primary>
-          </indexterm>
-        </listitem>
-      </varlistentry>
-
-      <varlistentry id="consolelog-bootscripts">
-        <term><command>consolelog</command></term>
-        <listitem>
-          <para>设置内核记录级别来控制读取到达控制台的消息。</para>
-          <indexterm zone="ch-scripts-bootscripts consolelog-bootscripts">
-            <primary sortas="d-consolelog">consolelog</primary>
           </indexterm>
         </listitem>
       </varlistentry>

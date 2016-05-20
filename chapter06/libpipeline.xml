@@ -42,8 +42,19 @@
 
     <para>准备 Libpipeline 编译:</para>
 
-<screen><userinput remap="configure">./configure CHECK_CFLAGS=-I/tools/include \
-    CHECK_LIBS="-L/tools/lib -lcheck" --prefix=/usr</userinput></screen>
+<screen><userinput remap="configure">PKG_CONFIG_PATH=/tools/lib/pkgconfig ./configure --prefix=/usr</userinput></screen>
+
+    <variablelist>
+      <title>配置选项的含义:</title>
+
+      <varlistentry>
+        <term><parameter>PKG_CONFIG_PATH</parameter></term>
+        <listitem>
+          <para>使用 pkg-config 获取 <xref linkend="ch-tools-check"/> 中构建的测试库 metadata 的位置.</para>
+        </listitem>
+      </varlistentry>
+
+    </variablelist>
 
     <variablelist>
       <title>配置选项的含义:</title>
@@ -72,7 +83,7 @@
   </sect2>
 
   <sect2 id="contents-libpipeline" role="content">
-    <title> 的内容Libpipeline</title>
+    <title>Libpipeline 的内容</title>
 
     <segmentedlist>
       <segtitle>安装的库</segtitle>

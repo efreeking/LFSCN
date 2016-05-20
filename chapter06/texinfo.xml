@@ -91,7 +91,8 @@ done</userinput></screen>
       <segtitle>安装的目录</segtitle>
 
       <seglistitem>
-        <seg>info, infokey, install-info, makeinfo, pdftexi2dvi, texi2dvi, texi2pdf 和
+        <seg>info, infokey, install-info, makeinfo, pdftexi2dvi, 
+        pod2texi, texi2any, texi2dvi, texi2pdf 和
         texindex</seg>
         <seg>/usr/share/texinfo</seg>
       </seglistitem>
@@ -150,6 +151,26 @@ done</userinput></screen>
           <para>用于格式化给定的 Textinfo 文档为可移植文档格式 (PDF) 文件</para>
           <indexterm zone="ch-system-texinfo pdftexi2dvi">
             <primary sortas="b-pdftexi2dvi">pdftexi2dvi</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="pod2texi">
+        <term><command>pod2texi</command></term>
+        <listitem>
+          <para>转换 Pod 为 Texinfo 格式</para>
+          <indexterm zone="ch-system-texinfo pod2texi">
+            <primary sortas="b-pod2texi">pod2texi</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="texi2any">
+        <term><command>texi2any</command></term>
+        <listitem>
+          <para>翻译 Texinfo 源文档为各种其它格式</para>
+          <indexterm zone="ch-system-texinfo texi2any">
+            <primary sortas="b-texiany">texi2any</primary>
           </indexterm>
         </listitem>
       </varlistentry>

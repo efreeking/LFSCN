@@ -48,7 +48,7 @@
   <sect2 id="ch-intro-irc">
     <title>IRC</title>
 
-    <para>多个 LFS 社区的成员在我们的社区的 Internet Relay Chat (IRC) 网络中提供帮助。
+    <para>多个 LFS 社区的成员在 Internet Relay Chat (IRC) 网络中提供帮助。
 	在使用这个技术支持前，请确保您的问题未在 LFS FAQ 或邮件列表存档中被问到。
     您可以在 <uri>irc.linuxfromscratch.org</uri> 查找 IRC 网络。支持频道命名为
     #LFS-support。</para>

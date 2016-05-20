@@ -42,7 +42,7 @@
 
     <para>准备 Xz 进行编译:</para>
 
-<screen><userinput remap="configure">./configure --prefix=/usr --docdir=/usr/share/doc/xz-&xz-version;</userinput></screen>
+<screen><userinput remap="configure">./configure --prefix=/usr --libdir=/lib --docdir=/usr/share/doc/xz-&xz-version;</userinput></screen>
 
     <para>编译包:</para>
 
@@ -54,7 +54,7 @@
 
   <para>安装包:</para>
 
-<screen><userinput remap="install">make install</userinput></screen>
+<screen><userinput remap="install">make pkgconfigdir=/usr/lib/pkgconfig install</userinput></screen>
 
   </sect2>
 
@@ -68,11 +68,12 @@
 
       <seglistitem>
         <seg>lzcat (链接到 xz), lzcmp (链接到 xzdiff), lzdiff (链接到
-        xzdiff), bzdiff, lzegrep (链接到 xzgrep), lzfgrep (链接到 xzgrep),
-        lz (链接到 xz), lzmadec, lzmainfo, lzmore (链接到 xzmore),
-        unlzma (链接到 xz), xzcat (链接到 xz), xzcmp (链接到 xzdiff),
-        xzdec, xzdiff, xzegrep (链接到 xzgrep), xzfgrep (链接到 xzgrep),
-        xzgrep, xzless, xzmore</seg>
+        xzdiff), lzegrep (链接到 xzgrep), lzfgrep (链接到 xzgrep),
+        lzgrep (链接到 xzgrep), lzless (链接到 xzless), lzma (链接到 xz),
+        lzmadec, lzmainfo, lzmore (链接到 xzmore),
+        unlzma (链接到 xz), unxz, (链接到 xz), xz, xzcat (链接到 xz),
+        xzcmp (链接到 xzdiff), xzdec, xzdiff, xzegrep (链接到 xzgrep),
+        xzfgrep (链接到 xzgrep), xzgrep, xzless, xzmore</seg>
         <seg>liblzma.{a,so}</seg>
         <seg>/usr/include/lzma 和 /usr/share/doc/xz-&xz-version;</seg>
       </seglistitem>

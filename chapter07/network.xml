@@ -16,11 +16,11 @@
 
   <para>这一节仅适用于需要配置的网卡。</para>
 
-  <para>如果不使用网卡，那似乎也没有创建任何和网卡相关的配置文件的需要。如果这样的话，从所有运行级目录(<filename
+  <para>如果不使用网卡，那似乎也没有创建任何和网卡相关的配置文件的需要。如果这样的话，在 <xref linkend="ch-scripts-bootscripts"/> 中安装引导脚本后，您将需要从所有运行级目录(<filename
   class="directory">/etc/rc.d/rc*.d</filename>)中删除 <filename class="symlink">network</filename>
 符号链接。</para>
 
-  <sect2>
+  <sect2 id='stable-net-names'>
     <title>为网络接口创建固定的名称</title>
 
     <para>如果在系统中只有一个网络接口需要配置，那么本节是可选阅读的，当然这样做永不出错。
@@ -28,16 +28,17 @@
 
     <para>利用 Udev 和模块化网络驱动程序，网络接口编号按默认在每次重启后是不连续的，因为驱动程序是并行加载的，也就是说由此而以随机顺序加载。例如，在一台有 2 个由 Intel 和 Realtek 制作的网卡，由 Intel 制作的网卡会变成 <filename class="devicefile">eth0</filename> 而 Realtek 卡会变成 <filename class="devicefile">eth1</filename>。在某些情况下，在重启后，网卡会以其它的方式重新编号。为了避免这样的问题，Udev 附带了一个脚本和某些规则来基于网卡的 MAC 地址给它们指派固定的名称。</para>
 
-    <para>预先生成规则确保在每次引导时，同一设备被分配到同一名称，包括第一次:</para>
+    <para>在最后的章节中，在构建指令中为
+    <application>udev (systemd)</application> 预生成了规则。
+    观察 <filename>/etc/udev/rules.d/70-persistent-net.rules</filename> 文件，
+    找出哪个名称被分配给哪个网络设备:</para>
 
-<screen><userinput>for NIC in /sys/class/net/* ; do
-    INTERFACE=${NIC##*/} udevadm test --action=add $NIC
-done</userinput></screen>
+<screen role="nodump"><userinput>cat /etc/udev/rules.d/70-persistent-net.rules</userinput></screen>
 
-    <para>现在，观察 <filename>/etc/udev/rules.d/70-persistent-net.rules</filename>
-    文件，找出哪些名称被指派给哪个网络设备:</para>
-
-<screen><userinput>cat /etc/udev/rules.d/70-persistent-net.rules</userinput></screen>
+    <note><para>在某些情况下，譬如当 MAC 地址被手动分配给一个网卡，
+    或者在一个如 Xen 之类的虚拟环境中时，
+    网络规则文件可能因为地址没有统一的分配而未生成。
+    在这样的情况下，秩序继续下一部分。</para></note>
 
     <para>文件以一个注释块开始，紧接着时每个网卡的两行。每个网卡的第一行是显示它的硬件 ID (例如，如果是 PCI 卡的话，则它的 PCI 制造商和设备 ID)的注释式描述，伴随着是在圆括号中的它的驱动程序(如果找到驱动程序的话)。不管硬件 ID 还是驱动程序都不会用于判断赋予接口的名称；这个信息仅用于参考。第二行是匹配这个网卡的 Udev 规则和实际分配给它的名称。</para>
 
@@ -105,7 +106,9 @@ EOF</userinput></screen>
 
     <para><envar>GATEWAY</envar> 变量应该包含默认的网关 IP 地址(如果存在的话)。如果不存在，那么完全注释掉这个变量。</para>
 
-    <para><envar>PREFIX</envar> 变量需要在子网中使用的位数。在 IP 地址中的每节是 8 位。如果子网的掩码是 255.255.255.0，那么它使用前三节(24 位)来指定网络号。如果子网掩码是 255.255.255.240，它将会使用前 28 位。超过 24 位的前缀一般是被 DSL 和基于电缆的互联网服务供应商(ISP)使用的。在本例中(PREFIX=24)，网络掩码是 255.255.255.0。根据您指定的子网调整 <envar>PREFIX</envar> 变量。</para>
+    <para><envar>PREFIX</envar> 变量包含在子网中使用的位数。在 IP 地址中的每节是 8 位。如果子网的掩码是 255.255.255.0，那么它使用前三节(24 位)来指定网络号。如果子网掩码是 255.255.255.240，它将会使用前 28 位。超过 24 位的前缀一般是被 DSL 和基于电缆的互联网服务供应商(ISP)使用的。在本例中(PREFIX=24)，网络掩码是 255.255.255.0。根据您指定的子网调整 <envar>PREFIX</envar> 变量。如果省略的话，PREFIX 默认为 24。</para>
+
+    <para>要获取更多信息，参阅 <command>ifup</command> 手册页。</para>
 
   </sect2>
 

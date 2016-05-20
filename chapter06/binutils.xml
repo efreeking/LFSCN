@@ -59,10 +59,9 @@ Ask your system administrator to create more.</computeroutput></screen>
 <screen><userinput remap="pre">rm -fv etc/standards.info
 sed -i.bak '/^INFO/s/standards.info //' etc/Makefile.in</userinput></screen>
 
-    <para>修复一些在使用 GCC-&gcc-version; 时会失败的测试</para>
+    <para>修复某些测试套件以便所有的测试能够通过:</para>
 
-<screen><userinput remap="pre">sed -i "/exception_defines.h/d" ld/testsuite/ld-elf/new.cc
-sed -i "s/-fvtable-gc //" ld/testsuite/ld-selective/selective.exp</userinput></screen>
+<screen><userinput remap="pre">patch -Np1 -i ../&binutils-testsuite-fixes-patch;</userinput></screen>
 
     <para>Binutils 文档推荐在源代码目录外的一个专用目录中构建 Binutils:</para>
 
@@ -71,8 +70,13 @@ cd ../binutils-build</userinput></screen>
 
     <para>准备 Binutils 编译:</para>
 
-<!-- <screen><userinput remap="configure">../binutils-&binutils-version;/configure - -prefix=/usr \ -->
-<screen><userinput remap="configure">../binutils-&binutils-dir;/configure --prefix=/usr --enable-shared</userinput></screen>
+<screen><userinput remap="configure">../binutils-&binutils-version;/configure --prefix=/usr --enable-shared</userinput></screen>
+
+    <note><para>有一个可选的参数用于 <command>configure</command>，
+    <option>--enable-lto</option>，它可以用于允许
+    <command>ar</command>, <command>nm</command> 以及 <command>ranlib</command>
+    命令接收一个 <option>--plugin</option> 参数。这用于让 <command>gcc</command> 可以在指定的情况下进行"链接时间优化"。
+    在 LFS 或 BLFS 中当前没有包使用这个功能。</para></note>
 
     <para>编译包:</para>
 
@@ -101,7 +105,7 @@ cd ../binutils-build</userinput></screen>
 
     <para>测试结果:</para>
 
-<screen><userinput remap="test">make -k check</userinput></screen>
+<screen><userinput remap="test">make check</userinput></screen>
 
     <para>安装包:</para>
 
@@ -110,7 +114,7 @@ cd ../binutils-build</userinput></screen>
     <para>安装某些包所需要的 <filename class="headerfile">libiberty</filename> 头文件:</para>
 
 <!-- <screen><userinput remap="install">cp -v ../binutils-&binutils-version;/include/libiberty.h /usr/include</userinput></screen> -->
-<screen><userinput remap="install">cp -v ../binutils-&binutils-dir;/include/libiberty.h /usr/include</userinput></screen>
+<screen><userinput remap="install">cp -v ../binutils-&binutils-version;/include/libiberty.h /usr/include</userinput></screen>
 
   </sect2>
 
@@ -124,8 +128,8 @@ cd ../binutils-build</userinput></screen>
       <segtitle>安装的目录</segtitle>
 
       <seglistitem>
-        <seg>addr2line、ar、as、c++filt、gprof、ld、nm、objcopy、objdump、
-        ranlib、readelf、size、strings 和 strip</seg>
+        <seg>addr2line, ar, as, c++filt, elfedit, gprof, ld, ld.bfd, nm,
+        objcopy, objdump, ranlib, readelf, size, strings 和 strip</seg>
         <seg>libiberty.a、libbfd.{a,so} 和 libopcodes.{a,so}</seg>
         <seg>/usr/lib/ldscripts</seg>
       </seglistitem>
@@ -177,6 +181,16 @@ cd ../binutils-build</userinput></screen>
         </listitem>
       </varlistentry>
 
+      <varlistentry id="elfedit">
+        <term><command>elfedit</command></term>
+        <listitem>
+          <para>更新 ELF 文件的 ELF 头信息</para>
+          <indexterm zone="ch-system-binutils elfedit">
+            <primary sortas="b-elfedit">elfedit</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
       <varlistentry id="gprof">
         <term><command>gprof</command></term>
         <listitem>
@@ -193,6 +207,16 @@ cd ../binutils-build</userinput></screen>
           <para>一个组合一些对象和存档文件到一个单一文件中，重定位它们的数据并捆绑(tie up)符号引用的链接器</para>
           <indexterm zone="ch-system-binutils ld">
             <primary sortas="b-ld">ld</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="ld.bfd">
+        <term><command>ld.bfd</command></term>
+        <listitem>
+          <para>到 <command>ld</command> 的硬链接</para>
+          <indexterm zone="ch-system-binutils ld.bfd">
+            <primary sortas="b-ld.bfd">ld.bfd</primary>
           </indexterm>
         </listitem>
       </varlistentry>

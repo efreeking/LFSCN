@@ -40,12 +40,17 @@
   <sect2 role="installation">
     <title>IPRoute2 的安装</title>
 
-    <para>包含在此包中的 <command>arpd</command> 二进制依赖于 Berkeley DB。因为 <command>arpd</command> 在一个基础的 Linux 系统并不是非常常见的需要，通过应用下面的 <command>sed</command> 命令来删除对 Berkeley DB 的依赖。如果需要
+    <para>包含在此包中的 <command>arpd</command> 二进制依赖于 Berkeley DB。因为 <command>arpd</command> 在一个基础的 Linux 系统并不是非常常见的需要，通过应用下面的命令来删除对 Berkeley DB 的依赖。如果需要
     <command>arpd</command> 二进制的话，编译
     Berkeley DB 的说明可以在
     <ulink url="&blfs-root;view/svn/server/databases.html#db"/> 中的 BLFS 书中找到。</para>
 
-<screen><userinput remap="pre">sed -i '/^TARGETS/s@arpd@@g' misc/Makefile</userinput></screen>
+<screen><userinput remap="pre">sed -i '/^TARGETS/s@arpd@@g' misc/Makefile
+sed -i /ARPD/d Makefile
+sed -i 's/arpd.8//' man/man8/Makefile</userinput></screen>
+
+    <para>删除导致编译失败的编译器标志:</para>
+<screen><userinput remap="pre">sed -i 's/-Werror//' Makefile</userinput></screen>
 
     <para>编译包:</para>
 
@@ -69,7 +74,8 @@
 
     <para>安装包:</para>
 
-<screen><userinput remap="install">make DESTDIR= SBINDIR=/sbin MANDIR=/usr/share/man \
+<screen><userinput remap="install">make DESTDIR=              \
+     MANDIR=/usr/share/man \
      DOCDIR=/usr/share/doc/iproute2-&iproute2-version; install</userinput></screen>
 
   </sect2>
@@ -82,7 +88,7 @@
       <segtitle>安装目录</segtitle>
 
       <seglistitem>
-        <seg>ctstat (链接到 lnstat), genl, ifcfg, ifstat, ip, lnstat,
+        <seg>bridge, ctstat (链接到 lnstat), genl, ifcfg, ifstat, ip, lnstat,
         nstat, routef, routel, rtacct, rtmon, rtpr, rtstat (链接到 lnstat), ss 和 tc</seg>
         <seg>/etc/iproute2, /lib/tc, /usr/share/doc/iproute2-&iproute2-version;,
         /usr/lib/tc</seg>
@@ -93,6 +99,16 @@
       <bridgehead renderas="sect3">简述</bridgehead>
       <?dbfo list-presentation="list"?>
       <?dbhtml list-presentation="table"?>
+
+      <varlistentry id="bridge">
+        <term><command>bridge</command></term>
+        <listitem>
+          <para>配置网桥</para>
+          <indexterm zone="ch-system-iproute2 bridge">
+            <primary sortas="b-bridge">bridge</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
 
       <varlistentry id="ctstat">
         <term><command>ctstat</command></term>

@@ -23,7 +23,9 @@
 
 
     <para>首先确保准备好一张紧急引导盘，以备万一计算机不可使用(不可引导)时可以
-    <quote>挽救</quote>计算机。如果您还没有一个引导设备，您需要创建一个。为了以下的过程能够运作，您需要跳到 BLFS 的开头，并安装 <ulink
+    <quote>挽救</quote>计算机。如果您还没有一个引导设备，您需要创建一个。为了以下的过程能够运作，您需要跳到 BLFS 的开头，并安装来自<ulink
+    url="http://www.linuxfromscratch.org/blfs/view/svn/multimedia/libisoburn.html">
+    libisoburn</ulink> 包的 <ulink
     url="http://www.linuxfromscratch.org/blfs/view/svn/multimedia/xorriso.html">
     xorriso</ulink>。</para>
 
@@ -39,11 +41,6 @@ xorriso -as cdrecord -v dev=/dev/cdrw blank=as_needed grub-img.iso</userinput></
     <para>GRUB 使用它自己的命名结构，以 <emphasis>(hdn,m)</emphasis> 的形式来命名驱动器和分区，其中 <emphasis>n</emphasis> 是硬盘驱动器的编号，而 <emphasis>m</emphasis> 是分区的编号。硬盘驱动器编号从 0 开始，而分区编号，正常分区从 1 开始，而扩展分区从 5 开始。注意这和早期版本中两者都是从0开始的有所不同。例如，分区 <filename
     class="partition">sda1</filename> 是对于 GRUB 来说是 <emphasis>(hd0,1)</emphasis> 而 <filename class="partition">sdb3</filename> 是
     <emphasis>(hd1,3)</emphasis>。和 Linux 不同的是，GRUB 不会把 CD-ROM 驱动器视为硬盘。例如，如果您使用在 <filename class="partition">hdb</filename> 上的 CD，和在 <filename class="partition">hdc</filename> 上的第二个硬盘，第二个硬盘仍将是 <emphasis>(hd1)</emphasis>。</para>
-
-    <para>您可以通过运行以下命令来确定 GRUB 把您的磁盘设备当做什么内容:</para>
-
-<screen role="nodump"><userinput>grub-mkdevicemap --device-map=device.map
-cat device.map</userinput></screen>
 
   </sect2>
 
@@ -69,14 +66,14 @@ cat device.map</userinput></screen>
     </warning>
 
 <screen role="nodump"><userinput>grub-install /dev/sda</userinput></screen>
-
+<!-- This does not seem to be true any more
     <note><para><application>grub-install</application> 是一个脚本并调用另外一个程序 grub-probe，可能会失败并出现“cannot stat `/dev/root'”消息。  如果这样的话，从您的根分区建立一个临时的符号链接到 /dev/root:</para>
 
 <screen role="nodump"><userinput>ln -sv /dev/sda2 /dev/root</userinput></screen>
 
     <para>符号链接将只会在系统重新引导前存在。链接只是安装过程所需。
     </para></note>
-
+-->
   </sect2>
 
   <sect2>
@@ -97,10 +94,15 @@ menuentry "GNU/Linux, Linux &linux-version;-lfs-&version;" {
 }</literal>
 EOF</userinput></screen>
 
+    <note><para>从 <application>GRUB</application> 的角度来看，内核文件是相对于使用的分区的。
+    如果您使用了一个独立的 /boot 分区，从上面的 <emphasis>linux</emphasis> 行中去掉 /boot。
+    您还想要更改 <emphasis>set root</emphasis> 行来指向引导分区。
+    </para></note>
+
     <para>GRUB 是一个极端强大的程序，并且它提供了大量的选项来从各种不同的设备、操作系统和分区类型中引导。也有很多选项用于定制，譬如图形启动画面、播放声音、鼠标输入等。这些选项的详细信息超出了本介绍的范围。</para>
 
-    <note><para>有一个命令，<application>grub-mkconfig</application>，它可以自动编写一个配置文件。它使用在.  It uses a set of scripts in
-    /etc/grub.d/ 中的一组脚本，并将会破坏您所做出的任何定制。这些脚本主要的设计目的是为了非源代码发行版而不推荐 LFS 使用。如果您安装了一个商用的 Linux 发行版，就有很好的机会将会运行到这个程序。 记住确定备份好您的 grub.cfg 文件。</para></note> 
+    <caution><para>有一个命令，<application>grub-mkconfig</application>，它可以自动编写一个配置文件。它使用在.  It uses a set of scripts in
+    /etc/grub.d/ 中的一组脚本，并将会破坏您所做出的任何定制。这些脚本主要的设计目的是为了非源代码发行版而不推荐 LFS 使用。如果您安装了一个商用的 Linux 发行版，就有很好的机会将会运行到这个程序。 记住确定备份好您的 grub.cfg 文件。</para></caution> 
 
    </sect2>
 

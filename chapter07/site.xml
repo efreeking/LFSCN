@@ -22,5 +22,57 @@
   <!-- Use role to fix a pdf generation problem -->
   <screen role="auto">&site;</screen>
 
+  <sect2>
+    <title>定制引导和关机脚本</title>
+
+    <para>LFS 引导脚本以一种相当有效的方式引导和关闭一个系统，
+    但是在 rc.site 中仍有一些调整可以让您进一步改进速度
+    并根据您的首选项调整消息。
+    要这样操作的话，调整上面 <filename>/etc/sysconfig/rc.site</filename> 文件中设置。</para>
+
+    <itemizedlist>
+
+    <listitem><para>在引导脚本 <filename>udev</filename> 期间，
+    有一个对 <command>udev settle</command> 的调用需要一些时间来完成。
+    这个时间，根据系统中设备是否存在可能需要也可能不需要。
+    如果您只有简单的分区和单一一个以太网卡，引导过程将可能不需要等待这个命令。
+    要跳过它，设置变量 OMIT_UDEV_SETTLE=y。</para></listitem>
+
+    <listitem><para>引导脚本 <filename>udev_retry</filename> 按默认也会运行 <command>udev settle</command>。
+    这个命令按默认仅在 <filename class='directory'>/var</filename> 目录被单独装载时需要。
+    这是因为时钟需要文件 <filename>/var/lib/hwclock/adjtime</filename>。
+    其它定制也可能需要等待 udev 完成，但是在许多安装版中不需要它。
+    通过设置变量 OMIT_UDEV_RETRY_SETTLE=y 跳过命令。
+    </para></listitem>
+
+    <listitem><para>按默认，文件系统检查是安静的。在引导过程中，这个可能会出现延时。
+    要开启 <command>fsck</command> 输出，设置变量 VERBOSE_FSCK=y。
+    </para></listitem>
+
+    <listitem><para>当重启时，您可能想完全的跳过文件系统检查，<command>fsck</command>。
+    要这样做的话，可以创建文件
+    <filename>/fastboot</filename> 或使用命令
+    <command>/sbin/shutdown -f -r now</command> 重启系统。
+    另一方面，您可以通过创建 <filename>/forcefsck</filename> 或运行带参数 <parameter>-F</parameter> 代替 <parameter>-f</parameter> 的 <command>shutdown</command> 命令来强制所有文件系统检查。
+    </para>
+
+    <para>设置变量 FASTBOOT=y 将会在引导过程中禁止 <command>fsck</command> 直至它被删除。
+    在永久方面上说，不建议这样。</para></listitem>
+
+    <listitem><para>通常，在 <filename class='directory'>/tmp</filename> 目录中的所有文件会在引导时删除。
+    根据存在的文件和目录的数量，这个可能会导致在引导过程中的明显延时。
+    要跳过删除这些文件，设置变量 SKIPTMPCLEAN=y。</para></listitem>
+
+    <listitem><para>在关机期间，<command>init</command> 程序发送
+    一个 TERM 信号给每个它启动的程序(如 agetty)，等待一个设置的时间(默认 3 秒)，并发送每个进程一个 KILL 信号并再次等待。
+    这个过程在 <command>sendsignals</command> 脚本中对任何没有被它们自己的脚本关闭的进程重复。
+    <command>init</command> 的延时可以通过传递一个参数来设置。
+    例如要去掉 <command>init</command> 中的延时，在关机或重启时，传递 -t0 参数(如 <command>/sbin/shutdown -t0 -r now</command>)。
+    <command>sendsignals</command> 脚本的延时可以通过设置参数 KILLDELAY=0 来跳过。</para></listitem>
+
+    </itemizedlist>
+
+  </sect2>
+
 </sect1>
 

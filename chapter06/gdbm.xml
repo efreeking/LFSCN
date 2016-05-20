@@ -73,9 +73,11 @@
     <title>GDBM 的内容</title>
 
     <segmentedlist>
+      <segtitle>安装的程序</segtitle>
       <segtitle>安装的库</segtitle>
 
       <seglistitem>
+        <seg>testgdbm</seg>
         <seg>libgdbm.{so,a} 和 libgdbm_compat.{so,a}</seg>
       </seglistitem>
     </segmentedlist>
@@ -84,6 +86,16 @@
       <bridgehead renderas="sect3">简述</bridgehead>
       <?dbfo list-presentation="list"?>
       <?dbhtml list-presentation="table"?>
+
+      <varlistentry id="testgdbm">
+        <term><command>testgdbm</command></term>
+        <listitem>
+          <para>测试和修改一个 GDBM 数据库</para>
+          <indexterm zone="ch-system-gdbm testgdbm">
+            <primary sortas="b-testgdbm">testgdbm</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
 
       <varlistentry id="libgdbm">
         <term><filename class="libraryfile">libgdbm</filename></term>

@@ -48,21 +48,24 @@ cd build</userinput></screen>
 
     <para>准备 E2fsprogs 编译:</para>
 
-<screen><userinput remap="configure">PKG_CONFIG=/tools/bin/true LDFLAGS=-lblkid \
-    ../configure --prefix=/usr --with-root-prefix="" \
-    --enable-elf-shlibs --disable-libblkid --disable-libuuid \
-    --disable-uuidd --disable-fsck</userinput></screen>
+<screen><userinput remap="configure">../configure --prefix=/usr         \
+             --with-root-prefix="" \
+             --enable-elf-shlibs   \
+             --disable-libblkid    \
+             --disable-libuuid     \
+             --disable-uuidd       \
+             --disable-fsck</userinput></screen>
 
     <variablelist>
       <title>配置选项的含义:</title>
-
+<!--
       <varlistentry>
         <term><parameter>PKG_CONFIG...</parameter></term>
         <listitem>
           <para>这个让 E2fsprogs 可以无需首先构建和安装 Pkg-config 即可构建。</para>
         </listitem>
       </varlistentry>
-
+-->
       <varlistentry>
         <term><parameter>--with-root-prefix=""</parameter></term>
         <listitem>
@@ -103,10 +106,10 @@ cd build</userinput></screen>
 
 <screen><userinput remap="test">make check</userinput></screen>
 
-    <para>E2fsprogs 的测试之一将尝试分配 256 MB 的内存。如果您没有足够多的 RAM 的话，建议为测试启用足够的交换空间。参阅
+    <para>E2fsprogs 的测试之一将尝试分配 256 MB 的内存。如果您没有足够多的 RAM 的话，确保为测试启用足够的交换空间。参阅
     <xref linkend="space-creatingfilesystem"/>和<xref linkend="space-mounting"/>获得创建和启用交换空间的详细说明。</para>
 
-    <para>安装二进制、文档和共享库:</para>
+    <para>安装二进制, 文档和共享库:</para>
 
 <screen><userinput remap="install">make install</userinput></screen>
 
@@ -121,15 +124,13 @@ cd build</userinput></screen>
     <para>这个包安装了一个 GZIP 压缩的 <filename class="extension">.info</filename> 文件，但是不更新系统级的 <filename>dir</filename> 文件。使用下列命令解压这个文件然后更新系统的 <filename>dir</filename> 文件。</para>
 
 <screen><userinput remap="install">gunzip -v /usr/share/info/libext2fs.info.gz
-install-info --dir-file=/usr/share/info/dir \
-             /usr/share/info/libext2fs.info</userinput></screen>
+install-info --dir-file=/usr/share/info/dir /usr/share/info/libext2fs.info</userinput></screen>
 
     <para>如果需要的话，通过执行下列命令创建和安装某些额外的文档:</para>
 
 <screen><userinput remap="install">makeinfo -o      doc/com_err.info ../lib/et/com_err.texinfo
 install -v -m644 doc/com_err.info /usr/share/info
-install-info --dir-file=/usr/share/info/dir \
-             /usr/share/info/com_err.info</userinput></screen>
+install-info --dir-file=/usr/share/info/dir /usr/share/info/com_err.info</userinput></screen>
   </sect2>
 
   <sect2 id="contents-e2fsprogs" role="content">
@@ -141,15 +142,15 @@ install-info --dir-file=/usr/share/info/dir \
       <segtitle>安装的目录</segtitle>
 
       <seglistitem>
-        <seg>badblocks、chattr、compile_et、debugfs、dumpe2fs、e2freefrag、
-        e2fsck、e2image、e2initrd_helper、e2label、e2undo、filefrag、fsck.ext2、
-        fsck.ext3、fsck.ext4、fsck.ext4dev、logsave、lsattr、mk_cmds、mke2fs、
-        mkfs.ext2、mkfs.ext3、mkfs.ext4、mkfs.ext4dev、mklost+found、
-        resize2fs 和 tune2fs</seg>
-        <seg>libcom_err.{a,so}、libe2p.{a,so}、libext2fs.{a,so} 和
-        libss.{a,so}</seg>
-        <seg>/usr/include/e2p、/usr/include/et、/usr/include/ext2fs、
-        /usr/include/ss、/usr/share/et、/usr/share/ss</seg>
+        <seg>badblocks, chattr, compile_et, debugfs, dumpe2fs, e2freefrag, 
+        e2fsck, e2image, e2initrd_helper, e2label, e2undo, e4defrag, 
+        filefrag, fsck.ext2, fsck.ext3, fsck.ext4, fsck.ext4dev, logsave, 
+        lsattr, mk_cmds, mke2fs, mkfs.ext2, mkfs.ext3, mkfs.ext4, mkfs.ext4dev, 
+        mklost+found, resize2fs 和 tune2fs</seg>
+        <seg>libcom_err.{a,so}, libe2p.{a,so}, libext2fs.{a,so},
+        libquota.a 和 libss.{a,so}</seg>
+        <seg>/usr/include/e2p, /usr/include/et, /usr/include/ext2fs,
+        /usr/include/quota, /usr/include/ss, /usr/share/et, /usr/share/ss</seg>
       </seglistitem>
     </segmentedlist>
 
@@ -273,6 +274,16 @@ install-info --dir-file=/usr/share/info/dir \
           <para>重放在一个设备上的一个 ext2/ext3/ext4  文件系统上找到的撤销记录 undo_log。这个可以用于撤销一个 e2fsprogs 程序的失败操作。</para>
           <indexterm zone="ch-system-e2fsprogs e2undo">
             <primary sortas="b-e2undo">e2undo</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="e4defrag">
+        <term><command>e4defrag</command></term>
+        <listitem>
+          <para>ext4 文件系统的在线碎片整理工具</para>
+          <indexterm zone="ch-system-e2fsprogs e4defrag">
+            <primary sortas="b-e4defrag">e4defrag</primary>
           </indexterm>
         </listitem>
       </varlistentry>
@@ -465,7 +476,7 @@ install-info --dir-file=/usr/share/info/dir \
       <varlistentry id="libe2p">
         <term><filename class="libraryfile">libe2p</filename></term>
         <listitem>
-          <para>用于 <command>dumpe2fs</command>、<command>chattr</command> 和
+          <para>用于 <command>dumpe2fs</command>, <command>chattr</command> 和
            <command>lsattr</command> 使用</para>
           <indexterm zone="ch-system-e2fsprogs libe2p">
             <primary sortas="c-libe2p">libe2p</primary>
@@ -479,6 +490,16 @@ install-info --dir-file=/usr/share/info/dir \
           <para>包含启用用户级程序来操作一个 <systemitem class="filesystem">ext2</systemitem> 文件系统的例程</para>
           <indexterm zone="ch-system-e2fsprogs libext2fs">
             <primary sortas="c-libext2fs">libext2fs</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="libquota">
+        <term><filename class="libraryfile">libquota</filename></term>
+        <listitem>
+          <para>为创建和更新配额文件以及 ext4 超级块字段提供一个接口</para>
+          <indexterm zone="ch-system-e2fsprogs libquota">
+            <primary sortas="c-libquota">libquota</primary>
           </indexterm>
         </listitem>
       </varlistentry>

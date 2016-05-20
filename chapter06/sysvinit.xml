@@ -44,15 +44,13 @@
     the TERM signal</quote> 之类似乎暗示它正在发送这些信号给所有当前正在运行的进程。为了避免这种误解，修改源代码，以便使得这些消息读起来类似
     <quote>Sending processes configured via /etc/inittab the TERM signal</quote>:</para>
 
-<screen><userinput remap="pre">sed -i 's@Sending processes@&amp; configured via /etc/inittab@g' \
-    src/init.c</userinput></screen>
+<screen><userinput remap="pre">sed -i 's@Sending processes@&amp; configured via /etc/inittab@g' src/init.c</userinput></screen>
 
-    <para><command>wall</command> 和 
-    <command>mountpoint</command> 程序的维护版本之前已经由 Util-linux 安装。为了阻止这些程序和其手册页的 Sysvinit 版本的安装，运行:</para>
+    <para><command>wall</command>，
+    <command>mountpoint</command> 和 <command>utmpdump</command> 程序的维护版本之前已经由 Util-linux 安装。为了阻止这些程序和其手册页的 Sysvinit 版本的安装，运行:</para>
 
-<screen><userinput remap="make">sed -i -e 's/utmpdump wall/utmpdump/' \
-       -e '/= mountpoint/d' \
-       -e 's/mountpoint.1 wall.1//' src/Makefile</userinput></screen>
+<screen><userinput remap="make">sed -i -e '/utmpdump/d' \
+       -e '/mountpoint/d' src/Makefile</userinput></screen>
 
     <para>编译包:</para>
 
@@ -73,11 +71,10 @@
       <segtitle>安装的程序</segtitle>
 
       <seglistitem>
-        <seg>bootlogd, fstab-decode, halt, init, killall5, last, 
-        lastb (链接到 last), mesg, mountpoint, pidof (链接到 killall5), 
-        poweroff (链接到 halt),
-        reboot (链接到 halt), runlevel, shutdown, sulogin,
-        telinit (链接到 init) 和 utmpdump</seg>
+        <seg>bootlogd, fstab-decode, halt, init, killall5, last,
+        lastb (链接到 last), mesg, pidof (链接到 killall5),
+        poweroff (链接到 halt), reboot (链接到 halt), runlevel, shutdown,
+        sulogin 和 telinit (链接到 init)</seg>
       </seglistitem>
     </segmentedlist>
 
@@ -236,16 +233,6 @@
           <para>告诉 <command>init</command> 要更改为哪一个运行级</para>
           <indexterm zone="ch-system-sysvinit telinit">
             <primary sortas="b-telinit">telinit</primary>
-          </indexterm>
-        </listitem>
-      </varlistentry>
-
-      <varlistentry id="utmpdump">
-        <term><command>utmpdump</command></term>
-        <listitem>
-          <para>以一种更友好的格式显示给出的登录文件的内容</para>
-          <indexterm zone="ch-system-sysvinit utmpdump">
-            <primary sortas="b-utmpdump">utmpdump</primary>
           </indexterm>
         </listitem>
       </varlistentry>

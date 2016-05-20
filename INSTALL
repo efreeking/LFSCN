@@ -1,16 +1,14 @@
-LFS Book Conversion Tools Installation Instructions
+LFS Book 转换工具安装说明
 
-After downloading the SVN source, there are some things that need to be set up 
-on your computer if you want to convert the XML source into something easier to 
-read (e.g. HTML, TXT, or PDF).  If you are interested in this, then keep 
-reading.  If you are only interested in editing the XML source for re- 
-submission to the lfs-book or lfs-dev mailing lists, then you do not need this 
-document.  Instead, you need to read the LFS Editor's Manual.  See the LFS 
-website at http://www.linuxfromscratch.org for more information.
+在下载 SVN 源代码后，如果您想转换 XML 源代码为某些其它更容易阅读的格式(如 HTML, TXT 或 PDF)的话，那么在您的计算机上有些东西需要设置。
+如果您对这个感兴趣的话，那么继续阅读。
+如果您只对编辑 XML 源代码以便重新提交到 lfs-book 或 lfs-dev 邮件列表感兴趣的话，那么您不需要本文档。
+相反，您需要阅读 LFS 编写者的手册，查看位于
+http://www.linuxfromscratch.org 的 LFS 网站获取更多信息。
 
 -------------------------------------------------------------------------------
 
-If you want to convert the XML to HTML, install the following:
+如果您想转换 XML 为 HTML，安装下列内容:
 
 * libxml2
   - http://www.linuxfromscratch.org/blfs/view/svn/general/libxml2.html
@@ -29,19 +27,17 @@ If you want to convert the XML to HTML, install the following:
 
 ------------------------------------------------------------------------------- 
 
-If you want to convert the XML to TXT, install the above items, and then install
-the following:
+如果您想转换 XML 为 TXT 的话，安装上面的项目，然后安装下列内容:
 
 * lynx
   - http://www.linuxfromscratch.org/blfs/view/svn/basicnet/lynx.html
 
 ------------------------------------------------------------------------------- 
 
-If you want to convert the XML to PDF, install the items listed above (except
-lynx) and then install the following:
+如果您想转换 XML 为 PDF，安装上面列出的项目(除 lynx 外)然后安装下列内容:
 
 * JDK
   - http://www.linuxfromscratch.org/blfs/view/svn/general/jdk.html
 
-* FOP and JAI
+* FOP 和 JAI
   - http://www.linuxfromscratch.org/blfs/view/svn/pst/fop.html

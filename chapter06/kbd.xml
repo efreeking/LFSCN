@@ -23,7 +23,7 @@
   <sect2 role="package">
     <title/>
 
-    <para>Kbd 包包含键盘表文件和键盘工具。</para>
+    <para>Kbd 包包含键盘表文件，控制台字体和键盘工具。</para>
 
     <segmentedlist>
       <segtitle>&buildtime;</segtitle>
@@ -46,9 +46,21 @@
 
     <para>在补丁后，Backspace 键生成代码 127 的字符，而 Delete 键生成一个众所周知的转义序列。</para>
 
+    <para>修复导致某些键盘映射不能正确加载的一个错误:</para>
+
+<screen><userinput remap="pre">sed -i -e '326 s/if/while/' src/loadkeys.analyze.l</userinput></screen>
+
+    <para>删除多余的 <command>resizecons</command> 程序(它需要
+    非现存的 svgalib 来提供视频模式文件 - 用于正常使用
+    <command>setfont</command> 恰当的设置控制台大小)连同它的手册页。</para>
+
+<screen><userinput remap="pre">sed -i 's/\(RESIZECONS_PROGS=\)yes/\1no/g' configure &amp;&amp;
+sed -i 's/resizecons.8 //' man/man8/Makefile.in &amp;&amp;</userinput></screen>
+
     <para>准备 Kbd 编译:</para>
 
-<screen><userinput remap="configure">./configure --prefix=/usr --datadir=/lib/kbd</userinput></screen>
+<screen><userinput remap="configure">./configure --prefix=/usr --datadir=/lib/kbd \
+  --disable-vlock</userinput></screen>
 
     <variablelist>
       <title>配置选项的含义:</title>
@@ -58,6 +70,13 @@
         <listitem>
           <para>这个选项把键盘布局数据总是放置在根分区的目录而不是默认的 <filename
           class="directory">/usr/share/kbd</filename> 位置。</para>
+       </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term><parameter>--disable-vlock</parameter></term>
+        <listitem>
+          <para>这个选项防止 vlock 工具被构建，因为它需要 PAM 库，这个在 chroot 环境中不可用。</para>
        </listitem>
       </varlistentry>
 
@@ -99,10 +118,10 @@ cp -R -v doc/* \
       <segtitle>安装的目录</segtitle>
 
       <seglistitem>
-        <seg>chvt, deallocvt, dumpkeys, fgconsole, getkeycodes, kbd_mode,
-        kbdrate, loadkeys, loadunimap,
+        <seg>chvt, deallocvt, dumpkeys, fgconsole, getkeycodes, kbdinfo,
+        kbd_mode, kbdrate, loadkeys, loadunimap,
         mapscrn, openvt, psfaddtable (链接到 psfxtable), psfgettable (链接到
-        psfxtable), psfstriptable (链接到 psfxtable), psfxtable, resizecons,
+        psfxtable), psfstriptable (链接到 psfxtable), psfxtable, <!--resizecons,-->
         setfont, setkeycodes, setleds, setmetamode,
         showconsolefont, showkey, unicode_start 和 unicode_stop</seg>
         <seg>/lib/kbd</seg>
@@ -160,6 +179,16 @@ cp -R -v doc/* \
           <para>打印内核的“扫描码-键码”映射表</para>
           <indexterm zone="ch-system-kbd getkeycodes">
             <primary sortas="b-getkeycodes">getkeycodes</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="kbdinfo">
+        <term><command>kbdinfo</command></term>
+        <listitem>
+          <para>获得有关控制台的状态的信息</para>
+          <indexterm zone="ch-system-kbd kbdinfo">
+            <primary sortas="b-kbdinfo">kbdinfo</primary>
           </indexterm>
         </listitem>
       </varlistentry>
@@ -264,7 +293,7 @@ cp -R -v doc/* \
         </listitem>
       </varlistentry>
 
-      <varlistentry id="resizecons">
+  <!--<varlistentry id="resizecons">
         <term><command>resizecons</command></term>
         <listitem>
           <para>更改控制台的小的内核意思</para>
@@ -272,7 +301,7 @@ cp -R -v doc/* \
             <primary sortas="b-resizecons">resizecons</primary>
           </indexterm>
         </listitem>
-      </varlistentry>
+      </varlistentry>-->
 
       <varlistentry id="setfont">
         <term><command>setfont</command></term>

@@ -15,19 +15,20 @@
     <secondary>配置</secondary>
   </indexterm>
 
-  <indexterm zone="ch-scripts-console">
-    <primary sortas="d-consolelog">consolelog</primary>
-    <secondary>配置</secondary>
-  </indexterm>
-
   <para>本节讨论如何配置 <command>console</command>
-  和 <command>consolelog</command> 引导脚本设置键盘映射、控制台字体和控制台内核记录级别。
-  如果不使用非 ASCII 字符(如版权符号，英镑符号和欧元的符号)并且键盘是美式的话，本节的大部分可以跳过。没有配置文件，<command>console</command> 引导脚本将不会做任何操作。</para>
+  引导脚本设置键盘映射，控制台字体和控制台内核日志级别。
+  如果非 ASCII 字符(如版权符号、英国磅的符号和欧元符号)
+  将不会被使用而且键盘是美式的话，本节的大部分可以跳过。
+  没有配置文件的话，(或者在 <filename>rc.site</filename> 中的等价设置的话)，
+  <command>console</command> 引导脚本将不会做任何操作。</para>
 
-  <para><command>console</command>  和 <command>consolelog</command>
-  脚本读取 <filename>/etc/sysconfig/console</filename> 文件的配置信息。决定使用哪个键盘映射(Keymap)和屏幕字体。各种语言专用的
-  HOWTOs 也可有助于完成本任务，参阅 <ulink
-  url="http://www.tldp.org/HOWTO/HOWTO-INDEX/other-lang.html"/>。如果仍有疑问，在 <filename class="directory">/lib/kbd</filename> 目录中查找可用的键盘映射和屏幕字体。阅读 <filename>loadkeys(1)</filename> 和 <filename>setfont(8)</filename> 手册页来决定这些程序的正确参数。</para>
+  <para><command>console</command> 脚本读取
+  <filename>/etc/sysconfig/console</filename> 文件用于配置信息。
+  决定将会使用何种键映射和屏幕字体。各种语言专用指引可有助于此，
+  参阅 <ulink url="http://www.tldp.org/HOWTO/HOWTO-INDEX/other-lang.html"/>。
+  如果仍有怀疑，在 <filename class="directory">/lib/kbd</filename> 
+  目录中查找有效的键映射和屏幕字体。阅读 <filename>loadkeys(1)</filename> 和
+  <filename>setfont(8)</filename> 手册页确定这些程序的正确参数。</para>
 
   <para><filename>/etc/sysconfig/console</filename> 文件应该包含这样形式的行: VARIABLE="value"。下列变量可以被识别:</para>
 

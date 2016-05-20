@@ -48,10 +48,18 @@
     <para>准备 Gettext 编译:</para>
 
 <screen><userinput remap="configure">cd gettext-tools
-./configure --prefix=/tools --disable-shared</userinput></screen>
+EMACS="no" ./configure --prefix=/tools --disable-shared</userinput></screen>
 
     <variablelist>
       <title>配置选项的含义:</title>
+
+      <varlistentry>
+        <term><parameter>EMACS="no"</parameter></term>
+        <listitem>
+          <para>这个防止配置脚本确定在何处安装 Emacs Lisp 文件，因为测试已知会在某些主机上挂起。
+          </para>
+        </listitem>
+      </varlistentry>
 
       <varlistentry>
         <term><parameter>--disable-shared</parameter></term>

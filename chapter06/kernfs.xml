@@ -51,9 +51,21 @@ mknod -m 666 $LFS/dev/null c 1 3</userinput></screen>
       <para>现在挂载剩下的虚拟内核文件系统:</para>
 
 <screen><userinput>mount -vt devpts devpts $LFS/dev/pts
-mount -vt tmpfs shm $LFS/dev/shm
 mount -vt proc proc $LFS/proc
 mount -vt sysfs sysfs $LFS/sys</userinput></screen>
+
+      <para>在某些宿主系统中，<filename>/dev/shm</filename> 是一个指向
+      <filename class="directory">/run/shm</filename> 的符号链接。
+      在一个 chroot 环境中，这个临时文件系统需要从宿主文件系统独立开来装载:</para>
+
+<screen><userinput>if [ -h $LFS/dev/shm ]; then
+  link=$(readlink $LFS/dev/shm)
+  mkdir -p $LFS/$link
+  mount -vt tmpfs shm $LFS/$link
+  unset link
+else
+  mount -vt tmpfs shm $LFS/dev/shm
+fi</userinput></screen>
 
   </sect2>
 

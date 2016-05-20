@@ -52,7 +52,13 @@
 
     <para>通过一个菜单驱动的界面来配置内核。对于内核配置的全面的信息，查看 <ulink
     url="&hints-root;kernel-configuration.txt"/>、BLFS 有某些 LFS 以外的包的特定内核配置需求相关的信息可以在 <ulink
-    url="&blfs-root;view/svn/longindex.html#kernel-config-index"/> 找到:</para>
+    url="&blfs-root;view/svn/longindex.html#kernel-config-index"/>。</para>
+
+    <note><para>由于在 <application>udev</application> 中最近的更改，确保选择:</para>
+
+    <screen role="nodump">Device Drivers  ---&gt;
+  Generic Driver Options  ---&gt;
+     Maintain a devtmpfs filesystem to mount at /dev</screen></note>
 
 <screen role="nodump"><userinput>make LANG=<replaceable>&lt;host_LANG_value&gt;</replaceable> LC_ALL= menuconfig</userinput></screen>
 
@@ -138,6 +144,13 @@ cp -r Documentation/* /usr/share/doc/linux-&linux-version;</userinput></screen>
 
     <para>需要创建 <filename>/etc/modprobe.d/usb.conf</filename> 文件，以便一旦 USB 驱动程序 (ehci_hcd、ohci_hcd 和 uhci_hcd)被构建为模块，它们将会以正确的顺序加载；ehci_hcd
     需要在 ohci_hcd 和 uhci_hcd 之前加载以避免在引导时输出的警告。</para>
+
+    <para>大部分时间，Linux 模块是自动加载的，但是有时候它需要某些特定的指引。
+    加载模块的程序，<command>modprobe</command> 或 <command>insmod</command>，
+    就是为这个目的使用 <filename>/etc/modprobe.d/usb.conf</filename>。
+    这个文件需要被创建，以便当 USB 驱动程序 (ehci_hcd, ohci_hcd 和
+    uhci_hcd) 已经被构建为模块时，它们将可以以正确的顺序加载;
+    ehci_hcd 需要在 ohci_hcd 和 uhci_hcd 之前被加载以避免在引导时被输出的警告。</para>
 
     <para>通过运行下列命令创建一个新文件 <filename>/etc/modprobe.d/usb.conf</filename>:</para>
 

@@ -1,0 +1,86 @@
+# Custom systemd Makefile include that builds/installs keymap tool only for LFS
+
+# vim: tabstop=3
+
+KEYMAPS     = $(shell ls keymaps/*               | sort)
+KEYMAPS_FR  = $(shell ls keymaps-force-release/* | sort)
+
+KEYMAP_DEPS = common src/udev/keymap/keys-from-name.h src/udev/keymap/keys-to-name.h
+
+src/udev/keymap/keys.txt:
+	@echo GEN $@
+	$(VB)awk '/^#define.*KEY_[^ ]+[ \t]+[0-9]/ \
+   {                                         \
+     if ($$2 != "KEY_MAX") { print $$2 }     \
+   }'                                        \
+   /usr/include/linux/input.h | sed 's/^KEY_COFFEE$$/KEY_SCREENLOCK/' > $@
+
+src/udev/keymap/keys-from-name.gperf: src/udev/keymap/keys.txt
+	@echo GEN $@
+	$(VB)awk 'BEGIN                       \
+   {                                    \
+     print "struct key                  \
+     {                                  \
+       const char* name;                \
+       unsigned short id;               \
+     };";                               \
+                                        \
+     print "%null-strings"; print "%%"; \
+   }                                    \
+   {                                    \
+     print $$1 ", " $$1                 \
+   }' $< > $@
+
+src/udev/keymap/keys-from-name.h: src/udev/keymap/keys-from-name.gperf
+	@echo GEN $@
+	$(VB)gperf -L ANSI-C -t --ignore-case -N lookup_key -H hash_key_name -p -C $< > $@
+
+src/udev/keymap/keys-to-name.h: src/udev/keymap/keys.txt 
+	@echo GEN $@
+	$(VB)awk 'BEGIN                                     \
+   {                                                   \
+     print "const char* const key_names[KEY_CNT] = { " \
+   }                                                   \
+   {                                                   \
+     print "[" $$1 "] = \"" $$1 "\","                  \
+   }                                                   \
+   END{print "};"                                      \
+   }' $< > $@
+
+build/keymap: src/udev/keymap/keymap.c build/$(COMMON_LIB) $(KEYMAP_DEPS)
+	@echo LINK $@
+	$(VB)gcc $< -o $@ -I src/udev/keymap $(WARN) $(OPTIONS2) $(INCLUDE) $(DEF) \
+      build/$(COMMON_LIB) $(LDFLAGS)
+	$(VB)strip --strip-unneeded $@
+
+keymap: build/keymap
+
+install-keymap: keymap
+	@mkdir -pv $(DESTDIR)/lib/udev/keymaps/force-release \
+              $(DESTDIR)/lib/udev/rules.d               \
+              $(DESTDIR)/usr/share/doc/udev
+
+	@cp -v build/keymap  $(DESTDIR)/lib/udev
+
+	@cp -v $(KEYMAPS)    $(DESTDIR)/lib/udev/keymaps
+	@cp -v $(KEYMAPS_FR) $(DESTDIR)/lib/udev/keymaps/force-release
+
+	@cp -v src/udev/keymap/*.rules       $(DESTDIR)/lib/udev/rules.d
+	@cp -v src/udev/keymap/findkeyboards $(DESTDIR)/lib/udev
+
+	@cp -v src/udev/keymap/*.txt $(DESTDIR)/usr/share/doc/udev
+
+	@sed -e 's|@udevlibexecdir@|/lib/udev|g'              \
+            src/udev/keymap/keyboard-force-release.sh.in \
+            > $(DESTDIR)/lib/udev/keyboard-force-release.sh
+
+	@chmod 0755 $(DESTDIR)/lib/udev/keyboard-force-release.sh
+
+clean-keymap:
+	rm -f src/udev/keymap/keys.txt
+	rm -f src/udev/keymap/keys-from-name.gperf
+	rm -f src/udev/keymap/keys-from-name.h
+	rm -f src/udev/keymap/keys-to-name.h
+	rm -f build/keymap
+
+.PHONY: clean-keymap

@@ -23,7 +23,7 @@
   <sect2 role="package">
     <title/>
 
-    <para>Glibc 包包含主要的 C 库。这个库提供了分配内存、搜索目录、打开和关闭文件、读取和写入文件、字符串处理、式样匹配、计算等诸如此类的基本例行程序(简称例程)。</para>
+    <para>Glibc 包包含主要的 C 库。这个库提供了分配内存, 搜索目录, 打开和关闭文件, 读取和写入文件, 字符串处理, 式样匹配, 计算等诸如此类的基本例行程序(简称例程)。</para>
 
     <segmentedlist>
       <segtitle>&buildtime;</segtitle>
@@ -48,66 +48,18 @@
 
     <para>Glibc 构建系统是自包含的并且可以完美安装，即使编译器的 specs 文件和链接器仍指向 <filename class="directory">/tools</filename>。在 Glibc 安装前，specs 和链接器不能进行调整，因为 Glibc 的 autoconf 测试将会给出错误的结果，从而阻碍了达到干净构建的目标。</para>
 
-<!--
-    This should have been fixed a long time ago.
-
-    <para>In the vi_VN.TCVN locale, <command>bash</command> enters an infinite
-    loop at startup. It is unknown whether this is a <command>bash</command>
-    bug or a Glibc problem. Disable  的安装this locale in order to
-    avoid the problem:</para>
-
-<screen><userinput remap="pre">sed -i '/vi_VN.TCVN/d' localedata/SUPPORTED</userinput></screen>
--->
-
-    <para>当运行 <command>make install</command> 时，一个称为
-    <filename>test-installation.pl</filename> 的脚本在我们新安装的 Glibc 上执行一个小型的健全性测试。然而，由于我们的工具链仍然指向
-    <filename class="directory">/tools</filename> 目录，健全性测试将会是针对错误的 Glibc 调用。我们可以强制脚本检查我们刚安装的 Glibc，使用以下命令:</para>
-
-<screen><userinput remap="pre">DL=$(readelf -l /bin/sh | sed -n 's@.*interpret.*/tools\(.*\)]$@\1@p')
-sed -i &quot;s|libs -o|libs -L/usr/lib -Wl,-dynamic-linker=$DL -o|&quot; \
-        scripts/test-installation.pl
-unset DL</userinput></screen>
-
-    <para>另外，在In addition, there is a bug in the
-    <filename>test-installation.pl</filename>脚本中有一个错误，在其中它尝试链接一个测试程序到一个不是由
-    <command>make install</command> 安装的程序。执行下列 <command>sed</command> 命令来修复它:</para>
-
-    <screen><userinput remap="pre">sed -i -e 's/"db1"/&amp; \&amp;\&amp; $name ne "nss_test1"/' scripts/test-installation.pl</userinput></screen>
-
-    <para><command>ldd</command> shell 脚本包含 Bash 专用语法。
-    假如按照 BLFS 书的 <ulink url="&blfs-root;view/svn/postlfs/shells.html">Shells</ulink> 章所述安装了另一个 <command>/bin/sh</command> 的话，更改它的默认程序解释器为 <command>/bin/bash</command>:</para>
-
-<screen><userinput remap="pre">sed -i 's|@BASH@|/bin/bash|' elf/ldd.bash.in</userinput></screen>
-
-    <para>修复 Glibc 中一些困难导致崩溃和核心转储的错误:</para>
-
-<screen><userinput remap="pre">patch -Np1 -i ../&glibc-fixes-patch;</userinput></screen>
-
-    <para>修复一个阻碍 Glibc 使用 GCC-&gcc-version; 构建的错误:</para>
-
-<screen><userinput remap="pre">patch -Np1 -i ../&glibc-gcc_fix-patch;</userinput></screen>
-
-    <para>修复一个发生在某些情况下的堆栈失调:</para>
-
-<screen><userinput remap="pre">sed -i '195,213 s/PRIVATE_FUTEX/FUTEX_CLOCK_REALTIME/' \
-nptl/sysdeps/unix/sysv/linux/x86_64/pthread_rwlock_timed{rd,wr}lock.S</userinput></screen>
-
     <para>Glibc 文档推荐在源代码目录外一个专用的构建目录中构建 Glibc:</para>
 
 <screen><userinput remap="pre">mkdir -v ../glibc-build
 cd ../glibc-build</userinput></screen>
 
-    <para>和第 5 章中一样，添加需要的编译器标志到 CFLAGS 以用于 x86 的机器。在这里，库的优化也会为 gcc 编译器设置以增强编译速度 (-pipe) 及包的性能 (-O3)。</para>
-
-<screen><userinput remap="configure">case `uname -m` in
-  i?86) echo "CFLAGS += -march=i486 -mtune=native -O3 -pipe" &gt; configparms ;;
-esac</userinput></screen>
-
     <para>准备 Glibc 编译:</para>
 
-<screen><userinput remap="configure">../glibc-&glibc-version;/configure --prefix=/usr \
-    --disable-profile --enable-add-ons \
-    --enable-kernel=2.6.25 --libexecdir=/usr/lib/glibc</userinput></screen>
+<screen><userinput remap="configure">../glibc-&glibc-version;/configure  \
+    --prefix=/usr          \
+    --disable-profile      \
+    --enable-kernel=2.6.25 \
+    --libexecdir=/usr/lib/glibc</userinput></screen>
 
     <variablelist>
       <title>新配置选项的含义:</title>
@@ -132,50 +84,60 @@ esac</userinput></screen>
       <para>在本节中，Glibc 的测试套装是至关重要的。任何情况下都不要跳过。</para>
     </important>
 
-    <para>在运行测试前，从源代码目录树复制一个文件到我们的构建目录树中，以防止一些错误失败，然后测试结果:</para>
+    <para>一般，一些测试不能通过，但是通常您可以忽略下面列出的任意测试失败。
+    现在测试构建结果:</para>
 
-<screen><userinput remap="test">cp -v ../glibc-&glibc-version;/iconvdata/gconv-modules iconvdata
-make -k check 2&gt;&amp;1 | tee glibc-check-log
+<screen><userinput remap="test">make -k check 2&gt;&amp;1 | tee glibc-check-log
 grep Error glibc-check-log</userinput></screen>
 
-    <para>您将可能在 <emphasis>posix/annexc</emphasis> 测试中看到一些意料中(被忽略)的失败。此外，Glibc 多少依赖于宿主系统。这是最常见的问题的列表:</para>
+    <para>您将可能看到一个预期的(被忽略的)失败于 <emphasis>posix/annexc</emphasis> 和
+    <emphasis>conform/run-conformtest</emphasis> 测试中。
+    另外 Glibc 测试套件稍微依赖于宿主系统。这是最常见问题的一个列表:</para>
 
     <itemizedlist>
-      <!-- Check again after updating from gcc-4.1.x -->
-      <!-- Haven;t seen this in quite a while <listitem>
-        <para>The <emphasis>nptl/tst-cancel1</emphasis> test will fail when
-        using the 4.1 series of GCC.</para>
-      </listitem> -->
-      <!-- Was true in glibc-2.3.6, rt/tst-cpuclock2 in glibc-2.11.1 -->
-      <listitem>
 
-        <para><emphasis>nptl/tst-clock2</emphasis>、<emphasis>nptl/tst-attr3</emphasis> 和
-        <emphasis>rt/tst-cpuclock2</emphasis> 测试已知是会失败的。原因完全搞不明白，但是说明很少机会时间会会触发这些失败。</para>
-      
-      </listitem>
       <listitem>
-        <para>math 测试在那些 CPU 相对来说不是新的 Intel 或 AMD 处理器的系统上运行时，有时候会失败。</para>
+        <para><emphasis>nptl/tst-clock2</emphasis>,
+        <emphasis>nptl/tst-attr3</emphasis>,
+        <emphasis>tst/tst-cputimer1</emphasis> 和
+        <emphasis>rt/tst-cpuclock2</emphasis>
+        测试已知会失败。原因还未完全明白，但是现象表明
+        小量计时问题可能触发了这些失败。</para>
       </listitem>
+
       <listitem>
-        <para>如果您使用了 <parameter>noatime</parameter> 选项挂载 LFS 分区的话，<emphasis>atime</emphasis> 测试将会失败。如<xref linkend="space-mounting"/>中所提及，在构建 LFS 时不要使用 <parameter>noatime</parameter> 选项。</para>
+        <para>数学测试在拥有的 CPU 不是相对较新的真正的 Intel 或真实的 AMD 处理器处理器的系统上运行时有时候会失败。</para>
       </listitem>
+
       <listitem>
-        <para>当在较旧和较慢的硬件或欠载的系统上运行时，某些测试可能因为超出了测试的时间而失败。
-        修改 make check 命令，设置一个报告的 TIMEOUTFACTOR 来协助消除这些错误(如 <command>TIMEOUTFACTOR=16
-        make -k check</command>).</para>
+        <para>当运行在较旧和较慢的硬件，或者不堪负载的系统上时，某些测试可能
+        由于超过了测试超时而失败。
+        修改 make 的 check 命令以设置一个 TIMEOUTFACTOR 被报告有助于
+        消除这些错误(如 <command>TIMEOUTFACTOR=16
+        make -k check</command>)。</para>
       </listitem>
+
       <listitem>
-        <para>其它已知在某些架构会失败的测试有 posix/bug-regex32、misc/tst-writev、elf/check-textrel、nptl/tst-getpid2 和 stdio-common/bug22。</para>
+        <para>其他测试已知在某些是 are posix/bug-regex32, misc/tst-writev, elf/check-textrel, nptl/tst-getpid2 和 stdio-common/bug22 的架构上会失败。</para>
       </listitem>
+
     </itemizedlist>
 
-    <para>Glibc 的安装过程中会抱怨缺少 <filename>/etc/ld.so.conf</filename>，这是无害的。可以使用以下命令防止这个警告:</para>
+    <para>尽管这是无害的消息，Glibc 的安装过程将会
+    抱怨缺少 <filename>/etc/ld.so.conf</filename>。
+    通过这样防止这个警告:</para>
 
 <screen><userinput remap="install">touch /etc/ld.so.conf</userinput></screen>
 
     <para>安装包:</para>
 
 <screen><userinput remap="install">make install</userinput></screen>
+
+    <para>安装 NIS 而 RPC 相关的头文件按默认是不会安装的; 这些是重新构建 glibc 以及被多个 BLFS 包所需的:</para>
+
+<screen><userinput remap="install">cp -v ../glibc-&glibc-version;/sunrpc/rpc/*.h /usr/include/rpc
+cp -v ../glibc-&glibc-version;/sunrpc/rpcsvc/*.h /usr/include/rpcsvc
+cp -v ../glibc-&glibc-version;/nis/rpcsvc/*.h /usr/include/rpcsvc</userinput></screen>
 
     <para>通过上述命令，语言环境 (locales) 可以使得系统以未安装的不同语言响应。虽然不需要任何语言环境，但是如果缺少了其中的默认，以后的包的测试套装可能会跳过重要的测试情况。</para>
 
@@ -195,6 +157,7 @@ localedef -i cs_CZ -f UTF-8 cs_CZ.UTF-8
 localedef -i de_DE -f ISO-8859-1 de_DE
 localedef -i de_DE@euro -f ISO-8859-15 de_DE@euro
 localedef -i de_DE -f UTF-8 de_DE.UTF-8
+localedef -i en_GB -f UTF-8 en_GB.UTF-8
 localedef -i en_HK -f ISO-8859-1 en_HK
 localedef -i en_PH -f ISO-8859-1 en_PH
 localedef -i en_US -f ISO-8859-1 en_US
@@ -205,11 +168,14 @@ localedef -i fr_FR -f ISO-8859-1 fr_FR
 localedef -i fr_FR@euro -f ISO-8859-15 fr_FR@euro
 localedef -i fr_FR -f UTF-8 fr_FR.UTF-8
 localedef -i it_IT -f ISO-8859-1 it_IT
+localedef -i it_IT -f UTF-8 it_IT.UTF-8
 localedef -i ja_JP -f EUC-JP ja_JP
+localedef -i ru_RU -f KOI8-R ru_RU.KOI8-R
+localedef -i ru_RU -f UTF-8 ru_RU.UTF-8
 localedef -i tr_TR -f UTF-8 tr_TR.UTF-8
 localedef -i zh_CN -f GB18030 zh_CN.GB18030</userinput></screen>
 
-    <para>另外，安装您自己国家的语言环境(locale)、语言(language)和字符集(charset)。</para>
+    <para>另外，安装您自己国家的语言环境(locale), 语言(language)和字符集(charset)。</para>
 
     <para>当然也可以使用下列比较费时的命令来一次性安装所有在
     <filename>glibc-&glibc-version;/localedata/SUPPORTED</filename> 文件中列出的语言环境
@@ -220,8 +186,6 @@ localedef -i zh_CN -f GB18030 zh_CN.GB18030</userinput></screen>
     <para>然后使用 <command>localedef</command> 命令创建并安装
     未在
     <filename>glibc-&glibc-version;/localedata/SUPPORTED</filename> 文件中列出的语言环境，在某些情况下，您可能需要它们。</para>
-    <!-- The Live CD patches the localedata/SUPPORTED file instead of
-    running localedef, the results are equivalent -->
 
   </sect2>
 
@@ -258,7 +222,57 @@ rpc: files
 # End /etc/nsswitch.conf</literal>
 EOF</userinput></screen>
 
-    <para>判断本地时区的一种办法就是运行下列脚本:</para>
+    <para>安装时区数据:</para>
+<screen><userinput>tar -xf ../tzdata&tzdata-version;.tar.gz
+
+ZONEINFO=/usr/share/zoneinfo
+mkdir -pv $ZONEINFO/{posix,right}
+
+for tz in etcetera southamerica northamerica europe africa antarctica  \
+          asia australasia backward pacificnew solar87 solar88 solar89 \
+          systemv; do
+    zic -L /dev/null   -d $ZONEINFO       -y "sh yearistype.sh" ${tz}
+    zic -L /dev/null   -d $ZONEINFO/posix -y "sh yearistype.sh" ${tz}
+    zic -L leapseconds -d $ZONEINFO/right -y "sh yearistype.sh" ${tz}
+done
+
+cp -v zone.tab iso3166.tab $ZONEINFO
+zic -d $ZONEINFO -p America/New_York
+unset ZONEINFO</userinput></screen>
+
+    <variablelist>
+      <title>zic 命令的含义:</title>
+
+      <varlistentry>
+        <term><parameter>zic -L /dev/null ...</parameter></term>
+        <listitem>
+          <para>这个创建 posix 时区，不带任何闰秒。传统来说会把它放在
+          <filename class="directory">zoneinfo</filename> 和
+          <filename class="directory">zoneinfo/posix</filename> 中。
+          务必把 POSIX timezones 置于 <filename class="directory">zoneinfo</filename> 中，
+          否则，各种测试套件将会报告错误。在嵌入式系统上，在其中空间紧，而且您甚至不准备更新时区，
+          您可以通过不使用 <filename class="directory">posix</filename> 目录来节省 1.9MB，
+          但是某些应用程序或测试套件可能会给出稍为不好的结果</para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term><parameter>zic -L leapseconds ...</parameter></term>
+        <listitem>
+          <para>这个创建正确的时区，包括闰秒。在嵌入系统上，其中的空间紧，
+          而且您甚至不准备更新时区，或者考虑时间是否正确，您可以通过省略 <filename class="directory">right</filename> 目录节省 1.9MB。</para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term><parameter>zic ... -p ...</parameter></term>
+        <listitem>
+          <para>这个创建 <filename>posixrules</filename> 文件。我们使用纽约，因为
+          POSIX 需要夏令时规则来与美国规则保持一致。</para>
+        </listitem>
+      </varlistentry>
+    </variablelist>
+
+
+    <para>确定本地时区的一种办法就是运行下列脚本:</para>
 
 <screen role="nodump"><userinput>tzselect</userinput></screen>
 
@@ -333,26 +347,26 @@ mkdir /etc/ld.so.conf.d</userinput></screen>
       <segtitle>安装目录</segtitle>
 
       <seglistitem>
-        <seg>catchsegv、gencat、getconf、getent、iconv、iconvconfig、ldconfig、
-        ldd、lddlibc4、locale、localedef、mtrace、nscd、pcprofiledump、
-        pt_chown、rpcgen、rpcinfo、sln、sprof、tzselect、xtrace、
+        <seg>catchsegv, gencat, getconf, getent, iconv, iconvconfig, ldconfig, 
+        ldd, lddlibc4, locale, localedef, makedb, mtrace, nscd, pcprofiledump,
+        pldd, pt_chown, rpcgen, sln, sotruss, sprof, tzselect, xtrace,
         zdump 和 zic</seg>
-        <seg>ld.so、libBrokenLocale.{a,so}、libSegFault.so、libanl.{a,so}、
-        libbsd-compat.a、libc.{a,so}、libc_nonshared.a、libcidn.so、
-        libcrypt.{a,so}、libdl.{a,so}、libg.a、libieee.a、libm.{a,so}、
-        libmcheck.a、libmemusage.so、libnsl.{a,so}、libnss_compat.so、
-        libnss_dns.so、libnss_files.so、libnss_hesiod.so、libnss_nis.so、
-        libnss_nisplus.so、libpcprofile.so、libpthread.{a,so}、
-        libpthread_nonshared.a、libresolv.{a,so}、librpcsvc.a、librt.{a,so}、
+        <seg>ld.so, libBrokenLocale.{a,so}, libSegFault.so, libanl.{a,so}, 
+        libbsd-compat.a, libc.{a,so}, libc_nonshared.a, libcidn.so, 
+        libcrypt.{a,so}, libdl.{a,so}, libg.a, libieee.a, libm.{a,so}, 
+        libmcheck.a, libmemusage.so, libnsl.{a,so}, libnss_compat.so, 
+        libnss_dns.so, libnss_files.so, libnss_hesiod.so, libnss_nis.so, 
+        libnss_nisplus.so, libpcprofile.so, libpthread.{a,so}, 
+        libpthread_nonshared.a, libresolv.{a,so}, librpcsvc.a, librt.{a,so}, 
         libthread_db.so 和 libutil.{a,so}</seg>
-        <seg>/usr/include/arpa、/usr/include/bits、/usr/include/gnu、
-        /usr/include/net、/usr/include/netash、/usr/include/netatalk、
-        /usr/include/netax25、/usr/include/neteconet、/usr/include/netinet、
-        /usr/include/netipx、/usr/include/netiucv、/usr/include/netpacket、
-        /usr/include/netrom、/usr/include/netrose、/usr/include/nfs、
-        /usr/include/protocols、/usr/include/rpc、/usr/include/rpcsvc、
-        /usr/include/sys、/usr/lib/gconv、/usr/lib/glibc、/usr/lib/locale、
-        /usr/share/i18n、/usr/share/zoneinfo</seg>
+        <seg>/usr/include/arpa, /usr/include/bits, /usr/include/gnu, 
+        /usr/include/net, /usr/include/netash, /usr/include/netatalk, 
+        /usr/include/netax25, /usr/include/neteconet, /usr/include/netinet, 
+        /usr/include/netipx, /usr/include/netiucv, /usr/include/netpacket, 
+        /usr/include/netrom, /usr/include/netrose, /usr/include/nfs, 
+        /usr/include/protocols, /usr/include/rpc, /usr/include/rpcsvc, 
+        /usr/include/sys, /usr/lib/audit, /usr/lib/gconv, /usr/lib/glibc,
+        /usr/lib/locale, /usr/share/i18n, /usr/share/zoneinfo, /var/db</seg>
       </seglistitem>
     </segmentedlist>
 
@@ -471,6 +485,16 @@ mkdir /etc/ld.so.conf.d</userinput></screen>
         </listitem>
       </varlistentry>
 
+      <varlistentry id="makedb">
+        <term><command>makedb</command></term>
+        <listitem>
+          <para>从文本输入创建一个简单的数据库</para>
+          <indexterm zone="ch-system-glibc makedb">
+            <primary sortas="b-makedb">makedb</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
       <varlistentry id="mtrace">
         <term><command>mtrace</command></term>
         <listitem>
@@ -501,10 +525,20 @@ mkdir /etc/ld.so.conf.d</userinput></screen>
         </listitem>
       </varlistentry>
 
+      <varlistentry id="pldd">
+        <term><command>pldd</command></term>
+        <listitem>
+          <para>列出被正在运行的进程所使用的动态共享对象</para>
+          <indexterm zone="ch-system-glibc pldd">
+            <primary sortas="b-pldd">pldd</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
       <varlistentry id="pt_chown">
         <term><command>pt_chown</command></term>
         <listitem>
-          <para>一个用于 <command>grantpt</command> 设置子伪终端的所有者、组合访问权限的助手程序</para>
+          <para>一个用于 <command>grantpt</command> 设置子伪终端的所有者, 组合访问权限的助手程序</para>
           <indexterm zone="ch-system-glibc pt_chown">
             <primary sortas="b-pt_chown">pt_chown</primary>
           </indexterm>
@@ -521,22 +555,22 @@ mkdir /etc/ld.so.conf.d</userinput></screen>
         </listitem>
       </varlistentry>
 
-      <varlistentry id="rpcinfo">
-        <term><command>rpcinfo</command></term>
-        <listitem>
-          <para>建立一个对 RPC 服务器的 RPC 调用</para>
-          <indexterm zone="ch-system-glibc rpcinfo">
-            <primary sortas="b-rpcinfo">rpcinfo</primary>
-          </indexterm>
-        </listitem>
-      </varlistentry>
-
       <varlistentry id="sln">
         <term><command>sln</command></term>
         <listitem>
           <para>一个静态链接的 <command>ln</command> 程序</para>
           <indexterm zone="ch-system-glibc sln">
             <primary sortas="b-sln">sln</primary>
+          </indexterm>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry id="sotruss">
+        <term><command>sotruss</command></term>
+        <listitem>
+          <para>跟踪指定的命令的共享库过程调用</para>
+          <indexterm zone="ch-system-glibc sotruss">
+            <primary sortas="b-sotruss">sotruss</primary>
           </indexterm>
         </listitem>
       </varlistentry>
@@ -748,7 +782,7 @@ mkdir /etc/ld.so.conf.d</userinput></screen>
       <varlistentry id="libnss">
         <term><filename class="libraryfile">libnss</filename></term>
         <listitem>
-          <para>名称服务切换(Name Service Switch)库，包含用于解析主机名、用户名、组名、别名、服务、协议等的函数</para>
+          <para>名称服务切换(Name Service Switch)库，包含用于解析主机名, 用户名, 组名, 别名, 服务, 协议等的函数</para>
           <indexterm zone="ch-system-glibc libnss">
             <primary sortas="c-libnss">libnss</primary>
           </indexterm>
@@ -778,7 +812,7 @@ mkdir /etc/ld.so.conf.d</userinput></screen>
       <varlistentry id="libresolv">
         <term><filename class="libraryfile">libresolv</filename></term>
         <listitem>
-          <para>包含用于创建、发送和拦截到互联网域名服务器的数据包的函数</para>
+          <para>包含用于创建, 发送和拦截到互联网域名服务器的数据包的函数</para>
           <indexterm zone="ch-system-glibc libresolv">
             <primary sortas="c-libresolv">libresolv</primary>
           </indexterm>

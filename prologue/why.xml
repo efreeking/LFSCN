@@ -51,6 +51,13 @@
       </listitem>
 
       <listitem>
+        <para>Check</para>
+
+        <para>这个包包含对其他程序的测试马甲。
+        仅在临时工具链中安装。</para>
+      </listitem>
+
+      <listitem>
         <para>Coreutils</para>
 
         <para>这个包包含了一些用于查看和操作文件和目录的重要程序。这些程序是命令行文件管理所需的，也是在 LFS 中每个包的安装过程所需的。</para>
@@ -69,15 +76,15 @@
       </listitem>
 
       <listitem>
-        <para>Expect</para>
-
-        <para>这个包包含了用于调出带有其它交互程序的脚本化对话框的程序。这个通常用于测试其它包。仅在临时工具链中安装。</para>
-      </listitem>
-
-      <listitem>
         <para>E2fsprogs</para>
 
         <para>这个包包含了处理 ext2、ext3 和 ext4 文件系统的工具。这些是 Linux 支持的最常用和经彻底测试的文件系统。</para>
+      </listitem>
+
+      <listitem>
+        <para>Expect</para>
+
+        <para>这个包包含了用于调出带有其它交互程序的脚本化对话框的程序。这个通常用于测试其它包。仅在临时工具链中安装。</para>
       </listitem>
 
       <listitem>
@@ -184,9 +191,21 @@
       </listitem>
 
       <listitem>
-        <para>Less</para>
+         <para>Kmod</para>
 
-        <para>这个包包含了可以在查看文件时上下滚动的一个非常友好的文本文件查看器。它也被 Man-DB 用于查看手册页。</para>
+        <para>这个包包含了管理 Linux 内核模块所需的程序。</para>
+      </listitem>
+
+      <listitem>
+         <para>Less</para>
+
+         <para>这个包包含了可以在查看文件时上下滚动的一个非常友好的文本文件查看器。它也被 Man-DB 用于查看手册页。</para>
+      </listitem>
+
+      <listitem>
+        <para>Libpipeline</para>
+
+        <para>Libpipeline 包包含以一种灵活和方便的方式操作子进程流水线的一个库。它是 Man-DB 包所需的。</para>
       </listitem>
 
       <listitem>
@@ -226,12 +245,6 @@
       </listitem>
 
       <listitem>
-        <para>Module-Init-Tools</para>
-
-        <para>这个包包含了管理 Linux 内核模块所需的程序。</para>
-      </listitem>
-
-      <listitem>
         <para>MPC</para>
 
         <para>这个包包含了复数计算的函数。它是 Gcc 所需的。</para>
@@ -256,19 +269,19 @@
       </listitem>
 
       <listitem>
-        <para>PCRE</para>
-
-        <para>这个包提供了可以用于实现使用和 Perl 5 同一的语法和语义的正则表达式样本匹配的库。它是 Glib 的强制依赖关系，也可以被 Grep 使用。</para>
-      </listitem>
-
-      <listitem>
         <para>Perl</para>
 
         <para>这个包是运行时语言 PERL 的解释器。它是多个 LFS 包的安装和测试套装所需的。</para>
       </listitem>
 
       <listitem>
-        <para>Procps</para>
+        <para>Pkg-config</para>
+
+        <para>这个包提供了返回关于一个已安装的库或包的 meta-data 的程序。</para>
+      </listitem>
+
+      <listitem>
+        <para>Procps-NG</para>
 
         <para>这个包包含了监控进程的程序。这些程序对系统管理来说很有用，并且也可以被 LFS 引导脚本使用。</para>
       </listitem>

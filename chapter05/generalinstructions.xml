@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+  <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE sect1 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
   "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
   <!ENTITY % general-entities SYSTEM "../general.ent">
@@ -38,7 +38,20 @@
     <para>最后，必须强调两件重要事项:</para>
 
     <important>
-      <para>构建指令假设是使用 <command>bash</command> Shell。</para>
+      <para>构建指令假设 <xref
+      linkend='pre-hostreqs'/>，包括符号链接，已被正确的设置:</para>
+
+      <itemizedlist role='important'>
+
+        <listitem override='bullet'><para><command>bash</command> 是在使用中的 shell。</para></listitem>
+
+        <listitem override='bullet'><para><command>sh</command> 是一个到 <command>bash</command> 的符号链接。</para></listitem>
+
+        <listitem override='bullet'><para><command>/usr/bin/awk</command> 是到 <command>gawk</command> 的符号链接。</para></listitem>
+
+        <listitem override='bullet'><para><command>/usr/bin/yacc</command> 是一个指向 <command>bison</command> 或者执行 bison 的小脚本的符号链接。</para></listitem>
+
+      </itemizedlist>
     </important>
 
     <important>
@@ -55,7 +68,7 @@
         <listitem>
           <para>切换到源代码目录。</para>
         </listitem>
-        <listitem>
+        <listitem id='buildinstr' xreflabel='Package build instructions'>
           <para>对于每个包:</para>
           <orderedlist numeration="loweralpha" spacing="compact">
             <listitem>

@@ -41,6 +41,14 @@
   <filename class="devicefile">/dev/hda</filename> 表示主要的 Integrated
   Drive Electronics (IDE) 磁盘。创建一个 Linux 原生分区和一个<systemitem class="filesystem">交换</systemitem>分区(如果需要的话)。如果您还不知道如何使用程序，请参考 <filename>cfdisk(8)</filename> 或 <filename>fdisk(8)</filename>。</para>
 
+  <note><para>对于有经验的用户，也可以使用其它分区方案。
+  新的 LFS 系统可以在一个软件 <ulink
+  url="&blfs-root;/view/svn/postlfs/raid.html">RAID</ulink> 阵列或者一个 <ulink
+  url="&blfs-root;/view/svn/postlfs/aboutlvm.html">LVM</ulink> 逻辑卷上。
+  尽管如此，某些这些选择需要一个 <ulink
+  url="&blfs-root;/view/svn/postlfs/initramfs.html">initramfs</ulink>，这是一个高级话题。
+  这些分区原则不建议首次 LFS 用户使用。</para></note>
+
   <para>记住新分区的名称(如 <filename class="devicefile">hda5</filename>)。
   本书称其为 LFS 分区。还要记住<systemitem
   class="filesystem">交换</systemitem>分区的名称。这些名称将是后面的 <filename>/etc/fstab</filename> 文件所需的。</para>

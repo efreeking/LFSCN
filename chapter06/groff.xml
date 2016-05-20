@@ -40,16 +40,6 @@
   <sect2 role="installation">
     <title>Groff 的安装</title>
 
-    <!-- It looks like many screen fonts still don't have Unicode single quotes
-    and dashes in them, but the sed below no longer makes any changes as the
-    format has changed in Groff-1.20.1 -->
-
-<!--    <para>Many screen fonts don't have Unicode single quotes and dashes in them.
-    Tell Groff to use the ASCII equivalents instead:</para>
-
-<screen><userinput remap="pre">sed -i -e 's/2010/002D/' -e 's/2212/002D/' \
-    -e 's/2018/0060/' -e 's/2019/0027/' font/devutf8/R.proto</userinput></screen> -->
-
     <para>Groff 需要环境变量 <envar>PAGE</envar> 来包含默认的纸张尺寸。对于美国的用户，
     <parameter>PAGE=letter</parameter> 是适当的。除此之外
     <parameter>PAGE=A4</parameter> 可能更适合。尽管默认的纸张尺寸是在编译的时候配置的，但是它们之后可以通过回显(ECHO) <quote>A4</quote> 或 <quote>letter</quote> 到
@@ -67,7 +57,8 @@
 
     <para>安装包:</para>
 
-<screen><userinput remap="install">make install</userinput></screen>
+<screen><userinput remap="install">mkdir -p /usr/share/doc/groff-1.22/pdf
+make install</userinput></screen>
 
     <para>某些文档程序，譬如 <command>xman</command>，将不能和下列的符号链接正常的配合使用:</para>
 

@@ -45,15 +45,15 @@
 
     <para>确保没有从先前的活动留下了遍布各处的过时的文件和依赖关系:</para>
 
-<screen><userinput remap="install">make mrproper</userinput></screen>
+<screen><userinput remap="pre">make mrproper</userinput></screen>
 
     <para>现在从源代码测试并提取用户可见的内核的头文件。
     由于提取过程会删除目标目录中任何已有的文件，所以把它们放到一个作为中介的本地目录，然后复制到所需的位置。也有一些隐藏文件是内核开发者使用而 LFS 不需要的，可以从中介目录中去掉。</para>
 
-<screen><userinput remap="install">make headers_check
+<screen><userinput remap="make">make headers_check
 make INSTALL_HDR_PATH=dest headers_install
-find dest/include \( -name .install -o -name ..install.cmd \) -delete
-cp -rv dest/include/* /usr/include</userinput></screen>
+find dest/include \( -name .install -o -name ..install.cmd \) -delete</userinput>
+<userinput remap="install">cp -rv dest/include/* /usr/include</userinput></screen>
 
   </sect2>
 

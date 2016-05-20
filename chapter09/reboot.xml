@@ -10,8 +10,54 @@
 
   <title>重新引导系统</title>
 
-  <para>现在，所有的软件已经被安装，是时候重新引导您的计算机了。但是，还要应该提醒您一些事情。您在本书中创建的系统是相当小的，而且可能没有您继续使用所需的功能。当您仍在我们的当前的 chroot 环境中时，通过安装来自 BLFS 书中的一些额外的软件包，您可以在您继续重新引导到您的新的 LFS 安装前处于一个更好的环境。安装一个文本模式的网络浏览器，譬如 Lynx，您就可以轻易在一个虚拟的终端中查看 BLFS 书同时在另一个终端中构建软件包。GPM 包还可以让您在您的虚拟终端中执行复制/粘贴操作。最后，如果您处于一个静态 IP 配置不能满足您的网络需求的情况下，此时安装 Dhcpcd 或 PPP 的之类的包也可能会很有用。</para>
+  <para>现在，所有的软件已经被安装，是时候重新引导您的计算机了。但是，还要应该提醒您一些事情。您在本书中创建的系统是相当小的，而且可能没有您继续使用所需的功能。当您仍在我们的当前的 chroot 环境中时，通过安装来自 BLFS 书中的一些额外的软件包，您可以在您继续重新引导到您的新的 LFS 安装前处于一个更好的环境。这里是一些建议:</para>
 
+  <itemizedlist>
+
+    <listitem><para>一个文本模式的浏览器，譬如 <ulink
+    url='&blfs-root;/view/svn/basicnet/lynx.html'>Lynx</ulink>
+    将可以让您在一个虚拟的终端中构建包的同时方便的在另一个中查看 BLFS 书籍。</para></listitem>
+
+    <listitem><para><ulink
+    url='&blfs-root;/view/svn/general/gpm.html'>GPM</ulink> 包将可以让您在您的虚拟终端中执行复制/粘贴操作。</para></listitem>
+
+    <listitem><para>如果在静态 IP 配置无法满足您的网络需要的情况下，安装一个如 <ulink url='&blfs-root;/view/svn/basicnet/dhcpcd.html'>dhcpcd</ulink>
+    或 <ulink
+    url='&blfs-root;/view/svn/basicnet/dhcp.html'>dhcp</ulink> 的客户端部分的包可能很有用。</para></listitem>
+
+    <listitem><para>安装 <ulink
+    url='&blfs-root;/view/svn/postlfs/sudo.html'>sudo</ulink> 可能对于以非 root 用户身份构建包以及在您的新系统中方便的安装得到的包很有用。</para></listitem>
+
+    <listitem><para>如果您想从一个舒服的图形用户界面环境中的远程系统来访问您的新系统，安装 <ulink
+    url='&blfs-root;/view/svn/postlfs/openssh.html'>openssh</ulink> 和它的必备条件，
+    <ulink url='&blfs-root;/view/svn/postlfs/openssl.html'>openssl</ulink>。</para></listitem>
+
+    <listitem><para>要使得通过网络更方便的取回文件，安装
+    <ulink url='&blfs-root;/view/svn/basicnet/wget.html'>wget</ulink>。</para></listitem>
+
+    <listitem><para>如果您的磁盘驱动器中有一个或多个拥有 GUID 分区表 (GPT)，那么 <ulink
+    url='&blfs-root;/view/svn/postlfs/gptfdisk.html'>gptfdisk</ulink> 或 <ulink
+    url='&blfs-root;/view/svn/postlfs/parted.html'>parted</ulink> 将会很有用。
+    </para></listitem>
+
+    <listitem><para>最后，也是时候对下列配置文件进行复查。</para>
+
+      <itemizedlist>
+        <listitem><para>/etc/bashrc                  </para></listitem>
+        <listitem><para>/etc/dircolors               </para></listitem>
+        <listitem><para>/etc/fstab                   </para></listitem>
+        <listitem><para>/etc/hosts                   </para></listitem>
+        <listitem><para>/etc/inputrc                 </para></listitem>
+        <listitem><para>/etc/profile                 </para></listitem>
+        <listitem><para>/etc/resolv.conf             </para></listitem>
+        <listitem><para>/etc/vimrc                   </para></listitem>
+        <listitem><para>/root/.bash_profile          </para></listitem>
+        <listitem><para>/root/.bashrc                </para></listitem>
+        <listitem><para>/etc/sysconfig/network       </para></listitem>
+        <listitem><para>/etc/sysconfig/ifconfig.eth0 </para></listitem>
+      </itemizedlist>
+    </listitem>
+  </itemizedlist>
 
   <para>现在，我们要说，让我们第一次引导进我们闪着光亮的新 LFS
   系统吧！首先从 chroot 环境退出:</para>
@@ -21,7 +67,15 @@
   <para>然后取消挂载虚拟文件系统:</para>
 
 <screen><userinput>umount -v $LFS/dev/pts
-umount -v $LFS/dev/shm
+
+if [ -h $LFS/dev/shm ]; then
+  link=$(readlink $LFS/dev/shm)
+  umount -v $LFS/$link
+  unset link
+else
+  umount -v $LFS/dev/shm
+fi
+
 umount -v $LFS/dev
 umount -v $LFS/proc
 umount -v $LFS/sys</userinput></screen>

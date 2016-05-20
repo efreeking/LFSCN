@@ -67,27 +67,29 @@ if [ "$IFACE" = "" ]; then
    exit 1
 fi
 
-# This will run the service script, if SERVICE is set
-if [ -n "${SERVICE}" -a -x "/lib/services/${SERVICE}" ]; then
-   if ip link show ${IFACE} > /dev/null 2>&1; then
-      IFCONFIG=${file} /lib/services/${SERVICE} ${IFACE} down
+# We only need to first service to bring down the interface
+S=`echo ${SERVICE} | cut -f1 -d" "`
+
+if ip link show ${IFACE} > /dev/null 2>&1; then
+   if [ -n "${S}" -a -x "/lib/services/${S}" ]; then
+     IFCONFIG=${file} /lib/services/${S} ${IFACE} down
    else
-      log_warning_msg "Interface ${1} doesn't exist."
-      echo_warning
-   fi
+     MSG="Unable to process ${file}.  Either "
+     MSG="${MSG}the SERVICE variable was not set "
+     MSG="${MSG}or the specified service cannot be executed."
+     log_failure_msg "$MSG"
+     exit 1
+  fi
 else
-   MSG="Unable to process ${file}.  Either "
-   MSG="${MSG}the SERVICE variable was not set"
-   MSG="${MSG}or the specified service cannot be executed."
-   log_failure_msg "$MSG"
-   exit 1
+   log_warning_msg "Interface ${1} doesn't exist."
 fi
 
+# Leave the interface up if there are additional interfaces in the device
 link_status=`ip link show ${IFACE} 2>/dev/null`
 
 if [ -n "${link_status}" ]; then
    if [ "$(echo "${link_status}" | grep UP)" != "" ]; then
-      if [ "$(ip addr show ${IFACE} | grep 'inet ')" != ""  ]; then
+      if [ "$(ip addr show ${IFACE} | grep 'inet ')" == ""  ]; then
          log_info_msg "Bringing down the ${IFACE} interface..."
          ip link set ${IFACE} down
          evaluate_retval
