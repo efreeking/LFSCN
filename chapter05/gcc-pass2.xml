@@ -91,11 +91,11 @@ tar -xf ../gmp-&gmp-version;.tar.xz
 mv -v gmp-&gmp-extracted-version; gmp
 tar -xf ../mpc-&mpc-version;.tar.gz
 mv -v mpc-&mpc-version; mpc</userinput></screen>
-
+<!--
     <para>如同在 GCC 的第一次构建中一样，修复上游标识的问题:</para>
 
 <screen><userinput remap="pre">sed -i 's/if \((code.*))\)/if (\1 \&amp;\&amp; \!DEBUG_INSN_P (insn))/' gcc/sched-deps.c</userinput></screen>
-
+-->
     <para>再次创建独立的构建目录:</para>
 
 <screen><userinput remap="pre">mkdir -v ../gcc-build

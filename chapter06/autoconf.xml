@@ -52,7 +52,7 @@
 
 <screen><userinput remap="test">make check</userinput></screen>
 
-    <para>这要花费长时间，大约 4.7 SBUs。跳过了 6 个使用 Automake 的测试。对于完整的全面测试，Autoconf 可以在 Automake 被安装后重新测试。</para>
+    <para>这要花费长时间，大约 4.7 SBUs。跳过了 6 个使用 Automake 的测试。对于完整的全面测试，Autoconf 可以在 Automake 被安装后重新测试。另外，有关测试由于在 libtool-2.4.3 和之后版本的更改而失败。</para>
 
     <para>安装包:</para>
 

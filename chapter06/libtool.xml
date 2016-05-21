@@ -53,6 +53,8 @@
 
 <screen><userinput remap="test">make check</userinput></screen>
 
+    <para>已知有 5 个测试在 LFS 构建环境中失败，但是如果在第 6 章完成后重新检查的话则所有测试通过。</para>
+
     <para>安装包:</para>
 
 <screen><userinput remap="install">make install</userinput></screen>

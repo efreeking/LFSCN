@@ -39,7 +39,7 @@
 
   <sect2 role="installation">
     <title>GCC 的安装</title>
-
+<!--
     <para>如同在第 5 章中一样，修复一个上游标识的问题:</para>
 
 <screen><userinput remap="pre">sed -i 's/if \((code.*))\)/if (\1 \&amp;\&amp; \!DEBUG_INSN_P (insn))/' gcc/sched-deps.c</userinput></screen>
@@ -48,7 +48,7 @@
     <para>现在修复另一个确认导致某些程序失败的上游的问题:</para>
 
 <screen><userinput remap="pre">patch -Np1 -i ../&gcc-upstream-patch;</userinput></screen>
-
+-->
     <para>GCC 文档推荐在源代码目录外的一个专用构建目录中构建 GCC:</para>
 
 <screen><userinput remap="pre">mkdir -v ../gcc-build

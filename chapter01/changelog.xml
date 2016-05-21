@@ -34,6 +34,54 @@
 
 -->
     <listitem>
+      <para>2014-11-01</para>
+      <itemizedlist>
+        <listitem>
+          <para>[bdubbs] - 更新到 linux-3.17.2。修复了
+          <ulink url="&lfs-ticket-root;3704">#3704</ulink>。</para>
+        </listitem>
+        <listitem>
+          <para>[bdubbs] - 更新到 iproute2-3.17.0。修复了
+          <ulink url="&lfs-ticket-root;3703">#3703</ulink>。</para>
+        </listitem>
+      </itemizedlist>
+    </listitem>
+
+    <listitem>
+      <para>2014-10-31</para>
+      <itemizedlist>
+        <listitem>
+          <para>[bdubbs] - 更新到 gcc-4.9.2。修复了
+          <ulink url="&lfs-ticket-root;3702">#3702</ulink>。</para>
+        </listitem>
+      </itemizedlist>
+    </listitem>
+
+    <listitem>
+      <para>2014-10-30</para>
+      <itemizedlist>
+        <listitem>
+          <para>[bdubbs] - 更新到 libtool-2.4.3。修复 
+          <ulink url="&lfs-ticket-root;3699">#3699</ulink>。</para>
+        </listitem>
+        <listitem>
+          <para>[bdubbs] - 更新到 eudev-2.1。修复 
+          <ulink url="&lfs-ticket-root;3700">#3700</ulink>。</para>
+        </listitem>
+      </itemizedlist>
+    </listitem>
+
+    <listitem>
+      <para>2014-10-26</para>
+      <itemizedlist>
+        <listitem>
+          <para>[bdubbs] - 更新到 libpipeline-1.4.0。修复
+          <ulink url="&lfs-ticket-root;3698">#3698</ulink>。</para>
+        </listitem>
+      </itemizedlist>
+    </listitem>
+
+    <listitem>
       <para>2014-10-25</para>
       <itemizedlist>
         <listitem>

@@ -82,6 +82,7 @@
       </listitem>
     </varlistentry>
 -->
+<!--
     <varlistentry>
       <term>Gcc 上游补丁 - <token>&gcc-upstream-patch-size;</token>:</term>
       <listitem>
@@ -89,7 +90,7 @@
         <para>MD5 和: <literal>&gcc-upstream-patch-md5;</literal></para>
       </listitem>
     </varlistentry>
-
+-->
     <varlistentry>
       <term>Glibc FHS 补丁 - <token>&glibc-fhs-patch-size;</token>:</term>
       <listitem>
