@@ -37,7 +37,7 @@
   <para>下载所有包和补丁的一个简单的办法就是使用
   <ulink url="../wget-list">wget-list</ulink> 作为 <command>wget</command> 的输入。例如:</para>
 
-<screen role="nodump"><userinput>wget -i wget-list -P $LFS/sources</userinput></screen> 
+<screen role="nodump"><userinput>wget --input-file=wget-list --continue --directory-prefix=$LFS/sources</userinput></screen>
 
   <para>另外，从 LFS-7.0 开始，有一个独立的文件 
   <ulink url="../md5sums">md5sums</ulink>，它可以用于在处理前验证是否所有正确的包都可用。把文件放在

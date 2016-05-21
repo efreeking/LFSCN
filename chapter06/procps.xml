@@ -90,11 +90,13 @@ ln -sfv ../../lib/$(readlink /usr/lib/libprocps.so) /usr/lib/libprocps.so</useri
     <segmentedlist>
       <segtitle>安装的程序</segtitle>
       <segtitle>安装的库</segtitle>
+      <segtitle>安装的目录</segtitle>
 
       <seglistitem>
         <seg>free, pgrep, pidof, pkill, pmap, ps, pwdx, slabtop,
         sysctl, tload, top, uptime, vmstat, w 和 watch</seg>
         <seg>libprocps.so</seg>
+        <seg>/usr/include/proc, /usr/share/doc/procps-ng-&procps-ng-version;</seg>
       </seglistitem>
     </segmentedlist>
 

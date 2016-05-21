@@ -115,6 +115,14 @@
     </varlistentry>
 
     <varlistentry>
+      <term>Perl Data::Dumper 补丁 - <token>&perl-fix-patch-size;</token>:</term>
+      <listitem>
+        <para>下载: <ulink url="&patches-root;&perl-fix-patch;"/></para>
+        <para>MD5 和: <literal>&perl-fix-patch-md5;</literal></para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
       <term>Readline Upstream Fixes 补丁 - <token>&readline-fixes-patch-size;</token>:</term>
       <listitem>
         <para>下载: <ulink url="&patches-root;&readline-fixes-patch;"/></para>

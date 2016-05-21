@@ -65,6 +65,14 @@ touch Makefile.in</userinput></screen>
       <title>配置选项的含义:</title>
 
       <varlistentry>
+        <term><envar>FORCE_UNSAFE_CONFIGURE=1</envar></term>
+        <listitem>
+          <para>这个环境变量允许软件包以 root 用户身份构建。
+          </para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
         <term><parameter>--enable-no-install-program=kill,uptime</parameter></term>
         <listitem>
           <para>这个开关的用途是阻止 Coreutils 安装之后会由其它包安装的二进制文件。
@@ -96,6 +104,8 @@ touch Makefile.in</userinput></screen>
 
 <screen><userinput remap="test">su nobody -s /bin/bash \
           -c "PATH=$PATH make RUN_EXPENSIVE_TESTS=yes check"</userinput></screen>
+
+    <para>stty-pairs 测试已知在虚拟控制台上回失败，但是如果在一个 X 终端中运行则通过。</para>
 
     <para>清除临时组:</para>
 

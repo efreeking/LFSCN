@@ -97,20 +97,17 @@ cd ../glibc-build</userinput></screen>
     Glibc 测试套件稍微依赖于宿主系统。这是这个版本的 LFS 会看到的最常见问题的一个列表:</para>
 
     <itemizedlist>
-<!--
+
       <listitem>
-        <para><emphasis>nptl/tst-clock2</emphasis>,
-        <emphasis>nptl/tst-attr3</emphasis>,
-        <emphasis>tst/tst-cputimer1</emphasis> 和
-        <emphasis>rt/tst-cpuclock2</emphasis>
+        <para><emphasis>tst/tst-cputimer1</emphasis>
         测试已知会失败。原因还未完全明白，但是现象表明
-        小量计时问题可能触发了这些失败。</para>
+        少量计时问题可能触发了这些失败。</para>
       </listitem>
 
       <listitem>
         <para>数学测试在拥有的 CPU 不是相对较新的真正的 Intel 或真实的 AMD 处理器处理器的系统上运行时有时候会失败。</para>
       </listitem>
-
+<!--
       <listitem>
         <para>当运行在较旧和较慢的硬件，或者不堪负载的系统上时，某些测试可能
         由于超过了测试超时而失败。
@@ -126,9 +123,9 @@ cd ../glibc-build</userinput></screen>
       <listitem>
         <para>libio/tst-ftell-partial-wide.out 失败，因为它需要一个还未被生成的语言环境。</para>
       </listitem>
-
+-->
       <listitem>
-        <para>其他测试已知在某些是 posix/bug-regex32, misc/tst-writev, elf/check-textrel, nptl/tst-getpid2, nptl/tst-robust8 和 stdio-common/bug22 的架构上会失败。</para>
+        <para>其他测试已知在某些是 malloc/tst-malloc-usable 和 nptl/tst-cleanupx4 的架构上会失败。</para>
       </listitem>
 -->
     </itemizedlist>

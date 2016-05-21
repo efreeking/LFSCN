@@ -78,9 +78,11 @@ mkdir -pv /etc/udev/rules.d</userinput></screen>
 
 <screen><userinput remap="test">make check</userinput></screen>
 
-    <para>安装包:</para>
+    <para>安装包并创建初始的
+    <filename>/etc/udev/hwdb.bin</filename> 文件:</para>
 
-<screen><userinput remap="install">make install</userinput></screen>
+<screen><userinput remap="install">make install
+udevadm hwdb --update</userinput></screen>
 
 <para>现在，安装手册页:</para>
 

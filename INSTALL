@@ -37,7 +37,7 @@ http://www.linuxfromscratch.org 的 LFS 网站获取更多信息。
 如果您想转换 XML 为 PDF，安装上面列出的项目(除 lynx 外)然后安装下列内容:
 
 * JDK
-  - http://www.linuxfromscratch.org/blfs/view/svn/general/jdk.html
+  - http://www.linuxfromscratch.org/blfs/view/svn/general/openjdk.html
 
 * FOP 和 JAI
   - http://www.linuxfromscratch.org/blfs/view/svn/pst/fop.html

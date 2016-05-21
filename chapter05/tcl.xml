@@ -57,7 +57,7 @@
 <screen><userinput remap="test">TZ=UTC make test</userinput></screen>
 
     <para>Tcl 测试套装在某些不能完全理解的宿主条件下可能会失败。因此，在这里测试套装的失败并不奇怪，而且并不重要。
-    <parameter>TZ=UTC</parameter> 参数设置时区为协调世界时 (UTC)，也就是所谓的格林威尔标准时 (GMT)，但是仅用于测试套装运行期间。这个确保了时钟测试的正确使用。
+    <parameter>TZ=UTC</parameter> 参数设置时区为协调世界时 (UTC)，但是仅用于测试套装运行期间。这个确保了时钟测试的正确使用。
     关于 <envar>TZ</envar> 环境变量的详细说明在<xref linkend="chapter-bootscripts"/>中提供。</para>
 
     <para>安装软件包:</para>

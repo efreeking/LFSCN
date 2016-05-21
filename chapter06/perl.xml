@@ -51,6 +51,10 @@
 <screen><userinput remap="pre">export BUILD_ZLIB=False
 export BUILD_BZIP2=0</userinput></screen>
 
+    <para>修复一个潜在的安全问题:</para>
+
+<screen><userinput remap="pre">patch -Np1 -i ../&perl-fix-patch;</userinput></screen>
+
     <para>要完全控制 Perl 设置的方式，您可以从下列命令删除
     <quote>-des</quote> 选项并手动选取这个包构建的方式。另外，也可以一字不差的使用如下的命令来使用 Perl 自动检测的默认设置:</para>
 

@@ -115,7 +115,7 @@
   <para>注意，以上提及的符号链接是使用本书中所包含的说明构建 LFS 系统所需的。指向其它软件(譬如 dash、mawk 等)的符号链接可以工作，但是未经 LFS 开发团队测试或支持，并且可能需要偏离说明或者需要某些包的额外补丁。</para>
 
   <!-- 使用一个空的 sect2 元素来避免 pdf 警告。  -->
-  <sect2 id="version-check">
+  <sect2 id="version-check" xreflabel="第 vii 章, 宿主系统需求">
   <title> </title>
 
   <para >要查看您的宿主系统是否拥有所有的合适版本并且能够编译程序，运行下列命令:</para>

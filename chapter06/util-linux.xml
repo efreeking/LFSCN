@@ -52,16 +52,28 @@
 
   <sect2 role="installation">
     <title>Util-linux 的安装</title>
-
+<!--
     <para>首先，修复回归测试之一:</para>
 
 <screen><userinput remap="pre">sed -e 's/2^64/(2^64/' -e 's/E &lt;/E) &lt;=/' -e 's/ne /eq /' \
     -i tests/ts/ipcs/limits2</userinput></screen>
-
+-->
     <para>准备 Util-linux 进行编译:</para>
 
 <screen><userinput remap="configure">./configure ADJTIME_PATH=/var/lib/hwclock/adjtime \
-            --docdir=/usr/share/doc/util-linx-&util-linux-version;</userinput></screen>
+            --docdir=/usr/share/doc/util-linux-&util-linux-version; \
+            --disable-chfn-chsh  \
+            --disable-login      \
+            --disable-su         \
+            --disable-setpriv    \
+            --disable-runuser    \
+            --disable-pylibmount \
+            --without-python     \
+            --without-systemd    \
+            --without-systemdsystemunitdir</userinput></screen>
+
+    <para>--disable 和 --without 选项防止有关构建组件需要一些不在 LFS 中
+    或者和其它包所安装的程序不一致的包的警告。</para>
 
     <para>编译包:</para>
 
