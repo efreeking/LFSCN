@@ -1,74 +1,74 @@
-Network Configuration:
-   Script Files:
+网络配置:
+   脚本文件:
       /etc/rc.d/init.d/*
       /sbin/ifup
       /sbin/ifdown
       /lib/lsb/*
 
-   Configuration Files:
+   配置文件:
       /etc/sysconfig/ifconfig.*
-      Note: ifconfig.* files will be processed
-            in alphanumerical order on boot, and reversed on shutdown.
-      - IFACE  : The interface that is being configured (e.g. eth0)
-      - SERVICE: Which script to run in services directory.
-      - ONBOOT : If set to yes, this interface will be started on bootup
+      注: ifconfig.* 文件在引导时将会按字母数字顺序处理，
+            而关机时则按相反顺序。
+      - IFACE  : 被配置的接口 (如 eth0)
+      - SERVICE: 在 services 目录中要运行的脚本
+      - ONBOOT : 如果设置为 yes，则这个接口将会在引导时启动
 
       /etc/sysconfig/network
-      - HOSTNAME: Value of the system's hostname  (From LFS Book)
-                  This value may also be set in /etc/sysconfig/rc.site
+      - HOSTNAME: 系统的主机名的值  (来自 LFS Book)
+                  这个值也可以在 /etc/sysconfig/rc.site 中设置
 
-   Additional Configuration:
+   额外配置:
       SERVICE ipv4-static:
-      - IP       : Static IP Address
-      - GATEWAY  : Specifies the IP Address of the gateway server
-      - PREFIX   : CIDR prefix of IP Address, defaults to 24 if not set
-      - PEER     : IP Address of peer (for point-to-point connections and tunnels)
-      - BROADCAST: Broadcast address
+      - IP       : 静态 IP 地址
+      - GATEWAY  : 指定网关服务器的 IP 地址
+      - PREFIX   : IP 地址的 CIDR 前缀，如果不设置则默认为 24
+      - PEER     : 对等用户的 IP 地址(用于点到点连接(Peer2Peer)和隧道(tunnels))
+      - BROADCAST: 广播地址
 
       SERVICE ipv4-static-route:
-      - TYPE   : Network (default type if not specified), default, host or unreachable
-      - IP     : IP Address of target (for network, host and unreachable)
-      - PREFIX : CIDR prefix of target (for network, host and unreachable)
-      - GATEWAY: IP Address of gateway to reach target (for network and default)
+      - TYPE   : network (不指定时的默认值), default, host 或 unreachable
+      - IP     : 目标的 IP 地址(用于 network, host 和 unreachable)
+      - PREFIX : 目标的 CIDR 前缀(用于 network, host 和 unreachable)
+      - GATEWAY: 要到达目标的网关的 IP 地址(用于 network 和 default)
 
 
-SetClock configuration:
+SetClock 配置:
 
       /etc/rc.d/init.d/cleanfs
-      - SKIPTMPCLEAN: skips cleaning of /tmp directory
+      - SKIPTMPCLEAN: 跳过 /tmp 目录的清理
 
-   Configuration Files:
-      /etc/sysconfig/clock or /etc/sysconfig/rc.site
-      - UTC: 1 assumes hwclock is in UTC
-             0 assumes hwclock is in local time
-      - CLOCKPARAMS: any additional options to be passed to hwclock
+   配置文件:
+      /etc/sysconfig/clock 或 /etc/sysconfig/rc.site
+      - UTC: 1 假定 hwclock 是使用 UTC
+             0 假定 hwclock 是使用本地时间
+      - CLOCKPARAMS: 要传递给 hwclock 的额外选项
 
-CleanFS configuration:
-   Script Files:
+CleanFS 配置:
+   脚本文件:
       /etc/rc.d/init.d/cleanfs
 
-   Configuration Files:
+   配置文件:
       /etc/sysconfig/createfiles
-      Each line is parsed, using space as a deliminator.
+      每行都会被解释，使用空格作为分隔符。
       [NAME] [TYPE] [PERMISSIONS] [USER] [GROUP]
-      The below fields are currently only used on dev type.
+      下面的字段当前仅在 dev 类型上使用。
       ([DEV TYPE] [MAJOR#] [MINOR#])
       Name:
-         File/Directory/Device name
+         文件/目录/设备名称
       Type:
-         dir: creates a directory
-         file: creates a file
-         dev: creates a device
+         dir: 创建一个目录
+         file: 创建一个文件
+         dev: 创建一个设备
       Permissions:
-         chmod the created file
+         chmod 创建的文件
       User/Group:
-         chown the created file/dir to this user/group
+         chown 创建的文件/目录为这个用户/组
       Dev Type:
-         char:  character [needs MAJOR#, MINOR#]
-         block: block [needs MAJOR#, MINOR#]
-         pipe:  pipe
+         char:  字符 [需要 MAJOR#, MINOR#]
+         block: 块 [needs MAJOR#, MINOR#]
+         pipe:  管道
       Major#:
-         Used by character and block devices.
+         被字符和块设备使用。
       Minor#:
-         Used by character and block devices.
+         被字符和块设备使用。
 
