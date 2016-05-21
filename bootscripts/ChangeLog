@@ -1,3 +1,15 @@
+2014-11-10 Bruce Dubbs <bdubbs@linuxfromscratch.org>
+   * Make /run/lock have 1777 permissions
+
+2014-07-06 Bruce Dubbs <bdubbs@linuxfromscratch.org>
+   * Remove obsolete reference to /proc/sys/kernel/hotplug in udev boot 脚本
+
+2014-07-02 Bruce Dubbs <bdubbs@linuxfromscratch.org>
+   * Remove obsolete check for /proc/ksyms in modules boot 脚本
+
+2014-06-29 Bruce Dubbs <bdubbs@linuxfromscratch.org>
+   * Remove systemd references and files
+
 2014-03-31 Bruce Dubbs <bdubbs@linuxfromscratch.org>
    * Changes made to be consistent with common systemd functions
 
@@ -23,12 +35,12 @@
 
 2012-10-13 Bruce Dubbs <bdubbs@linuxfromscratch.org>
    * Remove unneeded sleep in killproc
-   * Add option for verbose fsck
+   * 添加 option for verbose fsck
    * Flatten directory structure of tarball
    * Remove /fastboot or /forcecheck if set
 
 2012-09-05 Bruce Dubbs <bdubbs@linuxfromscratch.org>
-   * Add udevadm trigger --action=change line to udev script
+   * 添加 udevadm trigger --action=change line to udev 脚本
      to support initramfs better
 
 2012-08-24 Bruce Dubbs <bdubbs@linuxfromscratch.org>
@@ -49,16 +61,16 @@
 
 2012-04-09 Bruce Dubbs <bdubbs@linuxfromscratch.org>
 
-   * General update of network scripts ifup/ifdown and services
-   ** Add if_true utility function to init_functions
+   * General update of network 脚本s ifup/ifdown and services
+   ** 添加 if_true utility function to init_functions
    ** Change variable INTERFACES to COMPONENT_INTERFACES for bridge interface
    ** ifdown now only uses the first SERVICE
-   ** Updated ifup.8 to reflect current usage
+   ** 更新了 ifup.8 to reflect current usage
    ** ifup
-   *** Move interface up logic to after service scripts.  Eliminates the 
+   *** Move interface up logic to after service 脚本s.  Eliminates the 
        need for the LINK_CHECK variable.
    *** Sets the GATEWAY if the variable is set
-   *** Add MTU logic to ifup
+   *** 添加 MTU logic to ifup
 
 2012-01-22  Matt Burgess <matthew@linuxfromscratch.org>
 
@@ -71,7 +83,7 @@
 
 2011-11-28  DJ Lucas <dj@linuxfromscratch.org>
 
-   * lfs/init.d/mountfs: Add '-t nosysfs' to umount command
+   * lfs/init.d/mountfs: 添加 '-t nosysfs' to umount command
    * lfs/init.d/mountvirtfs: remove unneeded spaces in output
    * lfs/init.d/rc: Correct double interactive prompt and set prompt defaults
    * lfs/init.d/setclock: Remove screen output from start case (udev)
@@ -81,17 +93,17 @@
 2011-11-14  Bruce Dubbs <bdubbs@linuxfromscratch.org>
 
    * The following are from suggestions by DJ Lucas
-   ** General cleanup of scripts
+   ** General cleanup of 脚本s
    ** Move consolelog function to rc
    ** Clean up boot logging functions
    ** Fix interactive prompt between run level S and target run level
 
 2011-10-06  Bryan Kadzban <bryan@linuxfromscratch.org>
 
-   * Add configuration for udev_retry, and remove --type=failed (which does
+   * 添加 configuration for udev_retry, and remove --type=failed (which does
      not work with recent udev versions anyway, since no events can possibly
      trigger it).  Start with just the "rtc" subsystem.  BLFS should eventually
-     add "sound" to this file, and perhaps others.
+     添加 "sound" to this file, and perhaps others.
 
 2011-09-18
    * Review and update of changes made in previous change.
@@ -100,22 +112,22 @@
    ** Move init-functions to /lib/lsb.
    *** /lib/lsb is a symlink to /lib/services.
    * Create convenience symlink /etc/init.d->/etc/rc.d/init.d.
-   * Add help and man pages to upup/ifdown.
+   * 添加 help and man pages to upup/ifdown.
    * Append /run/var/bootlog to /var/log/boot.log at the end of 
      the boot sequence.
-   * Add capabiltiy to step through the boot scripts at boot time
+   * 添加 capabiltiy to step through the boot 脚本s at boot time
    * Optionally allow environment variables in sysconfig directory's 
      console, network, and clock files to be placed in rc.site.
-   * Add an optional FASTBOOT parameter to set /fastboot when rebooting.
+   * 添加 an optional FASTBOOT parameter to set /fastboot when rebooting.
 
 2011-07-14  Bruce Dubbs <bdubbs@linuxfromscratch.org>
-   * Major rewrite of all LFS scripts
+   * Major rewrite of all LFS 脚本s
    ** Move ifup/ifdown to /sbin
    ** Move functions and network services to /lib/boot
    ** Remove contrib directory
    ** Move all READ commands to functions and allow the user to specify
       HEADLESS=1 to skip READ commands
-   ** Add /etc/sysconfig/init_params for adding environmental parameters
+   ** 添加 /etc/sysconfig/init_params for adding environmental parameters
       to all functions used in bootscripts
    ** Move network configuration to /etc/sysconfig/ifconfig.*.  The 
       ifconfig files can have any extension.  Use IFACE parameter to 
@@ -125,16 +137,16 @@
       /etc/sysconfig/init_params.
 
 2011-05-31  DJ Lucas <dj@linuxfromscratch.org>
-   * lfs/init.d/udev: Add multiple udev triggers for both subsystems and
+   * lfs/init.d/udev: 添加 multiple udev triggers for both subsystems and
      devices per upstream recommendation.
 
 2011-04-19  Bruce Dubbs <bdubbs@linuxfromscratch.org>
-   * lfs/init.d/mountvirtfs: Add creation of /run/{var,lock,shm}.
-   * lfs/init.d/udev: Add /dev/shm -> /run/shm symlink.
+   * lfs/init.d/mountvirtfs: 添加 creation of /run/{var,lock,shm}.
+   * lfs/init.d/udev: 添加 /dev/shm -> /run/shm symlink.
 
 2011-04-18  Bruce Dubbs <bdubbs@linuxfromscratch.org>
    * lfs/init.d/mountvirtfs: Change name from mountkernfs to mountvirtfs.
-     Add mounting of /run filesystem.
+     添加 mounting of /run filesystem.
 
 2010-05-29  Matt Burgess <matthew@linuxfromscratch.org>
    * lfs/init.d/udev: Only copy /lib/udev/devices/null, as Udev >= 155 copies
@@ -142,7 +154,7 @@
      present before starting up though.
 
 2010-04-20  Bryan Kadzban <bryan@linuxfromscratch.org>
-   * lfs/init.d/udev, lfs/init.d/udev_retry: Add --action=add, to handle udev
+   * lfs/init.d/udev, lfs/init.d/udev_retry: 添加 --action=add, to handle udev
    version 152 and newer, which send "change" events by default in udevtrigger
    now.
 
@@ -153,18 +165,18 @@
 2009-08-14  Bryan Kadzban <bryan@linuxfromscratch.org>
    * lfs/init.d/udev_retry: Use "udevadm trigger --type=failed", which
      apparently replaced "--retry-failed" some time ago.  "--retry-failed" is
-     removed in udev-146.
+     移除 in udev-146.
 
 2009-01-02  Bruce Dubbs <bdubbs@linuxfromscratch.org>
    * lfs/init.d/functions:
    * lfs/sysconfig/network-devices/ifup: 
-     Updated line widths to accommodate pdf generation in both the above 
+     更新了 line widths to accommodate pdf generation in both the above 
      files.
 
 2008-10-27  DJ Lucas <dj@linuxfromscratch.org>
-   * lfs/init.d/cleanfs: Removed '! -newer /proc' from find commands in
+   * lfs/init.d/cleanfs: 移除 '! -newer /proc' from find commands in
      check for stale files in /var/lock and /var/run.
-   * Makefile: Reversed cleanfs and udev_retry scripts so that cleanfs
+   * Makefile: Reversed cleanfs and udev_retry 脚本s so that cleanfs
      runs immediately after mountfs.
 
 2008-10-26  Dan Nicholson  <dnicholson@linuxfromscratch.org>
@@ -175,14 +187,14 @@
      contains an invalid pid.
 
 2008-10-23  DJ Lucas <dj@linuxfromscratch.org>
-   * lfs/init.d/console: Removed BROKEN_COMPOSE as kernel patch has
+   * lfs/init.d/console: 移除 BROKEN_COMPOSE as kernel patch has
      been accepted upstream.
 
 2008-05-21  Bryan Kadzban  <bryan@linuxfromscratch.org>
    * lfs/init.d/udev, lfs/init.d/udev_retry: Use new udevadm program.
 
 2007-08-20  DJ Lucas <dj@linuxfromscratch.org>
-   * lfs/init.d/setclock: Added missing 'stop' argument to usage text
+   * lfs/init.d/setclock: 添加了 missing 'stop' argument to usage text
 
 2007-08-13  Dan Nicholson  <dnicholson@linuxfromscratch.org>
    * lfs/init.d/checkfs: Don't suppress error messages from the screen.
@@ -192,8 +204,8 @@
      kernel log level on the console. This is controlled by the LOGLEVEL
      variable in /etc/sysconfig/console.
    * lfs/init.d/modules: Remove the log level handling since this is
-     done in the consolelog script now.
-   * lfs/init.d/modules: Clean up the script by removing the file
+     done in the consolelog 脚本 now.
+   * lfs/init.d/modules: Clean up the 脚本 by removing the file
      descriptor duplication and instead just redirecting
      /etc/sysconfig/modules to the input of the while loop.
 
@@ -219,7 +231,7 @@
      used was causing issues with the handling of pidfiles. This has been
      fixes, and now killproc() will recheck the process if the signal
      was TERM (the default) or KILL.
-   * lfs/init.d/functions: statusproc() has been changed to use pidofproc()
+   * lfs/init.d/functions: statusproc() has been 更改了 to use pidofproc()
      instead of the deprecated getpids(). Additionally, it now accepts
      the -p argument to specify a pidfile.
    * lfs/init.d/functions: Currently, statusproc() always returns
@@ -227,7 +239,7 @@
      is to parse the output. This changes statusproc() to return the
      status of pidofproc(), which will return unsuccessfully if the
      requested process is not running.
-   * lfs/init.d/functions: Changed reloadproc() to use pidofproc() and
+   * lfs/init.d/functions: 更改了 reloadproc() to use pidofproc() and
      respect the -p argument for pidfiles.
    * lfs/init.d/sysklogd: Remove a useless argument to reloadproc().
 
@@ -243,7 +255,7 @@
 2007-02-22  Dan Nicholson  <dnicholson@linuxfromscratch.org>
    * lfs/init.d/console: POSIX says that shells only need to trap on
      signals. Trapping on ERR isn't always supported. Conditionals have
-     been added to set the $failed variable in spots that seemed
+     been 添加到 set the $failed variable in spots that seemed
      appropriate for checking errors.
 
 2007-02-22  Dan Nicholson  <dnicholson@linuxfromscratch.org>
@@ -254,8 +266,8 @@
 2007-02-22  Dan Nicholson  <dnicholson@linuxfromscratch.org>
    * lfs/init.d/functions: In order to provide an `echo' which provides
      handles the -e and -n options for all POSIX shells, a feature test
-     is added which stores its result in $ECHO. /bin/echo will be used
-     if the default echo is not capable. Changed the existing functions
+     is 添加了 which stores its result in $ECHO. /bin/echo will be used
+     if the default echo is not capable. 更改了 the existing functions
      to reference $ECHO when needed.
    * lfs/init.d/console: Use $ECHO when -en is needed.
 
@@ -266,7 +278,7 @@
 
 2006-11-25  Bryan Kadzban  <bryan@linuxfromscratch.org>
    * lfs/init.d/udev_retry: Copy Debian's "copy generated rules" initscript
-     code, to clean up when the rule_generator scripts run before / is
+     code, to clean up when the rule_generator 脚本s run before / is
      writable.  (Since the rule_generator code is from Debian, I assume their
      cleanup code is appropriate.)
 
@@ -274,192 +286,192 @@
    * lfs/init.d/udev_retry: Fix to work with udev >= 099.
 
 n/a - June 2, 2006
-   * Removed console config file and makefile targets.
-   * Removed references to /dev/bug and bugreport in udevand 
+   * 移除 console config file and makefile targets.
+   * 移除 references to /dev/bug and bugreport in udevand 
      udev_retry bootscripts. (DJ Lucas)
 
-n/a - April 17, 2006
-   * Updated udev script to use the new udevsettle program.
-   * Added udev_retry script for systems that have /usr on a different
+n/a - 4.17, 2006
+   * 更新了 udev 脚本 to use the new udevsettle program.
+   * 添加了 udev_retry 脚本 for systems that have /usr on a different
      partition or for some other reason fail the initial replay. (Archaic)
 
-n/a - April 15, 2006
-   * Cleaned up contrib directory.  Removed: contrib/init.d, 
+n/a - 4.15, 2006
+   * 清理了 up contrib directory.  移除: contrib/init.d, 
      contrib/enhanced, contrib/livecd, contrib/hotplug, and raq2 
      patch. (DJ Lucas)
 
-n/a - April 14, 2006
+n/a - 4.14, 2006
    * Merged changes from udev_update branch (DJ Lucas)
    * Replaced a return with an exit and reversed comment changes in 
      udev bootscript. (Dan Nicholson)
    * Replaced walk_sysfs function in udev bootscript with new udevtrigger
      program and move wait_for_uevents function inline. (DJ Lucas)
-   * Removed extra evaluate_retval in udev bootscript. (Ken Moffat)
-   * Wait for uevents to be processed in the udev script.  See ticket
+   * 移除 extra evaluate_retval in udev bootscript. (Ken Moffat)
+   * Wait for uevents to be processed in the udev 脚本.  See ticket
      #1720 for details. (Matthew Burgess)
 
-n/a - March 21, 2006
-   * Removed old references to boot_log function and arguments passed
+n/a - 3.21, 2006
+   * 移除 old references to boot_log function and arguments passed
      to boot_mesg_flush in echo_* functions. (DJ Lucas)
 
-n/a - March 10, 2006
-   * Moved src argument to ipv4-static-route service script and 
-     removed from ipv4-static service script. (DJ Lucas)
+n/a - 3.10, 2006
+   * 移动了 src argument to ipv4-static-route service 脚本 and 
+     移除 from ipv4-static service 脚本. (DJ Lucas)
 
-n/a - March 8. 2006
-   * Correct sourced path in checkfs script. (Matthew Burgess)
+n/a - 3.8. 2006
+   * Correct sourced path in checkfs 脚本. (Matthew Burgess)
 
 n/a - December 31, 2005
    * Replaced /etc/rc.d with ${rc_base} in checkfs. (Vincent Fretin)
 
 n/a - December 24, 2005
-   * Added UTF-8 support to console script. (Alexander E. Patrakov)
+   * 添加了 UTF-8 support to console 脚本. (Alexander E. Patrakov)
 
 n/a - September 11, 2005
-   * Removed text wraping and boot logging.
-   * Changed killproc to use warning if not running
-   * Changed 'print_status warning' to use old style output
-   * Fixed display error with LSB init-functions script
+   * 移除 text wraping and boot logging.
+   * 更改了 killproc to use warning if not running
+   * 更改了 'print_status warning' to use old style output
+   * 修复了 display error with LSB init-functions 脚本
    * Made above killproc/print_status changes in enhanced
      bootscripts.
    * Made logger service configurable in enhanced 
      bootscripts. (DJ Lucas)
 
 n/a - August 14, 2005
-   * Added -s flag to pidofproc() for backwards 
+   * 添加了 -s flag to pidofproc() for backwards 
      compatibility (DJ Lucas)
-   * Fixed erronous values returned by pidofproc() which 
+   * 修复了 erronous values returned by pidofproc() which 
      broke the functionality of statusproc (DJ Lucas)
 
 n/a - July 1, 2005
-   * Changed a == to a = in lfs/init.d/functions, in the boot_mesg
+   * 更改了 a == to a = in lfs/init.d/functions, in the boot_mesg
      function for ash compliancy (Nathan Coulson)
 
 n/a - June 26, 2005
-   * Removed consolelog script from contrib 
-   * Updated interactive rc script in contrib and added 
-     README.rc-Interactive, added install target to the
+   * 移除 consolelog 脚本 from contrib 
+   * 更新了 interactive rc 脚本 in contrib and 添加了 
+     README.rc-Interactive, 添加了 install target to the
      Makefile. (DJ Lucas)
 
 3.2.2 - May 29, 2005
-   * Tagged as 3.2.2 (Nathan Coulson)
+   * 标记为 3.2.2 (Nathan Coulson)
 
 n/a - May 26, 2005
-   * Added minimal target for cross-lfs book (Jim Gifford)
-   * Fixed raq2 patch (Jim Gifford)
+   * 添加了 minimal target for cross-lfs book (Jim Gifford)
+   * 修复了 raq2 patch (Jim Gifford)
 
 3.2.1 - May 1, 2005
-   * Tagged as 3.2.1 (Nathan Coulson)
+   * 标记为 3.2.1 (Nathan Coulson)
 
-n/a - April 17, 2005
-   * removed touch from hotplug bootscript (Matthew Burgess)
-   * moved commands around in localnet bootscript (Andrew Benton)
+n/a - 4.17, 2005
+   * 移除 touch from hotplug bootscript (Matthew Burgess)
+   * 移动了 commands around in localnet bootscript (Andrew Benton)
 
-3.2.0 - March 30, 2005
-   * Changed from syslog-ng to sysklogd (Archaic)
-   * Temporairly changed loadproc to return 0 if the program is
+3.2.0 - 3.30, 2005
+   * 更改了 from syslog-ng to sysklogd (Archaic)
+   * Temporairly 更改了 loadproc to return 0 if the program is
      already running (Nathan Coulson)
-   * Fixed (by reverting) ifup/ifdown/network (Nathan Coulson),
+   * 修复了 (by reverting) ifup/ifdown/network (Nathan Coulson),
      Reported by Jim Gifford
-   * Fixed network up/down along with adding support of ONHOTPLUG
-   * Tagged as 3.2.0
+   * 修复了 network up/down along with adding support of ONHOTPLUG
+   * 标记为 3.2.0
 
-n/a - March 19, 2005
-   * Updated RaQ2 patch (Jim Gifford)
-   * Added net.agent for Hotplug of Network adapters in contrib
+n/a - 3.19, 2005
+   * 更新了 RaQ2 patch (Jim Gifford)
+   * 添加了 net.agent for Hotplug of Network adapters in contrib
      (Jim Gifford)
 
-n/a - March 16, 2005
+n/a - 3.16, 2005
    * Reverted the change from loadproc to start_daemon,
-     Moved compatibility code into one single function.
+     移动了 compatibility code into one single function.
      (Nathan Coulson)
-   * Readded the ONHOTPLUG option for ifup/ifdown (Nathan Coulson)
-   * Fixed killproc's output
+   * Re添加了 the ONHOTPLUG option for ifup/ifdown (Nathan Coulson)
+   * 修复了 killproc's output
 
-n/a - March 01, 2005
-   * Added CHECK_LINK variable in ifconfig.*/*, so if the
+n/a - 3.01, 2005
+   * 添加了 CHECK_LINK variable in ifconfig.*/*, so if the
      interface does not exist, it will not fail.
      (Nathan Coulson)
 
-n/a - February 19, 2005
-   * Added evaluate_retval to the end of loadproc and killproc.
+n/a - 2.19, 2005
+   * 添加了 evaluate_retval to the end of loadproc and killproc.
      lsb does not say that killproc should print [  OK  ],
      but required for compatibility.  (Nathan Coulson)
 
-n/a - February 9, 2005
-   * Accidentally mounted /dev with 775 instead of 755, fixed
+n/a - 2.9, 2005
+   * Accidentally mounted /dev with 775 instead of 755, 修复了
      (Reported by Alexander E. Patrakov)
 
-n/a - February 9, 2005
+n/a - 2.9, 2005
    * Bugfix for /dev, now mounted with 755 permission
 
-n/a - February 8, 2005
-   * changed pidof, so it doesn't check the process id
-     of running bootscripts, and to process shell scripts
+n/a - 2.8, 2005
+   * 更改了 pidof, so it doesn't check the process id
+     of running bootscripts, and to process shell 脚本s
      (Nathan Coulson)
 
-n/a - February 6, 2005
-   * Updated main functions file with lsb functions file
+n/a - 2.6, 2005
+   * 更新了 main functions file with lsb functions file
      Should now be LSB compliant (Nathan Coulson)
 
 n/a - January 10, 2005
-   * Moved ONBOOT check back to network (Nathan Coulson)
-   * Removed ONHOTPLUG check (Nathan Coulson)
+   * 移动了 ONBOOT check back to network (Nathan Coulson)
+   * 移除 ONHOTPLUG check (Nathan Coulson)
 
 n/a - January 6, 2005
-   * fixed mountkernfs output (Nathan Coulson)
+   * 修复了 mountkernfs output (Nathan Coulson)
    * reverted mountfs fakemounting (Nathan Coulson)
 
 n/a - January 5, 2005
    * Attempted to simplify network bootup files (Nathan Coulson)
    * Modified mountkernfs to use mountpoint (Nathan Coulson)
    * Assuming sysfs is always mounted (Nathan Coulson)
-   * Moved fakemount to below mounting (Nathan Coulson)
-   * Removed -t noramfs from umount, as we now use tmpfs (Nathan Coulson)
-   * moved sysctl from mountkernfs to sysctl (Nathan Coulson)
-   * Added -q to sysctl (Nathan Coulson)
+   * 移动了 fakemount to below mounting (Nathan Coulson)
+   * 移除 -t noramfs from umount, as we now use tmpfs (Nathan Coulson)
+   * 移动了 sysctl from mountkernfs to sysctl (Nathan Coulson)
+   * 添加了 -q to sysctl (Nathan Coulson)
 
 n/a - January 2, 2005
-   * Fixed statusproc output. (DJ Lucas)
+   * 修复了 statusproc output. (DJ Lucas)
 
-3.1.0 - December 31, 2004
-   * fixed textoutput
-   * Tagged as 3.1.0
+3.1.0 - December 31
+   * 修复了 textoutput
+   * 标记为 3.1.0
 
-n/a - December 30, 2004
-   * Fixed name of LSB Functions file
-   * Changed boot_mesg to act like echo instead of echo -n, boot_mesg now
+n/a - December 30
+   * 修复了 name of LSB Functions file
+   * 更改了 boot_mesg to act like echo instead of echo -n, boot_mesg now
      takes the -n argument if you do not wish to goto the next line
 
-3.0.1 - December 25, 2004
+3.0.1 - December 25
    * Released as 3.0.1
 
-n/a - December 20, 2004
-   * Cleaned up header.
-   * Added RaQ2 Patch
+n/a - December 20
+   * 清理了 up header.
+   * 添加了 RaQ2 Patch
 
-n/a - December 16, 2004
-   * Fixed a text typo in udev, tmpfs instead of ramfs (Steve Crosby)
+n/a - December 16
+   * 修复了 a text typo in udev, tmpfs instead of ramfs (Steve Crosby)
 
-n/a - December 14, 2004
-   * Fixed a warning with find in cleanfs
+n/a - December 14
+   * 修复了 a warning with find in cleanfs
 
 
-3.0 - December 8, 2004
+3.0 - December 8
 
-n/a - December 5, 2004
-   * Moved bootlog to use local2 service to avoide conflict with
+n/a - December 5
+   * 移动了 bootlog to use local2 service to avoide conflict with
      dhcpcd (DJ Lucas)
 
-3.0-rc1 - December 1, 2004
-   * rc-Interactive added (DJ Lucas)
-   * rc-Interactive moved to contrib (Nathan Coulson)
+3.0-rc1 - December 1
+   * rc-Interactive 添加了 (DJ Lucas)
+   * rc-Interactive 移动了 to contrib (Nathan Coulson)
 
-n/a - November 27, 2004
-   * Moved bootlog to use local1 to avoid conflict with ppd (DJ Lucas)
+n/a - November 27
+   * 移动了 bootlog to use local1 to avoid conflict with ppd (DJ Lucas)
 
-n/a - November 25, 2004
-   * Added consolelog to contrib/sysconfig (DJ Lucas)
+n/a - November 25
+   * 添加了 consolelog to contrib/sysconfig (DJ Lucas)
    * Rewrite of line wraping in boot_mesg and various fixes
      related to boot_mesg changes (DJ Lucas, Alexander Patrakov)
    * syslog-ng is now installed by default (Jeremy Utley)
@@ -468,162 +480,162 @@ n/a - November 25, 2004
      (Nathan Coulson)
    * udev now mounts a tmpfs instead of a ramfs onto /dev,
      as suggested by Greg K-H (Nathan Coulson)
-   * Created contrib/lsb, and added a LSB compliant functions file
+   * Created contrib/lsb, and 添加了 a LSB compliant functions file
      (Nathan Coulson, and Alexander Patrakov)
    * Modified find [requires find 4.2.3+] (Matthew Burgess)
 
-n/a - November 20, 2004
-   * Modifed modules script to return to previous kernel message
+n/a - November 20
+   * Modifed modules 脚本 to return to previous kernel message
      level (DJ Lucas)
 
-n/a - November 02, 2004
-   * Added sysctl -p to mountkernfs (Matthew Burgess, DJ Lucas)
+n/a - November 02
+   * 添加了 sysctl -p to mountkernfs (Matthew Burgess, DJ Lucas)
 
-n/a - October 07, 2004
+n/a - October 07
    * statusproc modified not to send data to bootlog (Nathan Coulson)
-   * Fixed halt commands in checkfs and udev (James Robertson)
+   * 修复了 halt commands in checkfs and udev (James Robertson)
 
-n/a - October 04, 2004
+n/a - October 04
    * Fixes to commit on 2004/09/30 (James Robertson)
    * Revert a few changes until later (Nathan Coulson)
-   * Added a warning about switching from a 8bit font
+   * 添加了 a warning about switching from a 8bit font
      to a 9bit font (Alexander Patrakov)
 
-n/a - September 30, 2004
+n/a - September 30
    * Finished off boot_mesg() (James Robertson)
-   * Standardized all scripts to same variable format and other
+   * Standardized all 脚本s to same variable format and other
      internal sh/bash function calls (James Robertson)
-   * Fully implemented boot_mesg across all scripts in sysconfig
+   * Fully implemented boot_mesg across all 脚本s in sysconfig
      and init.d (James Robertson)
 
-n/a - September 26, 2004
-   * Added BOOTMESG_PREFIX variable, so users can optionally set a
+n/a - September 26
+   * 添加了 BOOTMESG_PREFIX variable, so users can optionally set a
      prefix for boot messages (James Robertson)
-   * Fixed localnet status, to use ip instead of ifconfig (Jim Gifford)
-   * Added consolelog to contrib (DJ Lucas)
+   * 修复了 localnet status, to use ip instead of ifconfig (Jim Gifford)
+   * 添加了 consolelog to contrib (DJ Lucas)
    * loadproc and killproc can have the -nomsg parameter to avoid
      calling evaluate_retval or print_status (Jim Gifford)
    * boot_mesg no longer explicitly adds a \n onto end of lines
-   * Added a function called boot_mesg_flush, which can
+   * 添加了 a function called boot_mesg_flush, which can
      dump the BOOTMESG to the bootlog.  This helps avoid making
      everything have to end in OK/WARN/FAIL (Nathan Coulson)
 
-n/a - September 24, 2004
-   * Removed /dev/udev.tdb test
+n/a - September 24
+   * 移除 /dev/udev.tdb test
 
-n/a - September 23, 2004
-   * Fixed boot_log so it output's $@'s contents, not @$
-   * Added support for colors in boot_mesg (James Robertson)
+n/a - September 23
+   * 修复了 boot_log so it output's $@'s contents, not @$
+   * 添加了 support for colors in boot_mesg (James Robertson)
    * Modified udev's error checking
    * Modified hotplug's error checking
    * Converted checkfs's error handling to use boot_mesg with
      color support
-   * Added $INFO color to functions (James Robertson)
+   * 添加了 $INFO color to functions (James Robertson)
 
-n/a - September 22, 2004
-   * Removed the dependency on wl by replacing it with grep (Bryan Kadzban)
-   * Fixed getpids, to remove unused pids obtained from $PIDFILE
-   * Removed ${NORMAL} from echo "$BOOTMESG" in functions, and removed
-      space added to each additional sentence tacked onto BOOTMESG
+n/a - September 22
+   * 移除 the dependency on wl by replacing it with grep (Bryan Kadzban)
+   * 修复了 getpids, to remove unused pids obtained from $PIDFILE
+   * 移除 ${NORMAL} from echo "$BOOTMESG" in functions, and 移除
+      space 添加到 each additional sentence tacked onto BOOTMESG
    * boot_mesg now handles \n's properly, and does not dimish the size of
      the next line (James Robertson)
-   * boot_log has been added.  The echo_ functions commit the log,
+   * boot_log has been 添加了.  The echo_ functions commit the log,
      and then clear the BOOTMSG variable
-   * All scriptes have been converted to use boot_mesg
+   * All 脚本es have been converted to use boot_mesg
 
-n/a - September 21, 2004
+n/a - September 21
    * boot_mesg has been enhanced.  Subsequent calls will overwrite
      previous text, and it will wrap text basedupon the variable ${WCOL}. 
      (James Robertson)
-   * Fixed mtu optional service typo (Kevin P Fleming)
-   * Added SOURCE variable to ipv4-static-route (Kevin P Fleming)
+   * 修复了 mtu optional service typo (Kevin P Fleming)
+   * 添加了 SOURCE variable to ipv4-static-route (Kevin P Fleming)
 
-n/a - September 16, 2004
+n/a - September 16
    * nework interfaces are now brought down in reverse order
 
-n/a - September 15, 2004
-   * Added blue bracket, from dj's 3.0-pre1 bootscript package 
+n/a - September 15
+   * 添加了 blue bracket, from dj's 3.0-pre1 bootscript package 
      [echo_failure, echo_warning, and echo_ok]
-   * Added a new function called boot_mesg, meant to replace the echo
+   * 添加了 a new function called boot_mesg, meant to replace the echo
      command.
      This will give us the posibility of doing logging at a later date
    * Do not set COLUMNS if COLUMNS is already set
    * Modified getpids, loadproc, killproc, reloadproc, and statusproc as
      done by DJ
 
-2.2.3 - September 04, 2004
-   * Tagged as 2.2.3
+2.2.3 - September 04
+   * 标记为 2.2.3
 
-n/a - September 04, 2004
-   * Added new script to contrib for syslog-ng, which is now part of
+n/a - September 04
+   * 添加了 new 脚本 to contrib for syslog-ng, which is now part of
      LFS-Unstable, and a new Makefile target install-syslog-ng which
      removes the sysklogd links, and replaces them with syslog-ng (JU)
 
-2.2.2 - August 11, 2004
-   * Tagged as 2.2.2
+2.2.2 - August 11
+   * 标记为 2.2.2
 
-n/a - August 7, 2004
-   * Added missing error redirect (/dev/null) in getpids. (DJ)
+n/a - August 7
+   * 添加了 missing error redirect (/dev/null) in getpids. (DJ)
 
-n/a - August 4, 2004
-   * Added MODE, DIRMODE, and CONFMODE variables to the makefile 
+n/a - August 4
+   * 添加了 MODE, DIRMODE, and CONFMODE variables to the makefile 
      to allow permissions to be set at install. (DJ)
 
-n/a - July 31, 2004
+n/a - July 31
    
-   * Moved PIDFILE check to getpids and removed arguments from
+   * 移动了 PIDFILE check to getpids and 移除 arguments from
      killproc and reloadproc.  Signals are now set at beginning of
-     funtcions script with KILLDELAY. (DJ)
-   * Added a optional service script which can set the MTU for a given
+     funtcions 脚本 with KILLDELAY. (DJ)
+   * 添加了 a optional service 脚本 which can set the MTU for a given
      interface
 
-n/a - July 21, 2004
+n/a - July 21
 
    * Committed DJ Lucas's patch for the killproc function.  It no 
      longer requires arguments if PIDFILE is set
-   * added --backup to all sysconfig configuration files, so they are not
+   * 添加了 --backup to all sysconfig configuration files, so they are not
      replaced on a make install
 
-n/a - July 13, 2004
+n/a - July 13
 
-   * Added the PEER variable to the ifconfig.*/* file, done by
+   * 添加了 the PEER variable to the ifconfig.*/* file, done by
      Kevin P. Fleming
 
-2.2.1 - July 12, 2004
+2.2.1 - July 12
 
-   * Tagged as 2.2.1
+   * 标记为 2.2.1
 
-n/a - July 12, 2004
+n/a - July 12
 
-   * Hotplug was moved from rcsysinit.d to rc{1,2,3,4,5} to help bring
+   * Hotplug was 移动了 from rcsysinit.d to rc{1,2,3,4,5} to help bring
      up/down network interfaces started by hotplug.  This has been revoked
      at this time
    * Networking interfaces are now brought down in reverse order
-   * Moved the ONBOOT check to within ifup/ifdown, so we can bring up/down
+   * 移动了 the ONBOOT check to within ifup/ifdown, so we can bring up/down
      the interfaces at boottime/shutdown properly, done by Kevin P. Fleming
    * Use PREFIX instead of NETMASK for adding addresses in ipv4-static,
      done by Kevin P. Fleming
    * Fix reversal of services inside ifconfig.* directories in ifdown,
      done by Kevin P. Fleming
-   * Add ipv4-static-route service, supplied by Kevin P. Fleming
+   * 添加 ipv4-static-route service, supplied by Kevin P. Fleming
 
-2.2.0 - July 12, 2004
+2.2.0 - July 12
 
-   * Tagged as 2.2.0
+   * 标记为 2.2.0
 
-n/a - July 11, 2004
+n/a - July 11
 
-   * Minor script output changes
-   * Repaired networking scripts broken in previous commits
+   * Minor 脚本 output changes
+   * Repaired networking 脚本s broken in previous commits
 
-n/a - July 10, 2004
+n/a - July 10
 
    * We now use the ip program [from iproute2] instead of ipconfig
      [net-tools] to bring up/down ethernet interfaces, and local
      connections, submitted by Jim Gifford
-   * Removed gateway backward compatibility
-   * Removed ifup-eth0 ifdown-eth0 compatibility
-   * Removed the "assume SERVICE=static if SERVICE is unset" compatibility
+   * 移除 gateway backward compatibility
+   * 移除 ifup-eth0 ifdown-eth0 compatibility
+   * 移除 the "assume SERVICE=static if SERVICE is unset" compatibility
    * Pass the IFCONFIG environmental variable to services, so they can
      locate the file with the parameters they must read
    * Rename static to ipv4-static
@@ -632,478 +644,443 @@ n/a - July 10, 2004
    * Stage2 for network configuration via directories complete, network was
      modified to check within subdirectories for ONBOOT=yes.  Final Stage
 
-n/a - July 8, 2004
+n/a - July 8
 
-   * Changed iso01 to lat1 everywhere in /etc/sysconfig/console. This
+   * 更改了 iso01 to lat1 everywhere in /etc/sysconfig/console. This
      fixes the problem with line-drawing characters.
 
-n/a - July 7, 2004
+n/a - July 7
 
    * Halted the computer, if unable to mount /dev as a ramfs
 
-n/a - July 6, 2004
+n/a - July 6
 
-   * Moved the hotplug bootscript back to contrib, it will not be used in
+   * 移动了 the hotplug bootscript back to contrib, it will not be used in
      the testing branch of the lfs book at this time
 
-n/a - July 4, 2004
+n/a - July 4
 
    * Modified ifup and ifdown to be hotplug aware
 
-n/a - July 3, 2004
+n/a - July 3
 
    * Change the check for ONBOOT into a source within a subshell
 
-n/a - July 1, 2004
+n/a - July 1
 
-   * Moved hotplug start to runlevels 3-5 from sysinit
+   * 移动了 hotplug start to runlevels 3-5 from sysinit
 
-n/a - June 30, 2004
+n/a - June 30
 
    * Pass -depth in cleanfs
 
-n/a - June 29, 2004
+n/a - June 29
 
-   * Made the grep for ONBOOT in the network script more exact
+   * Made the grep for ONBOOT in the network 脚本 more exact
 
-2.1.2 - June 27, 2004
+2.1.2 - June 27
 
-   * Install the automatic module loading script by default
-   * Tagged as 2.1.2
+   * Install the automatic module loading 脚本 by default
+   * 标记为 2.1.2
 
-n/a - June 26, 2004
+n/a - June 26
 
-   * Fixed font for UK in /etc/sysconfig/console
+   * 修复了 font for UK in /etc/sysconfig/console
 
-n/a - June 23, 2004
+n/a - June 23
 
-   * Fixed a typo in the hotplug installation procedure
+   * 修复了 a typo in the hotplug installation procedure
 
-n/a - June 21, 2004
+n/a - June 21
 
-   * Re-ordered the "mount" and "echo" commands in the udev script, to
+   * Re-ordered the "mount" and "echo" commands in the udev 脚本, to
      prevent a possible race
-   * Converted the udev script to use udevsend/udevd
-   * Moved removal of /fastboot and /forcefsck to just after the root fs
+   * Converted the udev 脚本 to use udevsend/udevd
+   * 移动了 removal of /fastboot and /forcefsck to just after the root fs
      becomes writable, and dropped the removal of /etc/nologin
-   * Cleaned and tweaked both the output and actions of cleanfs
-   * Removed the disabling of hotplug from sendsignals
-   * Removed anything that might call "rmmod" in hotplug, since rmmod is
+   * 清理了 and tweaked both the output and actions of cleanfs
+   * 移除 the disabling of hotplug from sendsignals
+   * 移除 anything that might call "rmmod" in hotplug, since rmmod is
      notoriously troublesome in the 2.6.x kernels, and call it with the
      stop argument from runlevels 0 and 6
-   * Fixed previous modifications to the udev and cleanfs scripts
+   * 修复了 previous modifications to the udev and cleanfs 脚本s
 
-n/a - June 20, 2004
+n/a - June 20
 
    * Rolled back to the /dev/.udev.tdb check from 2.1.1, since the new
      one doesn't work as well, and the bug that caused it to change is
-     now fixed
+     now 修复了
 
-n/a - June 18, 2004
+n/a - June 18
 
-   * Updated sysconfig/console
-   * Fixed disabling hotplug in sendsignals
+   * 更新了 sysconfig/console
+   * 修复了 disabling hotplug in sendsignals
    * hotplug is now installed by default
 
-n/a - June 15, 2004
+n/a - June 15
 
    * Reset /proc/sys/kernel/hotplug to /bin/true when running the "stop"
      command for hotplug
-   * Cleaned the output of the mountkernfs script
+   * 清理了 the output of the mountkernfs 脚本
    * Don't output "Creating files and directories" when it's a lie
 
-n/a - June 8, 2004
+n/a - June 8
 
-   * Changed the location the optional module script is installed to
+   * 更改了 the location the optional module 脚本 is installed to
      /etc/rc.d/rcsysinit.d/S05modules.
 
-n/a - June 4, 2004
+n/a - June 4
 
-   * Added a echo to the > /proc/sys/kernel/hotplug line, as > did not
+   * 添加了 a echo to the > /proc/sys/kernel/hotplug line, as > did not
      clear it
 
-n/a - June 3, 2004
+n/a - June 3
 
-   * Added '> /proc/sys/kernel/hotplug' to sendsignals, to disable hotplug
+   * 添加了 '> /proc/sys/kernel/hotplug' to sendsignals, to disable hotplug
      events, which may start up new daemons
-   * Added elementry bootup logging support.  If it can write to
+   * 添加了 elementry bootup logging support.  If it can write to
      /var/log/boot.log, it will
-   * Removed logging support, it kept / from being remounted ro
+   * 移除 logging support, it kept / from being remounted ro
 
-n/a - June 2, 2004
+n/a - June 2
 
-   * Reorganize what goes on in the udev script
-   * Reorganize what goes on in the hotplug script
-   * Moved setting /sbin/hotplug as the default hotplug manager into the
-     hotplug script
+   * Reorganize what goes on in the udev 脚本
+   * Reorganize what goes on in the hotplug 脚本
+   * 移动了 setting /sbin/hotplug as the default hotplug manager into the
+     hotplug 脚本
 
-n/a - June 1, 2004
+n/a - June 1
 
-   * Removed usbfs from mountkernfs, and mountfs
-   * Edited the udev script, so it'll always set /proc/sys/kernel/hotplug
+   * 移除 usbfs from mountkernfs, and mountfs
+   * 编辑的 the udev 脚本, so it'll always set /proc/sys/kernel/hotplug
 
-n/a - May 24, 2004
+n/a - May 24
 
-   * Added more example keymaps and font settings to /etc/sysconfig/console
+   * 添加了 more example keymaps and font settings to /etc/sysconfig/console
    * Install the /etc/sysconfig/console file by default
 
-n/a - May 23, 2004
+n/a - May 23
 
-   * Changed the symlink for the optional modules script
-   * Removed depmod from the optional modules script
+   * 更改了 the symlink for the optional modules 脚本
+   * 移除 depmod from the optional modules 脚本
 
-n/a - May 20, 2004
+n/a - May 20
 
-   * Removed the random script.  There is not a strong enough case for
+   * 移除 the random 脚本.  There is not a strong enough case for
      adding it to the lfs-bootscripts.
 
-n/a - May 19, 2004
+n/a - May 19
 
-   * Added the random bootscript from blfs-bootscripts
+   * 添加了 the random bootscript from blfs-bootscripts
 
-2.1.1 - May 18, 2004
+2.1.1 - May 18
 
-   * Fixed installation of modules configuration
-   * Tagged as 2.1.1
+   * 修复了 installation of modules configuration
+   * 标记为 2.1.1
 
-n/a - May 16, 2004
+n/a - May 16
 
-   * Added sysklogd configuration file
-   * Added example /etc/sysconfig/console file
+   * 添加了 sysklogd configuration file
+   * 添加了 example /etc/sysconfig/console file
    * Do not attempt to populate /dev if that directory has already been
      set up earlier in bootup (such as on initramfs/initrd)
    * Prevent excessive kernel output once klogd starts
-   * Added hotplug script
+   * 添加了 hotplug 脚本
 
-n/a - May 15, 2004
+n/a - May 15
 
-   * Namespace rework (enumeration of scripts is now cleaner)
-   * Removed directories: blfs, contrib/new-boot-0.2, contrib/rlv
+   * Namespace rework (enumeration of 脚本s is now cleaner)
+   * 移除 directories: blfs, contrib/new-boot-0.2, contrib/rlv
 
-n/a - May 13, 2004
+n/a - May 13
 
-   * Repaired the console script
-   * Added a check to cleanfs [createfiles], to make sure that we have
+   * Repaired the console 脚本
+   * 添加了 a check to cleanfs [createfiles], to make sure that we have
      a valid devicetype, if we have type=dev
 
-n/a - May 11, 2004
+n/a - May 11
 
-   * Added usbfs to mountkernfs and mountfs
+   * 添加了 usbfs to mountkernfs and mountfs
 
-n/a - May 6, 2004
+n/a - May 6
 
    * Don't use loadproc in localnet, it's not meant for that
    * Quote tests of $PIDFILE, so that things behave when it's empty
-   * Removed unused kill -0 from killproc
+   * 移除 unused kill -0 from killproc
 
-2.1.0 - May 4, 2004
+2.1.0 - May 4
 
-   * Update to the console script, prevent install of the console script
+   * Update to the console 脚本, prevent install of the console 脚本
    * Chgrp /var/run/utmp to group utmp if it exists.
-   * Moved udev from contrib to lfs
-   * Moved GATEWAY setup from /etc/rc.d/init.d/network to
+   * 移动了 udev from contrib to lfs
+   * 移动了 GATEWAY setup from /etc/rc.d/init.d/network to
      /etc/sysconfig/network-devices/services/static
-   * Use the contents of $PIDFILE, if it is set in the script
-   * Tagged as 2.1.0.
+   * Use the contents of $PIDFILE, if it is set in the 脚本
+   * 标记为 2.1.0.
 
-n/a - April 30, 2004
+n/a - 4.30
 
-   * Moved the loadkeys script to console, and added setfont.  Contributed
+   * 移动了 the loadkeys 脚本 to console, and 添加了 setfont.  Contributed
      by Alexander E. Patrakov
 
-2.0.5 - April 29, 2004
+2.0.5 - 4.29
 
-   * Added the heimdal init script.
-   * Tagged as 2.0.5
+   * 添加了 the heimdal init 脚本.
+   * 标记为 2.0.5
 
-2.0.4 - April 27, 2004
+2.0.4 - 4.27
 
-   * Tagged as 2.0.4
+   * 标记为 2.0.4
 
-n/a - April 24, 2004
+n/a - 4.24
 
-   * Added a example script for /etc/sysconfig/createfiles
-   * Added a check for /sys before mounting sysfs
-   * Added -t noramfs to umount on /etc/rc.d/init.d/mountfs.
+   * 添加了 a example 脚本 for /etc/sysconfig/createfiles
+   * 添加了 a check for /sys before mounting sysfs
+   * 添加了 -t noramfs to umount on /etc/rc.d/init.d/mountfs.
      This will prevent /dev from being unmounted, if /proc/mounts
      is symlinked to /etc/mtab
 
-n/a - April 18, 2004
+n/a - 4.18
 
-   * Small fix to a if statement in netfs
+   * 在 netfs 中一个 if 语句的小修复
 
-n/a - April 17, 2004
+n/a - 4.17
 
-   * Added the lisa bootscript, lisa is part of the KDE Network package
-   * Add proper error checking to the mountfs script when writing out mtab
-   * Add more comments to the udev script, and conditionalize various
-     things that should've been done this way in the first place
-   * Include a template module auto-loading configuration file instead of
-     having syntax comments in the script itself
+   * 添加了 lisa 引导脚本，lisa 是 KDE 网络包的一部分
+   * 当写出 mtab 时添加恰当的错误检查到 mountfs 脚本
+   * 添加更多的注释到 udev 脚本，并在开始的位置条件化应该以这种方式完成的各种事情
+   * 包含了一个模板模块自动加载配置文件来代替在脚本中自己的语法注释
 
-n/a - April 12, 2004
+n/a - 4.12
 
-   * Added a automatic modules loading script to the contrib directory
-     submitted by Zack
-   * Edited mountkernfs, so that if you can mount sysfs on /sys, it will
-     be mounted at boottime.  Should not affect 2.4 systems
-   * Since all entries are added to /etc/mtab, we should not require
-     the NO_FS variable.  It has been removed from mountfs
-   * Added the udev script into the contrib directory, submitted by Zack
+   * 添加了一个自动化的模块加载脚本到 contrib 目录
+     由 Zack 提交
+   * 编辑了 mountkernfs，以便你可以在 /sys 上挂载 sysfs，它将会在引导时挂载。
+     应该不会影响 2.4 系统
+   * 由于所有条目被添加到 /etc/mtab，所以我们不需要 NO_FS 变量。它已经被从 mountfs 移除
+   * 添加 udev 脚本到 contrib 目录中，由 Zack 提交
 
-2.0.3 - April 8, 2004
+2.0.3 - 4.8
 
-   * Updated cleanfs, so it can create devices.  Supplied by Zack
-   * Tagged as 2.0.3
+   * 更新了 cleanfs，以便它可以创建设备。由 Zack 提供
+   * 标记为 2.0.3
 
-n/a - March 31, 2004
+n/a - 2004.3.31
 
-   * Changed "Press Enter" on unknown error to white
-   * Moved S10swap to S20swap.  When udev is added, it has to be
-     ran before swap is setup
+   * 更改了在未知错误上的 "Press Enter" 为白色
+   * 移动 S10swap 到 S20swap。当添加 udev 时，它必须在 swap 设置前被运行
 
-n/a - March 29, 2004
+n/a - 2004.3.29
 
-   * Fixed the rc5.d symlink for ntp so it creates S26ntp instead
-     of S26npt
-   * Moved S20mountkernfs to S00mountkernfs in rcsysinit.d.  Will help in
-     the addition of udev in the future.
+   * 为 ntp 修复了 rc5.d 符号链接，所以它创建 S26ntp 而不是 S26npt
+   * 在 rcsysinit.d 中移动 S20mountkernfs 到 S00mountkernfs。将会有助于以后在 udev 上的添加。
 
-n/a - March 27, 2004
+n/a - 2004.3.27
 
-   * Changed gdm path from hardcoded to program name.  There are 2 spots
-     gnome can be installed
+   * 更改了 gdm 路径，由硬编码改为程序名。有 2 个点可以安装 gnome
 
-n/a - March 26, 2004
+n/a - 2004.3.26
 
-   * Updated fam daemon script.  It now uses the famd daemon instead of fam
+   * 更新了 fam daemon 脚本。它现在使用 famd daemon 代替 fam
 
-n/a - March 24, 2004
+n/a - 2004.3.24
 
-   * Removed mount command out of nfs.  the netfs script already handles
-     this
+   * 从 nfs 中去掉了 mount 命令。netfs 脚本已经处理了这个
 
-2.0.2 - March 24, 2004
+2.0.2 - 2004.3.24
 
-   * Edited cleanfs to solve a problem.  [if /tmp does not exist, it
-     could run the find command on the root filesystem]
-   * Tagged as 2.0.2
+   * 编辑了 cleanfs 以解决问题。[如果 /tmp 不存在，它可能会在根文件系统上运行 find 命令]
+   * 标记为 2.0.2
 
-2.0.1 - March 24, 2004
+2.0.1 - 2004.3.24
 
-   * Found typo in BLFS MySQL Script.
-   * Tagged as 2.0.1
+   * 发现在 BLFS MySQL 脚本中的输入错误。
+   * 标记为 2.0.1
 
-2.0.0 - March 23, 2004
+2.0.0 - 2004.3.23
 
-   * Tagged as 2.0.0, no changes from 2.0.0-pre2
+   * 标记为 2.0.0，和 2.0.0-pre2 没变化
 
-2.0.0-pre2 - March 23, 2004
+2.0.0-pre2 - 2004.3.23
 
-   * Cleaned the /tmp directory on bootup.  find command supplied by Zack
-   * Added a script which can automatically create files and directories
-     on startup.  [Handles files/directories, permissions, and user/group].
-     Created by Zack
-   * Added blfs/init.d/fam script
-   * Tagged as 2.0.0-pre2
+   * 在引导时清理了 /tmp 目录。由 Zack 提供的 find 命令
+   * 添加了一个脚本，可以在启动时自动创建文件和目录。
+     [处理文件/目录、权限以及用户/组]。
+     由 Zack 创建
+   * 添加了 blfs/init.d/fam 脚本
+   * 标记为 2.0.0-pre2
 
-n/a - March 20, 2004
+n/a - 2004.3.20
 
-   * Added create-service-dir target and removed from create-dirs
-   * Changed service script install targets to use
-     create-service-dir
-   * Added check for dhcpcd service script for stale pid file 
-     Suggested by Jeremy
-   * Added ifconfig to ipx service script for hosting device not up
+   * 添加了 create-service-dir 目标并从 create-dirs 中移除
+   * 更改了 service 脚本安装目标以使用 create-service-dir
+   * 添加了对 dhcpcd service 脚本的检查，以针对陈旧的 pid 文件。
+     由 Jeremy 建议
+   * 添加了 ifconfig 到用于托管设备没有 up 的 ipx service 脚本
 
-n/a - March 19, 2004
+n/a - 2004.3.19
 
-   * Added support for ETCDIR, and DESTDIR in the Makefile,
-     compliments of Tushar
-   * Renamed mountproc to mountkernfs
-   * Updated the README file
-   * Coloured the print_error_message in functions red
-   * added stop to the setclock script
-   * changed echo > to > in cleanfs, suggested by winkie
-   * BLFS Scripts Added,  collected by Zack
-   * Edited killproc, so it checks for running pids, rather then
-     the completion of the above kill command.  Suggested by Zack
-   * Added network services found in blfs, removed adsl.  Submitted by
-     DJ.
+   * 在 Makefile 中添加了对 ETCDIR 和 DESTDIR 的支持，兼容 Tushar
+   * 重命名 mountproc 为 mountkernfs
+   * 更新了 README 文件
+   * 在函数 red 中对 print_error_message 加色
+   * 添加了 stop 到 setclock 脚本
+   * 在 cleanfs 中更改 echo > 为 >，由 winkie 建议
+   * 添加了 BLFS 脚本，由 Zack 收集
+   * 编辑了 killproc，以便它检查正在运行的 pids，而非完成上述 kill 命令的补全。由 Zack 建议
+   * 添加了在 blfs 中找到的网络服务，移除了 adsl。由 DJ 提交。
 
-1.99.4 - March 17, 2004
+1.99.4 - 2004.3.17
 
-   * Fixed one last halt line in checkfs script
-   * Moved the directory structure around
-   * Tagged as development release 1.99.4
+   * 修复了在 checkfs 脚本中的最后 halt 行
+   * 移动目录结构
+   * 标记为 development release 1.99.4
 
-n/a - February 28, 2004
+n/a - 2004.2.28
 
-   * Added stty sane to the top of rc.d/init.d/rc.  Hopefully, this will
-     fix the problems
-   * Also changed all instances of <ctrl-j> back to enter
+   * 添加了 stty sane 到 rc.d/init.d/rc 的顶部。希望这样可以修复问题
+   * 还把所有 <ctrl-j> 改回为 enter
 
-1.99.3 - February 23, 2004
+1.99.3 - 2004.2.23
 
-   * Tagged as development release 1.99.3
+   * 标记为 development release 1.99.3
 
-n/a - February 19, 2004
+n/a - 2004.2.19
 
-   * Fixed checkfs script, so it will no longer continue to boot after a
-     failure in the init.d/checkfs script.  Tested with the help of Andre
-     M�ller.  Fix suggested by Zack
+   * 修复了 checkfs 脚本，以便在 init.d/checkfs 脚本中失败后不再继续引导。
+     使用 Andre Müller 的帮助进行测试。由 Zack 建议修复
 
-n/a - February 7, 2004
+n/a - 2004.2.7
 
-   * Added -s onto grep on network stop
-   * Replaced a few more enter's with ctrl-j
+   * 添加了 -s 到 network stop 上的 grep 中
+   * 替换了一些 enter 为 ctrl-j
 
-1.99.2 - February 6, 2004
+1.99.2 - 2004.2.6
 
-   * Added -s onto grep in network start
-   * Tagged as development release 1.99.2
+   * 添加了 -s 到 network start 中的 grep
+   * 标记为 development release 1.99.2
 
-n/a - February 4, 2004
+n/a - 2004.2.4
 
-   * Fixed $WARNING $NORMAL and $ERROR lines, broken by changes in
-     functions
-   * Changed above fixes to work with ash
-   * Fixed checkfs symlink in Makefile
-   * functions is no longer installed as executable
-   * Added a check to checkfs, for errors above 16.  These are caused by
-     being unable to run fsck, either due to user input, or a unfunctional
-     linux system
+   * 修复了 $WARNING $NORMAL 和 $ERROR 行，被函数中的变化打断
+   * 更改了上面的修复以配合 ash
+   * 修复了 Makefile 中的 checkfs 符号链接
+   * 函数不再安装为可执行
+   * 添加了一个检查到 checkfs，针对 16 以上的错误。这些是由于不能运行 fsck 而导致，
+     可能是因为用户输入，或者一个非功能性的 linux 系统
 
-1.99.1 - February 2, 2004
+1.99.1 - 2004.2.2
 
-   * Tagged as development release 1.99.1
+   * 标记为 development release 1.99.1
 
-n/a - February 2, 2004:
+n/a - 2004.2.2:
 
-   * Added -d to umount in mountfs.
-   * Fixed network shutdown script
-   * Fixed Makefile rc.6 to reboot
-   * Added -s flag to grep command in rc.d/init.d/network -
-     suppresses an error if no ifconfig.* files exist
+   * 添加了 -d 到 mountfs 中的 umount.
+   * 修复了 network shutdown 脚本
+   * 修复了 Makefile rc.6 为 reboot
+   * 添加了 -s 标志到 rc.d/init.d/network 中的 grep 命令 -
+     抑制了当不存在 ifconfig.* 文件时的错误
 
-n/a - January 30, 2004:
+n/a - 2004.1.30:
 
-   * Reorganized the network system to accept multiple services.
-   * Ash Compliancy
-   * Modified some scripts to follow template
-   * Reorganized functions, based upon Ash Compliancy Patch
-   * Added a sleep 5 to failure for evaulate_retval, and changed
-     evaulate_retval to return true instead of false.  Instead, a
-     exit 1 will indicate the script terminated abnormally, causing
-     your system to wait until you hit ctrl-J
-   * Switched "Press enter to continue" to "Press <ctrl-j> to continue"
-   * replaced 3 with $KILLDELAY in sendsignals
-   * mountfs does not mount network filesystems [identified by _netdev
-     in /etc/fstab]
-   * removed unneded touch out of cleanfs
+   * 重新安排 network 系统以接受多服务。
+   * Ash 兼容
+   * 修改某些脚本以遵循模板
+   * 重新安排的函数，基于 Ash 兼容性补丁
+   * 添加了一个 sleep 5 到用于 evaulate_retval 的 failure，并更改
+     evaulate_retval 为返回 true 而不是 false。相反，一个 exit 1 将
+     说明脚本不正常终止，导致你的系统等待直至你按 ctrl-J
+   * 切换 "Press enter to continue" 为 "Press <ctrl-j> to continue"
+   * 在 sendsignals 中替换 3 为 $KILLDELAY
+   * mountfs 不挂载网络文件系统 [由 /etc/fstab 中的 _netdev 识别]
+   * 移除不需要的 touch out of cleanfs
 
-n/a - January 30, 2004:
+n/a - 2004.1.30:
 
-   * New maintainers for the lfs-bootscripts package are:
+   * lfs-bootscripts 包的新维护人员:
      Jeremy Utley (jeremy@linuxfromscratch.org)
      Nathan Coulson (nathan@linuxfromscratch.org)
 
-1.11 - February 3rd, 2003:
+1.11 - 2.3rd, 2003:
 
-   * /etc/mtab is now a real file and is handled correctly so there are
-   no errors even when the machine has crashed.
+   * /etc/mtab 现在是一个真实的文件并被正确的处理，所以即使机器崩溃了也没有错误。
 
-1.10 - September 12th, 2002:
+1.10 - 2002.9.12:
 
-   * Fixed up checkfs to work with non-ext2 filesystems too (such as
-     minix).
+   * 修复了 checkfs 以便也可以用于非 ext2 文件系统(譬如 minix)。
 
-1.9 - April 5th, 2002:
+1.9 - 2002.4.5:
 
-   * reloadproc function had a missing '=' in the "failure 1" command (it
-     should be failure=1)
+   * reloadproc 函数缺少了一个 '=' 在 "failure 1" 命令中(它应该是 failure=1)
 
-   * When script exists with unexpected value, you have to hit "Enter" to
-     continue, not just a random key as printed on the screen.
+   * 当脚本存在意外的值时，你必须按回车以继续，而不是如屏幕所显示的一个随机键。
 
-   * Moved K10sysklogd, K20sendsignals, K30mount and K40swap to
+   * 移动了 K10sysklogd, K20sendsignals, K30mount 和 K40swap 到
      K40sysklogd, K50sendsignals, K60mount, K70swap
 
-   * Changed the #!/bin/sh lines to #!/bin/bash - /bin/sh may not be
-     linked to bash but to some other shell of your choice. These scripts
-     are written to work with bash, so you can't just run them when
-     /bin/sh -> csh or ash or whatever else tickles your fancy. This
-     change should fix that.
+   * 更改了 #!/bin/sh 行为 #!/bin/bash - /bin/sh 可能没有链接到 bash
+     而是你选择的其它 shell。这些脚本是针对配合 bash 而写的，所以，当
+     /bin/sh -> csh 或 ash 或者其它你喜欢的东西时，你可能不能运行它们。
+     这个更改应该可以修复这个。
 
-1.8 - March 14th, 2002:
+1.8 - 2002.3.14:
 
-   * Fixed the getpids function call so PPID's would be taken into account
-     properly.
+   * 修复了 getpids 函数调用，以便 PPID's 可以适当考虑。
 
-   * Added the 'contrib' directory with other people's bootscript
-     implementations.
+   * 添加了 'contrib' 目录，带有其它人的引导脚本的实现。
 
-1.7 - March 10th, 2002:
+1.7 - 2002.3.10:
 
-   * Used code from Matthias Benkmann's simpleinit-msb @
-     http://winterdrache.de/linux/newboot/index.html mainly for improved
-     killproc function handling
+   * 使用来自 Matthias Benkmann 的 simpleinit-msb @
+     http://winterdrache.de/linux/newboot/index.html 的代码，主要改进
+     killproc 函数的处理。
 
-   * When a requested process isn't running, or is already running, a
-     warning "Not running" or "Already running" will be displayed. This
-     was out of allignment due to a missing $CURS_UP
+   * 当一个请求的进程没有在运行时，或者已经在运行时，将会显示一个警告
+     "Not running" 或 "Already running"。这个由于缺少一个 $CURS_UP
+     为导致的对不齐。
 
-   * Removed "||exit" from ifup and ifdown scripts. They are useless.
+   * 从 ifup 和 ifdown 脚本中移除了 "||exit"。它们是没用的。
 
-   * Changed the loadkeys script to run "loadkeys -d" and removed the need
-     for the /etc/sysconfig/keyboard file. The kbd patch fixes the
-     "loadkeys -d" behaviour.
+   * 更改 loadkeys 脚本为运行 "loadkeys -d" 并删除对 /etc/sysconfig/keyboard 文件的需要。
+     kbd 补丁修复了 "loadkeys -d" 的行为。
 
-1.6 - February 26th, 2002:
+1.6 - 2002.2.26:
 
-   * replaced -o %PPID with -o $PPID throughout the functions script. This
-     construct does what it's supposed to do (don't take PPID into account
-     because this would fail if a running daemon and the bootscript have
-     the same name).
+   * 函数的脚本由头到尾替换 -o %PPID 为 -o $PPID。这个常量做它应该做的
+     (不考虑 PPID 是因为如果一个运行中的后台程序和引导脚本同名的话这个就会失败)。
 
-   * added 'restart' to the swap script
+   * 添加了 'restart' 到 swap 脚本。
 
-   * instead of using 'echo -n' to suppress newlines so the [ OK ] and
-     related messages align properly, substitute this with a single echo
-     command that simply goes one line up before outputting anything. This
-     also has the benefit that when programs have their own output (like
-     swapon, fsck and loadkeys), there won't be an unwanted blank line
-     between the program's output and the [ OK ] et all. messages.
+   * 代替使用 'echo -n' 来抑制新行，以便 [ OK ] 和相关的消息能够正确的对齐，
+     使用一个简单的在输出任何内容前上走一行的单一的 echo 命令来代替这个。
+     这个也有好处，当程序有自己的输出时(如 swapon, fsck 和 loadkeys)，
+     在程序输出和 [ OK ] 等所有的消息之间不会有不需要的空行。
 
-1.5 - February 2nd, 2002:
+1.5 - 2002.2.2:
 
-   * added 'exit 1' to the statusproc function when there aren't enough
-   parameters passed to it (such as the name of process to check for)
+   * 当没有足够参数传递给它时，添加 'exit 1' 到 statusproc 函数
+   (譬如要检查的进程的名称)
 
-1.4 - February 2nd, 2002:
+1.4 - 2002.2.2:
 
-   * when /fastboot is detected and the message about it is printed,
-     don't run 'exit 1' else the rc script will cause a [FAILED] to
-     be printed which is undesired in this case.
+   * 当检测到 /fastboot 时并打印出有关它的消息时，不运行 'exit 1'
+     否则 rc 脚本将会导致一个 [FAILED] 被打印，而这个在这种情况下是不想要的。
 
-1.3 - January 30th, 2002:
-   * network script: changed default route detection by using the same
-     method as used when starting the script: check if the GATEWAY
-     variable is set
+1.3 - 2002.1.30:
+   * network 脚本: 使用和启动脚本时所使用的同样的办法来更改默认的路由检测:
+     检查是否设置了 GATEWAY 变量
 
-   * removed the emptying of /etc/mtab since it's a symlink to
-     /proc/mounts now
+   * 移除 /etc/mtab 的空白，因为现在它是指向 /proc/mounts 的符号链接。
 
-   * added the mountproc script which mounts the proc system. This is done
-     because we need proc mounted even before the mountfs script is ran
-     (now that /etc/mtab is a symlink to /proc/mounts)
+   * 添加了 mountproc 脚本，它会挂载 proc 系统。这样做是因为我们需要
+     即使在 mountfs 脚本被运行前也要挂载了 proc
+     (现在 /etc/mtab 是指向 /proc/mounts 的一个符号链接)
 
-   * removed all absolute paths from command calls
+   * 从命令行中移除所有绝对路径
 
-   * added umask 022 and PATH="/bin:/usr/bin:/sbin:/usr/sbin" to the
-     functions script. Every file now sources this so that umask and PATH
-     are set correctly
+   * 添加了 umask 022 和 PATH="/bin:/usr/bin:/sbin:/usr/sbin" 到功能脚本。
+     每个文件现在 sources 这个以便 umask 和 PATH 被正确设置
 
-1.2 - January 26th, 2002:
-   * network script: detect if a default route is set before removing it
+1.2 - 2002.1.26:
+   * network 脚本: 在移除前检测是否设置了默认路由
 

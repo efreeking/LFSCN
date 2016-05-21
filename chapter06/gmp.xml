@@ -64,7 +64,7 @@
       </varlistentry>
 
       <varlistentry>
-        <term><parameter>--docdir=/usr/share/doc/gmp&gmp-version;</parameter></term>
+        <term><parameter>--docdir=/usr/share/doc/gmp-&gmp-version;</parameter></term>
         <listitem>
           <para>这个变量指定了文档的正确位置。
           </para>

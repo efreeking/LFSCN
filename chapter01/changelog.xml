@@ -34,7 +34,17 @@
 
 -->
     <listitem>
-      <para>2014-11-01</para>
+      <para>2014-11-05</para>
+      <itemizedlist>
+        <listitem>
+          <para>[bdubbs] - 更新到 groff-1.22.3。修复了 
+          <ulink url="&lfs-ticket-root;3706">#3706</ulink>。</para>
+        </listitem>
+      </itemizedlist>
+    </listitem>
+
+    <listitem>
+      <para>2014-11-03</para>
       <itemizedlist>
         <listitem>
           <para>[bdubbs] - 移动有关 /etc/shells 的页面
