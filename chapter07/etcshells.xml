@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE part PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+   "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+  <!ENTITY % general-entities SYSTEM "../general.ent">
+  %general-entities;
+]>
+
+<sect1 id="ch-config-shells" xreflabel="Creating the /etc/shells File">
+  <?dbhtml filename="etcshells.html"?>
+
+  <sect1info>
+    <othername>$LastChangedBy: randy $</othername>
+    <date>$Date: 2007-04-04 14:42:53 -0500 (Wed, 04 Apr 2007) $</date>
+  </sect1info>
+
+  <title>创建 /etc/shells 文件</title>
+
+  <indexterm zone="ch-config-shells">
+    <primary sortas="e-etc-shells">/etc/shells</primary>
+  </indexterm>
+
+  <para><filename>shells</filename> 文件包含了在系统上的登录 Shell 的一个列表。
+  应用程序使用这个列表来判断一个 Shell 是否有效。对于每个 Shell 来说，应该存在一个单行，
+  由相对于目录结构的根(/)的 Shell 的路径所组成。</para>
+
+  <para>例如，这个文件会被 <command>chsh</command> 查询来判断一个非特权用户是否可以更改她自己账户的登录 shell。
+  如果命令名没有列出，则用户将会被拒绝更改。</para>
+
+  <para>这对于某些应用程序来说是必需的，譬如
+  <application>GDM</application>，如果它找不到 <filename>/etc/shells</filename> 则无法部署界面浏览器，或者
+  FTP 后台值守程序通常不允许访问带有不包含在这个文件账号的 shells 的用户。</para>
+
+<screen role="root"><userinput>cat &gt; /etc/shells &lt;&lt; "EOF"
+<literal># Begin /etc/shells
+
+/bin/sh
+/bin/bash
+
+# End /etc/shells</literal>
+EOF</userinput></screen>
+
+</sect1>

@@ -37,6 +37,17 @@
       <para>2014-11-01</para>
       <itemizedlist>
         <listitem>
+          <para>[bdubbs] - 移动有关 /etc/shells 的页面
+          自 BLFS 到 LFS 第 7 章。修复了
+          <ulink url="&lfs-ticket-root;3705">#3705</ulink>。</para>
+        </listitem>
+      </itemizedlist>
+    </listitem>
+
+    <listitem>
+      <para>2014-11-01</para>
+      <itemizedlist>
+        <listitem>
           <para>[bdubbs] - 更新到 linux-3.17.2。修复了
           <ulink url="&lfs-ticket-root;3704">#3704</ulink>。</para>
         </listitem>
