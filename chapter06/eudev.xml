@@ -70,21 +70,19 @@ BLKID_LIBS='-L/tools/lib -lblkid'   \
 
 <para>现在创建某些测试所需的目录，这些目录也将会用作安装的一部分:</para>
 
-<screen><userinput remap="test">mkdir -pv /lib/{firmware,udev}
+<screen><userinput remap="test">mkdir -pv /lib/udev/rules.d
 mkdir -pv /lib/udev/rules.d
 mkdir -pv /etc/udev/rules.d</userinput></screen>
 
-<para>要测试结果，运行问题:</para>
+<para>要测试结果，发出:</para>
 
 <screen><userinput remap="test">make check</userinput></screen>
 
-    <para>安装包并创建初始的
-    <filename>/etc/udev/hwdb.bin</filename> 文件:</para>
+    <para>安装包:</para>
 
-<screen><userinput remap="install">make install
-udevadm hwdb --update</userinput></screen>
+<screen><userinput remap="install">make install</userinput></screen>
 
-<para>现在，安装手册页:</para>
+    <para>现在，安装手册页:</para>
 
 <screen><userinput remap="install">tar -xvf ../eudev-&eudev-version;-manpages.tar.bz2 -C /usr/share</userinput></screen>
 
@@ -92,6 +90,30 @@ udevadm hwdb --update</userinput></screen>
 
 <screen><userinput remap="install">tar -xvf ../&udev-lfs-version;.tar.bz2
 make -f &udev-lfs-version;/Makefile.lfs install</userinput></screen>
+
+  </sect2>
+
+  <sect2 id="conf-eudev" role="configuration">
+    <title>配置 Eudev</title>
+
+    <indexterm zone="conf-eudev">
+      <primary sortas="a-Eudev">Eudev</primary>
+      <secondary>配置</secondary>
+    </indexterm>
+
+    <indexterm zone="conf-eudev">
+      <primary sortas="e-/etc/udev/hwdb.bin">/etc/udev/hwdb.bin</primary>
+    </indexterm>
+
+    <para>关于硬件设备的信息保留在
+    <filename class="directory">/etc/udev/hwdb.d</filename> 和
+    <filename class="directory">/usr/lib/udev/hwdb.d</filename> 目录中。
+    <application>Eudev</application> 需要该信息被编译到二进制数据库
+    <filename>/etc/udev/hwdb.bin</filename> 中。创建初始数据库:</para>
+
+<screen><userinput>udevadm hwdb --update</userinput></screen>
+
+    <para>每次硬件信息更新时都需要运行这个命令。</para>
 
   </sect2>
 

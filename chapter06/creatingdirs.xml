@@ -12,7 +12,7 @@
 
   <para>现在是时候在 LFS 文件系统中创建一些结构了。通过执行下列命令创建一个标准的目录树:</para>
 
-<screen><userinput>mkdir -pv /{bin,boot,etc/{opt,sysconfig},home,lib,mnt,opt}
+<screen><userinput>mkdir -pv /{bin,boot,etc/{opt,sysconfig},home,lib/firmware,mnt,opt}
 mkdir -pv /{media/{floppy,cdrom},sbin,srv,var}
 install -dv -m 0750 /root
 install -dv -m 1777 /tmp /var/tmp
