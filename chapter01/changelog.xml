@@ -34,6 +34,38 @@
 
 -->
     <listitem>
+      <para>2014-11-24</para>
+      <itemizedlist>
+        <listitem>
+          <para>[bdubbs] - 更新为 linux-3.17.4。修复了
+          <ulink url="&lfs-ticket-root;3712">#3712</ulink>。</para>
+        </listitem>
+        <listitem>
+          <para>[bdubbs] - 更新为 kmod-19。修复了
+          <ulink url="&lfs-ticket-root;3713">#3713</ulink>。</para>
+        </listitem>
+        <listitem>
+          <para>[bdubbs] - 更新为 grep-2.21。修复了
+          <ulink url="&lfs-ticket-root;3714">#3714</ulink>。</para>
+        </listitem>
+      </itemizedlist>
+    </listitem>
+
+    <listitem>
+      <para>2014-11-13</para>
+      <itemizedlist>
+        <listitem>
+          <para>[bdubbs] - 更新为 tzdata-2014j。修复了
+          <ulink url="&lfs-ticket-root;3710">#3710</ulink>。</para>
+        </listitem>
+        <listitem>
+          <para>[bdubbs] - 更新为 tcl-8.6.3。修复了
+          <ulink url="&lfs-ticket-root;3711">#3711</ulink>。</para>
+        </listitem>
+      </itemizedlist>
+    </listitem>
+
+    <listitem>
       <para>2014-11-11</para>
       <itemizedlist>
         <listitem>

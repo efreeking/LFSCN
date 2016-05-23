@@ -107,9 +107,9 @@
     <!--<listitem>
       <para>Gperf-&gperf-version;</para>
     </listitem>-->
-    <!--<listitem>
+    <listitem>
       <para>Grep &grep-version;</para>
-    </listitem>-->
+    </listitem>
     <listitem>
       <para>Groff &groff-version;</para>
     </listitem>
@@ -134,9 +134,9 @@
     <!--<listitem>
       <para>Kbd &kbd-version;</para>
     </listitem>-->
-    <!--<listitem>
+    <listitem>
       <para>Kmod &kmod-version;</para>
-    </listitem>-->
+    </listitem>
     <!--<listitem>
       <para>Less &less-version;</para>
     </listitem>-->
@@ -209,9 +209,9 @@
     <!--<listitem>
       <para>Tar &tar-version;</para>
     </listitem>-->
-    <!--<listitem>
+    <listitem>
       <para>TCL &tcl-version;</para>
-    </listitem>-->
+    </listitem>
     <!--<listitem>
       <para>Texinfo &texinfo-version;</para>
     </listitem>-->
