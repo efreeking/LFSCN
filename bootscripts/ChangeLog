@@ -1,857 +1,747 @@
 2014-11-10 Bruce Dubbs <bdubbs@linuxfromscratch.org>
-   * Make /run/lock have 1777 permissions
+   * 使 /run/lock 拥有 1777 权限
 
 2014-07-06 Bruce Dubbs <bdubbs@linuxfromscratch.org>
-   * Remove obsolete reference to /proc/sys/kernel/hotplug in udev boot 脚本
+   * 去掉在 udev 引导脚本中对 /proc/sys/kernel/hotplug 的过时引用
 
 2014-07-02 Bruce Dubbs <bdubbs@linuxfromscratch.org>
-   * Remove obsolete check for /proc/ksyms in modules boot 脚本
+   * 去掉模块引导脚本中对 /proc/ksyms 过时的检查
 
 2014-06-29 Bruce Dubbs <bdubbs@linuxfromscratch.org>
-   * Remove systemd references and files
+   * 去掉 systemd 引用和文件
 
 2014-03-31 Bruce Dubbs <bdubbs@linuxfromscratch.org>
-   * Changes made to be consistent with common systemd functions
+   * 为了和通用 systemd 函数保持统一做出的更改
 
 2013-08-21 Bruce Dubbs <bdubbs@linuxfromscratch.org>
-   * Delete duplicate entry in rc.site file.
+   * 删除 rc.site 文件中的重复条目。
 
 2013-08-05 Bruce Dubbs <bdubbs@linuxfromscratch.org>
-   * Use STATIC_GATEWAY for ipv4-static-route purposes
+   * 使用 STATIC_GATEWAY 于 ipv4-static-route 用途
 
 2013-05-15 Bruce Dubbs <bdubbs@linuxfromscratch.org>
-   * Remove unneeded options and commands from mountfs and
-     mountvirtfs when mtab is a symlink to /proc/self/mounts
+   * 当 mtab 是一个指向 /proc/self/mounts 的符号链接时，从 mountfs 和 mountvirtfs 中去掉不需要的选项和命令
 
 2013-05-11 Bruce Dubbs <bdubbs@linuxfromscratch.org>
-   * Make sure the root fs is mounted read only in mountfs
-     before halting
+   * 确保在挂起系统前在 mountfs 中根 fs 以只读方式挂载
 
 2013-01-24 Bruce Dubbs <bdubbs@linuxfromscratch.org>
-   * Remove local attribue of some variables for Bourne
-     shell compatability
-   * Specify /bin/echo in commands with -e switch for 
-     Bourne shell compatability
+   * 为了 Bourne shell 兼容性，去掉了某些变量的本地属性
+   * 在命令中指定 /bin/echo 使用 -e 开关以兼容 Bourne shell
 
 2012-10-13 Bruce Dubbs <bdubbs@linuxfromscratch.org>
-   * Remove unneeded sleep in killproc
-   * 添加 option for verbose fsck
-   * Flatten directory structure of tarball
-   * Remove /fastboot or /forcecheck if set
+   * 去掉 killproc 中不需要的 sleep
+   * 添加选项用于冗细的 fsck
+   * tarball 的平展目录结构
+   * 如果设置则去掉 /fastboot 或 /forcecheck
 
 2012-09-05 Bruce Dubbs <bdubbs@linuxfromscratch.org>
-   * 添加 udevadm trigger --action=change line to udev 脚本
-     to support initramfs better
+   * 添加 udevadm 触发器 --action=change 行到 udev 脚本以更好的支持 initramfs
 
 2012-08-24 Bruce Dubbs <bdubbs@linuxfromscratch.org>
-   * Read /etc/sysconfig/console when needed in rc
+   * 在 rc 中在需要时读取 /etc/sysconfig/console
 
 2012-06-17 Bruce Dubbs <bdubbs@linuxfromscratch.org>
-   * Only mount /run in mountvirtfs if it is not already mounted
-     (from an initrd).
-   * Force the /dev/shm->/run/shm symlink
-   * Skip making LVM virtual groups unavailable at shutdown
-     because the / or swap partitions may be still in use.
+   * 如果还未挂载的话，仅在 mountvirtfs 中挂载 /run (从一个 initrd)。
+   * 强制 /dev/shm->/run/shm 符号链接
+   * 在关机时跳过使 LVM 虚拟组不可用，因为 / 或 swap 分区可能仍在使用中。
 
 2012-05-30 Bruce Dubbs <bdubbs@linuxfromscratch.org>
-   * Copy all entries in /lib/udev/devices to /dev in mounvirtfs
+   * 在 mounvirtfs 中复制 /lib/udev/devices 中的所有条目到 /dev
 
 2012-05-24 Bruce Dubbs <bdubbs@linuxfromscratch.org>
-   * Remove mkdir from mountvirtfs because fs is read only
+   * 从 mountvirtfs 去掉了 mkdir，因为 fs 是只读的。
 
 2012-04-09 Bruce Dubbs <bdubbs@linuxfromscratch.org>
 
-   * General update of network 脚本s ifup/ifdown and services
-   ** 添加 if_true utility function to init_functions
-   ** Change variable INTERFACES to COMPONENT_INTERFACES for bridge interface
-   ** ifdown now only uses the first SERVICE
-   ** 更新了 ifup.8 to reflect current usage
+   * network 脚本 ifup/ifdown 和服务的常规更新
+   ** 添加 if_true utility 函数到 init_functions
+   ** 更改变量 INTERFACES 为 COMPONENT_INTERFACES 用于桥接接口
+   ** ifdown 现在使用第一个 SERVICE
+   ** 更新 ifup.8 以反映当前使用
    ** ifup
-   *** Move interface up logic to after service 脚本s.  Eliminates the 
-       need for the LINK_CHECK variable.
-   *** Sets the GATEWAY if the variable is set
-   *** 添加 MTU logic to ifup
+   *** 移动 interface up logic 到服务脚本之后。消除了对 LINK_CHECK 变量的需要。
+   *** 如果变量被设置则设置 GATEWAY
+   *** 添加 MTU logic 到 ifup
 
 2012-01-22  Matt Burgess <matthew@linuxfromscratch.org>
 
-   * lfs/init.d/udev: Change udevd path following upstream changes to its
-                      location
+   * lfs/init.d/udev: 更改 udevd 路径跟随上游对其位置的更改
 
 2011-12-23  Matt Burgess <matthew@linuxfromscratch.org>
 
-   * lfs/init.d/mountvirtfs: Correct permissions on /run/shm
+   * lfs/init.d/mountvirtfs: 纠正在 /run/shm 上的权限
 
 2011-11-28  DJ Lucas <dj@linuxfromscratch.org>
 
-   * lfs/init.d/mountfs: 添加 '-t nosysfs' to umount command
-   * lfs/init.d/mountvirtfs: remove unneeded spaces in output
-   * lfs/init.d/rc: Correct double interactive prompt and set prompt defaults
-   * lfs/init.d/setclock: Remove screen output from start case (udev)
-   * lfs/init.d/udev{,_retry}:  Restore output to screen and log
-   * lfs/sbin/ifup: Change "..." to ": " (not awaiting additional output)
+   * lfs/init.d/mountfs: 添加 '-t nosysfs' 到 umount 命令
+   * lfs/init.d/mountvirtfs: 去掉了输出中的不需要的空格
+   * lfs/init.d/rc: 纠正了双倍的交互式提示符并设置了提示默认
+   * lfs/init.d/setclock: 从启动情况中去掉了屏幕输出 (udev)
+   * lfs/init.d/udev{,_retry}:  恢复输出到屏幕和日志
+   * lfs/sbin/ifup: 更改 "..." 为 ": " (不等待额外的输出)
 
 2011-11-14  Bruce Dubbs <bdubbs@linuxfromscratch.org>
 
-   * The following are from suggestions by DJ Lucas
-   ** General cleanup of 脚本s
-   ** Move consolelog function to rc
-   ** Clean up boot logging functions
-   ** Fix interactive prompt between run level S and target run level
+   * 下面是来自 DJ Lucas 的建议
+   ** 脚本的常规清理
+   ** 移动 consolelog 函数到 rc
+   ** 清理引导日志函数
+   ** 修复了在运行级别 5 和目标运行级别之间的交互式提示
 
 2011-10-06  Bryan Kadzban <bryan@linuxfromscratch.org>
 
-   * 添加 configuration for udev_retry, and remove --type=failed (which does
-     not work with recent udev versions anyway, since no events can possibly
-     trigger it).  Start with just the "rtc" subsystem.  BLFS should eventually
-     添加 "sound" to this file, and perhaps others.
+   * 添加对 udev_retry 的配置并去掉了 --type=failed (它无论如何多无法和最近的
+     udev 版本配合工作，因为没有事件可以触发它)。就随着 "rtc" 子系统启动。
+     BLFS 最终应该会添加 "sound" 到这个文件，也可能其它文件。
 
 2011-09-18
-   * Review and update of changes made in previous change.
-   ** Rename /etc/sysconfig/init_params to /etc/sysconfig/rc.site.
-   ** Move network services to /lib/services.
-   ** Move init-functions to /lib/lsb.
-   *** /lib/lsb is a symlink to /lib/services.
-   * Create convenience symlink /etc/init.d->/etc/rc.d/init.d.
-   * 添加 help and man pages to upup/ifdown.
-   * Append /run/var/bootlog to /var/log/boot.log at the end of 
-     the boot sequence.
-   * 添加 capabiltiy to step through the boot 脚本s at boot time
-   * Optionally allow environment variables in sysconfig directory's 
-     console, network, and clock files to be placed in rc.site.
+   * 检查并更新在上一次更改中做出的更改。
+   ** 重命名 /etc/sysconfig/init_params 为 /etc/sysconfig/rc.site.
+   ** 移动 network 服务到 /lib/services.
+   ** 移动 init-functions 到 /lib/lsb.
+   *** /lib/lsb 是指向 /lib/services 的符号链接。
+   * 创建方便的符号链接 /etc/init.d->/etc/rc.d/init.d.
+   * 添加帮助和手册页到 upup/ifdown。
+   * 在引导序列的结尾附加 /run/var/bootlog 到 /var/log/boot.log。
+   * 添加在引导时单步调试引导脚本的功能
+   * 可选择性的允许在 sysconfig 目录的 console, network 和 clock 文件中
+     的环境变量被放置在 rc.site 中。
    * 添加 an optional FASTBOOT parameter to set /fastboot when rebooting.
 
 2011-07-14  Bruce Dubbs <bdubbs@linuxfromscratch.org>
-   * Major rewrite of all LFS 脚本s
-   ** Move ifup/ifdown to /sbin
-   ** Move functions and network services to /lib/boot
-   ** Remove contrib directory
-   ** Move all READ commands to functions and allow the user to specify
-      HEADLESS=1 to skip READ commands
-   ** 添加 /etc/sysconfig/init_params for adding environmental parameters
-      to all functions used in bootscripts
-   ** Move network configuration to /etc/sysconfig/ifconfig.*.  The 
-      ifconfig files can have any extension.  Use IFACE parameter to 
-      specify the target network interface within the configuration file.
-   ** Adds an optional parameter, SKIPTMPCLEAN, to skip the removal of 
-      files in /tmp at bootup.  Specify the variable in 
-      /etc/sysconfig/init_params.
+   * 所有 LFS 脚本的主要重写
+   ** 移动 ifup/ifdown 到 /sbin
+   ** 移动函数和 network 服务到 /lib/boot
+   ** 去掉 contrib 目录
+   ** 移动所有 READ 命令到函数并允许用户指定 HEADLESS=1 来跳过 READ 命令
+   ** 添加 /etc/sysconfig/init_params 用于添加环境参数到所有在引导脚本中使用的函数
+   ** 移动 network 配置到 /etc/sysconfig/ifconfig.*。ifconfig 文件可以有任何扩展名。
+      使用 IFACE 参数在配置文件中指定目标网络接口。
+   ** 添加一个可选的参数，SKIPTMPCLEAN，来跳过在引导时在 /tmp 中文件的删除。
+	  在 /etc/sysconfig/init_params 中指定变量。
 
 2011-05-31  DJ Lucas <dj@linuxfromscratch.org>
-   * lfs/init.d/udev: 添加 multiple udev triggers for both subsystems and
-     devices per upstream recommendation.
+   * lfs/init.d/udev: 按上游推荐，为子系统和设备添加了多个 udev 触发。
 
 2011-04-19  Bruce Dubbs <bdubbs@linuxfromscratch.org>
-   * lfs/init.d/mountvirtfs: 添加 creation of /run/{var,lock,shm}.
-   * lfs/init.d/udev: 添加 /dev/shm -> /run/shm symlink.
+   * lfs/init.d/mountvirtfs: 添加 /run/{var,lock,shm} 的创建。
+   * lfs/init.d/udev: 添加 /dev/shm -> /run/shm 符号链接。
 
 2011-04-18  Bruce Dubbs <bdubbs@linuxfromscratch.org>
-   * lfs/init.d/mountvirtfs: Change name from mountkernfs to mountvirtfs.
-     添加 mounting of /run filesystem.
+   * lfs/init.d/mountvirtfs: 从 mountkernfs 改名为 mountvirtfs、
+     添加 /run 文件系统的挂载。
 
 2010-05-29  Matt Burgess <matthew@linuxfromscratch.org>
-   * lfs/init.d/udev: Only copy /lib/udev/devices/null, as Udev >= 155 copies
-     devices from /lib/udev/devices to /dev itself.  Udevd still needs /dev/null
-     present before starting up though.
+   * lfs/init.d/udev: 仅复制 /lib/udev/devices/null，因为 Udev >= 155 本身会从 /lib/udev/devices 复制到 /dev。
+     尽管如此，Udevd 在启动前仍需要 /dev/null 的存在。
 
 2010-04-20  Bryan Kadzban <bryan@linuxfromscratch.org>
-   * lfs/init.d/udev, lfs/init.d/udev_retry: 添加 --action=add, to handle udev
-   version 152 and newer, which send "change" events by default in udevtrigger
-   now.
+   * lfs/init.d/udev, lfs/init.d/udev_retry: 添加 --action=add，去处理 udev 版本 152
+     和更新版本，现在在 udevtrigger 中按默认会发送 "change" 事件。
 
 2010-01-24  Matthew Burgess <matthew@linuxfromscratch.org>
-   * lfs/init.d/udev: Check to see if /dev is already mounted, as it may be if
-     under an initramfs environment.  See ticket #2550.
+   * lfs/init.d/udev: 检查查看一下 /dev 是否已经挂载，因为它可能是在一个 initramfs 环境。查看 ticket #2550.
 
 2009-08-14  Bryan Kadzban <bryan@linuxfromscratch.org>
-   * lfs/init.d/udev_retry: Use "udevadm trigger --type=failed", which
-     apparently replaced "--retry-failed" some time ago.  "--retry-failed" is
-     移除 in udev-146.
+   * lfs/init.d/udev_retry: 使用 "udevadm trigger --type=failed"，它显然是前不久
+     取代 "--retry-failed" 的。"--retry-failed" 在 udev-146 中被移除。
 
 2009-01-02  Bruce Dubbs <bdubbs@linuxfromscratch.org>
-   * lfs/init.d/functions:
+   * lfs/init.d/函数:
    * lfs/sysconfig/network-devices/ifup: 
-     更新了 line widths to accommodate pdf generation in both the above 
-     files.
+     在上面两个文件中为了适应 pdf 生成，更新了行宽。
 
 2008-10-27  DJ Lucas <dj@linuxfromscratch.org>
-   * lfs/init.d/cleanfs: 移除 '! -newer /proc' from find commands in
-     check for stale files in /var/lock and /var/run.
-   * Makefile: Reversed cleanfs and udev_retry 脚本s so that cleanfs
-     runs immediately after mountfs.
+   * lfs/init.d/cleanfs: 从对 /var/lock 和 /var/run 中的过时文件的检查中的 find 命令中
+     去掉 '! -newer /proc'。
+   * Makefile: 颠倒了 cleanfs 和 udev_retry 脚本，以便 cleanfs 在 mountfs 后立即运行。
 
 2008-10-26  Dan Nicholson  <dnicholson@linuxfromscratch.org>
-   * lfs/init.d/functions: Remove stale pid files when encountered
-     in loadproc/killproc/reloadproc. When the bootscript specifies
-     a pid file to use with the "-p pidfile" argument, *proc
-     functions previously bailed out when the referenced file
-     contains an invalid pid.
+   * lfs/init.d/函数: 在 loadproc/killproc/reloadproc 遇到时删除过时的 pid 文件。
+     当引导脚本指定一个 pid 文件来配合 "-p pidfile" 参数使用时，*proc 函数先前在
+     引用的文件包含一个无效 pid 时脱出。
 
 2008-10-23  DJ Lucas <dj@linuxfromscratch.org>
-   * lfs/init.d/console: 移除 BROKEN_COMPOSE as kernel patch has
-     been accepted upstream.
+   * lfs/init.d/console: 移除 BROKEN_COMPOSE 因为内核补丁已经被上游接受。
 
 2008-05-21  Bryan Kadzban  <bryan@linuxfromscratch.org>
-   * lfs/init.d/udev, lfs/init.d/udev_retry: Use new udevadm program.
+   * lfs/init.d/udev, lfs/init.d/udev_retry: 使用新的 udevadm 程序。
 
 2007-08-20  DJ Lucas <dj@linuxfromscratch.org>
-   * lfs/init.d/setclock: 添加了 missing 'stop' argument to usage text
+   * lfs/init.d/setclock: 添加了缺少的 'stop' 参数到用法文本中
 
 2007-08-13  Dan Nicholson  <dnicholson@linuxfromscratch.org>
-   * lfs/init.d/checkfs: Don't suppress error messages from the screen.
+   * lfs/init.d/checkfs: 不阻止来自屏幕的错误消息。
 
 2007-07-18  Dan Nicholson  <dnicholson@linuxfromscratch.org>
-   * Makefile, lfs/init.d/consolelog: New bootscript controlling the
-     kernel log level on the console. This is controlled by the LOGLEVEL
-     variable in /etc/sysconfig/console.
-   * lfs/init.d/modules: Remove the log level handling since this is
-     done in the consolelog 脚本 now.
-   * lfs/init.d/modules: Clean up the 脚本 by removing the file
-     descriptor duplication and instead just redirecting
-     /etc/sysconfig/modules to the input of the while loop.
+   * Makefile, lfs/init.d/consolelog: 新的引导脚本控制在控制台上的内核日志级别。
+     这是由 /etc/sysconfig/console 中的 LOGLEVEL 变量控制的。
+   * lfs/init.d/modules: 去掉了日志级别处理，因为这个现在在 consolelog 脚本中完成了。
+   * lfs/init.d/modules: 通过去掉文件描述符重复清理脚本，并取而代之仅仅重定向
+     /etc/sysconfig/modules 到 while 循环的输入。
 
 2007-06-16  Dan Nicholson  <dnicholson@linuxfromscratch.org>
    * lfs/init.d/mountfs, lfs/init.d/mountkernfs, lfs/init.d/setclock,
      lfs/init.d/modules, lfs/sysconfig/network-devices/if{up,down}:
-     Don't suppress stderr during bootscripts unless necessary. This
-     would prevent potentially critical messages from reaching the screen.
+     除非必需，否则在引导脚本期间不抑制 stderr。这个防止潜在的敏感数据到达屏幕上。
 
 2007-04-24  Dan Nicholson  <dnicholson@linuxfromscratch.org>
-   * lfs/init.d/functions: When killproc is executed, it checks that
-     the process is still running, sleeps if it is, then checks again.
-     The sleep is 1 second in between checks. By sleeping for 0.1 seconds
-     in between checks, killproc is much faster as it's wasting much
-     less time sleeping in the normal case that the process has died
-     after a short delay.
+   * lfs/init.d/函数: 当执行 killproc 时，它检查进程是否仍在运行，如果是的话则休眠，然后再次检查。
+     休眠是检查间的 1 秒。通过在检查间休眠 0.1 秒，killproc 会比正常情况下花费更小的时间，进程在短暂延迟后就会死掉。
 
 2007-04-16  Dan Nicholson  <dnicholson@linuxfromscratch.org>
-   * lfs/init.d/functions: Redirect stderr when using kill to suppress
-     output.
-   * lfs/init.d/functions: killproc() was not handling the case where a
-     pidfile is passed to the function. The logic with the signal to be
-     used was causing issues with the handling of pidfiles. This has been
-     fixes, and now killproc() will recheck the process if the signal
-     was TERM (the default) or KILL.
-   * lfs/init.d/functions: statusproc() has been 更改了 to use pidofproc()
-     instead of the deprecated getpids(). Additionally, it now accepts
-     the -p argument to specify a pidfile.
-   * lfs/init.d/functions: Currently, statusproc() always returns
-     successfully, and the only way to know if the process is running
-     is to parse the output. This changes statusproc() to return the
-     status of pidofproc(), which will return unsuccessfully if the
-     requested process is not running.
-   * lfs/init.d/functions: 更改了 reloadproc() to use pidofproc() and
-     respect the -p argument for pidfiles.
-   * lfs/init.d/sysklogd: Remove a useless argument to reloadproc().
+   * lfs/init.d/函数: 当使用 kill 阻止输出时重定向 stderr。
+   * lfs/init.d/函数: killproc() 不处理在一个 pidfile 被传递给函数时的情况。
+     使用 signal 的逻辑是导致处理 pidfiles 的问题。这个已经被修复而且现在 killproc()
+     在 signal 是 TERM (the default) 或 KILL 时重复检查进程
+   * lfs/init.d/函数: statusproc() 已被更改为使用 pidofproc()
+     代替废弃的 getpids()。另外，它现在接受 -p 参数来指定一个 pidfile。
+   * lfs/init.d/函数: 当前，statusproc() 总是返回成功，且要知道进程是否在运行
+     的唯一方式就是分析输出。这个改变了 statusproc() 为返回 pidofproc() 的状态，
+     如果请求的进程不在运行的话将会返回不成功。
+   * lfs/init.d/函数: 更改 reloadproc() 为使用 pidofproc() 并
+     遵循 pidfiles 的 -p 参数。
+   * lfs/init.d/sysklogd: 去掉一个传给 reloadproc() 的无用参数。
 
 2007-03-13  Dan Nicholson  <dnicholson@linuxfromscratch.org>
-   * lfs/init.d/functions: If pidofproc() is passed the -p argument
-     it can bomb testing a null variable with an integer expression.
+   * lfs/init.d/函数: 如果 pidofproc() 被传递 -p 参数，
+     它可以使用一个整数表达式来 bomb 测试一个 null 变量。
 
 2007-02-22  Dan Nicholson  <dnicholson@linuxfromscratch.org>
    * lfs/init.d/mountfs, lfs/init.d/console, lfs/init.d/setclock,
-     lfs/init.d/mountkernfs: &> redirection is not supported in POSIX.
-     Fortunately, it's equivalent to >word 2>&1 according to bash(1).
+     lfs/init.d/mountkernfs: &> 重定向在 POSIX 中不被支持。
+     幸运的是，根据 bash(1) 它是等同于 >word 2>&1 的。
 
 2007-02-22  Dan Nicholson  <dnicholson@linuxfromscratch.org>
-   * lfs/init.d/console: POSIX says that shells only need to trap on
-     signals. Trapping on ERR isn't always supported. Conditionals have
-     been 添加到 set the $failed variable in spots that seemed
-     appropriate for checking errors.
+   * lfs/init.d/console: POSIX 说 shells 仅需要捕捉 signals(信号)。
+     在 ERR 时的捕捉不是总被支持。在看起来适合检查错误的点已经添加了
+     条件语句设置 $failed 变量。
 
 2007-02-22  Dan Nicholson  <dnicholson@linuxfromscratch.org>
-   * lfs/init.d/functions: Use arithmetic expansion and string length,
-     which are both mandated by POSIX, rather than spawning two processes
-     every time boot_mesg() is called.
+   * lfs/init.d/函数: 使用算术扩展和字符串长度，两者都是 POSIX 强制的，
+     而不是每次调用 boot_mesg() 都产生两个进程。
 
 2007-02-22  Dan Nicholson  <dnicholson@linuxfromscratch.org>
-   * lfs/init.d/functions: In order to provide an `echo' which provides
-     handles the -e and -n options for all POSIX shells, a feature test
-     is 添加了 which stores its result in $ECHO. /bin/echo will be used
-     if the default echo is not capable. 更改了 the existing functions
-     to reference $ECHO when needed.
-   * lfs/init.d/console: Use $ECHO when -en is needed.
+   * lfs/init.d/函数: 为了对所有的 POSIX shells 提供处理 -e 和 -n 选项的
+     一个 `echo'，添加了一个功能测试，它在 $ECHO 中存储它的结果。如果默认的
+     echo 不能用的话将使用 /bin/echo。在需要时更改现有的函数为引用 $ECHO。
+   * lfs/init.d/console: 当需要 -en 时使用 $ECHO。
 
 2007-02-03  Bryan Kadzban  <bryan@linuxfromscratch.org>
-   * ChangeLog: Rename from CHANGELOG, start using GNU style entries.
-
-   * Makefile: Move setclock before checkfs.  Fixes #1948.
+   * ChangeLog: 从 CHANGELOG 重命名，开始使用 GNU 风格的条目。
+   * Makefile: 移动 setclock 于 checkfs 之前。修复 #1948。
 
 2006-11-25  Bryan Kadzban  <bryan@linuxfromscratch.org>
-   * lfs/init.d/udev_retry: Copy Debian's "copy generated rules" initscript
-     code, to clean up when the rule_generator 脚本s run before / is
-     writable.  (Since the rule_generator code is from Debian, I assume their
-     cleanup code is appropriate.)
+   * lfs/init.d/udev_retry: 复制 Debian 的 "copy generated rules" initscript
+     代码，在 / 可写前 rule_generator 运行时清理。
+     (由于 rule_generator 代码是来自 Debian 的，我假定他们的清理代码是恰当的。)
 
 2006-10-15  Bryan Kadzban  <bryan@linuxfromscratch.org>
-   * lfs/init.d/udev_retry: Fix to work with udev >= 099.
+   * lfs/init.d/udev_retry: 修复了以配合 udev >= 099。
 
-n/a - June 2, 2006
-   * 移除 console config file and makefile targets.
-   * 移除 references to /dev/bug and bugreport in udevand 
-     udev_retry bootscripts. (DJ Lucas)
+n/a - 2006.6.2
+   * 移除控制台配置玩呢家和 makefile 目标。
+   * 移除了在 udevand udev_retry 引导脚本中对 /dev/bug 和 bugreport 的引用。 (DJ Lucas)
 
-n/a - 4.17, 2006
-   * 更新了 udev 脚本 to use the new udevsettle program.
-   * 添加了 udev_retry 脚本 for systems that have /usr on a different
-     partition or for some other reason fail the initial replay. (Archaic)
+n/a - 2006.4.17
+   * 更新了 udev 脚本为使用新的 udevsettle 程序。
+   * 添加了 udev_retry 脚本用于在不同的分区拥有 /usr 的系统，
+     或者用于某些其它原因失败的初始重放。 (Archaic)
 
-n/a - 4.15, 2006
-   * 清理了 up contrib directory.  移除: contrib/init.d, 
-     contrib/enhanced, contrib/livecd, contrib/hotplug, and raq2 
-     patch. (DJ Lucas)
+n/a - 2006.4.15
+   * 清理了 contrib 目录。移除: contrib/init.d, contrib/enhanced,
+     contrib/livecd, contrib/hotplug 和 raq2 补丁。 (DJ Lucas)
 
-n/a - 4.14, 2006
-   * Merged changes from udev_update branch (DJ Lucas)
-   * Replaced a return with an exit and reversed comment changes in 
-     udev bootscript. (Dan Nicholson)
-   * Replaced walk_sysfs function in udev bootscript with new udevtrigger
-     program and move wait_for_uevents function inline. (DJ Lucas)
-   * 移除 extra evaluate_retval in udev bootscript. (Ken Moffat)
-   * Wait for uevents to be processed in the udev 脚本.  See ticket
-     #1720 for details. (Matthew Burgess)
+n/a - 2006.4.14
+   * 合并了来自 udev_update 分支的更改 (DJ Lucas)
+   * 在 udev 引导脚本中使用一个 exit 替换了一个 return，和保留的注释更改。 (Dan Nicholson)
+   * 使用新的 udevtrigger 程序替换了在 udev 引导脚本中的 walk_sysfs 函数，
+     并移动了内联的 wait_for_uevents 函数。 (DJ Lucas)
+   * 移除了 udev 引导脚本中额外的 evaluate_retval。 (Ken Moffat)
+   * 在 udev 脚本中等待 uevents 被处理。查看 ticket #1720 了解细节。 (Matthew Burgess)
 
-n/a - 3.21, 2006
-   * 移除 old references to boot_log function and arguments passed
-     to boot_mesg_flush in echo_* functions. (DJ Lucas)
+n/a - 2006.3.21
+   * 在 echo_* 函数中移除了对 boot_log 函数的旧引用和传递给 boot_mesg_flush 的参数。 (DJ Lucas)
 
-n/a - 3.10, 2006
-   * 移动了 src argument to ipv4-static-route service 脚本 and 
-     移除 from ipv4-static service 脚本. (DJ Lucas)
+n/a - 2006.3.10
+   * 移动 src 参数到 ipv4-static-route 服务脚本并从 ipv4-static 服务脚本中移除。 (DJ Lucas)
 
-n/a - 3.8. 2006
-   * Correct sourced path in checkfs 脚本. (Matthew Burgess)
+n/a - 2006.3.8. 2006
+   * 纠正了在 checkfs 脚本中被 sourced 的路径。 (Matthew Burgess)
 
-n/a - December 31, 2005
-   * Replaced /etc/rc.d with ${rc_base} in checkfs. (Vincent Fretin)
+n/a - 2005.12.31
+   * 在 checkfs 中替换 /etc/rc.d 为 ${rc_base}。 (Vincent Fretin)
 
-n/a - December 24, 2005
-   * 添加了 UTF-8 support to console 脚本. (Alexander E. Patrakov)
+n/a - 2005.12.24
+   * 添加 UTF-8 支持到控制台脚本。 (Alexander E. Patrakov)
 
-n/a - September 11, 2005
-   * 移除 text wraping and boot logging.
-   * 更改了 killproc to use warning if not running
-   * 更改了 'print_status warning' to use old style output
-   * 修复了 display error with LSB init-functions 脚本
-   * Made above killproc/print_status changes in enhanced
-     bootscripts.
-   * Made logger service configurable in enhanced 
-     bootscripts. (DJ Lucas)
+n/a - 2005.9.11
+   * 移除了文本换行和引导日志。
+   * 更改 killproc 为如果没运行则使用警告
+   * 更改 'print_status warning' 为使用旧式的输出
+   * 修复了使用 LSB init-functions 脚本的显示错误
+   * 在增强的引导脚本中，使上述 killproc/print_status 变化。
+   * 在增强的引导脚本中，使 logger 服务可配置。 (DJ Lucas)
 
-n/a - August 14, 2005
-   * 添加了 -s flag to pidofproc() for backwards 
-     compatibility (DJ Lucas)
-   * 修复了 erronous values returned by pidofproc() which 
-     broke the functionality of statusproc (DJ Lucas)
+n/a - 2005.8.14
+   * 添加了 -s 标志到 pidofproc() 以保持向后兼容性 (DJ Lucas)
+   * 修复了由 pidofproc() 返回的错误的值，它会破坏 statusproc 的功能(DJ Lucas)
 
-n/a - July 1, 2005
-   * 更改了 a == to a = in lfs/init.d/functions, in the boot_mesg
-     function for ash compliancy (Nathan Coulson)
+n/a - 2005.7.1
+   * 在 lfs/init.d/函数, boot_mesg 函数中更改 a == 为 a = 以兼容 ash (Nathan Coulson)
 
-n/a - June 26, 2005
-   * 移除 consolelog 脚本 from contrib 
-   * 更新了 interactive rc 脚本 in contrib and 添加了 
-     README.rc-Interactive, 添加了 install target to the
-     Makefile. (DJ Lucas)
+n/a - 2005.6.26
+   * 从 contrib 移除了 consolelog 脚本
+   * 更新了 contrib 中的交互式 rc 脚本并添加了 
+     README.rc-Interactive，添加了安装目标到 Makefile。(DJ Lucas)
 
-3.2.2 - May 29, 2005
+3.2.2 - 2005.5.29
    * 标记为 3.2.2 (Nathan Coulson)
 
-n/a - May 26, 2005
-   * 添加了 minimal target for cross-lfs book (Jim Gifford)
-   * 修复了 raq2 patch (Jim Gifford)
+n/a - 2005.5.26
+   * 为 cross-lfs book 添加了最小的目标 (Jim Gifford)
+   * 修复了 raq2 补丁 (Jim Gifford)
 
-3.2.1 - May 1, 2005
+3.2.1 - 2005.5.1
    * 标记为 3.2.1 (Nathan Coulson)
 
-n/a - 4.17, 2005
-   * 移除 touch from hotplug bootscript (Matthew Burgess)
-   * 移动了 commands around in localnet bootscript (Andrew Benton)
+n/a - 2005.4.17
+   * 从 hotplug 引导脚本移除了 touch (Matthew Burgess)
+   * 在 localnet 引导脚本中移动了命令 (Andrew Benton)
 
-3.2.0 - 3.30, 2005
-   * 更改了 from syslog-ng to sysklogd (Archaic)
-   * Temporairly 更改了 loadproc to return 0 if the program is
-     already running (Nathan Coulson)
-   * 修复了 (by reverting) ifup/ifdown/network (Nathan Coulson),
-     Reported by Jim Gifford
-   * 修复了 network up/down along with adding support of ONHOTPLUG
+3.2.0 - 2005.3.30
+   * 从 syslog-ng 改为 sysklogd (Archaic)
+   * 如果程序已经在运行则临时更改 loadproc 为 return 0 (Nathan Coulson)
+   * 修复了(通过倒退) ifup/ifdown/network (Nathan Coulson),
+     由 Jim Gifford 报告
+   * 随着添加 ONHOTPLUG 的支持，修复了网络的启用/禁用
    * 标记为 3.2.0
 
-n/a - 3.19, 2005
-   * 更新了 RaQ2 patch (Jim Gifford)
-   * 添加了 net.agent for Hotplug of Network adapters in contrib
-     (Jim Gifford)
+n/a - 2005.3.19
+   * 更新了 RaQ2 补丁 (Jim Gifford)
+   * 在 contrib 中添加了用于网络适配器的热插的 net.agent (Jim Gifford)
 
-n/a - 3.16, 2005
-   * Reverted the change from loadproc to start_daemon,
-     移动了 compatibility code into one single function.
-     (Nathan Coulson)
-   * Re添加了 the ONHOTPLUG option for ifup/ifdown (Nathan Coulson)
-   * 修复了 killproc's output
+n/a - 2005.3.16
+   * 倒退了从 loadproc 到 start_daemon 的更改，
+     移动了兼容性代码到一个单一的函数中 (Nathan Coulson)
+   * 重新添加了用于 ifup/ifdown 的 ONHOTPLUG 选项 (Nathan Coulson)
+   * 修复了 killproc 的输出
 
-n/a - 3.01, 2005
-   * 添加了 CHECK_LINK variable in ifconfig.*/*, so if the
-     interface does not exist, it will not fail.
-     (Nathan Coulson)
+n/a - 2005.3.01
+   * 在 ifconfig.*/* 添加 CHECK_LINK 变量，所以如果接口不存在，
+     它将不会失败。 (Nathan Coulson)
 
-n/a - 2.19, 2005
-   * 添加了 evaluate_retval to the end of loadproc and killproc.
-     lsb does not say that killproc should print [  OK  ],
-     but required for compatibility.  (Nathan Coulson)
+n/a - 2005.2.19
+   * 添加 evaluate_retval 到 loadproc 和 killproc 的结尾。
+     lsb 不会说 killproc 应该打印 [  OK  ]，而是兼容性需要。(Nathan Coulson)
 
-n/a - 2.9, 2005
-   * Accidentally mounted /dev with 775 instead of 755, 修复了
-     (Reported by Alexander E. Patrakov)
+n/a - 2005.2.9
+   * 偶尔使用 775 挂载 /dev 来代替 755, 被修复了 (由 Alexander E. Patrakov 报告)
 
-n/a - 2.9, 2005
-   * Bugfix for /dev, now mounted with 755 permission
+n/a - 2005.2.9
+   * /dev 的错误修复，现在使用 755 权限挂载
 
-n/a - 2.8, 2005
-   * 更改了 pidof, so it doesn't check the process id
-     of running bootscripts, and to process shell 脚本s
-     (Nathan Coulson)
+n/a - 2005.2.8
+   * 更改了 pidof，以便它不会检查正在运行的引导脚本的进程 id
+     并处理 shell 脚本 (Nathan Coulson)
 
-n/a - 2.6, 2005
-   * 更新了 main functions file with lsb functions file
-     Should now be LSB compliant (Nathan Coulson)
+n/a - 2005.2.6
+   * 使用 lsb 函数文件更新了主函数文件
+     现在应该是 LSB 兼容的 (Nathan Coulson)
 
-n/a - January 10, 2005
-   * 移动了 ONBOOT check back to network (Nathan Coulson)
-   * 移除 ONHOTPLUG check (Nathan Coulson)
+n/a - 2005.1.10
+   * 移动 ONBOOT 检查回到 network (Nathan Coulson)
+   * 移除 ONHOTPLUG 检查 (Nathan Coulson)
 
-n/a - January 6, 2005
-   * 修复了 mountkernfs output (Nathan Coulson)
-   * reverted mountfs fakemounting (Nathan Coulson)
+n/a - 2005.1.6
+   * 修复了 mountkernfs 输出 (Nathan Coulson)
+   * 恢复的 mountfs fakemounting (Nathan Coulson)
 
-n/a - January 5, 2005
-   * Attempted to simplify network bootup files (Nathan Coulson)
-   * Modified mountkernfs to use mountpoint (Nathan Coulson)
-   * Assuming sysfs is always mounted (Nathan Coulson)
-   * 移动了 fakemount to below mounting (Nathan Coulson)
-   * 移除 -t noramfs from umount, as we now use tmpfs (Nathan Coulson)
-   * 移动了 sysctl from mountkernfs to sysctl (Nathan Coulson)
-   * 添加了 -q to sysctl (Nathan Coulson)
+n/a - 2005.1.5
+   * 尝试简化网络引导文件 (Nathan Coulson)
+   * 修改 mountkernfs 以使用 mountpoint (Nathan Coulson)
+   * 假定 sysfs 总是被挂载 (Nathan Coulson)
+   * 移动 fakemount 到 below mounting (Nathan Coulson)
+   * 从 umount 移除 -t noramfs，因为我们现在使用 tmpfs (Nathan Coulson)
+   * 从 mountkernfs 移动 sysctl 到 sysctl (Nathan Coulson)
+   * 添加 -q 到 sysctl (Nathan Coulson)
 
-n/a - January 2, 2005
-   * 修复了 statusproc output. (DJ Lucas)
+n/a - 2005.1.2
+   * 修复了 statusproc 输出。 (DJ Lucas)
 
-3.1.0 - December 31
-   * 修复了 textoutput
+3.1.0 - 2004.12.31
+   * 修复了文本输出
    * 标记为 3.1.0
 
-n/a - December 30
-   * 修复了 name of LSB Functions file
-   * 更改了 boot_mesg to act like echo instead of echo -n, boot_mesg now
-     takes the -n argument if you do not wish to goto the next line
+n/a - 2004.12.30
+   * 修复了 LSB 函数文件的名称
+   * 更改 boot_mesg 为担当类似用 echo 代替 echo -n，boot_mesg 现在在你不希望转到下一行时采用 -n 参数
 
-3.0.1 - December 25
-   * Released as 3.0.1
+3.0.1 - 2004.12.25
+   * 发行为 3.0.1
 
-n/a - December 20
-   * 清理了 up header.
-   * 添加了 RaQ2 Patch
+n/a - 2004.12.20
+   * 清理头信息。
+   * 添加了 RaQ2 补丁
 
-n/a - December 16
-   * 修复了 a text typo in udev, tmpfs instead of ramfs (Steve Crosby)
+n/a - 2004.12.16
+   * 修复了在 udev 中的一个文本输入错误，使用 tmpfs 代替 ramfs (Steve Crosby)
 
-n/a - December 14
-   * 修复了 a warning with find in cleanfs
+n/a - 2004.12.14
+   * 修复了一个在 cleanfs 中和 find 相关的警告
 
 
-3.0 - December 8
+3.0 - 2004.12.8
 
-n/a - December 5
-   * 移动了 bootlog to use local2 service to avoide conflict with
-     dhcpcd (DJ Lucas)
+n/a - 2004.12.5
+   * 移动 bootlog 到使用 local2 服务以避免和 dhcpcd 冲突 (DJ Lucas)
 
-3.0-rc1 - December 1
+3.0-rc1 - 2004.12.1
    * rc-Interactive 添加了 (DJ Lucas)
-   * rc-Interactive 移动了 to contrib (Nathan Coulson)
+   * rc-Interactive 移到了 contrib (Nathan Coulson)
 
-n/a - November 27
-   * 移动了 bootlog to use local1 to avoid conflict with ppd (DJ Lucas)
+n/a - 2004.11.27
+   * 移动 bootlog 到使用 local1 以避免和 ppd 冲突 (DJ Lucas)
 
-n/a - November 25
-   * 添加了 consolelog to contrib/sysconfig (DJ Lucas)
-   * Rewrite of line wraping in boot_mesg and various fixes
-     related to boot_mesg changes (DJ Lucas, Alexander Patrakov)
-   * syslog-ng is now installed by default (Jeremy Utley)
-   * hotplug is now installed by default (Jeremy Utley)
-   * udev now uses /sbin/hotplug as the default hotplug handler
-     (Nathan Coulson)
-   * udev now mounts a tmpfs instead of a ramfs onto /dev,
-     as suggested by Greg K-H (Nathan Coulson)
-   * Created contrib/lsb, and 添加了 a LSB compliant functions file
-     (Nathan Coulson, and Alexander Patrakov)
-   * Modified find [requires find 4.2.3+] (Matthew Burgess)
+n/a - 2004.11.25
+   * 添加了 consolelog 到 contrib/sysconfig (DJ Lucas)
+   * 在 boot_mesg 中行折行的重写和各种关于 boot_mesg 更改的修复 (DJ Lucas, Alexander Patrakov)
+   * syslog-ng 现在按默认安装 (Jeremy Utley)
+   * hotplug 现在按默认安装 (Jeremy Utley)
+   * udev 现在使用 /sbin/hotplug 作为默认的热插处理程序 (Nathan Coulson)
+   * udev 现在挂载一个 tmpfs 而不是一个 ramfs 到 /dev 上，
+     这是因为 Greg K-H 的建议(Nathan Coulson)
+   * 创建 contrib/lsb 并添加了一个 LSB 兼容函数文件 (Nathan Coulson 和 Alexander Patrakov)
+   * 修改了 find [需要 find 4.2.3+] (Matthew Burgess)
 
-n/a - November 20
-   * Modifed modules 脚本 to return to previous kernel message
-     level (DJ Lucas)
+n/a - 2004.11.20
+   * 修改了模块脚本以返回到先前的内核消息级别 (DJ Lucas)
 
-n/a - November 02
-   * 添加了 sysctl -p to mountkernfs (Matthew Burgess, DJ Lucas)
+n/a - 2004.11.02
+   * 添加了 sysctl -p 到 mountkernfs (Matthew Burgess, DJ Lucas)
 
-n/a - October 07
-   * statusproc modified not to send data to bootlog (Nathan Coulson)
-   * 修复了 halt commands in checkfs and udev (James Robertson)
+n/a - 2004.10.07
+   * statusproc 修改了不发送数据到 bootlog (Nathan Coulson)
+   * 修复了在 checkfs 和 udev 中的 halt 命令 (James Robertson)
 
-n/a - October 04
-   * Fixes to commit on 2004/09/30 (James Robertson)
-   * Revert a few changes until later (Nathan Coulson)
-   * 添加了 a warning about switching from a 8bit font
-     to a 9bit font (Alexander Patrakov)
+n/a - 2004.10.04
+   * 对 2004/09/30 的提交的修复 (James Robertson)
+   * 倒退了一些后来的更改 (Nathan Coulson)
+   * 添加了一条关于从 8 位字体切换到 9 位字体的警告信息(Alexander Patrakov)
 
-n/a - September 30
-   * Finished off boot_mesg() (James Robertson)
-   * Standardized all 脚本s to same variable format and other
-     internal sh/bash function calls (James Robertson)
-   * Fully implemented boot_mesg across all 脚本s in sysconfig
-     and init.d (James Robertson)
+n/a - 2004.9.30
+   * 完成了 off boot_mesg() (James Robertson)
+   * 标准化所有脚本为同样的变量格式和其它的其它内部 sh/bash 函数调用 (James Robertson)
+   * 全面实现了穿越 sysconfig 和 init.d 中的所有脚本的 boot_mesg (James Robertson)
 
-n/a - September 26
-   * 添加了 BOOTMESG_PREFIX variable, so users can optionally set a
-     prefix for boot messages (James Robertson)
-   * 修复了 localnet status, to use ip instead of ifconfig (Jim Gifford)
-   * 添加了 consolelog to contrib (DJ Lucas)
-   * loadproc and killproc can have the -nomsg parameter to avoid
-     calling evaluate_retval or print_status (Jim Gifford)
-   * boot_mesg no longer explicitly adds a \n onto end of lines
-   * 添加了 a function called boot_mesg_flush, which can
-     dump the BOOTMESG to the bootlog.  This helps avoid making
-     everything have to end in OK/WARN/FAIL (Nathan Coulson)
+n/a - 2004.9.26
+   * 添加了 BOOTMESG_PREFIX 变量，所以用户可以选择性的为引导消息设置一个前缀(James Robertson)
+   * 修复了 localnet 状态，以使用 ip 代替 ifconfig (Jim Gifford)
+   * 添加了 consolelog 到 contrib (DJ Lucas)
+   * loadproc 和 killproc 可以让 -nomsg 参数以避免调用 evaluate_retval 或 print_status (Jim Gifford)
+   * boot_mesg 不再显式添加一个 \n 到行尾
+   * 添加了一个称为 boot_mesg_flush 的函数，它可以转储 BOOTMESG 到引导日志。
+     这有助于避免使得所有事情都必须以 OK/WARN/FAIL 结束 (Nathan Coulson)
 
-n/a - September 24
-   * 移除 /dev/udev.tdb test
+n/a - 2004.9.24
+   * 移除 /dev/udev.tdb 测试
 
-n/a - September 23
-   * 修复了 boot_log so it output's $@'s contents, not @$
-   * 添加了 support for colors in boot_mesg (James Robertson)
-   * Modified udev's error checking
-   * Modified hotplug's error checking
-   * Converted checkfs's error handling to use boot_mesg with
-     color support
-   * 添加了 $INFO color to functions (James Robertson)
+n/a - 2004.9.23
+   * 修复了 boot_log 以便它输出's $@'s 内容，而不是 @$
+   * 添加了在 boot_mesg 中的颜色支持 (James Robertson)
+   * 修改了 udev 的错误检查
+   * 修改了 hotplug 的错误检查
+   * 转换了 checkfs 的错误处理为使用带颜色支持的 boot_mesg
+   * 添加了 $INFO 颜色到函数 (James Robertson)
 
-n/a - September 22
-   * 移除 the dependency on wl by replacing it with grep (Bryan Kadzban)
-   * 修复了 getpids, to remove unused pids obtained from $PIDFILE
-   * 移除 ${NORMAL} from echo "$BOOTMESG" in functions, and 移除
-      space 添加到 each additional sentence tacked onto BOOTMESG
-   * boot_mesg now handles \n's properly, and does not dimish the size of
-     the next line (James Robertson)
-   * boot_log has been 添加了.  The echo_ functions commit the log,
-     and then clear the BOOTMSG variable
-   * All 脚本es have been converted to use boot_mesg
+n/a - 2004.9.22
+   * 通过替换 wl 为 grep 来移除了对其的依赖关系 (Bryan Kadzban)
+   * 修复了 getpids，以删除从 $PIDFILE 获取的不使用 pids
+   * 从函数中的 echo "$BOOTMESG" 移除了 ${NORMAL}并移除了
+     添加到附加在 BOOTMESG 的每个额外语句上的空格
+   * boot_mesg 现在处理 \n 的属性并不减少下一行的大小(James Robertson)
+   * boot_log 已被添加。echo_ functions 提交日志，然后清除 BOOTMSG 变量
+   * 所有脚本已被转换为使用 boot_mesg
 
-n/a - September 21
-   * boot_mesg has been enhanced.  Subsequent calls will overwrite
-     previous text, and it will wrap text basedupon the variable ${WCOL}. 
-     (James Robertson)
-   * 修复了 mtu optional service typo (Kevin P Fleming)
-   * 添加了 SOURCE variable to ipv4-static-route (Kevin P Fleming)
+n/a - 2004.9.21
+   * boot_mesg 已经被增强，后续的调用将会覆盖先前的文本并且它会
+     根据变量 ${WCOL} 折行文本。(James Robertson)
+   * 修复了 mtu 可选服务输入错误 (Kevin P Fleming)
+   * 添加了 SOURCE 变量到 ipv4-static-route (Kevin P Fleming)
 
-n/a - September 16
-   * nework interfaces are now brought down in reverse order
+n/a - 2004.9.16
+   * 网络接口现在以相反的顺序取下
 
-n/a - September 15
-   * 添加了 blue bracket, from dj's 3.0-pre1 bootscript package 
-     [echo_failure, echo_warning, and echo_ok]
-   * 添加了 a new function called boot_mesg, meant to replace the echo
-     command.
-     This will give us the posibility of doing logging at a later date
-   * Do not set COLUMNS if COLUMNS is already set
-   * Modified getpids, loadproc, killproc, reloadproc, and statusproc as
-     done by DJ
+n/a - 2004.9.15
+   * 添加了 blue bracket，来自 dj' 的 3.0-pre1 引导脚本包
+     [echo_failure, echo_warning 和 echo_ok]
+   * 添加了一个称为 boot_mesg 的新函数，用于替换 echo 命令。
+     这给予我们在以后的时候进行记录的可能性
+   * 如果已经设置了 COLUMNS 则不设置 COLUMNS
+   * 修改了 getpids, loadproc, killproc, reloadproc 和 statusproc ，由 DJ 完成
 
-2.2.3 - September 04
+2.2.3 - 2004.9.04
    * 标记为 2.2.3
 
-n/a - September 04
-   * 添加了 new 脚本 to contrib for syslog-ng, which is now part of
-     LFS-Unstable, and a new Makefile target install-syslog-ng which
-     removes the sysklogd links, and replaces them with syslog-ng (JU)
+n/a - 2004.9.04
+   * 添加了新脚本到 contrib 用于 syslog-ng，它现在是 LFS-Unstable 的一部分
+     而且是一个新的 Makefile 目标 install-syslog-ng 它会移除 sysklogd 链接并使用 syslog-ng 替换它们(JU)
 
-2.2.2 - August 11
+2.2.2 - 2004.8.11
    * 标记为 2.2.2
 
-n/a - August 7
-   * 添加了 missing error redirect (/dev/null) in getpids. (DJ)
+n/a - 2004.8.7
+   * 在 getpids 中添加了缺少的错误重定向 (/dev/null)。(DJ)
 
-n/a - August 4
-   * 添加了 MODE, DIRMODE, and CONFMODE variables to the makefile 
-     to allow permissions to be set at install. (DJ)
+n/a - 2004.8.4
+   * 添加了 MODE, DIRMODE 和 CONFMODE 变量到 makefile 
+     以允许在 install 时设置权限。(DJ)
 
-n/a - July 31
+n/a - 2004.7.31
    
-   * 移动了 PIDFILE check to getpids and 移除 arguments from
-     killproc and reloadproc.  Signals are now set at beginning of
-     funtcions 脚本 with KILLDELAY. (DJ)
-   * 添加了 a optional service 脚本 which can set the MTU for a given
-     interface
+   * 把 PIDFILE 检查移到了 getpids 并从 killproc 和 reloadproc 中移除了参数。
+     Signals 现在在函数脚本开始处使用 KILLDELAY 设置。(DJ)
+   * 添加了一个可选的服务脚本，它可以设置一个给出接口的 MTU
 
-n/a - July 21
+n/a - 2004.7.21
 
-   * Committed DJ Lucas's patch for the killproc function.  It no 
-     longer requires arguments if PIDFILE is set
-   * 添加了 --backup to all sysconfig configuration files, so they are not
-     replaced on a make install
+   * 提交了 DJ Lucas 的补丁用于 killproc 函数。如果设置了 PIDFILE 则它不再需要参数
+   * 添加 --backup 到所有的 sysconfig 配置文件，以便它们不会在 make install 时被替换
 
-n/a - July 13
+n/a - 2004.7.13
 
-   * 添加了 the PEER variable to the ifconfig.*/* file, done by
-     Kevin P. Fleming
+   * 添加了 PEER 变量到 ifconfig.*/* 文件，由 Kevin P. Fleming 完成
 
-2.2.1 - July 12
+2.2.1 - 2004.7.12
 
    * 标记为 2.2.1
 
-n/a - July 12
+n/a - 2004.7.12
 
-   * Hotplug was 移动了 from rcsysinit.d to rc{1,2,3,4,5} to help bring
-     up/down network interfaces started by hotplug.  This has been revoked
-     at this time
-   * Networking interfaces are now brought down in reverse order
-   * 移动了 the ONBOOT check to within ifup/ifdown, so we can bring up/down
-     the interfaces at boottime/shutdown properly, done by Kevin P. Fleming
-   * Use PREFIX instead of NETMASK for adding addresses in ipv4-static,
-     done by Kevin P. Fleming
-   * Fix reversal of services inside ifconfig.* directories in ifdown,
-     done by Kevin P. Fleming
-   * 添加 ipv4-static-route service, supplied by Kevin P. Fleming
+   * Hotplug 从 rcsysinit.d 移到了 rc{1,2,3,4,5} 以帮助启动/禁用由 hotplug 启动的网络接口。
+     这个此时已被吊销
+   * 网络接口现在以相反的顺序取下
+   * 把 ONBOOT 检查移到了 ifup/ifdown 中，所以我们可以在引导时/关机时正确的启用/禁用接口，
+     由 Kevin P. Fleming 完成
+   * 在 ipv4-static 中使用 PREFIX 代替 NETMASK 来添加地址，由 Kevin P. Fleming 完成
+   * 修复了在 ifdown 中 ifconfig.* 目录中的服务的颠倒，由 Kevin P. Fleming 完成
+   * 添加 ipv4-static-route service，由 Kevin P. Fleming 提供
 
-2.2.0 - July 12
+2.2.0 - 2004.7.12
 
    * 标记为 2.2.0
 
-n/a - July 11
+n/a - 2004.7.11
 
-   * Minor 脚本 output changes
-   * Repaired networking 脚本s broken in previous commits
+   * 较小的脚本输出更改
+   * 修复了在先前提交中的网络脚本的破坏
 
-n/a - July 10
+n/a - 2004.7.10
 
-   * We now use the ip program [from iproute2] instead of ipconfig
-     [net-tools] to bring up/down ethernet interfaces, and local
-     connections, submitted by Jim Gifford
-   * 移除 gateway backward compatibility
-   * 移除 ifup-eth0 ifdown-eth0 compatibility
-   * 移除 the "assume SERVICE=static if SERVICE is unset" compatibility
-   * Pass the IFCONFIG environmental variable to services, so they can
-     locate the file with the parameters they must read
-   * Rename static to ipv4-static
-   * Stage1 for network configuration via directories, ifup and ifdown
-     modified, and the static service modified
-   * Stage2 for network configuration via directories complete, network was
-     modified to check within subdirectories for ONBOOT=yes.  Final Stage
+   * 我们现在使用 ip 程序 [来自 iproute2] 代替 ipconfig [net-tools]
+     来启用/禁用以太网接口和本地连接，由 Jim Gifford 提交
+   * 移除 gateway 的向后兼容性
+   * 移除 ifup-eth0 ifdown-eth0 兼容性
+   * 移除 "如果 SERVICE 被 unset 则假定 SERVICE=static" 兼容性
+   * 传递 IFCONFIG 环境变量到服务，所有它们可以定位带有它们必须读取的参数的文件
+   * 重命名 static 为 ipv4-static
+   * 经由目录的网络配置的 Stage1, ifup 和 ifdown 被修改，而且 static 服务被修复
+   * 经由目录完成网络配置的 Stage2, 网络被修改为在子目录中检查 ONBOOT=yes。最终 Stage
 
-n/a - July 8
+n/a - 2004.7.8
 
-   * 更改了 iso01 to lat1 everywhere in /etc/sysconfig/console. This
-     fixes the problem with line-drawing characters.
+   * 在 /etc/sysconfig/console 中任何位置把 iso01 改为 lat1。这个修复了线性绘制字符的问题。
 
-n/a - July 7
+n/a - 2004.7.7
 
-   * Halted the computer, if unable to mount /dev as a ramfs
+   * 如果不能挂载 /dev 为一个 ramfs 的话，会挂起计算机
 
-n/a - July 6
+n/a - 2004.7.6
 
-   * 移动了 the hotplug bootscript back to contrib, it will not be used in
-     the testing branch of the lfs book at this time
+   * 把 hotplug 引导脚本移回了 contrib，现在它在 lfs book 的测试阶段中不会使用
 
-n/a - July 4
+n/a - 2004.7.4
 
-   * Modified ifup and ifdown to be hotplug aware
+   * 修改 ifup 和 ifdown 为能感应 hotplug
 
-n/a - July 3
+n/a - 2004.7.3
 
-   * Change the check for ONBOOT into a source within a subshell
+   * 更改了对 ONBOOT 的检查到一个 subshell 中的一个源中
 
-n/a - July 1
+n/a - 2004.7.1
 
-   * 移动了 hotplug start to runlevels 3-5 from sysinit
+   * 把 hotplug start 从 sysinit 移到 runlevels 3-5
 
-n/a - June 30
+n/a - 2004.6.30
 
-   * Pass -depth in cleanfs
+   * 在 cleanfs 中传递 -depth
 
-n/a - June 29
+n/a - 2004.6.29
 
-   * Made the grep for ONBOOT in the network 脚本 more exact
+   * 使得在 network 脚本中用于 ONBOOT 的 grep 更精确
 
-2.1.2 - June 27
+2.1.2 - 2004.6.27
 
-   * Install the automatic module loading 脚本 by default
+   * 按默认安装自动化模块加载脚本
    * 标记为 2.1.2
 
-n/a - June 26
+n/a - 2004.6.26
 
-   * 修复了 font for UK in /etc/sysconfig/console
+   * 修复了在 /etc/sysconfig/console 中用于 UK 的字体
 
-n/a - June 23
+n/a - 2004.6.23
 
-   * 修复了 a typo in the hotplug installation procedure
+   * 修复了在 hotplug 安装过程中的一个输入错误
 
-n/a - June 21
+n/a - 2004.6.21
 
-   * Re-ordered the "mount" and "echo" commands in the udev 脚本, to
-     prevent a possible race
-   * Converted the udev 脚本 to use udevsend/udevd
-   * 移动了 removal of /fastboot and /forcefsck to just after the root fs
-     becomes writable, and dropped the removal of /etc/nologin
-   * 清理了 and tweaked both the output and actions of cleanfs
-   * 移除 the disabling of hotplug from sendsignals
-   * 移除 anything that might call "rmmod" in hotplug, since rmmod is
-     notoriously troublesome in the 2.6.x kernels, and call it with the
-     stop argument from runlevels 0 and 6
-   * 修复了 previous modifications to the udev and cleanfs 脚本s
+   * 重新安排了在 udev 脚本中 "mount" 和 "echo" 命令的顺序，以避免出现可能的情况
+   * 转换 udev 脚本为使用 udevsend/udevd
+   * 移动了 /fastboot 和 /forcefsck 的删除为就在 root fs 变成可写之后，并丢弃了 /etc/nologin 的删除
+   * 清理并调整了 cleanfs 的输出和操作
+   * 从 sendsignals 移除了 hotplug 的禁用
+   * 移除了在 hotplug 中可能调用 "rmmod" 的任何内容，因为 rmmod
+     在 2.6.x 内核中是出了名的麻烦，并带 stop 参数，从 runlevels 0 到 6 来调用它
+   * 修复了先前对 udev 和 cleanfs 脚本的修改
 
-n/a - June 20
+n/a - 2004.6.20
 
-   * Rolled back to the /dev/.udev.tdb check from 2.1.1, since the new
-     one doesn't work as well, and the bug that caused it to change is
-     now 修复了
+   * 从 2.1.1 开始回滚到 /dev/.udev.tdb check，因为新的不能正常工作，
+     而且导致它发生变化的错误现在被修复了
 
-n/a - June 18
+n/a - 2004.6.18
 
    * 更新了 sysconfig/console
-   * 修复了 disabling hotplug in sendsignals
-   * hotplug is now installed by default
+   * 修复了在 sendsignals 中的禁用 hotplug
+   * hotplug 现在按默认安装
 
-n/a - June 15
+n/a - 2004.6.15
 
-   * Reset /proc/sys/kernel/hotplug to /bin/true when running the "stop"
-     command for hotplug
-   * 清理了 the output of the mountkernfs 脚本
-   * Don't output "Creating files and directories" when it's a lie
+   * 当运行 hotplug 的 “stop” 命令时重置 /proc/sys/kernel/hotplug 到 /bin/true
+   * 清理了 mountkernfs 脚本的输出
+   * 当名不副实时不输出 "Creating files and directories"
 
-n/a - June 8
+n/a - 2004.6.8
 
-   * 更改了 the location the optional module 脚本 is installed to
-     /etc/rc.d/rcsysinit.d/S05modules.
+   * 更改了可选模块脚本被安装到 /etc/rc.d/rcsysinit.d/S05modules 的位置。
 
-n/a - June 4
+n/a - 2004.6.4
 
-   * 添加了 a echo to the > /proc/sys/kernel/hotplug line, as > did not
-     clear it
+   * 添加了一个 echo 到 > /proc/sys/kernel/hotplug 行，因为 > 不清除它
 
-n/a - June 3
+n/a - 2004.6.3
 
-   * 添加了 '> /proc/sys/kernel/hotplug' to sendsignals, to disable hotplug
-     events, which may start up new daemons
-   * 添加了 elementry bootup logging support.  If it can write to
-     /var/log/boot.log, it will
-   * 移除 logging support, it kept / from being remounted ro
+   * 添加了 '> /proc/sys/kernel/hotplug' 到 sendsignals，以禁止 hotplug 事件，它可能启动新的后台程序
+   * 添加了 elementry 引导日志支持。如果它可以写到 /var/log/boot.log 的话，它会这样做
+   * 移除了日志支持，它使得 / 被以 ro 方式重新挂载
 
-n/a - June 2
+n/a - 2004.6.2
 
-   * Reorganize what goes on in the udev 脚本
-   * Reorganize what goes on in the hotplug 脚本
-   * 移动了 setting /sbin/hotplug as the default hotplug manager into the
-     hotplug 脚本
+   * 重组了在 udev 脚本中运作的内容
+   * 重组了在 hotplug 脚本中运作的内容
+   * 移动了设置 /sbin/hotplug 作为默认的热插管理器到 hotplug 脚本中
 
-n/a - June 1
+n/a - 2004.6.1
 
-   * 移除 usbfs from mountkernfs, and mountfs
-   * 编辑的 the udev 脚本, so it'll always set /proc/sys/kernel/hotplug
+   * 从 mountkernfs 和 mountfs 移除了 usbfs
+   * 编辑了 udev 脚本，以便它总是设置 /proc/sys/kernel/hotplug
 
-n/a - May 24
+n/a - 2004.5.24
 
-   * 添加了 more example keymaps and font settings to /etc/sysconfig/console
-   * Install the /etc/sysconfig/console file by default
+   * 添加了更多的示例 keymaps 和字体设置到 /etc/sysconfig/console
+   * 按默认安装 /etc/sysconfig/console 文件
 
-n/a - May 23
+n/a - 2004.5.23
 
-   * 更改了 the symlink for the optional modules 脚本
-   * 移除 depmod from the optional modules 脚本
+   * 更改了用于可选模块脚本的符号链接
+   * 从可选模块脚本中移除了 depmod
 
-n/a - May 20
+n/a - 2004.5.20
 
-   * 移除 the random 脚本.  There is not a strong enough case for
-     adding it to the lfs-bootscripts.
+   * 移除 random 脚本。还没有足够强的理由添加它到 lfs-bootscripts。
 
-n/a - May 19
+n/a - 2004.5.19
 
-   * 添加了 the random bootscript from blfs-bootscripts
+   * 添加了来自 blfs-bootscripts 的 random 脚本
 
-2.1.1 - May 18
+2.1.1 - 2004.5.18
 
-   * 修复了 installation of modules configuration
+   * 修复了模块配置的安装
    * 标记为 2.1.1
 
-n/a - May 16
+n/a - 2004.5.16
 
-   * 添加了 sysklogd configuration file
-   * 添加了 example /etc/sysconfig/console file
-   * Do not attempt to populate /dev if that directory has already been
-     set up earlier in bootup (such as on initramfs/initrd)
-   * Prevent excessive kernel output once klogd starts
+   * 添加了 sysklogd 配置文件
+   * 添加了示例的 /etc/sysconfig/console 文件
+   * 如果目录在引导过程中较早前已被设置的话，则不尝试填装 /dev
+     (如同在 initramfs/initrd 上)
+   * 防止一旦 klogd 启动的过度的内核输出
    * 添加了 hotplug 脚本
 
-n/a - May 15
+n/a - 2004.5.15
 
-   * Namespace rework (enumeration of 脚本s is now cleaner)
-   * 移除 directories: blfs, contrib/new-boot-0.2, contrib/rlv
+   * 命名空间修订 (脚本的枚举现在更干净)
+   * 移除几个目录: blfs, contrib/new-boot-0.2, contrib/rlv
 
-n/a - May 13
+n/a - 2004.5.13
 
-   * Repaired the console 脚本
-   * 添加了 a check to cleanfs [createfiles], to make sure that we have
-     a valid devicetype, if we have type=dev
+   * 修复了控制台脚本
+   * 添加了一个检查到 cleanfs [createfiles]，以确保在我们使 type=dev 时，
+     我们有有效的设备类型。
 
-n/a - May 11
+n/a - 2004.5.11
 
-   * 添加了 usbfs to mountkernfs and mountfs
+   * 添加了 usbfs 到 mountkernfs 和 mountfs
 
-n/a - May 6
+n/a - 2004.5.6
 
-   * Don't use loadproc in localnet, it's not meant for that
-   * Quote tests of $PIDFILE, so that things behave when it's empty
-   * 移除 unused kill -0 from killproc
+   * 在 localnet 中不使用 loadproc，它不是用于这个的
+   * $PIDFILE 的配额测试，所以当东西清空时行为正常
+   * 从 killproc 中移除了不使用的 kill -0
 
-2.1.0 - May 4
+2.1.0 - 2004.5.4
 
-   * Update to the console 脚本, prevent install of the console 脚本
-   * Chgrp /var/run/utmp to group utmp if it exists.
-   * 移动了 udev from contrib to lfs
-   * 移动了 GATEWAY setup from /etc/rc.d/init.d/network to
+   * 更新到控制台脚本，防止控制台脚本的安装。
+   * 更改 /var/run/utmp 的属组为 utmp(如果存在的话)。
+   * 把 udev 从 contrib 移到 lfs
+   * 把 GATEWAY 设置从 /etc/rc.d/init.d/network 移到
      /etc/sysconfig/network-devices/services/static
-   * Use the contents of $PIDFILE, if it is set in the 脚本
-   * 标记为 2.1.0.
+   * 如果在脚本中设置了 $PIDFILE，则使用其内容
+   * 标记为 2.1.0。
 
-n/a - 4.30
+n/a - 2004.4.30
 
-   * 移动了 the loadkeys 脚本 to console, and 添加了 setfont.  Contributed
-     by Alexander E. Patrakov
+   * 移动 loadkeys 脚本到 console，并添加了 setfont。由 Alexander E. Patrakov 贡献。
 
-2.0.5 - 4.29
+2.0.5 - 2004.4.29
 
-   * 添加了 the heimdal init 脚本.
+   * 添加了 heimdal init 脚本。
    * 标记为 2.0.5
 
-2.0.4 - 4.27
+2.0.4 - 2004.4.27
 
    * 标记为 2.0.4
 
-n/a - 4.24
+n/a - 2004.4.24
 
-   * 添加了 a example 脚本 for /etc/sysconfig/createfiles
-   * 添加了 a check for /sys before mounting sysfs
-   * 添加了 -t noramfs to umount on /etc/rc.d/init.d/mountfs.
-     This will prevent /dev from being unmounted, if /proc/mounts
-     is symlinked to /etc/mtab
+   * 添加了一个示例脚本用于 /etc/sysconfig/createfiles
+   * 在挂载 sysfs 前添加了一个对 /sys 的检查
+   * 添加了 -t noramfs 到 /etc/rc.d/init.d/mountfs 上的 umount。
+     这将会防止在 /proc/mounts 被符号链接到 /etc/mtab 时 /dev 被 unmounted
 
-n/a - 4.18
+n/a - 2004.4.18
 
    * 在 netfs 中一个 if 语句的小修复
 
-n/a - 4.17
+n/a - 2004.4.17
 
    * 添加了 lisa 引导脚本，lisa 是 KDE 网络包的一部分
    * 当写出 mtab 时添加恰当的错误检查到 mountfs 脚本
    * 添加更多的注释到 udev 脚本，并在开始的位置条件化应该以这种方式完成的各种事情
    * 包含了一个模板模块自动加载配置文件来代替在脚本中自己的语法注释
 
-n/a - 4.12
+n/a - 2004.4.12
 
    * 添加了一个自动化的模块加载脚本到 contrib 目录
      由 Zack 提交
@@ -860,7 +750,7 @@ n/a - 4.12
    * 由于所有条目被添加到 /etc/mtab，所以我们不需要 NO_FS 变量。它已经被从 mountfs 移除
    * 添加 udev 脚本到 contrib 目录中，由 Zack 提交
 
-2.0.3 - 4.8
+2.0.3 - 2004.4.8
 
    * 更新了 cleanfs，以便它可以创建设备。由 Zack 提供
    * 标记为 2.0.3
