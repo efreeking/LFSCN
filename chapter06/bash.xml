@@ -39,11 +39,11 @@
 
   <sect2 role="installation">
     <title>Bash 的安装</title>
-
+<!--
     <para>首先，应用下列补丁修复已经在 upstream 处理的各种错误:</para>
 
 <screen><userinput remap="pre">patch -Np1 -i ../&bash-fixes-patch;</userinput></screen>
-
+-->
     <para>准备 Bash 编译:</para>
 
 <screen><userinput remap="configure">./configure --prefix=/usr                    \

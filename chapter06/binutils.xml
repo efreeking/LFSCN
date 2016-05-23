@@ -67,6 +67,10 @@ sed -i.bak '/^INFO/s/standards.info //' etc/Makefile.in</userinput></screen>
 
 <screen><userinput remap="pre">patch -Np1 -i ../&binutils-lto-testsuite-patch;</userinput></screen>
 
+    <para>启用 binutils 以识别多插件:</para>
+
+<screen><userinput remap="pre">patch -Np1 -i ../&binutils-multiple-plugins-patch;</userinput></screen>
+
     <para>Binutils 文档推荐在源代码目录外的一个专用目录中构建 Binutils:</para>
 
 <screen><userinput remap="pre">mkdir -v ../binutils-build

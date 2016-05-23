@@ -34,6 +34,25 @@
 
 -->
     <listitem>
+      <para>2014-11-11</para>
+      <itemizedlist>
+        <listitem>
+          <para>[bdubbs] - 更新到 bash-4.3.30。修复了
+          <ulink url="&lfs-ticket-root;3708">#3708</ulink>。</para>
+        </listitem>
+        <listitem>
+          <para>[bdubbs] - 更新到 man-db-2.7.1。修复了
+          <ulink url="&lfs-ticket-root;3709">#3709</ulink>。</para>
+        </listitem>
+        <listitem>
+          <para>[bdubbs] - 添加 binutils-2.24-multiple_plugins-1.patch。
+          感谢 Miklos Karacsony 的修补。修复了
+          <ulink url="&lfs-ticket-root;3707">#3707</ulink>。</para>
+        </listitem>
+      </itemizedlist>
+    </listitem>
+
+    <listitem>
       <para>2014-11-10</para>
       <itemizedlist>
         <listitem>

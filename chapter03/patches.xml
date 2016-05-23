@@ -16,7 +16,7 @@
   构建 LFS 系统将需要下列的补丁:</para>
 
   <variablelist role="materials">
-
+<!--
     <varlistentry>
       <term>Bash Upstream Fixes (上游修复)补丁 - <token>&bash-fixes-patch-size;</token>:</term>
       <listitem>
@@ -24,7 +24,7 @@
         <para>MD5 和: <literal>&bash-fixes-patch-md5;</literal></para>
       </listitem>
     </varlistentry>
-
+-->
     <varlistentry>
       <term>Bc 内存泄露补丁 - <token>&bc-memory-leak-patch-size;</token>:</term>
       <listitem>
@@ -46,6 +46,14 @@
       <listitem>
         <para>下载: <ulink url="&patches-root;&binutils-lto-testsuite-patch;"/></para>
         <para>MD5 和: <literal>&binutils-lto-testsuite-patch-md5;</literal></para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term>Binutils 多插件补丁 - <token>&binutils-multiple-plugins-patch-size;</token>:</term>
+      <listitem>
+        <para>下载: <ulink url="&patches-root;&binutils-multiple-plugins-patch;"/></para>
+        <para>MD5 和: <literal>&binutils-multiple-plugins-patch-md5;</literal></para>
       </listitem>
     </varlistentry>
 
