@@ -34,6 +34,20 @@
 
 -->
     <listitem>
+      <para>2014-12-03</para>
+      <itemizedlist>
+        <listitem>
+          <para>[bdubbs] - 更新 acknowledgements(致谢)。修复了
+          <ulink url="&lfs-ticket-root;3716">#3716</ulink>。</para>
+        </listitem>
+        <listitem>
+          <para>[bdubbs] - 更新到 libtool-2.4.4。修复了
+          <ulink url="&lfs-ticket-root;3715">#3715</ulink>。</para>
+        </listitem>
+      </itemizedlist>
+    </listitem>
+
+    <listitem>
       <para>2014-11-29</para>
       <itemizedlist>
         <listitem>

@@ -49,11 +49,11 @@
 
 <screen><userinput remap="make">make</userinput></screen>
 
-    <para>要测试结果 (大约 3.0 SBU)，执行:</para>
+    <para>要测试结果 (大约 11.0 SBU)，执行:</para>
 
 <screen><userinput remap="test">make check</userinput></screen>
 
-    <para>已知有 5 个测试在 LFS 构建环境中失败，但是如果在第 6 章完成后重新检查的话则所有测试通过。</para>
+    <para>已知有 5 个测试在 LFS 构建环境中由于循环依赖关系而失败，但是如果在安装 automake 后重新检查的话则所有测试通过。</para>
 
     <para>安装包:</para>
 
