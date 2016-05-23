@@ -34,6 +34,15 @@
 
 -->
     <listitem>
+      <para>2014-11-10</para>
+      <itemizedlist>
+        <listitem>
+          <para>[bdubbs] - 更改 /run/lock 的默认权限为 1777。</para> 
+        </listitem>
+      </itemizedlist>
+    </listitem>
+
+    <listitem>
       <para>2014-11-05</para>
       <itemizedlist>
         <listitem>
