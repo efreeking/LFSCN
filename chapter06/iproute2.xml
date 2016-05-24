@@ -77,7 +77,7 @@ sed -i 's/arpd.8//' man/man8/Makefile</userinput></screen>
       <seglistitem>
         <seg>bridge, ctstat (链接到 lnstat), genl, ifcfg, ifstat, ip, lnstat,
         nstat, routef, routel, rtacct, rtmon, rtpr, rtstat (链接到 lnstat), ss 和 tc</seg>
-        <seg>/etc/iproute2, /lib/tc, /usr/share/doc/iproute2-&iproute2-version;,
+        <seg>/etc/iproute2, /usr/lib/tc, /usr/share/doc/iproute2-&iproute2-version;,
         /usr/lib/tc</seg>
       </seglistitem>
     </segmentedlist>
