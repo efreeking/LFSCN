@@ -99,7 +99,8 @@ cd ../glibc-build</userinput></screen>
     <itemizedlist>
 
       <listitem>
-        <para><emphasis>tst/tst-cputimer1</emphasis>
+        <para><emphasis>tst/tst-cputimer1</emphasis> 和
+        <emphasis>rt/tst-cpuclock2</emphasis>
         测试已知会失败。原因还未完全明白，但是现象表明
         少量计时问题可能触发了这些失败。</para>
       </listitem>
