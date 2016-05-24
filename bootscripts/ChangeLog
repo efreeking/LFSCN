@@ -1,3 +1,6 @@
+2014-12-24 Bruce Dubbs <bdubbs@linuxfromscratch.org>
+   * 明确 sysklog 运行级别的依据
+
 2014-11-10 Bruce Dubbs <bdubbs@linuxfromscratch.org>
    * 使 /run/lock 拥有 1777 权限
 
