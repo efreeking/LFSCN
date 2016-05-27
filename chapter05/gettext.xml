@@ -73,6 +73,7 @@ EMACS="no" ./configure --prefix=/tools --disable-shared</userinput></screen>
     <para>编译软件包:</para>
 
 <screen><userinput remap="make">make -C gnulib-lib
+make -C intl pluralx.c
 make -C src msgfmt
 make -C src msgmerge
 make -C src xgettext</userinput></screen>
