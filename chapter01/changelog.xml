@@ -34,10 +34,46 @@
 
 -->
     <listitem>
+      <para>2014-12-25</para>
+      <itemizedlist>
+        <listitem>
+          <para>[bdubbs] - 更新到 iproute2-3.18.0。修复了
+          <ulink url="&lfs-ticket-root;3726">#3726</ulink>。</para>
+        </listitem>
+        <listitem>
+          <para>[bdubbs] - 更新到 gettext-0.19.4。修复了
+          <ulink url="&lfs-ticket-root;3725">#3725</ulink>。</para>
+        </listitem>
+      </itemizedlist>
+    </listitem>
+
+    <listitem>
+      <para>2014-12-24</para>
+      <itemizedlist>
+        <listitem>
+          <para>[bdubbs] - 更新到 linix-3.18.1。修复了
+          <ulink url="&lfs-ticket-root;3721">#3721</ulink>。</para>
+        </listitem>
+        <listitem>
+          <para>[bdubbs] - 更新到 xz-5.2.0。修复了
+          <ulink url="&lfs-ticket-root;3723">#3723</ulink>。</para>
+        </listitem>
+        <listitem>
+          <para>[bdubbs] - 更新到 binutils-2.25。修复了
+          <ulink url="&lfs-ticket-root;3724">#3724</ulink>。</para>
+        </listitem>
+        <listitem>
+          <para>[bdubbs] - 更新 sysklogd 引导脚本的注释。修复了
+          <ulink url="&lfs-ticket-root;3722">#3722</ulink>。</para>
+        </listitem>
+      </itemizedlist>
+    </listitem>
+
+    <listitem>
       <para>2014-12-13</para>
       <itemizedlist>
         <listitem>
-          <para>[bdubbs] - 更新到 linix-3.18。修复了
+          <para>[bdubbs] - 更新到 linux-3.18。修复了
           <ulink url="&lfs-ticket-root;3717">#3717</ulink>。</para>
         </listitem>
         <listitem>

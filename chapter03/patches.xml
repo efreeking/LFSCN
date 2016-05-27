@@ -32,7 +32,7 @@
         <para>MD5 和: <literal>&bc-memory-leak-patch-md5;</literal></para>
       </listitem>
     </varlistentry>
-
+<!--
     <varlistentry>
       <term>Binutils LTO 补丁 - <token>&binutils-lto-patch-size;</token>:</term>
       <listitem>
@@ -56,7 +56,7 @@
         <para>MD5 和: <literal>&binutils-multiple-plugins-patch-md5;</literal></para>
       </listitem>
     </varlistentry>
-
+-->
     <varlistentry>
       <term>Bzip2 Documentation (文档)补丁 - <token>&bzip2-docs-patch-size;</token>:</term>
       <listitem>

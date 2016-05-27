@@ -52,17 +52,7 @@
 
 <screen><computeroutput>The system has no more ptys.
 Ask your system administrator to create more.</computeroutput></screen>
-
-    <para>阻止过期
-    <filename>standards.info</filename> 文件的安装，因为稍后在 Autoconf 说明中，较新的版本将会被安装:</para>
-
-<screen><userinput remap="pre">rm -fv etc/standards.info
-sed -i.bak '/^INFO/s/standards.info //' etc/Makefile.in</userinput></screen>
-
-    <para>添加一个上游补丁以按默认使用 gcc 的链接时间优化 (LTO):</para>
-
-<screen><userinput remap="pre">patch -Np1 -i ../&binutils-lto-patch;</userinput></screen>
-
+<!--
     <para>修复在测试套件中的某些 LTO 测试:</para>
 
 <screen><userinput remap="pre">patch -Np1 -i ../&binutils-lto-testsuite-patch;</userinput></screen>
@@ -70,7 +60,7 @@ sed -i.bak '/^INFO/s/standards.info //' etc/Makefile.in</userinput></screen>
     <para>启用 binutils 以识别多插件:</para>
 
 <screen><userinput remap="pre">patch -Np1 -i ../&binutils-multiple-plugins-patch;</userinput></screen>
-
+-->
     <para>Binutils 文档推荐在源代码目录外的一个专用目录中构建 Binutils:</para>
 
 <screen><userinput remap="pre">mkdir -v ../binutils-build
