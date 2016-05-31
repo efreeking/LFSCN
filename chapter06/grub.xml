@@ -49,8 +49,24 @@
             --disable-efiemu       \
             --disable-werror</userinput></screen>
 
-    <para>--disable-werror 选项使构建能够在带有由最近的 flex 版本引入的警告情况下完成。
-    其他 --disable 开关符通过禁用了 LFS 不需要的功能和测试程序来最小化构建的内容。</para>
+    <variablelist>
+      <title>新配置选项的含义:</title>
+
+      <varlistentry>
+        <term><parameter>--disable-werror</parameter></term>
+        <listitem>
+          <para>这个允许构建在带有由最近的 Flex 版本引入的警告而完成。</para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term><parameter>--disable-grub-emu-usb --disable-efiemu</parameter></term>
+        <listitem>
+          <para>这些选项通过禁用 LFS 所不需要的功能和测试程序来最小化构建的内容。</para>
+        </listitem>
+      </varlistentry>
+
+    </variablelist>
 
     <para>编译包:</para>
 
