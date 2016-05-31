@@ -52,7 +52,7 @@
 
     <para>通过一个菜单驱动的界面来配置内核。对于内核配置的全面的信息，查看 <ulink
     url="&hints-root;kernel-configuration.txt"/>、BLFS 有某些 LFS 以外的包的特定内核配置需求相关的信息可以在 <ulink
-    url="&blfs-root;view/&short-version;/longindex.html#kernel-config-index"/>。关于配置和构建内核的额外信息，可以在 <ulink url="http://www.kroah.com/lkn/"/> 找到</para>
+    url="&blfs-book;longindex.html#kernel-config-index"/>。关于配置和构建内核的额外信息，可以在 <ulink url="http://www.kroah.com/lkn/"/> 找到</para>
 
     <note><para>设置内核配置的一个好地方就是运行 <command>make defconfig</command>。这将会设置基础配置为一个顾及您的当前系统结构的好状态。</para>
 

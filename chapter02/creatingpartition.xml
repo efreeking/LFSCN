@@ -43,10 +43,10 @@
 
   <note><para>对于有经验的用户，也可以使用其它分区方案。
   新的 LFS 系统可以在一个软件 <ulink
-  url="&blfs-root;view/&short-version;/postlfs/raid.html">RAID</ulink> 阵列或者一个 <ulink
-  url="&blfs-root;view/&short-version;/postlfs/aboutlvm.html">LVM</ulink> 逻辑卷上。
+  url="&blfs-book;postlfs/raid.html">RAID</ulink> 阵列或者一个 <ulink
+  url="&blfs-book;postlfs/aboutlvm.html">LVM</ulink> 逻辑卷上。
   尽管如此，某些这些选择需要一个 <ulink
-  url="&blfs-root;view/&short-version;/postlfs/initramfs.html">initramfs</ulink>，这是一个高级话题。
+  url="&blfs-book;postlfs/initramfs.html">initramfs</ulink>，这是一个高级话题。
   这些分区原则不建议首次 LFS 用户使用。</para></note>
 
   <para>记住新分区的名称(如 <filename class="devicefile">sda5</filename>)。

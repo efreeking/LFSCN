@@ -151,7 +151,7 @@ MACAddress=cb:a9:87:65:43:21</screen>
 
     <title>处理重复设备</title>
 
-    <para>如<xref linkend="ch-scripts-udev"/>中所阐述的，同一功能的设备在 <filename class="directory">/dev</filename> 中出现的顺序是非常随机的。例如，如果您有一个 USB Web 摄像头和一个电视调谐器，有时候 <filename>/dev/video0</filename> 引用摄像头而 <filename>/dev/video1</filename> 引用调谐器，而重启后的某些时候，顺序会颠倒过来。对于所有类型的硬件，除了声卡和网卡外，是可以通过为自定义的永久符号链接创建 Udev 规则的方式修复的。网卡的情况单独在<xref linkend="ch-scripts-network"/>中说明，而声卡配置可以在 <ulink url="&blfs-root;view/&short-version;/postlfs/devices.html">BLFS</ulink> 中找到。</para>
+    <para>如<xref linkend="ch-scripts-udev"/>中所阐述的，同一功能的设备在 <filename class="directory">/dev</filename> 中出现的顺序是非常随机的。例如，如果您有一个 USB Web 摄像头和一个电视调谐器，有时候 <filename>/dev/video0</filename> 引用摄像头而 <filename>/dev/video1</filename> 引用调谐器，而重启后的某些时候，顺序会颠倒过来。对于所有类型的硬件，除了声卡和网卡外，是可以通过为自定义的永久符号链接创建 Udev 规则的方式修复的。网卡的情况单独在<xref linkend="ch-scripts-network"/>中说明，而声卡配置可以在 <ulink url="&blfs-book;postlfs/devices.html">BLFS</ulink> 中找到。</para>
 
     <para>对于每个有类似这种问题的设备，
     (即使问题不存在于您当前的 Linux 发行版上)，在

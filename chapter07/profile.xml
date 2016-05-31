@@ -102,6 +102,6 @@ EOF</userinput></screen>
 
   <para>基于 UTF-8 的语言环境还不能被某些程序很好的支持。
   在文档制作时，工作还在进行中，如果可以的话，修复这些问题，查看
-  <ulink url="&blfs-root;view/&short-version;/introduction/locale-issues.html"/>。</para>
+  <ulink url="&blfs-book;introduction/locale-issues.html"/>。</para>
 
 </sect1>

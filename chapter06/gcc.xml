@@ -64,7 +64,7 @@ cd ../gcc-build</userinput></screen>
      --disable-bootstrap      \
      --with-system-zlib</userinput></screen>
 
-    <para>注意，对于其它语言，有一些还未可用的先决条件。参阅 <ulink url="&blfs-root;view/&short-version;/general/gcc.html">BLFS 书</ulink>中关于如何构建所有 GCC 支持的语言的说明。</para>
+    <para>注意，对于其它语言，有一些还未可用的先决条件。参阅 <ulink url="&blfs-book;general/gcc.html">BLFS 书</ulink>中关于如何构建所有 GCC 支持的语言的说明。</para>
 
     <variablelist>
       <title>新配置选项的含义:</title>

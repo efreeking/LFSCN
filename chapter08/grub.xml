@@ -24,7 +24,7 @@
 
     <para>首先确保准备好一张紧急引导盘，以备万一计算机不可使用(不可引导)时可以
     <quote>挽救</quote>计算机。如果您还没有一个引导设备，您需要创建一个。为了以下的过程能够运作，您需要跳到 BLFS 的开头，并安装来自<ulink
-    url="&blfs-root;view/&short-version;/multimedia/libisoburn.html">
+    url="&blfs-book;multimedia/libisoburn.html">
     libisoburn</ulink> 包的 <userinput>xorriso</userinput>。</para>
 
 <screen role="nodump"><userinput>cd /tmp &amp;&amp;

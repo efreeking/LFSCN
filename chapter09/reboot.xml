@@ -15,29 +15,29 @@
   <itemizedlist>
 
     <listitem><para>一个文本模式的浏览器，譬如 <ulink
-    url='&blfs-root;/view/&short-version;/basicnet/lynx.html'>Lynx</ulink>
+    url='&blfs-book;basicnet/lynx.html'>Lynx</ulink>
     将可以让您在一个虚拟的终端中构建包的同时方便的在另一个中查看 BLFS 书籍。</para></listitem>
 
     <listitem><para><ulink
-    url='&blfs-root;/view/&short-version;/general/gpm.html'>GPM</ulink> 包将可以让您在您的虚拟终端中执行复制/粘贴操作。</para></listitem>
+    url='&blfs-book;general/gpm.html'>GPM</ulink> 包将可以让您在您的虚拟终端中执行复制/粘贴操作。</para></listitem>
 
-    <listitem><para>如果在静态 IP 配置无法满足您的网络需要的情况下，安装一个如 <ulink url='&blfs-root;/view/&short-version;/basicnet/dhcpcd.html'>dhcpcd</ulink>
+    <listitem><para>如果在静态 IP 配置无法满足您的网络需要的情况下，安装一个如 <ulink url='&blfs-book;basicnet/dhcpcd.html'>dhcpcd</ulink>
     或 <ulink
-    url='&blfs-root;/view/&short-version;/basicnet/dhcp.html'>dhcp</ulink> 的客户端部分的包可能很有用。</para></listitem>
+    url='&blfs-book;basicnet/dhcp.html'>dhcp</ulink> 的客户端部分的包可能很有用。</para></listitem>
 
     <listitem><para>安装 <ulink
-    url='&blfs-root;/view/&short-version;/postlfs/sudo.html'>sudo</ulink> 可能对于以非 root 用户身份构建包以及在您的新系统中方便的安装得到的包很有用。</para></listitem>
+    url='&blfs-book;postlfs/sudo.html'>sudo</ulink> 可能对于以非 root 用户身份构建包以及在您的新系统中方便的安装得到的包很有用。</para></listitem>
 
     <listitem><para>如果您想从一个舒服的图形用户界面环境中的远程系统来访问您的新系统，安装 <ulink
-    url='&blfs-root;/view/&short-version;/postlfs/openssh.html'>openssh</ulink> 和它的必备条件，
-    <ulink url='&blfs-root;/view/&short-version;/postlfs/openssl.html'>openssl</ulink>。</para></listitem>
+    url='&blfs-book;postlfs/openssh.html'>openssh</ulink> 和它的必备条件，
+    <ulink url='&blfs-book;postlfs/openssl.html'>openssl</ulink>。</para></listitem>
 
     <listitem><para>要使得通过网络更方便的取回文件，安装
-    <ulink url='&blfs-root;/view/&short-version;/basicnet/wget.html'>wget</ulink>。</para></listitem>
+    <ulink url='&blfs-book;basicnet/wget.html'>wget</ulink>。</para></listitem>
 
     <listitem><para>如果您的磁盘驱动器中有一个或多个拥有 GUID 分区表 (GPT)，那么 <ulink
-    url='&blfs-root;/view/&short-version;/postlfs/gptfdisk.html'>gptfdisk</ulink> 或 <ulink
-    url='&blfs-root;/view/&short-version;/postlfs/parted.html'>parted</ulink> 将会很有用。
+    url='&blfs-book;postlfs/gptfdisk.html'>gptfdisk</ulink> 或 <ulink
+    url='&blfs-book;postlfs/parted.html'>parted</ulink> 将会很有用。
     </para></listitem>
 
     <listitem><para>最后，也是时候对下列配置文件进行复查。</para>

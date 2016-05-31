@@ -33,7 +33,7 @@
       <title>Vim 的替代品</title>
 
       <para>如果您更喜欢其它的编辑器&mdash;如 Emacs、Joe 或 Nano&mdash;请参考<ulink
-      url="&blfs-root;view/&short-version;/postlfs/editors.html"/>获得建议的安装说明。</para>
+      url="&blfs-book;postlfs/editors.html"/>获得建议的安装说明。</para>
     </tip>
 
   </sect2>
@@ -78,7 +78,7 @@ done</userinput></screen>
 <screen><userinput remap="install">ln -sv ../&vim-docdir;/doc /usr/share/doc/vim-&vim-version;</userinput></screen>
 
     <para>如果将要在 LFS 系统上安装 X Window 系统，可能需要安装 X 后重新编译 Vim。Vim 附带了一个需要已经安装 X 和某些附加库的图形用户界面版本的编辑器。要获得更多这个过程的信息，参考 Vim 文档和在 <ulink
-    url="&blfs-root;view/&short-version;/postlfs/vim.html"/> 的 BLFS 书中的 Vim 安装页面。</para>
+    url="&blfs-book;postlfs/vim.html"/> 的 BLFS 书中的 Vim 安装页面。</para>
 
   </sect2>
 
